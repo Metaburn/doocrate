@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import TagsInput from 'react-tagsinput';
-
+import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import { Redirect } from 'react-router';
 
 import './task-filters.css';
@@ -22,8 +22,8 @@ class TaskFilters extends Component {
 
   // Since react router doesn't support query we read it manually from the url
   getFilterQuery(location) {
-    const params = new URLSearchParams(location.search);
-    return params.get('filter');
+    const params = getUrlSearchParams();
+    return params['filter'];
   }
 
   render() {

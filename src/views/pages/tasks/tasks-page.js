@@ -15,6 +15,7 @@ import TaskView from '../../components/task-view/task-view';
 import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import {debounce} from 'lodash';
+import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 
 import './tasks-page.css';
 
@@ -88,8 +89,8 @@ export class TasksPage extends Component {
 
   filterTasksFromProps(nextProps) {
     let curTasks = nextProps.tasks;
-    const params = new URLSearchParams(nextProps.location.search);
-    const filterType = params.get('filter');
+    const params = getUrlSearchParams(nextProps.location.search);
+    const filterType = params['filter'];
     
     if (filterType) {      
       const filter = this.props.buildFilter(this.props.auth, filterType);
@@ -182,8 +183,8 @@ export class TasksPage extends Component {
   }
 
   goToTask(task) {
-    const params = new URLSearchParams(this.props.location.search);
-    const filterType = params.get('filter');
+    const params = getUrlSearchParams(this.props.location.search);
+    const filterType = params['filter'];
     let taskParameter = task? `/task/${task.get("id")}` : `/task/1`;
 
     if (filterType) {

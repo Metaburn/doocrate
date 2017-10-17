@@ -1,4 +1,4 @@
-import firebase, { firebaseDb } from 'firebase';
+import firebase from 'firebase';
 
 import { firebaseAuth } from 'src/firebase';
 import {
