@@ -84,13 +84,13 @@ label:focus,
 {
     outline:0px !important;
     -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
 }
 
 input[type='checkbox']
 {
   -webkit-appearance:checkbox !important;
-}
-
-main {
-  margin-top: -20px;
+  -moz-appearance:checkbox !important;
+  appearance:checkbox !important;
 }

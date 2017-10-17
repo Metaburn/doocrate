@@ -21,9 +21,10 @@
   min-height: 18.35em;
 }
 
-@media (max-width: 767px) {
+@media screen and (max-width: 767px) {
   .task-view-loader {
-    min-height: auto;
+    min-height: initial;
+    line-height: 0;
   }
 }
 
@@ -42,7 +43,7 @@
   }
 
   input:disabled, select:disabled, textarea:disabled {
-    background-color: none;
+    background: none;
   }
 
   .Select {

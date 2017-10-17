@@ -2,21 +2,16 @@
 
 
 # Teal Doocrate
-Try the demo at https://doocrate.firebaseapp.com. 
+Try the demo at https://doocrate2.firebaseapp.com.
+A task management system which allows user to self assign themself
+So normally you don't have permission unless you create a task or
+assign yourself to a task.
+This allows organization to manage tasks in a TEAL way
 
 ## Stack
 
-- Create React App
-- React Redux
-- React Router
-- React Router Redux
-- Redux Thunk
-- Redux Devtools Extension for Chrome
-- Firebase SDK with OAuth authentication
-- Immutable
-- Reselect
-- SASS
-
+- React, Redux, Thunk, React Router
+- Firebase Firestore
 
 Quick Start
 -----------
@@ -30,11 +25,11 @@ $ npm start
 
 Admins
 -----
+Admins can edit any task.
+
 Import the file under
 `assets/database-example.json`
 and add the uid of the app admins
-
-Only admins can write new tasks at the moment
 
 ## Deploying to Firebase
 #### Prerequisites:

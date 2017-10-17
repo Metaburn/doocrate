@@ -32,7 +32,7 @@ export function createTaskError(error) {
 
 export function createTaskSuccess(task, isLocallyCreated) {
   return {
-    type: "CREATE_TASK_SUCCESS",
+    type: CREATE_TASK_SUCCESS,
     payload: task
   };
 }
