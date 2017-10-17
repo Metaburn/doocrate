@@ -118,15 +118,16 @@ export class TaskView extends Component {
     const isUserCreator = task.creator && task.creator.id == this.props.auth.id;
     const isUserAssignee = task.assignee && task.assignee.id == this.props.auth.id;
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
+    const canDeleteTask = isUserCreator || this.props.isAdmin;
 
     return (
       <div className='task-view-container'>
         <TaskViewHeader
         task={ this.props.selectedTask }
-        isUserCreator={isUserCreator}
-        selectTask={this.props.selectTask}
-        assignTask={this.props.assignTask}
-        removeTask={this.props.removeTask}
+        canDeleteTask={ canDeleteTask }
+        selectTask={ this.props.selectTask }
+        assignTask={ this.props.assignTask }
+        removeTask={ this.props.removeTask }
         />
         <div className='task-view'>
           <form onSubmit={this.handleSubmit} noValidate>
