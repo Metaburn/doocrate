@@ -51,16 +51,19 @@
 
   &:first-child {
     padding-right: 10px;
-    
   }
 
-  &:nth-child(3) {
-    flex: 1;
-    padding-right: 10px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
+  &:last-child {
+    padding: 0 10px;
   }
+
+  // &:nth-child(3) {
+  //   flex: 1;
+  //   padding-right: 10px;
+  //   overflow: hidden;
+  //   display: flex;
+  //   align-items: center;
+  // }
 }
 
 
