@@ -51,10 +51,9 @@
 
   &:first-child {
     padding-right: 10px;
-    
   }
 
-  &:nth-child(3) {
+  &:nth-last-child(3) {
     flex: 1;
     padding-right: 10px;
     overflow: hidden;
