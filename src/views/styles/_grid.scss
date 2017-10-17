@@ -6,7 +6,6 @@
   }
 
   .g-col {
-    @include grid-column;
     width: 100%;
   }
 
@@ -46,7 +45,7 @@
   }
 }
 
-@media (max-width: 700px)  {
+@media (max-width: 767px)  {
   .g-row {
     @include grid-row;
     max-width: 100%;

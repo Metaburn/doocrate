@@ -35,6 +35,7 @@ exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{ta
 // Configure the email transport using the default SMTP transport and Mailgun.
 // For other types of transports such as Sendgrid see https://nodemailer.com/transports/
 // TODO: Configure the `from_email`, `send_notifications`, `email_api_key`, `email_domain` Google Cloud environment variables.
+// For example: firebase functions:config:set email.send_notifications="true"
 const shouldSendNotifications = encodeURIComponent(functions.config().send_notifications);
 const fromEmail = encodeURIComponent(functions.config().email.from);
 const emailApiKey = encodeURIComponent(functions.config().email.apikey);
