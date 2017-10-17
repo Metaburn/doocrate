@@ -10,8 +10,9 @@ import {
 
 
 function authenticate(provider) {
+  firebaseAuth.useDeviceLanguage();
   return dispatch => {
-    firebaseAuth.signInWithPopup(provider)
+    firebaseAuth.signInWithRedirect(provider)
       .then(result => { dispatch(signInSuccess(result, dispatch)) })
       .catch(error => dispatch(signInError(error)));
   };

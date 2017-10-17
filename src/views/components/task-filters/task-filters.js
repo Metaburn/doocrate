@@ -32,7 +32,7 @@ class TaskFilters extends Component {
     return(
       <div className="task-filters">
       <ul>
-        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === null} to='/'>כל המשימות בעולם</NavLink></li>
+        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>משימות פנויות</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'label'} to={{ pathname: '/', search: 'filter=label'}}>משימות לפי תגית</NavLink></li>
