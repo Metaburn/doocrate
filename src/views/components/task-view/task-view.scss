@@ -23,7 +23,7 @@
 
 @media screen and (max-width: 767px) {
   .task-view-loader {
-    min-height: auto;
+    min-height: initial;
     line-height: 0;
   }
 }
