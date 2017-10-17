@@ -32,6 +32,10 @@
 }
 
 @media (max-width: 767px) {
+  .task-list-wrapper {
+    max-width: 100%;
+    min-width: 0;
+  }
   .task-page-wrapper {
     flex-wrap: wrap;
   }
@@ -41,8 +45,14 @@
   }
 }
 
-@media (max-width: 900px) {
-.task-view-wrapper {
-    min-width: 20em;
+@media (max-width: 1120px) {
+  .task-view-wrapper {
+    min-width: 12em;
+  }
+}
+
+@media (max-width: 795px) {
+  .task-view-wrapper {
+    min-width: 8em;
   }
 }
