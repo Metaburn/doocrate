@@ -29,6 +29,14 @@ class TaskFilters extends Component {
   }
 
   render() {
+    function renderSuggestionsContainer({ containerProps , children, query }) {
+      return (
+        <div className={"suggestionContainer"}>
+          {children}
+        </div>
+      );
+    }
+
     function autocompleteRenderInput ({addTag, ...props}) {
       const handleOnChange = (e, {newValue, method}) => {
         if (method === 'enter') {
@@ -43,8 +51,7 @@ class TaskFilters extends Component {
 
       let suggestions = Object.keys(this.props.labels).filter((l) => {        
         return inputValue == l.slice(0, inputValue.length);
-      })
-      console.log(suggestions);
+      });
 
       return (
         <Autosuggest
@@ -52,11 +59,12 @@ class TaskFilters extends Component {
           suggestions={suggestions}
           shouldRenderSuggestions={(value) => value && value.trim().length > 0}
           getSuggestionValue={(suggestion) => suggestion}
-          renderSuggestion={(suggestion) => <span>{suggestion}</span>}
+          renderSuggestion={(suggestion) => <div className={"suggestion"}>{suggestion}</div>}
           inputProps={{...props, onChange: handleOnChange}}
           onSuggestionSelected={(e, {suggestion}) => {
             addTag(suggestion)
           }}
+          renderSuggestionsContainer = {renderSuggestionsContainer}
           onSuggestionsClearRequested={() => {}}
           onSuggestionsFetchRequested={() => {}}
         />
