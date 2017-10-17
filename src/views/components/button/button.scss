@@ -59,3 +59,11 @@ $primary-color: #eb1478;
     color: $primary-color;
   }
 }
+
+.button-grey {
+  @extend .button-small;
+  border-color: #c0c0c0;
+  &:hover {
+    border-color: $primary-color;
+  }
+}
