@@ -232,7 +232,7 @@ export class TasksPage extends Component {
           <div className='task-view-wrapper'>
             { this.renderTaskView() }
           </div>
-          <div className='task-list-wrapper g-col-xs-100'>
+          <div className='task-list-wrapper'>
             <TaskList
               tasks={this.state.tasks}
               selectTask={this.goToTask}

@@ -15,7 +15,6 @@
 
 .task-list-wrapper {
   flex: 5500 1 605px;
-  min-width: 405px;
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
   padding-left: 15px;
@@ -24,7 +23,7 @@
 
 .task-view-wrapper {
   justify-content: flex-start;
-  max-width: 675px;
+  max-width: 800px;
   position: relative;
   margin-left: 30px;
   margin-right: 15px;
