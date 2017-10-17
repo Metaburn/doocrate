@@ -1,5 +1,6 @@
 import { Record } from 'immutable';
 import { REMOVE_TASK_SUCCESS } from 'src/tasks';
+import { SIGN_IN_ERROR } from 'src/auth';
 import { DISMISS_NOTIFICATION, SHOW_ERROR } from './action-types';
 
 
@@ -18,6 +19,7 @@ export function notificationReducer(state = new NotificationState(), action) {
         message: 'המשימה נמחקה'
       });
 
+    case SIGN_IN_ERROR:
     case SHOW_ERROR:
       return state.merge({
         display: true,
