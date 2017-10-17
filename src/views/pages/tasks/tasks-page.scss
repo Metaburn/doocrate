@@ -17,12 +17,13 @@
   flex: 5500 1 605px;
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
-  padding-left: 15px;
+  padding-left: 10px;
   padding-right: 15px;
 }
 
 .task-view-wrapper {
   justify-content: flex-start;
+  min-width: 28em;
   max-width: 800px;
   position: relative;
   margin-left: 30px;
@@ -33,5 +34,15 @@
 @media (max-width: 767px) {
   .task-page-wrapper {
     flex-wrap: wrap;
+  }
+
+  .task-view-wrapper {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 900px) {
+.task-view-wrapper {
+    min-width: 20em;
   }
 }

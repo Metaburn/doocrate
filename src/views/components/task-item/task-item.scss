@@ -53,17 +53,14 @@
     padding-right: 10px;
   }
 
-  &:last-child {
-    padding: 0 10px;
-  }
 
-  // &:nth-child(3) {
-  //   flex: 1;
-  //   padding-right: 10px;
-  //   overflow: hidden;
-  //   display: flex;
-  //   align-items: center;
-  // }
+  &:nth-last-child(3) {
+    flex: 1;
+    padding-right: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
 }
 
 

@@ -6,7 +6,7 @@ import Img from 'react-image';
 
 import './task-view-header.css';
 
-const TaskViewHeader = ({ task, isUserCreator, selectTask, assignTask, removeTask}) => {
+const TaskViewHeader = ({ task, canDeleteTask, selectTask, assignTask, removeTask}) => {
   const isTaskEmpty = (!task.description || task.description == '') &&
   (!task.circle || task.circle == '') && (!task.status || task.status == '');
 
@@ -27,9 +27,9 @@ const TaskViewHeader = ({ task, isUserCreator, selectTask, assignTask, removeTas
           <span>{task.assignee.name}</span>
         </div>}
           
-        { isTaskEmpty && isUserCreator ?
+        { isTaskEmpty && canDeleteTask ?
         <Button
-          className='action-button delete_task'
+          className='action-button button-grey'
           onClick={()=> { removeTask(task); selectTask(); }}
           type='button'>מחק משימה</Button> : '' }
         
@@ -50,7 +50,7 @@ TaskViewHeader.propTypes = {
   assignTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
-  isUserCreator: PropTypes.bool.isRequired
+  canDeleteTask: PropTypes.bool.isRequired
 };
 
 
