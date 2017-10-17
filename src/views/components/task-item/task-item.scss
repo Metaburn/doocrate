@@ -28,6 +28,7 @@
 
   .warning {
     color: $primary-color;
+    padding: 0 0 0 5px
   }
 }
 .task-item.is-active{
@@ -53,7 +54,7 @@
     
   }
 
-  &:nth-child(2) {
+  &:nth-child(3) {
     flex: 1;
     padding-right: 10px;
     overflow: hidden;

@@ -227,12 +227,12 @@ export class TasksPage extends Component {
             { <TaskFilters filter={this.props.filterType} onLabelChange= {this.onLabelChanged}/> }
           </div>
       
-        <div className="g-row">
+        <div className='task-page-wrapper'>
           <LoaderUnicorn isShow={ isLoading }/>
-          <div className="g-col-60 g-col-xs-100">
+          <div className='task-view-wrapper'>
             { this.renderTaskView() }
           </div>
-          <div className="g-col-40 g-col-xs-100">
+          <div className='task-list-wrapper'>
             <TaskList
               tasks={this.state.tasks}
               selectTask={this.goToTask}
