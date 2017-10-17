@@ -42,6 +42,7 @@
     "moment-timezone": "0.5.13",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-autosuggest": "^9.3.2",
     "react-dom": "^15.6.1",
     "react-image": "1.0.1",
     "react-linkify": "0.2.1",
