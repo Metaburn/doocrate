@@ -9,6 +9,15 @@ import './auto-suggested-tags.css';
 const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
   const showPlaceholder = !value || value.length == 0 ;
 
+  function renderLayout (tagComponents, inputComponent) {
+    return (
+      <span>
+        {inputComponent}
+        {tagComponents}
+      </span>
+    )
+  }
+
   function renderSuggestionsContainer({ containerProps , children, query }) {
       return (
         <div {...containerProps} className={"suggestionContainer"}>
@@ -62,6 +71,7 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
       addOnBlur={true}
       renderInput={autocompleteRenderInput.bind(this)}
       inputProps={{ placeholder: showPlaceholder ? placeholder : ''}}
+      renderLayout={renderLayout}
   />
   )
 };
