@@ -9,6 +9,7 @@
 }
 
 .suggestions li{
+  background: rgba(255, 255, 255, 0.66);
   display: block;
   width:100%;
   }
@@ -17,11 +18,13 @@
   display: block;
   // height: 1.7em;
   // margin: 10px;
-  background: white;
+  
   width: 100%;
   z-index: 6;
 }
 
-.suggestion:hover{
-  background: gray;
+li.react-autosuggest__suggestion--highlighted  {
+  background: #eb1478;
+  color: white;
 }
+
