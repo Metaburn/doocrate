@@ -11,7 +11,7 @@ import { commentsActions } from 'src/comments';
 import Notification from '../../components/notification';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
-import TaskView from '../../components/task-view/task-view';
+import TaskView from '../../components/task-view';
 import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import {debounce} from 'lodash';

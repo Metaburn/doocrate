@@ -5,7 +5,7 @@ import TagsInput from 'react-tagsinput';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import { Redirect } from 'react-router';
 import Autosuggest from 'react-autosuggest';
-
+import AutoSuggestedTags from '../auto-suggested-tags';
 import './task-filters.css';
 
 class TaskFilters extends Component {
@@ -29,47 +29,6 @@ class TaskFilters extends Component {
   }
 
   render() {
-    function renderSuggestionsContainer({ containerProps , children, query }) {
-      return (
-        <div className={"suggestionContainer"}>
-          {children}
-        </div>
-      );
-    }
-
-    function autocompleteRenderInput ({addTag, ...props}) {
-      const handleOnChange = (e, {newValue, method}) => {
-        if (method === 'enter') {
-          e.preventDefault()
-        } else {
-          props.onChange(e)
-        }
-      }
-
-      const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
-      const inputLength = inputValue.length
-
-      let suggestions = Object.keys(this.props.labels).filter((l) => {        
-        return inputValue == l.slice(0, inputValue.length);
-      });
-
-      return (
-        <Autosuggest
-          ref={props.ref}
-          suggestions={suggestions}
-          shouldRenderSuggestions={(value) => value && value.trim().length > 0}
-          getSuggestionValue={(suggestion) => suggestion}
-          renderSuggestion={(suggestion) => <div className={"suggestion"}>{suggestion}</div>}
-          inputProps={{...props, onChange: handleOnChange}}
-          onSuggestionSelected={(e, {suggestion}) => {
-            addTag(suggestion)
-          }}
-          renderSuggestionsContainer = {renderSuggestionsContainer}
-          onSuggestionsClearRequested={() => {}}
-          onSuggestionsFetchRequested={() => {}}
-        />
-      )
-    }
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
     return(
@@ -81,15 +40,11 @@ class TaskFilters extends Component {
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'label'} to={{ pathname: '/', search: 'filter=label'}}>משימות לפי תגית</NavLink></li>
         <li>
 
-          <TagsInput
-            value={this.state.label}
-            onChange={this.handleLabelChange}
-            onlyUnique={true}
-            className={'react-tagsinput-custom'}
-            addOnBlur={true}
-            renderInput={autocompleteRenderInput.bind(this)}
-            inputProps={{ placeholder: showPlaceholder ? 'חפשי משימה לפי תגיות' : ''}}
-        />
+        <AutoSuggestedTags
+          value = {this.state.label}
+          labels = { this.props.labels}
+          placeholder = 'חפשי משימה לפי תגיות'
+          onChange = {this.handleLabelChange} />
       </li>
       </ul>
       </div>
