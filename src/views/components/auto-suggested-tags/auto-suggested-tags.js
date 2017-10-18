@@ -11,7 +11,7 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
 
   function renderSuggestionsContainer({ containerProps , children, query }) {
       return (
-        <div className={"suggestionContainer"}>
+        <div {...containerProps} className={"suggestionContainer"}>
           <div className ={"suggestions"}>
           {children}
           </div>
