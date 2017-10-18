@@ -1,9 +1,27 @@
 .suggestionContainer{
-  position: relative;
-  z-index: 10;
-  background: white;
+  // position: absolute;
+  z-index: 5;
+  // background: white;
 }
+.suggestions{
+  width:100%;
+  position: relative;
+}
+
+.suggestions li{
+  display: block;
+  width:100%;
+  }
 
 .suggestion{
   display: block;
+  // height: 1.7em;
+  // margin: 10px;
+  background: white;
+  width: 100%;
+  z-index: 6;
+}
+
+.suggestion:hover{
+  background: gray;
 }

@@ -16,6 +16,8 @@
   }
 
   .react-tagsinput-custom {
+    position:absolute;
+    z-index: 2;
     border-radius: 3px;
     overflow: hidden;
     margin-top: -7px;
@@ -39,7 +41,7 @@
     }
   }
 
-  li {
+  .main-filters > li {
     float: right;
     height: 3em;
 
