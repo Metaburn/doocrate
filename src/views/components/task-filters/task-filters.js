@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import TagsInput from 'react-tagsinput';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import { Redirect } from 'react-router';
-
+import Autosuggest from 'react-autosuggest';
+import AutoSuggestedTags from '../auto-suggested-tags';
 import './task-filters.css';
 
 class TaskFilters extends Component {
@@ -18,6 +19,7 @@ class TaskFilters extends Component {
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
+    labels: PropTypes.object.isRequired
   }
 
   // Since react router doesn't support query we read it manually from the url
@@ -31,21 +33,18 @@ class TaskFilters extends Component {
     const { filter } = this.props;
     return(
       <div className="task-filters">
-      <ul>
+      <ul className='main-filters'>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>משימות פנויות</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'label'} to={{ pathname: '/', search: 'filter=label'}}>משימות לפי תגית</NavLink></li>
         <li>
-          <TagsInput
-            value={this.state.label}
-            onChange={this.handleLabelChange}
-            onlyUnique={true}
-            className={'react-tagsinput-custom'}
-            addOnBlur={true}
-            renderInput={ this.autosizingRenderInput }
-            inputProps={{ placeholder: showPlaceholder ? 'חפשי משימה לפי תגיות' : ''}}
-        />
+
+        <AutoSuggestedTags
+          value = {this.state.label}
+          labels = { this.props.labels}
+          placeholder = 'חפשי משימה לפי תגיות'
+          onChange = {this.handleLabelChange} />
       </li>
       </ul>
       </div>

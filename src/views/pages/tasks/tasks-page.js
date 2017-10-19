@@ -11,7 +11,7 @@ import { commentsActions } from 'src/comments';
 import Notification from '../../components/notification';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
-import TaskView from '../../components/task-view/task-view';
+import TaskView from '../../components/task-view';
 import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import {debounce} from 'lodash';
@@ -33,6 +33,7 @@ export class TasksPage extends Component {
       tasks: this.props.tasks,
       selectedTask: null,
       labels: null,
+      labelPool: {},
       isLoadedComments: false
     };
 
@@ -91,15 +92,22 @@ export class TasksPage extends Component {
     let curTasks = nextProps.tasks;
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
+    const labelPool = {};
     
     if (filterType) {      
       const filter = this.props.buildFilter(this.props.auth, filterType);
       curTasks = this.props.filters[filter.type](curTasks, filter);
     }
+
+    nextProps.tasks.forEach( (t)=> {
+      Object.keys(t.label).forEach((l) => {
+        labelPool[l] = true;
+      })
+    })
     
     curTasks = this.filterTaskFromLabel(curTasks)  
 
-    this.setState({tasks: curTasks});  
+    this.setState({tasks: curTasks, labelPool});  
   }
 
   filterTaskFromLabel(tasks) {
@@ -224,7 +232,7 @@ export class TasksPage extends Component {
     return (
       <div>
           <div className="g-col">
-            { <TaskFilters filter={this.props.filterType} onLabelChange= {this.onLabelChanged}/> }
+            { <TaskFilters filter={this.props.filterType} labels={this.state.labelPool} onLabelChange= {this.onLabelChanged}/> }
           </div>
       
         <div className='task-page-wrapper'>
