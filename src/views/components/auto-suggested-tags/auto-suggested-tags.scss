@@ -1,33 +1,46 @@
-.suggestionContainer{
-  // position: absolute;
-  z-index: 5;
-  // background: white;
-}
-.suggestions{
-  width:100%;
-  position: relative;
-}
+.auto-suggested-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
 
-.suggestions li{
-  background: rgba(255, 255, 255, 0.66);
-  display: block;
-  width:100%;
+  .suggestionContainer{
+    // position: absolute;
+    z-index: 5;
+    // background: white;
   }
 
-.suggestion{
-  display: block;
-  // height: 1.7em;
-  // margin: 10px;
-  
-  width: 100%;
-  z-index: 6;
-}
+  .react-tagsinput-tag {
+    align-self: baseline;
+    width: 100%;
+  }
 
-li.react-autosuggest__suggestion--highlighted  {
-  background: #eb1478;
-  color: white;
-}
+  .suggestions{
+    width:100%;
+    position: relative;
+    background-color: white;
+  }
 
-.react-autosuggest__container{
-  display: inline-block;
+  .suggestions li{
+    background: rgba(255, 255, 255, 0.66);
+    display: block;
+    width:100%;
+    }
+
+  .suggestion{
+    display: block;
+    // height: 1.7em;
+    // margin: 10px;
+    
+    width: 100%;
+    z-index: 6;
+  }
+
+  li.react-autosuggest__suggestion--highlighted  {
+    background: #eb1478;
+    color: white;
+  }
+
+  .react-autosuggest__container{
+    display: inline-block;
+    width: 100%;
+  }
 }

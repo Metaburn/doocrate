@@ -11,7 +11,7 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
 
   function renderLayout (tagComponents, inputComponent) {
     return (
-      <span>
+      <span className='auto-suggested-wrapper'>
         {inputComponent}
         {tagComponents}
       </span>
