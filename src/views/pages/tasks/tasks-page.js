@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { labelActions } from 'src/labels';
 import { authActions, getAuth } from 'src/auth';
 import { getNotification, notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
@@ -36,7 +37,7 @@ export class TasksPage extends Component {
       labelPool: {},
       isLoadedComments: false
     };
-
+    
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
   }
 
@@ -46,11 +47,13 @@ export class TasksPage extends Component {
     filters: PropTypes.object.isRequired,
     buildFilter: PropTypes.func.isRequired, 
     loadTasks: PropTypes.func.isRequired,
+    loadLabels: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     notification: PropTypes.object.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
+    // labels: PropTypes.instanceOf(List).isRequired,
     unloadTasks: PropTypes.func.isRequired,
     unloadComments: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
@@ -59,10 +62,12 @@ export class TasksPage extends Component {
 
   componentWillMount() {
     this.props.loadTasks();
+    this.props.loadLabels();
   }
 
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
+    window.tasks = nextProps.tasks;
     if (nextProps.match != null && nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 
@@ -246,6 +251,7 @@ export class TasksPage extends Component {
               selectTask={this.goToTask}
               createTask={this.createNewTask}
               selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}
+              labels = {this.props.labels}
             />
           </div>
 
@@ -269,6 +275,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     notification: state.notification,
     auth: state.auth,
+    labels: state.labels.list,
     filters: taskFilters,
     buildFilter: buildFilter
   }
@@ -278,7 +285,8 @@ const mapDispatchToProps = Object.assign(
   {},
   tasksActions,
   commentsActions,
-  notificationActions
+  notificationActions,
+  labelActions
 );
 
 export default connect(

@@ -11,7 +11,7 @@ class TaskList extends Component {
     tasks: PropTypes.instanceOf(List).isRequired,
     selectTask: PropTypes.func.isRequired,
     selectedTaskId: PropTypes.string.isRequired,
-    createTask: PropTypes.func.isRequired,
+    createTask: PropTypes.func.isRequired
   };
   
   render() {
