@@ -5,16 +5,15 @@ import {
     REMOVE_LABEL, UPDATE_LABEL
 } from './action-types';
 
-
 export const loadLabels = () => {
     return (dispatch, getState) => {
+      window.ll = labelList;
         labelList.path = `labels`;
         labelList.subscribe(dispatch);    
     }
 }
 
 export function createLabel(label) {
-    console.log('create label');    
     return {
       type: CREATE_LABEL,
       payload: label

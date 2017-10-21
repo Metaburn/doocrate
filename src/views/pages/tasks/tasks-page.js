@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { labelActions } from 'src/labels';
+import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
 import { authActions, getAuth } from 'src/auth';
 import { getNotification, notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
@@ -39,6 +39,8 @@ export class TasksPage extends Component {
     };
     
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
+
+    window.changeLabelColor = setLabelWithRandomColor;
   }
 
   static propTypes = {
@@ -67,7 +69,6 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
-    window.tasks = nextProps.tasks;
     if (nextProps.match != null && nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 

@@ -9,19 +9,13 @@ import {
 
 export const LabelsState = new Map({});
 
-
 export function labelsReducer(state = new Map({}), {payload, type}) {
-    console.log(state);    
-    
   switch (type) {
-    case CREATE_LABEL: 
-        if (payload) console.log(payload.toJS());
-        console.log(state.toJS());
+    case CREATE_LABEL: case UPDATE_LABEL:
         return  state.set(payload.get('name'), payload);
     break;
     case LOAD_LABEL: return state; break;
     case REMOVE_LABEL: return state; break; 
-    case UPDATE_LABEL: return state; break;
     
     default:
       return state;
