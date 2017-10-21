@@ -7,6 +7,8 @@ import Img from 'react-image';
 import ReactTooltip from 'react-tooltip'
 import Icon from '../icon';
 
+import { connect } from 'react-redux';
+
 export class TaskItem extends Component {
   constructor() {
     super(...arguments);
@@ -77,12 +79,12 @@ export class TaskItem extends Component {
     if(!task.label || Object.keys(task.label).length === 0 && task.label.constructor === Object) {
       return null;
     }
-    
     return (
       <div>
         { 
           Object.keys(task.label).map((label) => {
-            return (<span key={label} className="label-default">{label}</span>)
+            const bg = this.props.labels[label] ? this.props.labels[label].hex : '666';            
+            return (<span key={label} style={{"backgroundColor": `#${bg}` }} className="label-default">{label}</span>)
           }) }
       </div>
     );
@@ -92,8 +94,17 @@ export class TaskItem extends Component {
 TaskItem.propTypes = {
   task: PropTypes.object.isRequired,
   selectTask: PropTypes.func.isRequired,
-  isActive: PropTypes.bool.isRequired
+  isActive: PropTypes.bool.isRequired,
+  labels: PropTypes.object.isRequired,
 };
 
+const mapStateToProps = (state) => {
+  return {
+    labels: state.labels.toJS()
+  }
+}
 
-export default TaskItem;
+export default connect(
+  mapStateToProps,
+  {}
+)(TaskItem);
