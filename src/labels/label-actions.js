@@ -21,7 +21,6 @@ export function createLabel(label) {
   }
 
 export function loadLabel(label) {
-    console.log('load label');
     return {
       type: LOAD_LABEL,
       payload: label
