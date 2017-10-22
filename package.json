@@ -47,6 +47,7 @@
     "react-image": "1.0.1",
     "react-linkify": "0.2.1",
     "react-moment": "0.6.5",
+    "react-portal-tooltip": "2.1.0",
     "react-redux": "^5.0.5",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.1.1",

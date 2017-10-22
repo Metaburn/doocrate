@@ -1,18 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
+import Img from 'react-image';
+import ToolTip from 'react-portal-tooltip';
+import MyProfileTooltip from '../my-profile-tooltip';
 
 import './header.css';
 
+const menuContent = `<div>
+<Img className='avatar' src={auth.photoURL} alt={auth.name}/> 
+<Button onClick={signOut}>התנתקי</Button>
+</div>`;
 
-const Header = ({authenticated, signOut}) => (
+const Header = ({auth, signOut}) => (
   <header className="header">
     <div className="g-row">
       <div className="g-col">
       <ul className="header-actions">
-          {authenticated ? <li><Button onClick={signOut}>התנתקי</Button></li> : null}
-          <li>
-          </li>
+          {auth ? 
+            <div>
+              <MyProfileTooltip 
+                auth = { auth }
+                signOut = { signOut }
+              />
+              { auth.photoURL ?
+                <div className='task-item-assignee' data-html={true} data-tip={menuContent}/>
+                : <div data-html={true} data-tip={
+                    <div>
+                    אני
+                    <Button onClick={signOut}>התנתקי</Button>
+                    </div>
+                  } />
+              }
+
+            </div>
+            : null
+          }
         </ul>
         <h1 className="header-title"><a href='/'>Doocrate</a></h1>
       </div>
@@ -21,7 +44,7 @@ const Header = ({authenticated, signOut}) => (
 );
 
 Header.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
+  auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired
 };
 

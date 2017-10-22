@@ -10,23 +10,26 @@ import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
 import TasksPage from '../pages/tasks';
+import MePage from '../pages/me';
 import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
+import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
 
-const App = ({authenticated, signOut}) => (
+const App = ({auth, signOut}) => (
   <div>
     <Header
-      authenticated={authenticated}
+      auth={auth}
       signOut={signOut}
     />
 
     <main>    
       <Switch>
-        <RequireAuthRoute authenticated={authenticated} exact path="/" component={TasksPage}/>      
-        <RequireAuthRoute authenticated={authenticated} path="/task/:id" component={TasksPage} />
-        <RequireUnauthRoute authenticated={authenticated} path="/sign-in" component={SignInPage}/>
-        <Route authenticated={authenticated} path="/about" component={AboutPage}/>
+        <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>      
+        <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
+        <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
+        <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
+        <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
         <Route component={NotFound}/>
       </Switch>
     </main>
@@ -35,7 +38,7 @@ const App = ({authenticated, signOut}) => (
 );
 
 App.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
+  auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired
 };
 
@@ -44,7 +47,13 @@ App.propTypes = {
 //  CONNECT
 //-------------------------------------
 
-const mapStateToProps = getAuth;
+const mapStateToProps = createSelector(
+  getAuth,
+  (auth) => ({
+    auth
+  })
+);
+
 
 const mapDispatchToProps = {
   signOut: authActions.signOut
