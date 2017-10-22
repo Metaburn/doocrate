@@ -95,8 +95,9 @@ Register here - https://www.mailgun.com/google
 
 Run:
 ```
-firebase functions:config:set email.send_notifications="true"
-firebase functions:config:set email.from='"Doocrate" <noreply@doocrate.midburnerot.com>'
+firebase functions:config:set email.send_notifications='true'
+firebase functions:config:set email.from='Doocrate <noreply@midburnerot.com>'
+firebase functions:config:set email.domain='midburnerot.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 ```
 
