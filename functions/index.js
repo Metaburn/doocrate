@@ -1,7 +1,6 @@
 'use strict';
 
 const functions = require('firebase-functions');
-const nodemailer = require('nodemailer');
 const Firestore = require('@google-cloud/firestore');
 
 // Max number of tasks per creator
@@ -32,23 +31,19 @@ exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{ta
 
 //----------------SendEmail----------------
 
-// Configure the email transport using the default SMTP transport and Mailgun.
-// For other types of transports such as Sendgrid see https://nodemailer.com/transports/
-// TODO: Configure the `from_email`, `send_notifications`, `email_api_key`, `email_domain` Google Cloud environment variables.
+// TODO: Configure the `email.from`, `send_notifications`, `email.apikey`, `email.domain` Google Cloud environment variables.
 // For example: firebase functions:config:set email.send_notifications="true"
-const shouldSendNotifications = encodeURIComponent(functions.config().send_notifications);
-const fromEmail = encodeURIComponent(functions.config().email.from);
+const shouldSendNotifications = encodeURIComponent(functions.config().email.send_notifications);
+const fromEmail = decodeURIComponent(functions.config().email.from);
 const emailApiKey = encodeURIComponent(functions.config().email.apikey);
 const emailDomain = encodeURIComponent(functions.config().email.domain);
 
-const emailAuth = {
-  auth: {
-      api_key: emailApiKey,
-      domain: emailDomain
-   }
- }
+console.log(`Should send notifications: ${shouldSendNotifications}`);
+console.log(fromEmail);
+console.log(emailApiKey);
+console.log(emailDomain);
+const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain}) 
 
-const mailTransport = nodemailer.createTransport(emailAuth);
 const firestore = new Firestore();
 
 exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite(event => {
@@ -72,23 +67,39 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
       return;
     }
 
-    const toEmail = task.creator.email;
-    const mailOptions = {
-      from: fromEmail,
-      to: toEmail
-    };
-    
-    const emailTemplate = `<h1>Comment updated</h1>.
-      From: ${comment.creator.name}(${comment.creator.email}) <img src='${comment.creator.photoURL}'/><br/> 
-      Body: ${comment.body} <br/>
-      <a href='https://doocrate.midburnerot.com/task/${task.id}'>Click here to see the full task</a>
-    `;
-    
-    const shortTitle = task.title.substr(0, 15);
-    mailOptions.subject = `New comment - [${shortTitle}]`;
-    mailOptions.text = emailTemplate;
-    return mailTransport.sendMail(mailOptions).then(() => {
-      console.log('email sent to:', toEmail);
+    function getEmailParams(toEmail) {
+      const mailOptions = {
+        from: fromEmail,
+        to: toEmail
+      };
+
+      const emailTemplate = `<div style="direction:rtl;"><h2>הערה חדשה</h2>
+        מאת: ${comment.creator.name}(${comment.creator.email})
+        <img src='${comment.creator.photoURL}' style='border-radius:70px;width:140px;height:140px;'/><br/> 
+        <h3>תוכן: ${comment.body}</h3> <br/>
+        <a href='https://doocrate.midburnerot.com/task/${comment.taskId}'>לחץ כאן למעבר למשימה</a>
+        <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-burnerot@gmail.com
+        <br>
+        דואוקרט
+        </div>
+      `;
+
+      const shortTitle = task.title.substr(0, 15);
+      mailOptions.subject = `הערה חדשה - [${shortTitle}]`;
+      mailOptions.html = emailTemplate;
+      return mailOptions;
+    }
+
+    const creatorEmail = task.creator.email;    
+    let promises = [];
+
+    promises.push(mailgun.messages().send(getEmailParams(creatorEmail)));
+    if(task.assignee && task.assignee.email && task.assignee.email != creatorEmail) {
+      promises.push(mailgun.messages().send(getEmailParams(task.assignee.email)));
+    }
+
+    return Promise.all(promises).then(values => {
+      console.log('email sent successfully');
     }).catch(error => {
       console.error('error sending mail:', error);  
     });
