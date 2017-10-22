@@ -73,10 +73,10 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
         to: toEmail
       };
 
-      const emailTemplate = `<div style="direction:rtl;"><h1>הערה חדשה</h1>
+      const emailTemplate = `<div style="direction:rtl;"><h2>הערה חדשה</h2>
         מאת: ${comment.creator.name}(${comment.creator.email})
         <img src='${comment.creator.photoURL}' style='border-radius:70px;width:140px;height:140px;'/><br/> 
-        תוכן: ${comment.body} <br/>
+        <h3>תוכן: ${comment.body}</h3> <br/>
         <a href='https://doocrate.midburnerot.com/task/${comment.taskId}'>לחץ כאן למעבר למשימה</a>
         <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-burnerot@gmail.com
         <br>
