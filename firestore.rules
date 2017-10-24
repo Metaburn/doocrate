@@ -5,16 +5,16 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
     
-    function isUserAssigneeOrCreator() {
-    	return isUserAssignee() || isCreator();
+    function isCreator() {
+      return resource.data.creator != null && request.auth.uid == resource.data.creator.data.id;
     }
     
     function isUserAssignee() {
-    	return resource.data.assignee != null && request.auth.uid == resource.data.assignee.id;
+    	return resource.data.assignee != null && request.auth.uid == resource.data.assignee.data.id;
     }
-
-    function isCreator() {
-      return request.auth.uid == resource.data.creator.id;
+    
+    function isUserAssigneeOrCreator() {
+    	return isCreator() || isUserAssignee();
     }
 
     function isTaskUnassigned() {
@@ -33,10 +33,8 @@ service cloud.firestore {
     match /comments/{anyComment} {
       allow read: if request.auth != null;
       allow create: if request.auth != null;
-      allow update: if request.auth != null
-        && isCreator();
-      allow delete: if request.auth != null
-        && isCreator();
+      allow update: if request.auth != null && isCreator();
+      allow delete: if request.auth != null && isCreator();
     }
 
     match /users/{userId} {
@@ -48,19 +46,18 @@ service cloud.firestore {
       allow read: if request.auth != null;
     }
     
-    match /labels/{anyLabel} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && isAdmin();
-      allow delete: if request.auth != null && isAdmin();
-    }
-    
     match /colors/{anyColor} {
+    	allow create: if request.auth != null;
       allow read: if request.auth != null;
-      allow create: if request.auth != null && isAdmin();
       allow update: if request.auth != null && isAdmin();
       allow delete: if request.auth != null && isAdmin();
     }
     
+      match /labels/{anyLabel} {
+    	allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow update: if request.auth != null && isAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
   }
 }
