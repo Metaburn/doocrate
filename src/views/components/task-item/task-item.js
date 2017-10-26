@@ -83,7 +83,7 @@ export class TaskItem extends Component {
       <div>
         { 
           Object.keys(task.label).map((label) => {
-            const bg = this.props.labels[label] ? this.props.labels[label].hex : '666';            
+            const bg = this.props.labels[label] ? this.props.labels[label].colorInHex : '999';            
             return (<span key={label} style={{"backgroundColor": `#${bg}` }} className="label-default">{label}</span>)
           }) }
       </div>
