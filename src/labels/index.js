@@ -12,13 +12,13 @@ const colorsRef = firebaseDb.collection('colors')
 window.fb = firebaseDb;
 
 
-export const changeLabelColor = (labelName, newHex) => {
-      labelList.update(labelName, {hex: newHex});
+export const changeLabelColor = (labelName, colorInHex) => {
+      labelList.update(labelName, { colorInHex });
   }
 
 export const setLabelWithRandomColor = (labelName) => {
     colorsRef.get().then( (a) => {
         const rand = ~~(Math.random()*a.size)
-        changeLabelColor(labelName, a.docs[rand].get('hex').substr(1));
+        changeLabelColor(labelName, a.docs[rand].get('colorInHex').substr(1));
     } );
 }
