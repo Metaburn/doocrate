@@ -101,6 +101,9 @@ firebase functions:config:set email.domain='midburnerot.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 ```
 
+## Labels Colors
+In order to create labels colors you need to create a collection called 'labels' with documents like so:
+Id - The actual tag name - for example - "art", Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
 
 ## NPM Commands
 
