@@ -16,6 +16,19 @@
   line-height: 24px;
   border-radius: 3px 3px 0 0;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+
+.notification-success {
+  background: #cce69b;
+  color: #638421;
+  border: 1px solid #a5d24a;
+}
+
+.notification-error {
+  background: #eb1478;
+  color: white;
+  border: none;
 }
 
 .notification__message {

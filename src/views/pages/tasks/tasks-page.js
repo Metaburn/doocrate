@@ -25,6 +25,7 @@ export class TasksPage extends Component {
     super(...arguments);
     this.createNewTask = this.createNewTask.bind(this);
     this.isAdmin = this.isAdmin.bind(this);
+    this.isGuide = this.isGuide.bind(this);
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
     this.goToTask = this.goToTask.bind(this);
     this.onLabelChanged = this.onLabelChanged.bind(this);
@@ -149,6 +150,7 @@ export class TasksPage extends Component {
         dismiss={this.props.dismissNotification}
         display={notification.display}
         message={notification.message}
+        type={notification.type}
       />
     );
   }
@@ -163,11 +165,15 @@ export class TasksPage extends Component {
     const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
 
     // TODO: Move to a better place
-    if (!this.isAdmin() && myTasks.size >= 8) {
-      this.props.showError('הגעת למכסת המשימות שניתן לייצר');
+    // if (!this.isAdmin() && myTasks.size >= 8) {
+    //   this.props.showError('הגעת למכסת המשימות שניתן לייצר');
+    //   return;
+    // }
+    if (!this.isAdmin() && !this.isGuide()) {
+      this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
       return;
     }
-
+    
     let creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
@@ -184,12 +190,21 @@ export class TasksPage extends Component {
     return this.props.auth.role == 'admin';
   }
 
+  isGuide() {
+    return this.props.auth.role == 'guide';
+  }
+
   assignTaskToSignedUser(task) {
     const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
 
     // TODO: Move to a better place
     if(myAssignedTasks.size >= 4) {
       this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
+      return;
+    }
+
+    if(!this.isAdmin() && !this.isGuide()) {
+      this.props.showError('לא ניתן לקחת משימות כרגע. אופצייה זו תפתח שוב בקרוב');
       return;
     }
 
@@ -219,12 +234,12 @@ export class TasksPage extends Component {
     
     return (
       <TaskView 
-        createTask={this.props.createTask}
         removeTask={this.props.removeTask}
         updateTask={this.props.updateTask}
         selectTask={this.goToTask}
         selectedTask={this.state.selectedTask.toJS()}
         isAdmin={this.isAdmin()}
+        isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}

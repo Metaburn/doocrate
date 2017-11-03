@@ -7,7 +7,8 @@ import { DISMISS_NOTIFICATION, SHOW_ERROR } from './action-types';
 export const NotificationState = new Record({
   actionLabel: '',
   display: false,
-  message: ''
+  message: '',
+  type: ''
 });
 
 
@@ -16,6 +17,7 @@ export function notificationReducer(state = new NotificationState(), action) {
     case REMOVE_TASK_SUCCESS:
       return state.merge({
         display: true,
+        type: 'success',
         message: 'המשימה נמחקה'
       });
 
@@ -23,6 +25,7 @@ export function notificationReducer(state = new NotificationState(), action) {
     case SHOW_ERROR:
       return state.merge({
         display: true,
+        type: 'error',
         message: action.payload
       });
     

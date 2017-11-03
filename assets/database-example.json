@@ -1,7 +1,17 @@
+/*
+  This was set for firebase real time database - currently there 
+  Is no auto import in firestore so you can just have a look on 
+  how a database might look like
+*/
 {
   "admins" : {
     "4PmgNalTqzNR8mqYgqnoEa89wjz1" : {
       "name": "Gal"
+    }
+  },
+  "guides" : {
+    "APmgNalTqzRB8mqYgqnoEa89wjz2" : {
+      "name": "Or"
     }
   },
   "users": {

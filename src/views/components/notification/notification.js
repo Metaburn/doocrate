@@ -11,7 +11,8 @@ class Notification extends Component {
     dismiss: PropTypes.func.isRequired,
     display: PropTypes.bool.isRequired,
     duration: PropTypes.number,
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired
   };
 
   componentDidMount() {
@@ -37,13 +38,15 @@ class Notification extends Component {
   startTimer() {
     this.clearTimer();
     this.timerId = setTimeout(() => {
+      this.clearTimer();
       this.props.dismiss();
-    }, this.props.duration || 5000);
+    }, this.props.duration || 10000);
   }
 
   render() {
+    const className = `notification notification-${this.props.type}`
     return (
-      <div className="notification">
+      <div className={ className }>
         <p className="notification__message" ref={c => this.message = c}>{this.props.message}</p>
         {this.props.actionLabel ? 
         <button

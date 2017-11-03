@@ -45,6 +45,10 @@ service cloud.firestore {
     match /admins/{anyAdmin} {
       allow read: if request.auth != null;
     }
+
+    match /guides/{anyGuide} {
+      allow read: if request.auth != null;
+    }
     
     match /colors/{anyColor} {
     	allow create: if request.auth != null;

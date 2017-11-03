@@ -62,6 +62,7 @@ export class TaskView extends Component {
     assignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
     isAdmin: PropTypes.bool.isRequired,
+    isGuide: PropTypes.bool.isRequired,
     unloadComments: PropTypes.func.isRequired    
   };
 
