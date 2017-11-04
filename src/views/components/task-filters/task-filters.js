@@ -28,15 +28,46 @@ class TaskFilters extends Component {
     return params['filter'];
   }
 
+  getFilterText(location) {
+    const params = getUrlSearchParams();
+    return params['text'];
+  }
+
   render() {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
     return(
       <div className="task-filters">
       <ul className='main-filters'>
-        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
+
+        <li><NavLink isActive={(match, location) => {
+          return(
+          this.getFilterQuery(location) === 'taskType' &&
+          this.getFilterText(location) === '2')
+        }} to={{ pathname: '/', search: 'filter=taskType&text=2'}}>משמרות בארוע</NavLink></li>
+
+        <li><NavLink isActive={(match, location) => {
+          return (this.getFilterQuery(location) === 'taskType' &&
+          this.getFilterText(location) === '1')
+        }} to={{ pathname: '/', search: 'filter=taskType&text=1'}}>תכנון ארוע</NavLink></li>
+
+        <li><NavLink isActive={(match, location) => {
+          return(
+          this.getFilterQuery(location) === 'taskType' &&
+          this.getFilterText(location) === '3'
+          )
+        }} to={{ pathname: '/', search: 'filter=taskType&text=3'}}>מחנות נושא</NavLink></li>
+
+        <li><NavLink isActive={(match, location) => {
+          return(
+          this.getFilterQuery(location) === 'taskType' &&
+          this.getFilterText(location) === '4'
+          )
+        }} to={{ pathname: '/', search: 'filter=taskType&text=4'}}>מיצבי אמנות</NavLink></li>
+
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>משימות פנויות</NavLink></li>
+        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
         <li>
 
         <AutoSuggestedTags

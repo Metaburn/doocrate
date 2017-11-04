@@ -84,13 +84,13 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
         </div>
       `;
 
-      const shortTitle = task.title.substr(0, 15);
+      const shortTitle = task.title.substr(0, 20);
       mailOptions.subject = `הערה חדשה - [${shortTitle}]`;
       mailOptions.html = emailTemplate;
       return mailOptions;
     }
 
-    const creatorEmail = task.creator.email;    
+    const creatorEmail = task.creator.email;
     let promises = [];
 
     promises.push(mailgun.messages().send(getEmailParams(creatorEmail)));

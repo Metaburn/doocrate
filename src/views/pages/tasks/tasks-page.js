@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { Redirect } from 'react-router';
 import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
 import { projectActions } from 'src/projects';
 import { authActions, getAuth } from 'src/auth';
@@ -66,6 +67,13 @@ export class TasksPage extends Component {
   };
 
   componentWillMount() {
+    // Redirect to default filter
+    if(!this.props.filterType) {
+      this.props.history.push({
+        search: '?filter=taskType&text=2'
+      })
+    }
+
     this.props.loadTasks();
     this.props.loadLabels();
     //this.props.loadProjects();
@@ -99,14 +107,15 @@ export class TasksPage extends Component {
   }
 
   filterTasksFromProps(nextProps) {
-    let curTasks = nextProps.tasks;
+    let currentTasks = nextProps.tasks;
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
+    const filterTextType = params['text'];
     const labelPool = {};
     
-    if (filterType) {      
-      const filter = this.props.buildFilter(this.props.auth, filterType);
-      curTasks = this.props.filters[filter.type](curTasks, filter);
+    if (filterType) {
+      const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
+      currentTasks = this.props.filters[filter.type](currentTasks, filter);
     }
 
     nextProps.tasks.forEach( (t)=> {
@@ -115,19 +124,19 @@ export class TasksPage extends Component {
       })
     })
     
-    curTasks = this.filterTaskFromLabel(curTasks)  
+    currentTasks = this.filterTaskFromLabel(currentTasks)  
 
-    this.setState({tasks: curTasks, labelPool});  
+    this.setState({tasks: currentTasks, labelPool});  
   }
 
   filterTaskFromLabel(tasks) {
-    let curTasks = tasks;
+    let currentTasks = tasks;
     if ( this.state.labels != null && this.state.labels.length > 0) {
       const filter = this.props.buildFilter(this.props.auth, "label", this.state.labels);
-      curTasks = this.props.filters["label"](curTasks, filter, this.state.lables);
+      currentTasks = this.props.filters["label"](currentTasks, filter, this.state.lables);
     }
 
-    return curTasks;
+    return currentTasks;
   }
 
   componentDidUpdate(prevProps, prevState) {    
@@ -219,10 +228,14 @@ export class TasksPage extends Component {
   goToTask(task) {
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
+    const filterText = params['text'];
     let taskParameter = task? `/task/${task.get("id")}` : `/task/1`;
 
     if (filterType) {
       taskParameter = `${taskParameter}?filter=${filterType}`
+      if(filterText) {
+        taskParameter += `&text=${filterText}`;
+      }
     }
     this.props.history.push(taskParameter);
   }
@@ -255,10 +268,14 @@ export class TasksPage extends Component {
     // TODO : use state.tasks instead. It is possible that a filter would 
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
+
     return (
       <div>
           <div className="g-col">
-            { <TaskFilters filter={this.props.filterType} labels={this.state.labelPool} onLabelChange= {this.onLabelChanged}/> }
+            { <TaskFilters
+              filter = { this.props.filterType }
+              labels = { this.state.labelPool }
+              onLabelChange = { this.onLabelChanged }/> }
           </div>
       
         <div className='task-page-wrapper'>
