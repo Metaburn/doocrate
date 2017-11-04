@@ -36,12 +36,23 @@ export class TaskView extends Component {
       defaultCircle: [
         { value: 'אור', label: 'אור' },
         { value: 'אמיר', label: 'אמיר'},
-        { value: 'מיכאל', label: 'מיכאל'}
+        { value: 'מיכאל', label: 'מיכאל'},
+        { value: 'מאיה הסקל ושחר נימן', label: 'מאיה הסקל ושחר נימן'},
+        { value: 'פלי = מתן אמיר', label: 'פלי = מתן אמיר'},
+        { value: 'ליהי אדיר', label: 'ליהי אדיר'},
+        { value: 'ניצן עמיתי', label: 'ניצן עמיתי'},
+        { value: 'יסמין נחום', label: 'יסמין נחום'},
+        { value: 'שחר גרנות', label: 'שחר גרנות'},
+        { value: 'אבינועם דורון', label: 'אבינועם דורון'},
+        { value: 'שרון אילון', label: 'שרון אילון'},
+        { value: 'דניאל מוראל', label: 'דניאל מוראל'},
+        { value: 'טלוטן', label: 'טלוטן'},
+        { value: 'מיטל ואוריה', label: 'מיטל ואוריה'},
       ],
       type: '',
       defaultType: [
         { value: 1, label: 'תכנון ארוע' },
-        { value: 2, label: 'משמרות בארוע (בשביל אחראי משימות משמרות) - טרם נפתח', disabled: true},
+        { value: 2, label: 'משמרות בארוע'},
         { value: 3, label: 'משימות של מחנות נושא - טרם נפתח', disabled: true},
         { value: 4, label: 'משימות של מיצבי אמנות - טרם נפתח', disabled: true},
         { value: 5, label: 'אחר'}
