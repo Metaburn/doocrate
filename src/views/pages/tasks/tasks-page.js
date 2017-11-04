@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
+import { projectActions } from 'src/projects';
 import { authActions, getAuth } from 'src/auth';
 import { getNotification, notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
@@ -35,6 +36,7 @@ export class TasksPage extends Component {
       tasks: this.props.tasks,
       selectedTask: null,
       labels: null,
+      projects: null,
       labelPool: {},
       isLoadedComments: false
     };
@@ -51,12 +53,12 @@ export class TasksPage extends Component {
     buildFilter: PropTypes.func.isRequired, 
     loadTasks: PropTypes.func.isRequired,
     loadLabels: PropTypes.func.isRequired,
+    loadProjects: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     notification: PropTypes.object.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
-    // labels: PropTypes.instanceOf(List).isRequired,
     unloadTasks: PropTypes.func.isRequired,
     unloadComments: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
@@ -66,6 +68,7 @@ export class TasksPage extends Component {
   componentWillMount() {
     this.props.loadTasks();
     this.props.loadLabels();
+    //this.props.loadProjects();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -182,7 +185,7 @@ export class TasksPage extends Component {
     }
     
     this.props.createTask(
-      {creator , title: `משימה חדשה של ${creator.name}`, created: new Date()}, 
+      {creator , created: new Date()}, 
       this.onNewTaskAdded);
   }
 
@@ -198,10 +201,10 @@ export class TasksPage extends Component {
     const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
 
     // TODO: Move to a better place
-    if(myAssignedTasks.size >= 4) {
-      this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
-      return;
-    }
+    // if(myAssignedTasks.size >= 4) {
+    //   this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
+    //   return;
+    // }
 
     if(!this.isAdmin() && !this.isGuide()) {
       this.props.showError('לא ניתן לקחת משימות כרגע. אופצייה זו תפתח שוב בקרוב');
@@ -292,6 +295,7 @@ const mapStateToProps = (state) => {
     notification: state.notification,
     auth: state.auth,
     labels: state.labels.list,
+    projects: state.projects.list,
     filters: taskFilters,
     buildFilter: buildFilter
   }
@@ -302,7 +306,8 @@ const mapDispatchToProps = Object.assign(
   tasksActions,
   commentsActions,
   notificationActions,
-  labelActions
+  labelActions,
+  projectActions,
 );
 
 export default connect(

@@ -57,8 +57,15 @@ service cloud.firestore {
       allow delete: if request.auth != null && isAdmin();
     }
     
-      match /labels/{anyLabel} {
+    match /labels/{anyLabel} {
     	allow create: if request.auth != null;
+      allow read: if request.auth != null;
+      allow update: if request.auth != null && isAdmin();
+      allow delete: if request.auth != null && isAdmin();
+    }
+
+    match /projects/{anyLabel} {
+    	allow create: if request.auth != null && isAdmin();
       allow read: if request.auth != null;
       allow update: if request.auth != null && isAdmin();
       allow delete: if request.auth != null && isAdmin();

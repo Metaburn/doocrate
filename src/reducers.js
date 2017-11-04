@@ -5,6 +5,7 @@ import { notificationReducer } from './notification';
 import { tasksReducer } from './tasks';
 import { commentsReducer } from './comments';
 import { labelsReducer } from './labels';
+import { projectsReducer } from './projects';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
   routing: routerReducer,
   tasks: tasksReducer,
   comments: commentsReducer,
-  labels: labelsReducer
+  labels: labelsReducer,
+  projects: projectsReducer,
 });

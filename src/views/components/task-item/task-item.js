@@ -59,7 +59,9 @@ export class TaskItem extends Component {
   renderTitle(task) {
     return (
       <div className="task-item-title">
-        {task.title}
+        {task.title && task.title != '' ? 
+         task.title :
+        <span className='new-task'>משימה חדשה ללא שם</span>}
       </div>
     );
   }

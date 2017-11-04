@@ -30,6 +30,9 @@ export class TaskView extends Component {
       description: '',
       circle: '',
       projectName: null,
+      defaultProjectNames: [
+        //TODO : add projects
+      ],
       defaultCircle: [
         { value: 'אור', label: 'אור' },
         { value: 'אמיר', label: 'אמיר'},
@@ -63,7 +66,7 @@ export class TaskView extends Component {
     selectedTask: PropTypes.object,
     isAdmin: PropTypes.bool.isRequired,
     isGuide: PropTypes.bool.isRequired,
-    unloadComments: PropTypes.func.isRequired    
+    unloadComments: PropTypes.func.isRequired
   };
 
   componentWillMount() {
@@ -74,7 +77,8 @@ export class TaskView extends Component {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, circle, type, projectName,
       label, relevantContacts,
-      assigneePhone, status, isCritical, dueDate, createdDate } = nextSelectedTask;
+      assigneePhone, status, isCritical, dueDate, createdDate,
+    } = nextSelectedTask;
     
       // this checks if we got another task, or we're updating the same one
       if (id != this.state.id) {
@@ -94,7 +98,7 @@ export class TaskView extends Component {
           createdDate: createdDate || '',
           dueDate: dueDate || null,
           type: type || '',
-          projectName: projectName || '',
+          projectName: projectName || ''
         });
       }
   }
@@ -133,7 +137,7 @@ export class TaskView extends Component {
         <div className='task-view'>
           <form onSubmit={this.handleSubmit} noValidate>
             {this.renderInput(task, 'title', 'שם המשימה', canEditTask)}
-            {this.renderInput(task, 'projectName', 'שם הפרויקט (במידה ומדובר במחנה נושא או מיצב אמנות)', canEditTask)}
+            {this.renderSelect(task, 'projectName', 'שם המחנה/מיצב', this.state.defaultProjectNames, canEditTask)}
             {this.renderTextArea(task, 'description', 'תאור המשימה', canEditTask)}
             <span>תומכ.ת</span> { this.renderSelect(task, 'circle', 'תומכ.ת', this.state.defaultCircle, canEditTask)}
             <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask)} </div>
@@ -310,5 +314,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(TaskView); 
-
-//export default TaskView;

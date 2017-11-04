@@ -30,6 +30,11 @@
     color: $primary-color;
     padding: 0 0 0 5px
   }
+
+  .new-task {
+    background: #eb1478;
+    color: white;
+  }
 }
 .task-item.is-active{
   border: 1px solid rgba(#bbb, 0.1);

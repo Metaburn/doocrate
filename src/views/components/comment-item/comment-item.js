@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import './comment-item.css';
@@ -17,7 +16,7 @@ export class CommentItem extends Component {
 
   render() {
     const { comment } = this.props;
-    
+
     return (
       <div className='comment-item'>
         {this.renderHeader(comment)}
