@@ -1,7 +1,7 @@
 import { Record } from 'immutable';
 import { REMOVE_TASK_SUCCESS } from 'src/tasks';
 import { SIGN_IN_ERROR } from 'src/auth';
-import { DISMISS_NOTIFICATION, SHOW_ERROR } from './action-types';
+import { DISMISS_NOTIFICATION, SHOW_ERROR, SHOW_SUCCESS } from './action-types';
 
 
 export const NotificationState = new Record({
@@ -26,6 +26,13 @@ export function notificationReducer(state = new NotificationState(), action) {
       return state.merge({
         display: true,
         type: 'error',
+        message: action.payload
+      });
+
+    case SHOW_SUCCESS:
+      return state.merge({
+        display: true,
+        type: 'success',
         message: action.payload
       });
     

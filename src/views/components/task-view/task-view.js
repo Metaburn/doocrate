@@ -37,7 +37,7 @@ export class TaskView extends Component {
         { value: 'אור', label: 'אור' },
         { value: 'אמיר', label: 'אמיר'},
         { value: 'מיכאל', label: 'מיכאל'},
-        { value: 'מאיה הסקל ושחר נימן', label: 'מאיה הסקל ושחר נימן'},
+        { value: 'מאיה חסקל ושחר נאמן', label: 'מאיה חסקל ושחר נאמן'},
         { value: 'פלי = מתן אמיר', label: 'פלי = מתן אמיר'},
         { value: 'ליהי אדיר', label: 'ליהי אדיר'},
         { value: 'ניצן עמיתי', label: 'ניצן עמיתי'},

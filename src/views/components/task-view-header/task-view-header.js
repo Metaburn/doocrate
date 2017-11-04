@@ -12,7 +12,6 @@ export class TaskViewHeader extends Component {
 
     const isTaskEmpty = task && (!task.description || task.description == '') &&
     (!task.circle || task.circle == '') && (!task.status || task.status == '');
-    const isTaskNew = (!task.title || task.title == '');
     
     return(
       <div className='task-view-header' name='task-view-header'>
@@ -41,13 +40,6 @@ export class TaskViewHeader extends Component {
             <span>
               <Icon name='warning' className='header-icon grow' />
               משימה קריטית לקיום הארוע
-            </span>
-          : ''
-          }
-          { isTaskNew ? 
-            <span>
-              <Icon name='warning' className='header-icon grow' />
-              אנא הכנסי את שם המשימה
             </span>
           : ''
           }

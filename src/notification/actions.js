@@ -1,4 +1,4 @@
-import { DISMISS_NOTIFICATION, SHOW_ERROR } from './action-types';
+import { DISMISS_NOTIFICATION, SHOW_ERROR, SHOW_SUCCESS } from './action-types';
 
 
 export function dismissNotification() {
@@ -10,6 +10,13 @@ export function dismissNotification() {
 export function showError(message) {
   return {
     type: SHOW_ERROR,
+    payload: message
+  };
+}
+
+export function showSuccess(message) {
+  return {
+    type: SHOW_SUCCESS,
     payload: message
   };
 }

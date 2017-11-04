@@ -183,6 +183,8 @@ export class TasksPage extends Component {
       email: this.props.auth.email,
       photoURL: this.props.auth.photoURL,
     }
+
+    this.props.showSuccess('משימה נוצרה בהצלחה');
     
     this.props.createTask(
       {creator , created: new Date()}, 
