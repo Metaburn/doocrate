@@ -4,11 +4,13 @@ import Button from '../button';
 import Img from 'react-image';
 import ToolTip from 'react-portal-tooltip';
 import MyProfileTooltip from '../my-profile-tooltip';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css'
 
 import './header.css';
 
 const menuContent = `<div>
-<Img className='avatar' src={auth.photoURL} alt={auth.name}/> 
+<Img className='avatar' src={auth.photoURL} alt={auth.name}/>
 <Button onClick={signOut}>התנתקי</Button>
 </div>`;
 
@@ -16,10 +18,17 @@ const Header = ({auth, signOut}) => (
   <header className="header">
     <div className="g-row">
       <div className="g-col">
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={true}
+          pauseOnHover
+        />
       <ul className="header-actions">
-          {auth ? 
+          {auth ?
             <div>
-              <MyProfileTooltip 
+              <MyProfileTooltip
                 auth = { auth }
                 signOut = { signOut }
               />

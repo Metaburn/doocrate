@@ -8,10 +8,9 @@ import { Redirect } from 'react-router';
 import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
 import { projectActions } from 'src/projects';
 import { authActions, getAuth } from 'src/auth';
-import { getNotification, notificationActions } from 'src/notification';
+import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import { commentsActions } from 'src/comments';
-import Notification from '../../components/notification';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
@@ -56,7 +55,6 @@ export class TasksPage extends Component {
     loadLabels: PropTypes.func.isRequired,
     loadProjects: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
-    notification: PropTypes.object.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
@@ -153,20 +151,6 @@ export class TasksPage extends Component {
 
   }
 
-  renderNotification() {
-    const { notification } = this.props;
-    return (
-      <Notification
-        action={()=> { }}
-        actionLabel={notification.actionLabel}
-        dismiss={this.props.dismissNotification}
-        display={notification.display}
-        message={notification.message}
-        type={notification.type}
-      />
-    );
-  }
-
   onNewTaskAdded(task) {
     const taskObj = this.props.tasks.find((t)=>( t.get('id') == task.id ))
     this.goToTask(taskObj);
@@ -223,6 +207,7 @@ export class TasksPage extends Component {
     }
 
     this.props.assignTask(task, this.props.auth);
+    this.props.showSuccess('💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪');
   }
 
   goToTask(task) {
@@ -296,8 +281,6 @@ export class TasksPage extends Component {
           { (this.state.selectedTask == null) ?
             <div className='task-view-bottom-loader'>&nbsp;</div>: ''
           }
-
-          {this.props.notification.display ? this.renderNotification() : null}
         </div>
       </div>
     );
@@ -311,7 +294,6 @@ export class TasksPage extends Component {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
-    notification: state.notification,
     auth: state.auth,
     labels: state.labels.list,
     projects: state.projects.list,
