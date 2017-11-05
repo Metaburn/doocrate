@@ -37,7 +37,7 @@ export class TaskView extends Component {
         { value: 'אור', label: 'אור' },
         { value: 'אמיר', label: 'אמיר'},
         { value: 'מיכאל', label: 'מיכאל'},
-        { value: 'מאיה חסקל ושחר נאמן', label: 'מאיה חסקל ושחר נאמן'},
+        { value: 'מיה חסקל ושחר נאמן', label: 'מיה חסקל ושחר נאמן'},
         { value: 'פלי = מתן אמיר', label: 'פלי = מתן אמיר'},
         { value: 'ליהי אדיר', label: 'ליהי אדיר'},
         { value: 'ניצן עמיתי', label: 'ניצן עמיתי'},
@@ -90,7 +90,7 @@ export class TaskView extends Component {
       label, relevantContacts,
       assigneePhone, status, isCritical, dueDate, createdDate,
     } = nextSelectedTask;
-    
+
       // this checks if we got another task, or we're updating the same one
       if (id != this.state.id) {
         const labelAsArray = label ?
@@ -177,7 +177,7 @@ export class TaskView extends Component {
       auth={this.props.auth}
       key='addComment' />)
   }
-  
+
   renderSelect(task, fieldName, placeholder, options, isEditable) {
     return (
       <Select
@@ -207,7 +207,7 @@ export class TaskView extends Component {
         placeholder = { placeholder }
         ref = { e => this[fieldName+'Input'] = e }
         onChange = { this.handleChange }
-        onBlur = { this.handleSubmit } 
+        onBlur = { this.handleSubmit }
         disabled = { !isEditable } />
     );
   }
@@ -292,7 +292,7 @@ export class TaskView extends Component {
       projectName: this.state.projectName
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
-    
+
     this.props.updateTask(this.props.selectedTask, fieldsToUpdate);
   }
 
@@ -324,4 +324,4 @@ const mapDispatchToProps = Object.assign(
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TaskView); 
+)(TaskView);
