@@ -32,7 +32,7 @@ export class TasksPage extends Component {
     this.goToTask = this.goToTask.bind(this);
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
-    
+
     this.state = {
       tasks: this.props.tasks,
       selectedTask: null,
@@ -41,7 +41,7 @@ export class TasksPage extends Component {
       labelPool: {},
       isLoadedComments: false
     };
-    
+
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
 
     window.changeLabelColor = setLabelWithRandomColor;
@@ -51,7 +51,7 @@ export class TasksPage extends Component {
     createTask: PropTypes.func.isRequired,
     dismissNotification: PropTypes.func.isRequired,
     filters: PropTypes.object.isRequired,
-    buildFilter: PropTypes.func.isRequired, 
+    buildFilter: PropTypes.func.isRequired,
     loadTasks: PropTypes.func.isRequired,
     loadLabels: PropTypes.func.isRequired,
     loadProjects: PropTypes.func.isRequired,
@@ -85,14 +85,14 @@ export class TasksPage extends Component {
       const tid = nextProps.match.params.id;
 
       this.setState({
-        selectedTask: this.props.tasks.find((task)=>( task.get('id') == tid ))
+        selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
       })
 
       if(!this.state.selectedTask) {
         this.setState({ isLoadedComments: false });
       }
 
-      if(!this.state.isLoadedComments || 
+      if(!this.state.isLoadedComments ||
         this.state.selectedTask && tid != this.state.selectedTask.id) {
           this.setState({ isLoadedComments: true });
           this.props.unloadComments();
@@ -112,7 +112,7 @@ export class TasksPage extends Component {
     const filterType = params['filter'];
     const filterTextType = params['text'];
     const labelPool = {};
-    
+
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
       currentTasks = this.props.filters[filter.type](currentTasks, filter);
@@ -123,10 +123,10 @@ export class TasksPage extends Component {
         labelPool[l] = true;
       })
     })
-    
-    currentTasks = this.filterTaskFromLabel(currentTasks)  
 
-    this.setState({tasks: currentTasks, labelPool});  
+    currentTasks = this.filterTaskFromLabel(currentTasks)
+
+    this.setState({tasks: currentTasks, labelPool});
   }
 
   filterTaskFromLabel(tasks) {
@@ -139,10 +139,10 @@ export class TasksPage extends Component {
     return currentTasks;
   }
 
-  componentDidUpdate(prevProps, prevState) {    
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.labels != this.state.labels) {
-      this.setState({tasks: this.filterTaskFromLabel(this.props.tasks)});  
-    } 
+      this.setState({tasks: this.filterTaskFromLabel(this.props.tasks)});
+    }
   }
 
   componentWillUnmount() {
@@ -150,7 +150,7 @@ export class TasksPage extends Component {
   }
 
   filterTasks() {
-    
+
   }
 
   renderNotification() {
@@ -185,7 +185,7 @@ export class TasksPage extends Component {
       this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
       return;
     }
-    
+
     let creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
@@ -194,9 +194,9 @@ export class TasksPage extends Component {
     }
 
     this.props.showSuccess('משימה נוצרה בהצלחה');
-    
+
     this.props.createTask(
-      {creator , created: new Date()}, 
+      {creator , created: new Date()},
       this.onNewTaskAdded);
   }
 
@@ -249,9 +249,9 @@ export class TasksPage extends Component {
     if (this.state.selectedTask == null) {
       return (<div className='task-view-loader'>&nbsp;</div>);
     }
-    
+
     return (
-      <TaskView 
+      <TaskView
         removeTask={this.props.removeTask}
         updateTask={this.props.updateTask}
         selectTask={this.goToTask}
@@ -265,7 +265,7 @@ export class TasksPage extends Component {
   }
 
   render() {
-    // TODO : use state.tasks instead. It is possible that a filter would 
+    // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
 
@@ -277,7 +277,7 @@ export class TasksPage extends Component {
               labels = { this.state.labelPool }
               onLabelChange = { this.onLabelChanged }/> }
           </div>
-      
+
         <div className='task-page-wrapper'>
           <LoaderUnicorn isShow={ isLoading }/>
           <div className='task-view-wrapper'>
@@ -293,7 +293,7 @@ export class TasksPage extends Component {
             />
           </div>
 
-          { (this.state.selectedTask == null) ? 
+          { (this.state.selectedTask == null) ?
             <div className='task-view-bottom-loader'>&nbsp;</div>: ''
           }
 
