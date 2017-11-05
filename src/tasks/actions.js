@@ -51,6 +51,15 @@ export function assignTask(task, assignee) {
   };
 }
 
+export function unassignTask(task) {
+  return dispatch => {
+    taskList.update(task.id, {
+      assignee: null
+    })
+    .catch(error => dispatch(updateTaskError(error)));
+  };
+}
+
 export function removeTask(task) {
   return dispatch => {
     taskList.remove(task.id)

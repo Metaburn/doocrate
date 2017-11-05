@@ -28,6 +28,7 @@ export class TasksPage extends Component {
     this.isAdmin = this.isAdmin.bind(this);
     this.isGuide = this.isGuide.bind(this);
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
+    this.unassignTask = this.unassignTask.bind(this);
     this.goToTask = this.goToTask.bind(this);
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
@@ -196,18 +197,31 @@ export class TasksPage extends Component {
     const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
 
     // TODO: Move to a better place
-    // if(myAssignedTasks.size >= 4) {
-    //   this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
-    //   return;
-    // }
-
-    if(!this.isAdmin() && !this.isGuide()) {
-      this.props.showError('לא ניתן לקחת משימות כרגע. אופצייה זו תפתח שוב בקרוב');
+    if(myAssignedTasks.size >= 5) {
+      this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
       return;
     }
 
+    // Uncomment to restrict task assign on the client side only
+
+    // if(!this.isAdmin() && !this.isGuide()) {
+    //   this.props.showError('לא ניתן לקחת משימות כרגע. אופצייה זו תפתח שוב בקרוב');
+    //   return;
+    // }
+
     this.props.assignTask(task, this.props.auth);
     this.props.showSuccess('💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪');
+  }
+
+  unassignTask(task) {
+
+    if(!this.isAdmin()) {
+      this.props.showError('רק מנהלים או מדריכים יכולים להסיר אחריות');
+      return;
+    }
+
+    this.props.unassignTask(task);
+    this.props.showSuccess('האחריות הוסרה - המשימה הפכה להיות פנויה');
   }
 
   goToTask(task) {
@@ -244,6 +258,7 @@ export class TasksPage extends Component {
         isAdmin={this.isAdmin()}
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
+        unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}
       />)

@@ -74,6 +74,7 @@ export class TaskView extends Component {
     updateTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
+    unassignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
     isAdmin: PropTypes.bool.isRequired,
     isGuide: PropTypes.bool.isRequired,
@@ -143,7 +144,9 @@ export class TaskView extends Component {
         canDeleteTask={ canDeleteTask }
         selectTask={ this.props.selectTask }
         assignTask={ this.props.assignTask }
+        unassignTask={ this.props.unassignTask }
         removeTask={ this.props.removeTask }
+        showUnassignButton = { this.props.isAdmin }
         />
         <div className='task-view'>
           <form onSubmit={this.handleSubmit} noValidate>
