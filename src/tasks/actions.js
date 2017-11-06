@@ -1,4 +1,5 @@
 import { taskList } from './task-list';
+import firebase from 'firebase/app';
 
 import {
   CREATE_TASK_ERROR,
@@ -54,7 +55,7 @@ export function assignTask(task, assignee) {
 export function unassignTask(task) {
   return dispatch => {
     taskList.update(task.id, {
-      assignee: null
+      assignee: firebase.firestore.FieldValue.delete()
     })
     .catch(error => dispatch(updateTaskError(error)));
   };
