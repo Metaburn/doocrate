@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import { toast } from 'react-toastify';
 
 import { firebaseAuth } from 'src/firebase';
 import {
@@ -28,6 +29,8 @@ export function initAuth(user) {
 
 
 export function signInError(error) {
+  const errorMessage = error && error.message? error.message : error
+  toast.error(errorMessage)
   return {
     type: SIGN_IN_ERROR,
     payload: error
