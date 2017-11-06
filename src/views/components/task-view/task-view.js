@@ -136,6 +136,7 @@ export class TaskView extends Component {
     const isUserAssignee = task.assignee && task.assignee.id == this.props.auth.id;
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
     const canDeleteTask = isUserCreator || this.props.isAdmin;
+    const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
     return (
       <div className='task-view-container'>
@@ -146,7 +147,7 @@ export class TaskView extends Component {
         assignTask={ this.props.assignTask }
         unassignTask={ this.props.unassignTask }
         removeTask={ this.props.removeTask }
-        showUnassignButton = { this.props.isAdmin }
+        showUnassignButton = { showUnassignButton }
         />
         <div className='task-view'>
           <form onSubmit={this.handleSubmit} noValidate>

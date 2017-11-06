@@ -214,14 +214,15 @@ export class TasksPage extends Component {
   }
 
   unassignTask(task) {
+    const isCreator = task.creator && task.creator.id == this.props.auth.id;
 
-    if(!this.isAdmin()) {
+    if(this.isAdmin() || (this.isGuide() && isCreator)) {
+      this.props.unassignTask(task);
+      this.props.showSuccess('האחריות הוסרה - המשימה הפכה להיות פנויה');
+    }else {
       this.props.showError('רק מנהלים או מדריכים יכולים להסיר אחריות');
       return;
     }
-
-    this.props.unassignTask(task);
-    this.props.showSuccess('האחריות הוסרה - המשימה הפכה להיות פנויה');
   }
 
   goToTask(task) {
