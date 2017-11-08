@@ -70,5 +70,9 @@ service cloud.firestore {
       allow update: if request.auth != null && isAdmin();
       allow delete: if request.auth != null && isAdmin();
     }
+
+    match /audit/{anyLabel} {
+    	allow create: if request.auth != null
+    }
   }
 }

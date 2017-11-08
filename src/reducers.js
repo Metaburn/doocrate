@@ -6,6 +6,7 @@ import { tasksReducer } from './tasks';
 import { commentsReducer } from './comments';
 import { labelsReducer } from './labels';
 import { projectsReducer } from './projects';
+import { auditRecordsReducer } from './audit-records';
 
 
 export default combineReducers({
@@ -16,4 +17,5 @@ export default combineReducers({
   comments: commentsReducer,
   labels: labelsReducer,
   projects: projectsReducer,
+  auditRecords: auditRecordsReducer
 });

@@ -1,4 +1,6 @@
 import { taskList } from './task-list';
+import { taskLogList } from './task-log-list'
+import { auditRecordActions } from '../audit-records'
 import firebase from 'firebase/app';
 
 import {
@@ -15,11 +17,26 @@ import {
   SELECT_TASK,
 } from './action-types';
 
+const TASK_ENTITY_TYPE = "TASK"
+const TASK_ACTION = {
+  CREATE: 'CREATE',
+  UPDATE: 'UPDATE',
+  DELETE: 'DELETE'
+}
 
 export function createTask(task, cb = (t)=>{}) {
-  return dispatch => {
-    return taskList.push(task).then(cb)
-      .catch(error => dispatch(createTaskError(error)));
+  const getTask = task
+  return (dispatch, getState) => {
+    return taskList.push(task).then(cb).then(() => {
+      const session = getState()
+
+      return auditRecordActions.createAuditRecord({
+          action: TASK_ACTION.CREATE,
+          performer: session.auth.toJS(),
+          entitySnapshot: getTask,
+          entityType: TASK_ENTITY_TYPE
+        })
+    }).catch(error => dispatch(createTaskError(error)));
   };
 }
 
@@ -32,38 +49,64 @@ export function createTaskError(error) {
 }
 
 export function createTaskSuccess(task, isLocallyCreated) {
-  return {
-    type: CREATE_TASK_SUCCESS,
-    payload: task
-  };
+  return dispatch => {
+    dispatch({
+      type: CREATE_TASK_SUCCESS,
+      payload: task
+    })
+  }
 }
 
 export function assignTask(task, assignee) {
-  return dispatch => {
-    taskList.update(task.id, {
+  return (dispatch, getState) => {
+    updateTaskAndLog(task, {
       assignee: {
         email: assignee.email,
         id: assignee.id,
         name: assignee.name,
         photoURL: assignee.photoURL
       }
-    })
+    }, getState)
     .catch(error => dispatch(updateTaskError(error)));
   };
 }
 
-export function unassignTask(task) {
-  return dispatch => {
-    taskList.update(task.id, {
-      assignee: firebase.firestore.FieldValue.delete()
+const updateTaskAndLog = (task, update, getState) => {
+  const getTask = Object.assign(task, update)
+  return taskList.update(task.id, update).then(task => {
+    const session = getState()
+
+    return auditRecordActions.createAuditRecord({
+      action: TASK_ACTION.UPDATE,
+      performer: session.auth.toJS(),
+      entitySnapshot: getTask,
+      entityType: TASK_ENTITY_TYPE
     })
+  })
+}
+
+export function unassignTask(task) {
+  return (dispatch, getState) => {
+    updateTaskAndLog(task, {
+      assignee: firebase.firestore.FieldValue.delete()
+    }, getState)
     .catch(error => dispatch(updateTaskError(error)));
   };
 }
 
 export function removeTask(task) {
-  return dispatch => {
-    taskList.remove(task.id)
+  const getTask = task
+  return (dispatch, getState) => {
+    taskList.remove(task.id).then(task => {
+      const session = getState()
+
+      return auditRecordActions.createAuditRecord({
+        action: TASK_ACTION.DELETE,
+        performer: session.auth.toJS(),
+        entitySnapshot: getTask,
+        entityType: TASK_ENTITY_TYPE
+      })
+    })
       .catch(error => dispatch(removeTaskError(error)));
   };
 }
@@ -76,10 +119,12 @@ export function removeTaskError(error) {
 }
 
 export function removeTaskSuccess(task) {
-  return {
-    type: REMOVE_TASK_SUCCESS,
-    payload: task
-  };
+  return (dispatch, getState) => {
+    dispatch({
+      type: REMOVE_TASK_SUCCESS,
+      payload: task
+    })    
+  }
 }
 
 export function undeleteTaskError(error) {
@@ -97,8 +142,8 @@ export function updateTaskError(error) {
 }
 
 export function updateTask(task, changes) {
-  return dispatch => {
-    taskList.update(task.id, changes)
+  return (dispatch, getState) => {
+    updateTaskAndLog(task, changes, getState)
       .catch(error => dispatch(updateTaskError(error)));
   };
 }
