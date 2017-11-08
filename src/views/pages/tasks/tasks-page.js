@@ -268,8 +268,8 @@ export class TasksPage extends Component {
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
-    const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-
+    const isLoading = (!this.state.tasks);
+    
     return (
       <div>
           <div className="g-col">
