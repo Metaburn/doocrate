@@ -80,6 +80,9 @@ $ npm install -g firebase-tools
 
 #### Build and deploy the app:
 ```shell
+$ cd functions
+$ npm install
+$ cd ..
 $ npm run build
 $ firebase login
 $ firebase use default
