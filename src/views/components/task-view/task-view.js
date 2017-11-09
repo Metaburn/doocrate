@@ -52,9 +52,9 @@ export class TaskView extends Component {
       type: '',
       defaultType: [
         { value: 1, label: 'תכנון ארוע' },
-        { value: 2, label: 'משמרות בארוע'},
-        { value: 3, label: 'משימות של מחנות נושא - טרם נפתח', disabled: true},
-        { value: 4, label: 'משימות של מיצבי אמנות - טרם נפתח', disabled: true},
+        { value: 2, label: 'משמרות בארוע' },
+        { value: 3, label: 'מחנות נושא' },
+        { value: 4, label: 'מיצבי אמנות' },
         { value: 5, label: 'אחר'}
       ],
       label: [],
