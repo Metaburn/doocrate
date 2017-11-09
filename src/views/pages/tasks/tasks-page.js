@@ -67,11 +67,11 @@ export class TasksPage extends Component {
 
   componentWillMount() {
     // Redirect to default filter
-    if(!this.props.filterType) {
+    /*if(!this.props.filterType) {
       this.props.history.push({
-        search: '?filter=taskType&text=2'
+        search: '?filter=unassigned'
       })
-    }
+    }*/
 
     this.props.loadTasks();
     this.props.loadLabels();
