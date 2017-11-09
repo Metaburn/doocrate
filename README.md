@@ -105,10 +105,19 @@ firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 In order to create labels colors you need to create a collection called 'labels' with documents like so:
 Id - The actual tag name - for example - "art", Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
 
+
+## Backup
+Firestore doesnt yet support backup natively
+so we use this tool `npm install -g firestore-backup`
+by calling `npm run backup`
+
 ## NPM Commands
 
 |Script|Description|
 |---|---|
 |`npm start`|Start webpack development server @ `localhost:3000`|
+|`npm backup`|Backup to a local database|
+|`npm deploy:staging`|Build and deploy to staging|
+|`npm deploy:production`|Build and deploy to production|
 |`npm run build`|Build the application to `./build` directory|
 |`npm test`|Test the application; watch for changes and retest|
