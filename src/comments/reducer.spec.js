@@ -2,126 +2,110 @@ import { List } from 'immutable';
 import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 
 import {
-  CREATE_TASK_SUCCESS,
-  REMOVE_TASK_SUCCESS,
-  FILTER_TASKS,
-  LOAD_TASKS_SUCCESS,
-  UPDATE_TASK_SUCCESS
+  CREATE_COMMENT_SUCCESS,
+  REMOVE_COMMENT_SUCCESS,
+  FILTER_COMMENTS,
+  LOAD_COMMENTS_SUCCESS,
+  UPDATE_COMMENT_SUCCESS
 } from './action-types';
 
-import { Task } from './task';
-import { tasksReducer, TasksState } from './reducer';
+import { Comment } from './comment';
+import { commentsReducer, CommentsState } from './reducer';
 
 
-describe('Tasks reducer', () => {
-  let task1;
-  let task2;
+describe('Comments reducer', () => {
+  let comment1;
+  let comment2;
 
   beforeEach(() => {
-    task1 = new Task({completed: false, id: '0', title: 'task 1'});
-    task2 = new Task({completed: false, id: '1', title: 'task 2'});
+    comment1 = new Comment({id: '0', body: 'comment 1'});
+    comment2 = new Comment({id: '1', body: 'comment 2'});
   });
 
 
-  describe('CREATE_TASK_SUCCESS', () => {
-    it('should prepend new task to list', () => {
-      let state = new TasksState({list: new List([task1])});
+  describe('CREATE_COMMENT_SUCCESS', () => {
+    it('should prepend new comment to list', () => {
+      let state = new CommentsState({list: new List([comment1])});
 
-      let nextState = tasksReducer(state, {
-        type: CREATE_TASK_SUCCESS,
-        payload: task2
+      let nextState = commentsReducer(state, {
+        type: CREATE_COMMENT_SUCCESS,
+        payload: comment2
       });
 
-      expect(nextState.list.get(0)).toBe(task2);
-      expect(nextState.list.get(1)).toBe(task1);
+      expect(nextState.list.get(0)).toBe(comment2);
+      expect(nextState.list.get(1)).toBe(comment1);
     });
   });
 
 
-  describe('REMOVE_TASK_SUCCESS', () => {
-    it('should remove task from list', () => {
-      let state = new TasksState({list: new List([task1, task2])});
+  describe('REMOVE_COMMENT_SUCCESS', () => {
+    it('should remove comment from list', () => {
+      let state = new CommentsState({list: new List([comment1, comment2])});
 
-      let nextState = tasksReducer(state, {
-        type: REMOVE_TASK_SUCCESS,
-        payload: task2
+      let nextState = commentsReducer(state, {
+        type: REMOVE_COMMENT_SUCCESS,
+        payload: comment2
       });
 
-      expect(nextState.deleted).toBe(task2);
+      expect(nextState.deleted).toBe(comment2);
       expect(nextState.list.size).toBe(1);
-      expect(nextState.list.get(0)).toBe(task1);
+      expect(nextState.list.get(0)).toBe(comment1);
       expect(nextState.previous).toBe(state.list);
     });
   });
 
 
-  describe('FILTER_TASKS', () => {
-    it('should set filter with provided value', () => {
-      let state = new TasksState();
+  describe('LOAD_COMMENTS_SUCCESS', () => {
+    it('should set comment list', () => {
+      let state = new CommentsState();
 
-      let nextState = tasksReducer(state, {
-        type: FILTER_TASKS,
-        payload: {
-          filterType: 'completed'
-        }
-      });
-
-      expect(nextState.filter).toBe('completed');
-    });
-  });
-
-
-  describe('LOAD_TASKS_SUCCESS', () => {
-    it('should set task list', () => {
-      let state = new TasksState();
-
-      let nextState = tasksReducer(state, {
-        type: LOAD_TASKS_SUCCESS,
-        payload: [task1, task2]
+      let nextState = commentsReducer(state, {
+        type: LOAD_COMMENTS_SUCCESS,
+        payload: [comment1, comment2]
       });
 
       expect(nextState.list.size).toBe(2);
     });
 
-    it('should order tasks newest first', () => {
-      let state = new TasksState();
+    it('should order comments newest first', () => {
+      let state = new CommentsState();
 
-      let nextState = tasksReducer(state, {
-        type: LOAD_TASKS_SUCCESS,
-        payload: [task1, task2]
+      let nextState = commentsReducer(state, {
+        type: LOAD_COMMENTS_SUCCESS,
+        payload: [comment1, comment2]
       });
 
-      expect(nextState.list.get(0)).toBe(task2);
-      expect(nextState.list.get(1)).toBe(task1);
+      expect(nextState.list.get(0)).toBe(comment2);
+      expect(nextState.list.get(1)).toBe(comment1);
     });
   });
 
 
-  describe('UPDATE_TASK_SUCCESS', () => {
-    it('should update task', () => {
-      let state = new TasksState({list: new List([task1, task2])});
-      let changedTask = task2.set('title', 'changed');
+  describe('UPDATE_COMMENT_SUCCESS', () => {
+    it('should update comment', () => {
+      let state = new CommentsState({list: new List([comment1, comment2])});
+      let changedComment = comment2.set('body', 'changed');
 
-      let nextState = tasksReducer(state, {
-        type: UPDATE_TASK_SUCCESS,
-        payload: changedTask
+      let nextState = commentsReducer(state, {
+        type: UPDATE_COMMENT_SUCCESS,
+        payload: changedComment
       });
 
-      expect(nextState.list.get(0)).toBe(task1);
-      expect(nextState.list.get(1)).toBe(changedTask);
+      expect(nextState.list.get(0)).toBe(comment1);
+      expect(nextState.list.get(1)).toBe(changedComment);
     });
   });
 
 
   describe('SIGN_OUT_SUCCESS', () => {
     it('should reset state', () => {
-      let state = new TasksState({
-        delete: task1,
-        list: new List([task1, task2]),
+      let state = new CommentsState({
+        delete: comment1,
+        list: new List([comment1, comment2]),
         previous: new List()
       });
 
-      let nextState = tasksReducer(state, {
+      let nextState = commentsReducer(state, {
         type: SIGN_OUT_SUCCESS
       });
 

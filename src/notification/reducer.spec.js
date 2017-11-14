@@ -11,9 +11,9 @@ describe('Notification reducer', () => {
         task: {}
       });
 
-      expect(nextState.actionLabel).toBe('Undo');
+      expect(nextState.actionLabel).toBe('');
       expect(nextState.display).toBe(true);
-      expect(nextState.message).toBe('Task deleted');
+      expect(nextState.type).toBe('success');
     });
   });
 

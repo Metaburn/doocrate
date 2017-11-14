@@ -37,40 +37,6 @@ describe('Tasks reducer', () => {
     });
   });
 
-
-  describe('REMOVE_TASK_SUCCESS', () => {
-    it('should remove task from list', () => {
-      let state = new TasksState({list: new List([task1, task2])});
-
-      let nextState = tasksReducer(state, {
-        type: REMOVE_TASK_SUCCESS,
-        payload: task2
-      });
-
-      expect(nextState.deleted).toBe(task2);
-      expect(nextState.list.size).toBe(1);
-      expect(nextState.list.get(0)).toBe(task1);
-      expect(nextState.previous).toBe(state.list);
-    });
-  });
-
-
-  describe('FILTER_TASKS', () => {
-    it('should set filter with provided value', () => {
-      let state = new TasksState();
-
-      let nextState = tasksReducer(state, {
-        type: FILTER_TASKS,
-        payload: {
-          filterType: 'completed'
-        }
-      });
-
-      expect(nextState.filter).toBe('completed');
-    });
-  });
-
-
   describe('LOAD_TASKS_SUCCESS', () => {
     it('should set task list', () => {
       let state = new TasksState();
