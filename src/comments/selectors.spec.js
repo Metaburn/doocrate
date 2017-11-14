@@ -10,8 +10,8 @@ describe('Comments selectors', () => {
   beforeEach(() => {
     comments = new CommentsState({
       list: new List([
-        new Comment({completed: false, title: 'comment-1'}),
-        new Comment({completed: true, title: 'comment-2'})
+        new Comment({body: 'comment-1'}),
+        new Comment({body: 'comment-2'})
       ])
     });
   });

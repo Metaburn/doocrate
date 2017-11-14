@@ -37,12 +37,6 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         list: state.list.filter(task => task.id !== payload.id)
       });
 
-    // case FILTER_TASKS:
-    //   return state.set('filter', payload.filterType || {name:''});
-
-    // case SELECT_TASK:
-    //   return state.set('selected', payload || null);
-
     case LOAD_TASKS_SUCCESS:
       return state.set('list', new List(payload.reverse()));
 
