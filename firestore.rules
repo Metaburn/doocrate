@@ -6,11 +6,11 @@ service cloud.firestore {
     }
     
     function isCreator() {
-      return resource.data.creator != null && request.auth.uid == resource.data.creator.data.id;
+      return resource.data.creator != null && request.auth.uid == resource.data.creator.id;
     }
     
     function isUserAssignee() {
-    	return resource.data.assignee != null && request.auth.uid == resource.data.assignee.data.id;
+    	return resource.data.assignee != null && request.auth.uid == resource.data.assignee.id;
     }
     
     function isUserAssigneeOrCreator() {
