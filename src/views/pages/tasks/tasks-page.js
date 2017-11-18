@@ -66,13 +66,6 @@ export class TasksPage extends Component {
   };
 
   componentWillMount() {
-    // Redirect to default filter
-    /*if(!this.props.filterType) {
-      this.props.history.push({
-        search: '?filter=unassigned'
-      })
-    }*/
-
     this.props.loadTasks();
     this.props.loadLabels();
     //this.props.loadProjects();
@@ -225,6 +218,25 @@ export class TasksPage extends Component {
     }
   }
 
+  generateCSV() {
+    console.log("generating csv...");
+    if (!this.isAdmin()) return; 
+    
+    const csv = [["TaskId", "Task Name", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email"]];
+
+    this.state.tasks.forEach((t) => {
+      const tsk = t.toJS();
+      let tcsv = [t.id, t.title, t.creator.id, t.creator.name];
+      if (t.assignee != null) {
+        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email]);
+      }
+      csv.push(tcsv);
+      
+    });
+
+    return csv;
+  }
+
   goToTask(task) {
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
@@ -276,7 +288,10 @@ export class TasksPage extends Component {
             { <TaskFilters
               filter = { this.props.filterType }
               labels = { this.state.labelPool }
-              onLabelChange = { this.onLabelChanged }/> }
+              onLabelChange = { this.onLabelChanged }
+              generateCSV={this.generateCSV.bind(this)} 
+              isAdmin={this.isAdmin()}/> 
+              }
           </div>
 
         <div className='task-page-wrapper'>
