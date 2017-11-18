@@ -10,6 +10,7 @@ import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { firebaseDb } from 'src/firebase';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 import './reports-page.css';
 
@@ -110,9 +111,7 @@ export class ReportsPage extends Component {
     return (      
       <div>
           <h3> אנשים שלקחו על עצמם לפחות משימה אחת </h3>
-          {/* {
-          this.props.tasks.map( t => <li>{`${t.get("title")} - ${t.get("title")}`}</li> )
-          } */}
+          <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
         <table className="report-table" >
           {
