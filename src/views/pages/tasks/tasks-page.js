@@ -166,7 +166,7 @@ export class TasksPage extends Component {
     //   this.props.showError('הגעת למכסת המשימות שניתן לייצר');
     //   return;
     // }
-    if (!this.isAdmin() && !this.isGuide()) {
+    if (!(this.isAdmin() || this.isGuide())) {
       this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
       return;
     }
