@@ -1,0 +1,23 @@
+.report-table{ 
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+ .report-table th {
+    border: 1px solid #bbb;
+    text-align: left;
+    padding: 2px 4px;
+    font-size: 13px;
+    font-weight: 400;
+ }
+
+ .report-table tr:first-child th{
+    font-weight: 600;
+    background: gray;
+    text-transform: capitalize;
+ }
+
+ .report-table tr:nth-child(odd) th{
+    background: #ddd;
+ }

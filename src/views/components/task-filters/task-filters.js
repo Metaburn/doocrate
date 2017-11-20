@@ -7,6 +7,7 @@ import { Redirect } from 'react-router';
 import Autosuggest from 'react-autosuggest';
 import AutoSuggestedTags from '../auto-suggested-tags';
 import './task-filters.css';
+import {CSVLink, CSVDownload} from 'react-csv';
 
 class TaskFilters extends Component {
   constructor() {
@@ -19,7 +20,9 @@ class TaskFilters extends Component {
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
-    labels: PropTypes.object.isRequired
+    labels: PropTypes.object.isRequired,
+    generateCSV:  PropTypes.func.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
   }
 
   // Since react router doesn't support query we read it manually from the url
@@ -36,6 +39,8 @@ class TaskFilters extends Component {
   render() {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
+    
+    const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li> : null;
     return(
       <div className="task-filters">
       <ul className='main-filters'>
@@ -68,6 +73,7 @@ class TaskFilters extends Component {
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>משימות פנויות</NavLink></li>
         <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
+        {downloadCSV}
         <li>
 
         <AutoSuggestedTags
@@ -76,6 +82,7 @@ class TaskFilters extends Component {
           placeholder = 'חפשי משימה לפי תגיות'
           onChange = {this.handleLabelChange} />
       </li>
+            
       </ul>
       </div>
     );
