@@ -4,7 +4,7 @@ const functions = require('firebase-functions');
 const Firestore = require('@google-cloud/firestore');
 
 // Max number of tasks per creator
-const MAX_TASK_PER_CREATOR = 500;
+const MAX_TASK_PER_CREATOR = 80;
 
 // Limit the number of tasks by creator
 exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate(event => {
@@ -19,9 +19,9 @@ exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{ta
     return;
 
   const creatorId = task.creator.id;
-  
+
   return parentRef.where('creator.id',"==", creatorId).get().then(snapshot => {
-    
+
     if(snapshot.size >= MAX_TASK_PER_CREATOR) {
       return event.data.ref.delete();
     }
@@ -42,12 +42,12 @@ console.log(`Should send notifications: ${shouldSendNotifications}`);
 console.log(fromEmail);
 console.log(emailApiKey);
 console.log(emailDomain);
-const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain}) 
+const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
 const firestore = new Firestore();
 
 exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite(event => {
-  
+
   if(!shouldSendNotifications) {
     console.log('send notifications turned off');
     return;
@@ -75,7 +75,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
 
       const emailTemplate = `<div style="direction:rtl;"><h2>הערה חדשה</h2>
         מאת: ${comment.creator.name}(${comment.creator.email})
-        <img src='${comment.creator.photoURL}' style='border-radius:70px;width:140px;height:140px;'/><br/> 
+        <img src='${comment.creator.photoURL}' style='border-radius:70px;width:140px;height:140px;'/><br/>
         <h3>תוכן: ${comment.body}</h3> <br/>
         <a href='https://doocrate.midburnerot.com/task/${comment.taskId}'>לחץ כאן למעבר למשימה</a>
         <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-burnerot@gmail.com
@@ -101,7 +101,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
     return Promise.all(promises).then(values => {
       console.log('email sent successfully');
     }).catch(error => {
-      console.error('error sending mail:', error);  
+      console.error('error sending mail:', error);
     });
   }
 )});

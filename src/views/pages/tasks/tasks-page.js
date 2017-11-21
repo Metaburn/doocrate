@@ -155,14 +155,14 @@ export class TasksPage extends Component {
     const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
 
     // TODO: Move to a better place
-    // if (!this.isAdmin() && myTasks.size >= 8) {
-    //   this.props.showError('הגעת למכסת המשימות שניתן לייצר');
-    //   return;
-    // }
-    if (!(this.isAdmin() || this.isGuide())) {
-      this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
+    if (!this.isAdmin() && myTasks.size >= 20) {
+      this.props.showError('הגעת למכסת המשימות שניתן לייצר');
       return;
     }
+    /*if (!(this.isAdmin() || this.isGuide())) {
+      this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
+      return;
+    }*/
 
     let creator = {
       id: this.props.auth.id,
