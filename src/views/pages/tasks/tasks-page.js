@@ -155,14 +155,14 @@ export class TasksPage extends Component {
     const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
 
     // TODO: Move to a better place
-    if (!this.isAdmin() && myTasks.size >= 20) {
-      this.props.showError('הגעת למכסת המשימות שניתן לייצר');
+    // if (!this.isAdmin() && myTasks.size >= 20) {
+    //   this.props.showError('הגעת למכסת המשימות שניתן לייצר');
+    //   return;
+    // }
+    if (!(this.isAdmin() || this.isGuide())) {
+      this.props.showError('יצירת משימות חדשות סגורה כעת');
       return;
     }
-    /*if (!(this.isAdmin() || this.isGuide())) {
-      this.props.showError('יצירת משימות חדשות סגורה כעת לאדמינים ולמדריכים בלבד');
-      return;
-    }*/
 
     let creator = {
       id: this.props.auth.id,
@@ -190,17 +190,17 @@ export class TasksPage extends Component {
     const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
 
     // TODO: Move to a better place
-    if(myAssignedTasks.size >= 5) {
-      this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
-      return;
-    }
+    // if(myAssignedTasks.size >= 5) {
+    //   this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
+    //   return;
+    // }
 
     // Uncomment to restrict task assign on the client side only
 
-    // if(!this.isAdmin() && !this.isGuide()) {
-    //   this.props.showError('לא ניתן לקחת משימות כרגע. אופצייה זו תפתח שוב בקרוב');
-    //   return;
-    // }
+    if(!this.isAdmin() && !this.isGuide()) {
+      this.props.showError('לא ניתן לקחת משימות כרגע');
+      return;
+    }
 
     this.props.assignTask(task, this.props.auth);
     this.props.showSuccess('💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪');

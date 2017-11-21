@@ -30,8 +30,13 @@ service cloud.firestore {
 
     match /tasks/{anyTask} {
     	allow read: if request.auth != null;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
+      // Allow create for admins and guides
+      allow create: if request.auth != null && (isAdmin() || isGuide());
+      // Uncomment the following to allow create for all
+      // allow create: if request.auth != null;
+      // Uncomment the following to allow unassigned task to be assigned by all
+      //allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
+      allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator());
       allow delete: if request.auth != null && (isAdmin() || isCreator());
     }
 
