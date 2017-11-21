@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { getAuth } from 'src/auth';
+import ReactTooltip from 'react-tooltip'
 
 import { getCommentList } from 'src/comments';
 
@@ -161,7 +162,9 @@ export class TaskView extends Component {
             <div><span>טלפון ממלא המשימה</span>{ this.renderInput(task, 'assigneePhone', 'טלפון ממלא המשימה', canEditTask) }</div>
             <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', 'האם המשימה קריטית לקיום הארוע?', canEditTask) }</div>
             <span>סטטוס</span> {this.renderTextArea(task, 'status', 'סטטוס המשימה', canEditTask)}
+            {this.renderTaskCreator(task) }
           </form>
+          <span>תגובות</span>
           { this.props.comments ?
           <CommentList
           task={task}
@@ -171,6 +174,20 @@ export class TaskView extends Component {
         { this.renderAddComment() }
       </div>
     );
+  }
+
+  renderTaskCreator(task) {
+    if (!task.creator) return;
+    const avatar = task.creator.photoURL ? <Img className='avatar' src={task.creator.photoURL} alt={task.creator.name}/> : '';
+      return (
+        <div>
+          <span>יוצר המשימה</span>
+          <span className='avatar-creator' data-tip={task.creator.name}>
+            <ReactTooltip type='light' effect='solid'/>
+            { avatar }
+          </span>
+        </div>
+      );
   }
 
   renderAddComment() {
