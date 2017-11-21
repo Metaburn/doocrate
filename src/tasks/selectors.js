@@ -4,6 +4,7 @@ const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
   complete: (auth, value) => ({type: "complete"}),
   unassigned: (auth, value) => ({type: "unassigned"}),
+  unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
   mine: (auth, value) => ({type: "user", uid: auth.id})
@@ -24,7 +25,12 @@ export const taskFilters = {
   // Unassigned is free tasks which are not camps nor art
   unassigned: (tasks, filter) => {
     return tasks.filter(task => !task.assignee &&
-    task.type != 3 && task.type != 4);
+      task.type != 3 && task.type != 4);
+  },
+
+    // Unassigned is free tasks which are not camps nor art
+  unassignedWithArtAndCamps: (tasks, filter) => {
+    return tasks.filter(task => !task.assignee);
   },
 
   label: (tasks, filter) => {
