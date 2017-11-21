@@ -15,7 +15,7 @@ class TaskFilters extends Component {
     this.state = {
       label: []
     };
-    
+
     this.handleLabelChange = this.handleLabelChange.bind(this);
   }
   static propTypes = {
@@ -39,8 +39,10 @@ class TaskFilters extends Component {
   render() {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
-    
-    const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li> : null;
+
+    //const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li> : null;
+    const downloadCSV = null; //TODO: Fix this
+
     return(
       <div className="task-filters">
       <ul className='main-filters'>
@@ -82,7 +84,7 @@ class TaskFilters extends Component {
           placeholder = 'חפשי משימה לפי תגיות'
           onChange = {this.handleLabelChange} />
       </li>
-            
+
       </ul>
       </div>
     );

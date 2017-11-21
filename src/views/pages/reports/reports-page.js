@@ -16,7 +16,7 @@ import './reports-page.css';
 
 export class ReportsPage extends Component {
   constructor() {
-    super(...arguments);    
+    super(...arguments);
 
     this.state = {
       users: Map(),
@@ -30,25 +30,25 @@ export class ReportsPage extends Component {
     auth: PropTypes.object.isRequired
   };
 
-  componentWillMount() {    
-    
+  componentWillMount() {
+
     this.props.loadTasks();
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
       const contributors = {}
       querySnapshot.forEach(function(doc) {
-        contributors[doc.id] = doc.data();        
+        contributors[doc.id] = doc.data();
       });
 
       this.setState({users: Map(contributors)});
   });
   }
 
-  componentWillReceiveProps(nextProps) {  
-    
+  componentWillReceiveProps(nextProps) {
+
   }
 
-  componentDidUpdate(prevProps, prevState) {    
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.users != this.state.users || prevProps.tasks != this.props.tasks) {
       const collborators = {};
       const query = [["#", "name", "id", "email"]]
@@ -66,57 +66,33 @@ export class ReportsPage extends Component {
         }
       }
     )
-      
+
       this.setState({query});
     }
-  }
-
-  componentWillUnmount() {
-  
-  }
-
-  filterTasks() {
-
-  }
-
-  onNewTaskAdded(task) {
-  
-  }
-
-  createNewTask() {
-  
   }
 
   isAdmin() {
     return this.props.auth.role == 'admin';
   }
 
-  renderRow(row) {
-    return ({
-      
-    })
-  }
-
-
-
   render() {
-    // 1: Get all users with at least one taks that is assigned to them
-    // 2: Get report based on a Tag (like in the main page)    
+    // 1: Get all users with at least one tasks that is assigned to them
+    // 2: Get report based on a Tag (like in the main page)
     if (!this.isAdmin()) {
       return (
         <Redirect to="/"/>
       )
     }
-    
-    return (      
-      <div>
+
+    return (
+      <div className='reports-page'>
           <h3> אנשים שלקחו על עצמם לפחות משימה אחת </h3>
           <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
         <table className="report-table" >
           {
             this.state.query.map( (r) => (<tr><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
-          } 
+          }
           </table>
       </div>
     );
@@ -130,7 +106,7 @@ export class ReportsPage extends Component {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
-    auth: state.auth,    
+    auth: state.auth,
   }
 }
 

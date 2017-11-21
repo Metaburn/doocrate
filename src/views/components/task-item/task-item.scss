@@ -20,7 +20,7 @@
   }
 
   .avatar {
-    margin: 0 10px; 
+    margin: 0 10px;
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -60,11 +60,41 @@
 
 
   &:nth-last-child(3) {
-    flex: 1;
+    //flex: 1;
     padding-right: 10px;
     overflow: hidden;
     display: flex;
     align-items: center;
+  }
+}
+
+@media screen
+  and (min-width: 1200px)
+  and (max-width: 1400px) {
+  .label-cell {
+    max-width: 140px;
+  }
+}
+
+@media screen
+and (min-width: 1000px)
+and (max-width: 1200px) {
+  .label-cell {
+    max-width: 83px;
+  }
+}
+
+@media screen
+and (min-width: 768px)
+and (max-width: 1024px) {
+  .label-cell {
+    max-width: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .label-cell {
+    max-width: 100px;
   }
 }
 

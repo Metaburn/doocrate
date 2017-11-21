@@ -10,8 +10,8 @@ export class TaskViewHeader extends Component {
   render() {
     const { task } = this.props;
 
-    const isTaskEmpty = task && (!task.description || task.description == '') &&
-    (!task.circle || task.circle == '') && (!task.status || task.status == '');
+    const isTaskEmpty = task && (!task.description || task.description === '') &&
+    (!task.circle || task.circle === '') && (!task.status || task.status === '');
 
     return(
       <div className='task-view-header' name='task-view-header'>

@@ -220,8 +220,8 @@ export class TasksPage extends Component {
 
   generateCSV() {
     console.log("generating csv...");
-    if (!this.isAdmin()) return; 
-    
+    if (!this.isAdmin()) return;
+
     const csv = [["TaskId", "Task Name", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email"]];
 
     this.state.tasks.forEach((t) => {
@@ -231,7 +231,7 @@ export class TasksPage extends Component {
         tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email]);
       }
       csv.push(tcsv);
-      
+
     });
 
     return csv;
@@ -289,8 +289,8 @@ export class TasksPage extends Component {
               filter = { this.props.filterType }
               labels = { this.state.labelPool }
               onLabelChange = { this.onLabelChanged }
-              generateCSV={this.generateCSV.bind(this)} 
-              isAdmin={this.isAdmin()}/> 
+              generateCSV={this.generateCSV.bind(this)}
+              isAdmin={this.isAdmin()}/>
               }
           </div>
 

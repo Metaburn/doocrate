@@ -33,14 +33,14 @@ class MyProfileTooltip extends Component {
         <div className='my-profile-tooltip-container'
         onMouseEnter={this.showTooltip}
         onMouseLeave={this.hideTooltip}>
-          { auth.photoURL ? 
-            <Img 
+          { auth.photoURL ?
+            <Img
             className='avatar grow'
             src={ this.props.auth.photoURL } />
           :
             <span>אני</span>
           }
-          
+
           <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left' parent='.my-profile-tooltip-container'>
             <span className='tooltip-container'>
               <NavLink to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink><br/>

@@ -5,20 +5,43 @@ import TaskItem from '../task-item/task-item';
 
 import './task-list.css';
 import Button from '../button';
+import InfiniteScroll from 'react-infinite-scroller';
 
-class TaskList extends Component {  
+class TaskList extends Component {
+  constructor() {
+    super(...arguments);
+
+    this.state = {
+      pageSize: 20,
+      pageNumber: 0,
+    }
+
+    this.loadMore = this.loadMore.bind(this);
+  }
+
   static propTypes = {
     tasks: PropTypes.instanceOf(List).isRequired,
     selectTask: PropTypes.func.isRequired,
     selectedTaskId: PropTypes.string.isRequired,
     createTask: PropTypes.func.isRequired,
   };
-  
+
+
+
+  loadMore(pageNumber) {
+    this.setState({
+      pageNumber,
+    })
+  }
+
   render() {
     const isAnyTasks = this.props.tasks && this.props.tasks.size > 0;
     let taskItems = null;
     if (isAnyTasks) {
-      taskItems = this.props.tasks.map((task, index) => {
+      taskItems = this.props.tasks.slice(
+        0,
+        this.state.pageSize * (this.state.pageNumber + 1))
+        .map((task, index) => {
       return (
         <TaskItem
           key={index}
@@ -28,16 +51,17 @@ class TaskList extends Component {
           isActive={task.get("id") == this.props.selectedTaskId}
         />
       );
-    });    
+    });
   }
   else{
     return (
       <div className='task-list-loader'>
-        
       </div>
     );
   }
 
+  const hasMoreTasks = this.props.tasks?
+    (this.state.pageSize * this.state.pageNumber) < this.props.tasks.size : true
     return (
       <div className='task-list-container'>
         <div className='task-list-header' name='task-list-header'>
@@ -49,7 +73,14 @@ class TaskList extends Component {
         </div>
 
         <div className='task-list'>
-          { taskItems }
+        <InfiniteScroll
+            pageStart={0}
+            loadMore={this.loadMore}
+            hasMore={hasMoreTasks}
+            useWindow={false}
+            loader={<div className="loader">טוען ...</div>}>
+            { taskItems }
+        </InfiniteScroll>
         </div>
       </div>
     );

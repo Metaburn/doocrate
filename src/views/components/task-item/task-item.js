@@ -24,31 +24,31 @@ export class TaskItem extends Component {
 
   render() {
     const { task } = this.props;
-    
+
     let containerClasses = classNames('task-item', {
       'task-item--completed': task.completed,
     }, {'is-active': this.props.isActive});
-   
+
 
     return (
       <div className={containerClasses} tabIndex={this.props.taskNumber+1}
         onClick={this.select}
         onKeyUp={this.select}>
-        { task && task.isCritical ? 
+        { task && task.isCritical ?
           <div className='cell'>
             <Icon name='warning' className='warning grow' />
           </div>
         : ''
         }
-        <div className="cell">
+        <div className='cell'>
           {this.renderTitle(task)}
         </div>
 
-        <div className="cell">
+        <div className='cell'>
           {this.renderAssignee(task)}
         </div>
 
-        <div className="cell">
+        <div className='cell label-cell'>
           {this.renderLabel(task)}
         </div>
       </div>
@@ -58,8 +58,8 @@ export class TaskItem extends Component {
 
   renderTitle(task) {
     return (
-      <div className="task-item-title">
-        {task.title && task.title != '' ? 
+      <div className='task-item-title'>
+        {task.title && task.title != '' ?
          task.title :
         <span className='new-task'>משימה חדשה ללא שם</span>}
       </div>
@@ -83,10 +83,10 @@ export class TaskItem extends Component {
     }
     return (
       <div>
-        { 
+        {
           Object.keys(task.label).map((label) => {
-            const bg = this.props.labels[label] ? this.props.labels[label].colorInHex : '999';            
-            return (<span key={label} style={{"backgroundColor": `#${bg}` }} className="label-default">{label}</span>)
+            const bg = this.props.labels[label] ? this.props.labels[label].colorInHex : '999';
+            return (<span key={label} style={{'backgroundColor': `#${bg}` }} className='label-default'>{label}</span>)
           }) }
       </div>
     );

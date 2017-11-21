@@ -3,9 +3,7 @@ import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 
 import {
   CREATE_TASK_SUCCESS,
-  SELECT_TASK,
   REMOVE_TASK_SUCCESS,
-  FILTER_TASKS,
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
 } from './action-types';
