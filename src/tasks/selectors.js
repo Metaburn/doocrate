@@ -21,8 +21,10 @@ export const taskFilters = {
     return tasks.filter(task => task.completed)
   },
 
+  // Unassigned is free tasks which are not camps nor art
   unassigned: (tasks, filter) => {
-    return tasks.filter(task => !task.assignee);
+    return tasks.filter(task => !task.assignee &&
+    task.type != 3 && task.type != 4);
   },
 
   label: (tasks, filter) => {
