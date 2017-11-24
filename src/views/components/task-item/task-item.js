@@ -6,8 +6,8 @@ import './task-item.css';
 import Img from 'react-image';
 import ReactTooltip from 'react-tooltip'
 import Icon from '../icon';
-
 import { connect } from 'react-redux';
+import { I18n } from 'react-i18next';
 
 export class TaskItem extends Component {
   constructor() {
@@ -31,37 +31,42 @@ export class TaskItem extends Component {
 
 
     return (
-      <div className={containerClasses} tabIndex={this.props.taskNumber+1}
-        onClick={this.select}
-        onKeyUp={this.select}>
-        { task && task.isCritical ?
+      <I18n ns='translations'>
+      {
+      (t, { i18n }) => (
+        <div className={containerClasses} tabIndex={this.props.taskNumber+1}
+          onClick={this.select}
+          onKeyUp={this.select}>
+          { task && task.isCritical ?
+            <div className='cell'>
+              <Icon name='warning' className='warning grow' />
+            </div>
+          : ''
+          }
           <div className='cell'>
-            <Icon name='warning' className='warning grow' />
+            {this.renderTitle(task, t)}
           </div>
-        : ''
-        }
-        <div className='cell'>
-          {this.renderTitle(task)}
-        </div>
 
-        <div className='cell'>
-          {this.renderAssignee(task)}
-        </div>
+          <div className='cell'>
+            {this.renderAssignee(task)}
+          </div>
 
-        <div className='cell label-cell'>
-          {this.renderLabel(task)}
+          <div className='cell label-cell'>
+            {this.renderLabel(task)}
+          </div>
         </div>
-      </div>
+      )}
+      </I18n>
     );
   }
 
 
-  renderTitle(task) {
+  renderTitle(task, translate) {
     return (
       <div className='task-item-title'>
         {task.title && task.title != '' ?
          task.title :
-        <span className='new-task'>משימה חדשה ללא שם</span>}
+        <span className='new-task'>{translate('task.unnamed-task')}</span>}
       </div>
     );
   }

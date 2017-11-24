@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Button from '../button';
 import Icon from '../icon';
 import Img from 'react-image';
+import { I18n } from 'react-i18next';
 
 import './task-view-header.css';
 
@@ -14,43 +15,48 @@ export class TaskViewHeader extends Component {
     (!task.circle || task.circle === '') && (!task.status || task.status === '');
 
     return(
-      <div className='task-view-header' name='task-view-header'>
+      <I18n ns='translations'>
+      {
+      (t, { i18n }) => (
+        <div className='task-view-header' name='task-view-header'>
 
-        <Button className='button-no-border close-button' onClick={ () => this.props.selectTask() }>
-          <Icon name='close' className='close-icon grow' />
-        </Button>
+          <Button className='button-no-border close-button' onClick={ () => this.props.selectTask() }>
+            <Icon name='close' className='close-icon grow' />
+          </Button>
 
-        {!task.assignee ? <Button
-          className='button button-small action-button assign_task'
-          onClick={()=>this.props.assignTask(task)}
-          type='button'>קחי אחראיות על משימה זו</Button> :
+          {!task.assignee ? <Button
+            className='button button-small action-button assign_task'
+            onClick={()=>this.props.assignTask(task)}
+            type='button'>{t('task.take-responsibility')}</Button> :
 
-          <div className='avatar-container'>
-            <Img className='avatar' src={task.assignee.photoURL}/>
-            <span>{task.assignee.name}</span>
-          </div>}
+            <div className='avatar-container'>
+              <Img className='avatar' src={task.assignee.photoURL}/>
+              <span>{task.assignee.name}</span>
+            </div>}
 
-        { this.props.showUnassignButton && task.assignee ?
-          <Button
-          className='action-button button-grey'
-          onClick={()=> { this.props.unassignTask(task)}}
-          type='button'>הסר אחריות</Button> : ''
-        }
-
-          { isTaskEmpty && this.props.canDeleteTask ?
-          <Button
+          { this.props.showUnassignButton && task.assignee ?
+            <Button
             className='action-button button-grey'
-            onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
-            type='button'>מחק משימה</Button> : '' }
-
-          { task && task.isCritical ?
-            <span>
-              <Icon name='warning' className='header-icon grow' />
-              משימה קריטית לקיום הארוע
-            </span>
-          : ''
+            onClick={()=> { this.props.unassignTask(task)}}
+            type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
-      </div>
+
+            { isTaskEmpty && this.props.canDeleteTask ?
+            <Button
+              className='action-button button-grey'
+              onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
+              type='button'>{t('task.delete')}</Button> : '' }
+
+            { task && task.isCritical ?
+              <span>
+                <Icon name='warning' className='header-icon grow' />
+                {t('task.critical')}
+              </span>
+            : ''
+            }
+        </div>
+      )}
+      </I18n>
     )
   };
 }

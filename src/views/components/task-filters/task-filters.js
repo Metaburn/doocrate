@@ -6,8 +6,9 @@ import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import { Redirect } from 'react-router';
 import Autosuggest from 'react-autosuggest';
 import AutoSuggestedTags from '../auto-suggested-tags';
-import './task-filters.css';
 import {CSVLink, CSVDownload} from 'react-csv';
+import { I18n } from 'react-i18next';
+import './task-filters.css';
 
 class TaskFilters extends Component {
   constructor() {
@@ -40,53 +41,58 @@ class TaskFilters extends Component {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
 
-    //const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li> : null;
+    //const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>{t('task.download-csv')}</CSVLink></li> : null;
     const downloadCSV = null; //TODO: Fix this
 
     return(
-      <div className="task-filters">
-      <ul className='main-filters'>
+      <I18n ns='translations'>
+      {
+      (t, { i18n }) => (
+        <div className="task-filters">
+        <ul className='main-filters'>
 
-        <li><NavLink isActive={(match, location) => {
-          return(
-          this.getFilterQuery(location) === 'taskType' &&
-          this.getFilterText(location) === '2')
-        }} to={{ pathname: '/', search: 'filter=taskType&text=2'}}>משמרות בארוע</NavLink></li>
+          <li><NavLink isActive={(match, location) => {
+            return(
+            this.getFilterQuery(location) === 'taskType' &&
+            this.getFilterText(location) === '2')
+          }} to={{ pathname: '/', search: 'filter=taskType&text=2'}}>{t('task.types.shifts')}</NavLink></li>
 
-        <li><NavLink isActive={(match, location) => {
-          return (this.getFilterQuery(location) === 'taskType' &&
-          this.getFilterText(location) === '1')
-        }} to={{ pathname: '/', search: 'filter=taskType&text=1'}}>תכנון ארוע</NavLink></li>
+          <li><NavLink isActive={(match, location) => {
+            return (this.getFilterQuery(location) === 'taskType' &&
+            this.getFilterText(location) === '1')
+          }} to={{ pathname: '/', search: 'filter=taskType&text=1'}}>{t('task.types.planning')}</NavLink></li>
 
-        <li><NavLink isActive={(match, location) => {
-          return(
-          this.getFilterQuery(location) === 'taskType' &&
-          this.getFilterText(location) === '3'
-          )
-        }} to={{ pathname: '/', search: 'filter=taskType&text=3'}}>מחנות נושא</NavLink></li>
+          <li><NavLink isActive={(match, location) => {
+            return(
+            this.getFilterQuery(location) === 'taskType' &&
+            this.getFilterText(location) === '3'
+            )
+          }} to={{ pathname: '/', search: 'filter=taskType&text=3'}}>{t('task.types.camps')}</NavLink></li>
 
-        <li><NavLink isActive={(match, location) => {
-          return(
-          this.getFilterQuery(location) === 'taskType' &&
-          this.getFilterText(location) === '4'
-          )
-        }} to={{ pathname: '/', search: 'filter=taskType&text=4'}}>מיצבי אמנות</NavLink></li>
+          <li><NavLink isActive={(match, location) => {
+            return(
+            this.getFilterQuery(location) === 'taskType' &&
+            this.getFilterText(location) === '4'
+            )
+          }} to={{ pathname: '/', search: 'filter=taskType&text=4'}}>{t('task.types.art')}</NavLink></li>
 
-        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>המשימות שלי</NavLink></li>
-        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>משימות פנויות</NavLink></li>
-        <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>כל המשימות בעולם</NavLink></li>
-        {downloadCSV}
-        <li>
+          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink></li>
+          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>{t('task.free-tasks')}</NavLink></li>
+          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>{t('task.all-tasks')}</NavLink></li>
+          {downloadCSV}
+          <li>
 
-        <AutoSuggestedTags
-          value = {this.state.label}
-          labels = { this.props.labels}
-          placeholder = 'חפשי משימה לפי תגיות'
-          onChange = {this.handleLabelChange} />
-      </li>
+          <AutoSuggestedTags
+            value = {this.state.label}
+            labels = { this.props.labels}
+            placeholder = {t('task.search-by-tags')}
+            onChange = {this.handleLabelChange} />
+        </li>
 
-      </ul>
-      </div>
+        </ul>
+        </div>
+      )}
+      </I18n>
     );
   }
 
