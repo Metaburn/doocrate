@@ -42,17 +42,17 @@ class TaskFilters extends Component {
     console.log("inCSV");
     let csvLink = undefined;
 
-    this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li>});
+    this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>Download CSV</CSVLink></li>});
   }
 
   render() {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
 
-    
+
     let downloadCSV = null;
     if (this.props.isAdmin) {
-      downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>הכן CSV</li>;
+      downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
     }
 
     return(
