@@ -13,7 +13,8 @@ class TaskFilters extends Component {
   constructor() {
     super(...arguments);
     this.state = {
-      label: []
+      label: [],
+      CSVLink: undefined
     };
 
     this.handleLabelChange = this.handleLabelChange.bind(this);
@@ -36,12 +37,22 @@ class TaskFilters extends Component {
     return params['text'];
   }
 
+  onCSVLink() {
+    console.log("inCSV");
+    let csvLink = undefined;
+
+    this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li>});
+  }
+
   render() {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
 
-    //const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>הורד CSV</CSVLink></li> : null;
-    const downloadCSV = null; //TODO: Fix this
+    
+    let downloadCSV = null;
+    if (this.props.isAdmin) {
+      downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>הכן CSV</li>;
+    }
 
     return(
       <div className="task-filters">
