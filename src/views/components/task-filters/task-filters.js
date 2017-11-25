@@ -49,16 +49,11 @@ class TaskFilters extends Component {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const { filter } = this.props;
 
-<<<<<<< HEAD
     
     let downloadCSV = null;
     if (this.props.isAdmin) {
       downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>הכן CSV</li>;
     }
-=======
-    //const downloadCSV = this.props.isAdmin ?  <li><CSVLink data={this.props.generateCSV()}>{t('task.download-csv')}</CSVLink></li> : null;
-    const downloadCSV = null; //TODO: Fix this
->>>>>>> 737d94b515b661a81989e2e0836f42131491e606
 
     return(
       <I18n ns='translations'>
