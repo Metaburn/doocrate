@@ -6,6 +6,7 @@ import './add-comment.css';
 import Img from 'react-image';
 import Button from '../button';
 import Textarea from 'react-textarea-autosize';
+import { I18n } from 'react-i18next';
 
 export class AddComment extends Component {
   constructor() {
@@ -20,24 +21,29 @@ export class AddComment extends Component {
   }
 
   render() {
-    
+
     return (
-      <div className='add-comment'>
-        <form onSubmit={this.handleSubmit} noValidate>
-          { this.renderHeader() }
-          { this.renderBody() }
-          { this.renderSubmit() }
-        </form>
-      </div>
+      <I18n ns='translations'>
+      {
+      (t, { i18n }) => (
+        <div className='add-comment'>
+          <form onSubmit={this.handleSubmit} noValidate>
+            { this.renderHeader() }
+            { this.renderBody(t) }
+            { this.renderSubmit() }
+          </form>
+        </div>
+      )}
+      </I18n>
     );
   }
 
-  renderBody() {
+  renderBody(t) {
     return ( <Textarea
       className='textarea-body'
       name='body'
       value={this.state['body']}
-      placeholder={'זה המקום לכתוב משהו. האם יש מישהו שאתה חושב שממלא המשימה צריך לדבר איתו? האם יש משהו שכדאי שממלא המשימה יידע?'}
+      placeholder={t('comments.placeholder')}
       ref={e => this['bodyInput'] = e}
       onChange={this.handleChange}
       onFocus={() => this.toggleShowHideSubmit(true) }
@@ -68,7 +74,7 @@ export class AddComment extends Component {
       creator: this.props.auth,
       created: new Date()
     });
-    
+
     this.setState({body: ''});
   }
 

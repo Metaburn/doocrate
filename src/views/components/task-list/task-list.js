@@ -6,7 +6,7 @@ import TaskItem from '../task-item/task-item';
 import './task-list.css';
 import Button from '../button';
 import InfiniteScroll from 'react-infinite-scroller';
-
+import { I18n } from 'react-i18next';
 class TaskList extends Component {
   constructor() {
     super(...arguments);
@@ -63,26 +63,31 @@ class TaskList extends Component {
   const hasMoreTasks = this.props.tasks?
     (this.state.pageSize * this.state.pageNumber) < this.props.tasks.size : true
     return (
-      <div className='task-list-container'>
-        <div className='task-list-header' name='task-list-header'>
-          <Button
-            className="button button-small add-task-button"
-            onClick={ this.props.createTask }>
-            הוסף משימה
-          </Button>
-        </div>
+      <I18n ns='translations'>
+        {
+        (t, { i18n }) => (
+        <div className='task-list-container'>
+          <div className='task-list-header' name='task-list-header'>
+            <Button
+              className="button button-small add-task-button"
+              onClick={ this.props.createTask }>
+              {t(`task.add-task`)}
+            </Button>
+          </div>
 
-        <div className='task-list'>
-        <InfiniteScroll
-            pageStart={0}
-            loadMore={this.loadMore}
-            hasMore={hasMoreTasks}
-            useWindow={false}
-            loader={<div className="loader">טוען ...</div>}>
-            { taskItems }
-        </InfiniteScroll>
+          <div className='task-list'>
+          <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadMore}
+              hasMore={hasMoreTasks}
+              useWindow={false}
+              loader={<div className="loader">{t('general.loading')}</div>}>
+              { taskItems }
+          </InfiniteScroll>
+          </div>
         </div>
-      </div>
+      )}
+      </I18n>
     );
   }
 

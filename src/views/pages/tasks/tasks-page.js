@@ -18,7 +18,7 @@ import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import {debounce} from 'lodash';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
-
+import i18n from '../../../i18n.js';
 import './tasks-page.css';
 
 export class TasksPage extends Component {
@@ -156,11 +156,11 @@ export class TasksPage extends Component {
 
     // TODO: Move to a better place
     // if (!this.isAdmin() && myTasks.size >= 20) {
-    //   this.props.showError('הגעת למכסת המשימות שניתן לייצר');
+    //   this.props.showError(i18n.t('task.maximum-reached'));
     //   return;
     // }
     if (!(this.isAdmin() || this.isGuide())) {
-      this.props.showError('יצירת משימות חדשות סגורה כעת');
+      this.props.showError(i18n.t('task.new-tasks-closed'));
       return;
     }
 
@@ -171,7 +171,7 @@ export class TasksPage extends Component {
       photoURL: this.props.auth.photoURL,
     }
 
-    this.props.showSuccess('משימה נוצרה בהצלחה');
+    this.props.showSuccess(i18n.t('task.created-successfully'));
 
     this.props.createTask(
       {creator , created: new Date()},
@@ -191,19 +191,19 @@ export class TasksPage extends Component {
 
     // TODO: Move to a better place
     // if(myAssignedTasks.size >= 5) {
-    //   this.props.showError('הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע');
+    //   this.props.showError(i18n.t('task.cant-take-messages-limit'));
     //   return;
     // }
 
     // Uncomment to restrict task assign on the client side only
 
     if(!this.isAdmin() && !this.isGuide()) {
-      this.props.showError('לא ניתן לקחת משימות כרגע');
+      this.props.showError(i18n.t('task.cant-take-messages'));
       return;
     }
 
     this.props.assignTask(task, this.props.auth);
-    this.props.showSuccess('💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪');
+    this.props.showSuccess(i18n.t('task.task-is-yours'));
   }
 
   unassignTask(task) {
@@ -211,9 +211,9 @@ export class TasksPage extends Component {
 
     if(this.isAdmin() || (this.isGuide() && isCreator)) {
       this.props.unassignTask(task);
-      this.props.showSuccess('האחריות הוסרה - המשימה הפכה להיות פנויה');
+      this.props.showSuccess(i18n.t('task.unassigned'));
     }else {
-      this.props.showError('רק מנהלים או מדריכים יכולים להסיר אחריות');
+      this.props.showError(i18n.t('task.only-managers-can-unassign'));
       return;
     }
   }

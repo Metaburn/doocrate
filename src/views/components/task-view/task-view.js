@@ -21,6 +21,7 @@ import Button from '../button';
 import CommentList from '../comment-list';
 import AddComment from '../add-comment/add-comment';
 import TaskViewHeader from '../task-view-header/task-view-header';
+import { I18n } from 'react-i18next';
 
 export class TaskView extends Component {
   constructor() {
@@ -140,48 +141,52 @@ export class TaskView extends Component {
     const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
     return (
-      <div className='task-view-container'>
-        <TaskViewHeader
-        task={ this.props.selectedTask }
-        canDeleteTask={ canDeleteTask }
-        selectTask={ this.props.selectTask }
-        assignTask={ this.props.assignTask }
-        unassignTask={ this.props.unassignTask }
-        removeTask={ this.props.removeTask }
-        showUnassignButton = { showUnassignButton }
-        />
-        <div className='task-view'>
-          <form onSubmit={this.handleSubmit} noValidate>
-            {this.renderInput(task, 'title', 'שם המשימה', canEditTask)}
-            {this.renderSelect(task, 'projectName', 'שם המחנה/מיצב', this.state.defaultProjectNames, canEditTask)}
-            {this.renderTextArea(task, 'description', 'תאור המשימה', canEditTask)}
-            <span>תומכ.ת</span> { this.renderSelect(task, 'circle', 'תומכ.ת', this.state.defaultCircle, canEditTask)}
-            <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask)} </div>
-            <div><span>סוג המשימה</span> { this.renderSelect(task, 'type', 'סוג המשימה', this.state.defaultType, canEditTask)}</div>
-            <div><span>אנשי קשר רלוונטיים</span> {this.renderTextArea(task, 'relevantContacts', 'אנשי קשר רלוונטיים', canEditTask)}</div>
-            <div><span>טלפון ממלא המשימה</span>{ this.renderInput(task, 'assigneePhone', 'טלפון ממלא המשימה', canEditTask) }</div>
-            <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', 'האם המשימה קריטית לקיום הארוע?', canEditTask) }</div>
-            <span>סטטוס</span> {this.renderTextArea(task, 'status', 'סטטוס המשימה', canEditTask)}
-            {this.renderTaskCreator(task) }
-          </form>
-          <span>תגובות</span>
-          { this.props.comments ?
-          <CommentList
-          task={task}
-          comments={this.props.comments}
-          auth={this.props.auth} /> : ''}
+      <I18n ns='translations'>
+      {
+      (t, { i18n }) => (
+        <div className='task-view-container'>
+          <TaskViewHeader
+          task={ this.props.selectedTask }
+          canDeleteTask={ canDeleteTask }
+          selectTask={ this.props.selectTask }
+          assignTask={ this.props.assignTask }
+          unassignTask={ this.props.unassignTask }
+          removeTask={ this.props.removeTask }
+          showUnassignButton = { showUnassignButton }
+          />
+          <div className='task-view'>
+            <form onSubmit={this.handleSubmit} noValidate>
+              {this.renderInput(task, 'title', t('task.name'), canEditTask)}
+              {this.renderTextArea(task, 'description', t('task.description'), canEditTask)}
+              <span>{t('task.mentor')}</span> { this.renderSelect(task, 'circle', t('task.mentor'), this.state.defaultCircle, canEditTask)}
+              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask)} </div>
+              <div><span>{t('task.type')}</span> { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask)}</div>
+              <div><span>{t('task.relevantContacts')}</span> {this.renderTextArea(task, 'relevantContacts', t('task.relevantContacts'), canEditTask)}</div>
+              <div><span>{t('task.assigneePhone')}</span>{ this.renderInput(task, 'assigneePhone', t('task.assigneePhone'), canEditTask) }</div>
+              <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
+              <span>{t('task.status')}</span> {this.renderTextArea(task, 'status', t('task.status'), canEditTask)}
+              {this.renderTaskCreator(t, task) }
+            </form>
+            <span>{t('comments.title')}</span>
+            { this.props.comments ?
+            <CommentList
+            task={task}
+            comments={this.props.comments}
+            auth={this.props.auth} /> : ''}
+          </div>
+          { this.renderAddComment() }
         </div>
-        { this.renderAddComment() }
-      </div>
+      )}
+      </I18n>
     );
   }
 
-  renderTaskCreator(task) {
+  renderTaskCreator(t, task) {
     if (!task.creator) return;
     const avatar = task.creator.photoURL ? <Img className='avatar' src={task.creator.photoURL} alt={task.creator.name}/> : '';
       return (
         <div>
-          <span>יוצר המשימה</span>
+          <span>{t('task.creator')}</span>
           <span className='avatar-creator' data-tip={task.creator.name}>
             <ReactTooltip type='light' effect='solid'/>
             { avatar }

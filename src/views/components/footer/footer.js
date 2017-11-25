@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
+import { I18n } from 'react-i18next';
 
 import './footer.css';
 
 
 const Footer = ({authenticated, signOut}) => (
   <footer className='footer'>
-    המערכת נכתבה 
-    <a href='https://github.com/metaburn/doocrate'>&nbsp;בקוד פתוח</a>
-    &nbsp;ומוגשת ב ❤ מאת
-     <a href='/about'>&nbsp;האנשים שיצרו את המערכת</a>
+    <I18n ns='translations'>
+        {
+        (t, { i18n }) => (
+          <div>
+            {t('footer.about')}
+            <a href='https://github.com/metaburn/doocrate'>&nbsp;{t('footer.opensource')}</a>
+            &nbsp;{t('footer.server-with-love')}
+            <a href='/about'>&nbsp;{t('footer.people')}</a>
+          </div>
+      )}
+    </I18n>
   </footer>
 );
 
