@@ -22,6 +22,7 @@ import CommentList from '../comment-list';
 import AddComment from '../add-comment/add-comment';
 import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
+import i18n from '../../../i18n.js';
 
 export class TaskView extends Component {
   constructor() {
@@ -53,11 +54,11 @@ export class TaskView extends Component {
       ],
       type: '',
       defaultType: [
-        { value: 1, label: 'תכנון ארוע' },
-        { value: 2, label: 'משמרות בארוע' },
-        { value: 3, label: 'מחנות נושא' },
-        { value: 4, label: 'מיצבי אמנות' },
-        { value: 5, label: 'אחר'}
+        { value: 1, label: i18n.t('task.types.planning')},
+        { value: 2, label: i18n.t('task.types.shifts')},
+        { value: 3, label: i18n.t('task.types.camps')},
+        { value: 4, label: i18n.t('task.types.art')},
+        { value: 5, label: i18n.t('task.types.other')}
       ],
       label: [],
       relevantContacts: '',
@@ -158,9 +159,9 @@ export class TaskView extends Component {
             <form onSubmit={this.handleSubmit} noValidate>
               {this.renderInput(task, 'title', t('task.name'), canEditTask)}
               {this.renderTextArea(task, 'description', t('task.description'), canEditTask)}
-              <span>{t('task.mentor')}</span> { this.renderSelect(task, 'circle', t('task.mentor'), this.state.defaultCircle, canEditTask)}
-              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask)} </div>
-              <div><span>{t('task.type')}</span> { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask)}</div>
+              <span>{t('task.mentor')}</span> { this.renderSelect(task, 'circle', t('task.mentor'), this.state.defaultCircle, canEditTask, t)}
+              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
+              <div><span>{t('task.type')}</span> { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}</div>
               <div><span>{t('task.relevantContacts')}</span> {this.renderTextArea(task, 'relevantContacts', t('task.relevantContacts'), canEditTask)}</div>
               <div><span>{t('task.assigneePhone')}</span>{ this.renderInput(task, 'assigneePhone', t('task.assigneePhone'), canEditTask) }</div>
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
@@ -204,7 +205,7 @@ export class TaskView extends Component {
       key='addComment' />)
   }
 
-  renderSelect(task, fieldName, placeholder, options, isEditable) {
+  renderSelect(task, fieldName, placeholder, options, isEditable, translation) {
     return (
       <Select
       type='text'
@@ -216,7 +217,7 @@ export class TaskView extends Component {
                 this.setState({ [fieldName]: val}) }}
       options={options}
       onBlur={this.handleSubmit}
-      noResultsText={'לא נמצאו תוצאות'}
+      noResultsText={translation('general.no-results-found')}
       searchable={ false }
       disabled = { !isEditable }/>
   );
@@ -253,7 +254,7 @@ export class TaskView extends Component {
     );
   }
 
-  renderLabel(isEditable) {
+  renderLabel(isEditable, translation) {
     const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
     const classNames = isEditable ? ' editable' : ''
     return (
@@ -262,7 +263,7 @@ export class TaskView extends Component {
       onChange={this.handleLabelChange}
       onlyUnique={true}
       addOnBlur={true}
-      inputProps={{ placeholder: showPlaceholder ? 'הכנס תגיות. לחץ על Enter בין תגית לתגית' : ''}}
+      inputProps={{ placeholder: showPlaceholder ? translation('task.input-tags') : ''}}
       disabled = { !isEditable }
       />
     )

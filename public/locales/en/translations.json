@@ -4,79 +4,82 @@
     "he-lang": "Hebrew"
   },
   "general": {
-    "loading": "Loading ..."
+    "loading": "Loading ...",
+    "no-results-found": "No results found"
   },
   "header": {
-    "disconnect": "התנתקי",
-    "me": "אני",
-    "my-space":"האזור האישי שלי"
+    "disconnect": "Disconnect",
+    "me": "Me",
+    "my-space":"Personal space"
   },
   "my-space": {
-    "role": "תפקידך",
-    "email": "אימייל",
-    "reports": "דוחות"
+    "role": "Role",
+    "email": "Email",
+    "reports": "Reports"
   },
   "task": {
-    "add-task": "הוסף משימה",
-    "my-tasks": "המשימות שלי",
-    "free-tasks": "משימות פנויות",
-    "all-tasks": "כל המשימות בעולם",
-    "take-responsibility": "קחי אחראיות על משימה זו",
-    "remove-responsibility" :"הסר אחריות",
-    "delete" :"מחק משימה",
-    "critical": "משימה קריטית לקיום הארוע",
-    "name": "שם המשימה",
-    "description": "תאור המשימה",
-    "mentor": "תומכ.ת",
-    "type": "סוג המשימה",
-    "relevantContacts": "אנשי קשר רלוונטיים",
-    "assigneePhone": "טלפון ממלא המשימה",
-    "is-critical": "האם המשימה קריטית לקיום הארוע?",
-    "status": "סטטוס המשימה",
-    "creator": "יוצר המשימה",
-    "search-by-tags": "חפשי משימה לפי תגיות",
-    "unnamed-task": "משימה חדשה ללא שם",
-    "created-successfully": "משימה נוצרה בהצלחה",
-    "cant-take-messages": "לא ניתן לקחת משימות כרגע",
-    "cant-take-messages-limit": "הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע",
-    "task-is-yours": "💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪",
-    "unassigned": "האחריות הוסרה - המשימה הפכה להיות פנויה",
-    "only-managers-can-unassign": "רק מנהלים או מדריכים יכולים להסיר אחריות",
-    "maximum-reached": "הגעת למכסת המשימות שניתן לייצר",
-    "new-tasks-closed": "יצירת משימות חדשות סגורה כעת",
+    "add-task": "Add a new task",
+    "my-tasks": "My Tasks",
+    "free-tasks": "Free tasks",
+    "all-tasks": "All Tasks",
+    "take-responsibility": "Take responsibility for this task",
+    "remove-responsibility" :"Remove responsibility for this task",
+    "delete" :"Delete task",
+    "critical": "Critical task",
+    "name": "Task name",
+    "description": "Task description",
+    "mentor": "Mentor",
+    "type": "Task type",
+    "relevantContacts": "Relevant contacts",
+    "assigneePhone": "Task owners phone",
+    "is-critical": "Is task critical for the event?",
+    "status": "Task Status",
+    "creator": "Task Creator",
+    "search-by-tags": "Search task by tags",
+    "unnamed-task": "Unnamed Task",
+    "created-successfully": "Task created successfully",
+    "cant-take-messages": "Cannot take tasks at the moment",
+    "cant-take-messages-limit": "You've reach the limit of task for one user, cannot take more tasks at this point",
+    "task-is-yours": "💪❤️️️️️️️ Hurray, the task is yours ❤️💪",
+    "unassigned": "Task responsibility removed, task is now free",
+    "only-managers-can-unassign": "Only managers or mentors can remove responsibility",
+    "maximum-reached": "You've reached the max amount of tasks you can create",
+    "new-tasks-closed": "New task creation is currently on hold",
+    "input-tags": "Input Tags. Press Enter to accept Tags",
     "types": {
-      "planning": "תכנון ארוע",
-      "shifts": "משמרות בארוע",
-      "camps": "מחנות נושא",
-      "art": "מיצבי אמנות"
+      "planning": "Event planning",
+      "shifts": "Shifts",
+      "camps": "Camps",
+      "art": "Art",
+      "other": "Other"
     }
   },
   "admin": {
-    "download-csv": "הורד CSV"
+    "download-csv": "Download CSV"
   },
   "comments": {
-    "title": "תגובות",
-    "placeholder": "זה המקום לכתוב משהו. האם יש מישהו שאתה חושב שממלא המשימה צריך לדבר איתו? האם יש משהו שכדאי שממלא המשימה יידע?"
+    "title": "Comments",
+    "placeholder": "This is the place to comment. Is there someone you think the task owner should talk to? Is there anything they should know?"
   },
   "welcome": {
-    "heading": "ברוכים הבאות לדואוקרט",
-    "heading2": "מערכת לניהול ארועי יצירה משותפת",
-    "registration": "בהרשמה כאן תכנסו למערכת ניהול המשימות השיתופי של מידברנרות",
-    "about": "קצת על המערכת",
-    "before-start": "כמה נקודות חשובות לפי שמתחילים:",
-    "instruction1": "כל אחד מוזמן להירשם לכל משימה (כל עוד היא פנויה)",
-    "instruction2": "נבקש שתרשמו למשימה אחת בלבד כדי לאפשר לכולם להשתתף ",
-    "instruction3": "כל אחד יכול להציע כל משימה (גם בלי להירשם למשימה שהציע)",
-    "instruction4": "האירוע יתקיים רק אם נבצע את כל המשימות הקריטיות לקיומו",
-    "instruction5": "כל השאר - מה שלא נעשה לא יקרה :)",
-    "instruction6": "קחו חלק בניסוי",
-    "google-login": "התחברי עם גוגל",
-    "facebook-login": "התחברי עם פייסבוק"
+    "heading": "Welcome to the doocrate",
+    "heading2": "A co-creational events task management system",
+    "registration": "Upon registering you will be transferred to the task system",
+    "about": "About the system",
+    "before-start": "A few important notes before we begin:",
+    "instruction1": "Anyone can take ownership of a task (As long as it's unassigned)",
+    "instruction2": "Please only take ownership of one task to allow everyone to participate",
+    "instruction3": "Anyone can offer any task, even without registering to the system",
+    "instruction4": "The event will only happen if all critical tasks are met",
+    "instruction5": "Everything else, that we won't do - Won't happen :)",
+    "instruction6": "Take part in the experiment",
+    "google-login": "Log in with Google",
+    "facebook-login": "Log in with Facebook"
   },
   "footer": {
-    "about": "המערכת נכתבה",
-    "opensource": "בקוד פתוח",
-    "server-with-love": "ומוגשת ב ❤ מאת",
-    "people": "האנשים שיצרו את המערכת"
+    "about": "This system was written as",
+    "opensource": "Open source",
+    "server-with-love": "And served with ❤ by",
+    "people": "the humans who crafted this system"
   }
 }

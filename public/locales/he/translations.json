@@ -4,7 +4,8 @@
     "he-lang": "עברית"
   },
   "general": {
-    "loading": "טוען ..."
+    "loading": "טוען ...",
+    "no-results-found": "לא נמצאו תוצאות"
   },
   "header": {
     "disconnect": "התנתקי",
@@ -44,11 +45,13 @@
     "only-managers-can-unassign": "רק מנהלים או מדריכים יכולים להסיר אחריות",
     "maximum-reached": "הגעת למכסת המשימות שניתן לייצר",
     "new-tasks-closed": "יצירת משימות חדשות סגורה כעת",
+    "input-tags": "הכנס תגיות. לחץ על Enter בין תגית לתגית",
     "types": {
       "planning": "תכנון ארוע",
       "shifts": "משמרות בארוע",
       "camps": "מחנות נושא",
-      "art": "מיצבי אמנות"
+      "art": "מיצבי אמנות",
+      "other": "אחר"
     }
   },
   "admin": {
