@@ -52,13 +52,7 @@ class TaskList extends Component {
         />
       );
     });
-  }
-  else{
-    return (
-      <div className='task-list-loader'>
-      </div>
-    );
-  }
+    }
 
   const hasMoreTasks = this.props.tasks?
     (this.state.pageSize * this.state.pageNumber) < this.props.tasks.size : true
