@@ -155,14 +155,14 @@ export class TasksPage extends Component {
     const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
 
     // TODO: Move to a better place
-    // if (!this.isAdmin() && myTasks.size >= 20) {
-    //   this.props.showError(i18n.t('task.maximum-reached'));
-    //   return;
-    // }
-    if (!(this.isAdmin() || this.isGuide())) {
-      this.props.showError(i18n.t('task.new-tasks-closed'));
+    if (!this.isAdmin() && myTasks.size >= 20) {
+      this.props.showError(i18n.t('task.maximum-reached'));
       return;
     }
+    //if (!(this.isAdmin() || this.isGuide())) {
+    //  this.props.showError(i18n.t('task.new-tasks-closed'));
+    //  return;
+    //}
 
     let creator = {
       id: this.props.auth.id,
@@ -197,10 +197,10 @@ export class TasksPage extends Component {
 
     // Uncomment to restrict task assign on the client side only
 
-    if(!this.isAdmin() && !this.isGuide()) {
-      this.props.showError(i18n.t('task.cant-take-messages'));
-      return;
-    }
+    //if(!this.isAdmin() && !this.isGuide()) {
+    //  this.props.showError(i18n.t('task.cant-take-messages'));
+    //  return;
+    //}
 
     this.props.assignTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.task-is-yours'));
