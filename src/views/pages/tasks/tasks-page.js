@@ -4,19 +4,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import { Redirect } from 'react-router';
 import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
 import { projectActions } from 'src/projects';
-import { authActions, getAuth } from 'src/auth';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import { commentsActions } from 'src/comments';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
-import classNames from 'classnames';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import {debounce} from 'lodash';
+import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
@@ -68,6 +66,13 @@ export class TasksPage extends Component {
   componentWillMount() {
     this.props.loadTasks();
     this.props.loadLabels();
+
+    // Sets the default loading page
+    if(!this.props.filterType && firebaseConfig.defaultPageToLoad) {
+      this.props.history.push({
+        search: firebaseConfig.defaultPageToLoad
+      })
+    }
     //this.props.loadProjects();
   }
 
@@ -249,6 +254,7 @@ export class TasksPage extends Component {
         taskParameter += `&text=${filterText}`;
       }
     }
+
     this.props.history.push(taskParameter);
   }
 

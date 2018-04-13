@@ -20,6 +20,7 @@ Quick Start
 $ git clone https://github.com/metaburn/doocrate.git
 $ cd doocrate
 $ npm install
+$ npm run copy-staging
 $ npm start
 ```
 

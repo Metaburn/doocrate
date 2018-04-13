@@ -3,5 +3,7 @@ export const firebaseConfig = {
   authDomain: 'doocrate.firebaseapp.com',
   databaseURL: 'https://doocrate.firebaseio.com/',
   storageBucket: '',
-  projectId: 'doocrate'
+  projectId: 'doocrate',
+  // This loads the Event planning page - Set to 2,3 to change it
+  defaultPageToLoad: '?filter=taskType&text=1'
 };
