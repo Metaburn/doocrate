@@ -7,15 +7,13 @@ const Firestore = require('@google-cloud/firestore');
 const MAX_TASK_PER_CREATOR = 80;
 
 // Limit the number of tasks by creator
-exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate(event => {
+exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate((snap, context) => {
   console.log("On create");
-  const parentRef = event.data.ref.parent;
-  const task = event.data.data();
+  const parentRef = snap.ref.parent;
+  const task = snap.data()
 
   // If delete occur or this is an existing record or no creator
-  if ( event.data.previous ||
-      !event.data || !task ||
-      !task.creator || !task.creator.id)
+  if (!task || !task.creator || !task.creator.id)
     return;
 
   const creatorId = task.creator.id;
@@ -23,7 +21,7 @@ exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{ta
   return parentRef.where('creator.id',"==", creatorId).get().then(snapshot => {
 
     if(snapshot.size >= MAX_TASK_PER_CREATOR) {
-      return event.data.ref.delete();
+      return snap.ref.delete();
     }
   });
 });
@@ -46,14 +44,14 @@ const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
 const firestore = new Firestore();
 
-exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite(event => {
+exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite((change, context)=> {
 
   if(!shouldSendNotifications) {
     console.log('send notifications turned off');
     return;
   }
 
-  const comment = event.data.data();
+  const comment = change.after.data();
 
   // Check for deleted comment
   if(!comment || !comment.taskId) {
@@ -79,8 +77,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
         <h3>תוכן: ${comment.body}</h3> <br/>
         <a href='https://doocrate.midburnerot.com/task/${comment.taskId}'>לחץ כאן למעבר למשימה</a>
         <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-burnerot@gmail.com
-        <br>
-        דואוקרט
+        <br>        דואוקרט
         </div>
       `;
 

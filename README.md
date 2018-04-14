@@ -20,6 +20,9 @@ Quick Start
 $ git clone https://github.com/metaburn/doocrate.git
 $ cd doocrate
 $ npm install
+$ cd functions
+$ npm install
+$ cd ..
 $ npm run copy-staging
 $ npm start
 ```
@@ -121,7 +124,7 @@ by calling `npm run backup`
 |---|---|
 |`npm start`|Start webpack development server @ `localhost:3000`|
 |`npm backup`|Backup to a local database|
-|`npm deploy:staging`|Build and deploy to staging|
-|`npm deploy:production`|Build and deploy to production|
+|`npm run deploy:staging`|Build and deploy to staging|
+|`npm run deploy:production`|Build and deploy to production|
 |`npm run build`|Build the application to `./build` directory|
 |`npm test`|Test the application; watch for changes and retest|
