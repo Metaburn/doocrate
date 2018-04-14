@@ -145,7 +145,7 @@ export class TaskView extends Component {
       <I18n ns='translations'>
       {
       (t, { i18n }) => (
-        <div className='task-view-container'>
+        <div className='task-view-container' dir={t('lang-dir')}>
           <TaskViewHeader
           task={ this.props.selectedTask }
           canDeleteTask={ canDeleteTask }

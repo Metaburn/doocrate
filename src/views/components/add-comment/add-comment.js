@@ -30,7 +30,7 @@ export class AddComment extends Component {
           <form onSubmit={this.handleSubmit} noValidate>
             { this.renderHeader() }
             { this.renderBody(t) }
-            { this.renderSubmit() }
+            { this.renderSubmit(t) }
           </form>
         </div>
       )}
@@ -87,10 +87,10 @@ export class AddComment extends Component {
     );
   }
 
-  renderSubmit() {
+  renderSubmit(t) {
     return (
       <input className={`button button-small button-add-comment ${this.state.showHideSideSubmit}` }
-      type="submit" value="הוסף הערה" />);
+      type="submit" value={t('comments.add-comment')}/>);
   }
 
 }

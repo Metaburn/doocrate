@@ -7,6 +7,7 @@ import Moment from 'react-moment';
 import 'moment/locale/he';
 import 'moment-timezone';
 import Linkify from 'react-linkify';
+import { I18n } from 'react-i18next';
 
 export class CommentItem extends Component {
   constructor() {
@@ -18,20 +19,26 @@ export class CommentItem extends Component {
     const { comment } = this.props;
 
     return (
-      <div className='comment-item'>
-        {this.renderHeader(comment)}
-        {this.renderBody(comment)}
-      </div>
+      <I18n ns='translations'>
+        {
+          (t, { i18n }) => (
+          <div className='comment-item'>
+            {this.renderHeader(t, comment)}
+            {this.renderBody(comment)}
+          </div>
+          )
+        }
+      </I18n>
     );
   }
 
-  renderHeader(comment) {
+  renderHeader(t, comment) {
     if (!comment.creator) return;
     const { creator } = comment;
     const avatar = creator.photoURL ? <Img className='avatar' src={creator.photoURL} alt={comment.creator.name}/> : '';
     return (
       <div className='comment-item-creator'>
-        <span>{ avatar } { creator.name } <Moment locale='he' fromNow>{comment.created}</Moment></span>
+        <span>{ avatar } { creator.name } <Moment locale={t('lang')} fromNow>{comment.created}</Moment></span>
       </div>
     );
   }

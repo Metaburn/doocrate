@@ -118,6 +118,9 @@ Firestore doesnt yet support backup natively
 so we use this tool `npm install -g firestore-backup`
 by calling `npm run backup`
 
+## Translations
+You can find translations under `public/locales/`
+
 ## NPM Commands
 
 |Script|Description|
