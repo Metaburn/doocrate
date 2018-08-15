@@ -36,3 +36,5 @@ src/firebase/config.js
 __MACOSX/
 .DS_Store
 Thumbs.db
+
+.firebase

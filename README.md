@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/r-park/todo-react-redux.svg?style=shield&circle-token=6caf8c493bd66544717ff9a47ae01d8be036e53c)](https://circleci.com/gh/r-park/todo-react-redux)
 
 
-# Teal Doocrate
+# Doocrate
 Try the demo at https://doocrate2.firebaseapp.com.
 A task management system which allows user to self assign themself
 So normally you don't have permission unless you create a task or
@@ -17,14 +17,14 @@ Quick Start
 -----------
 
 ```shell
-$ git clone https://github.com/metaburn/doocrate.git
-$ cd doocrate
-$ npm install
-$ cd functions
-$ npm install
-$ cd ..
-$ npm run copy-staging
-$ npm start
+git clone https://github.com/metaburn/doocrate.git
+cd doocrate
+npm install
+cd functions
+npm install
+cd ..
+npm run copy-staging
+npm start
 ```
 
 Admins
@@ -35,13 +35,20 @@ Import the file under
 `assets/database-example.json`
 and add the uid of the app admins
 
-## Deploying to Firebase
+## Deploying a new version
 #### Prerequisites:
 - Create a free Firebase account at https://firebase.google.com
 - Create a project from your [Firebase account console](https://console.firebase.google.com)
-- Configure the authentication providers for your Firebase project from your Firebase account console
+- Configure the authentication providers by going to: 
+  Your firebase project->Authentication->Set up sign-in method-> Facebook -> Enable
+  (Go to http://developers.facebook.com/ and My Apps-> Create a new app. Use that app id and app secret. Add under your facebook app Add a new Facebook Login and set the Valid OAuth Redirect URIs to the one firebase gives youA)
+  Then for google perform -> Google -> Enable - set a project name
+
+## Create new firestore database
+Go to Database->Create new Firestore database and set the default settings
 
 #### Configure this app with your project-specific details:
+edit the file .firebaserc
 ```json
 // .firebaserc
 
@@ -52,8 +59,9 @@ and add the uid of the app admins
 }
 ```
 
+Edit `config.production.js` and `config.js` to be set to
 ```javascript
-// src/firebase/config.js
+// src/firebase/config.production.js
 
 export const firebaseConfig = {
   apiKey: 'your api key',
@@ -64,9 +72,9 @@ export const firebaseConfig = {
 ```
 
 ## Deploy command
-`deploy:staging`
+`npm run deploy:staging`
 OR 
-`deploy:production`
+`npm run deploy:production`
 Will build - use the correct config file and deploy
 
 #### Staging
@@ -75,22 +83,11 @@ You can also set staging env and use:
 Then run like
 `npm run build-staging`
 `firebase use` and choose staging
-`firebase deploy`
+`npm run deploy:staging`
 
 #### Install firebase-tools:
 ```shell
-$ npm install -g firebase-tools
-```
-
-#### Build and deploy the app:
-```shell
-$ cd functions
-$ npm install
-$ cd ..
-$ npm run build
-$ firebase login
-$ firebase use default
-$ firebase deploy
+npm install -g firebase-tools
 ```
 
 ## Setting up mail
@@ -106,7 +103,29 @@ firebase functions:config:set email.send_notifications='true'
 firebase functions:config:set email.from='Doocrate <noreply@midburnerot.com>'
 firebase functions:config:set email.domain='midburnerot.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
+firebase deploy --only functions
 ```
+
+#### Build and deploy the app:
+```shell
+cd functions
+npm install
+cd ..
+npm run build
+firebase login
+firebase use default
+npm run deploy:production
+// And if you want only to deploy without building you can run firebase deploy
+```
+
+## Creating index
+After the system is up:
+Create a new task And also create a new comment.
+If you open the console you would get a link with something like:
+```
+database.js:944 Uncaught Error in onSnapshot: Error: The query requires an index. You can create it here: https://console.firebase.google.com/project/doocrate-2018/database/firestore/indexes?create_index=Eghjb21tZW50cxoKCgZ0YXNrSWQQAhoLCgdjcmVhdGVkEAIaDAoIX19uYW1lX18QAg
+```
+Click that link to create the indexing for it
 
 ## Labels Colors
 In order to create labels colors you need to create a collection called 'labels' with documents like so:
@@ -114,9 +133,16 @@ Id - The actual tag name - for example - "art", Then inside have a field "name" 
 
 
 ## Backup
-Firestore doesnt yet support backup natively
-so we use this tool `npm install -g firestore-backup`
-by calling `npm run backup`
+To backup you first need to create a new multi regional bucket - for example - doocrate-new-backups
+
+Then, Run the following command to backup - 
+`gcloud alpha firestore export gs://doocrate-new-backups`
+
+## Restore from backup
+Import all by calling `gcloud alpha firestore import gs://[BUCKET_NAME]/[EXPORT_PREFIX]/` where `[BUCKET_NAME]` and `[EXPORT_PREFIX]`
+point to the location of your export files. For example - `gcloud alpha firestore import gs://exports-bucket/2017-05-25T23:54:39_76544/`
+
+Import a specific collection by calling: `gcloud alpha firestore import --collection-ids='[COLLECTION_ID_1]','[COLLECTION_ID_2]' gs://[BUCKET_NAME]/[EXPORT_PREFIX]/`
 
 ## Translations
 You can find translations under `public/locales/`
