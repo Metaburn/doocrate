@@ -31,6 +31,11 @@ Admins
 -----
 Admins can edit any task.
 
+Navigate to users table to get the user UID
+Create a collection named `admins`
+Then a document ID set to the user UID for example - 3x1jMQtwuHTVfnU31Ad3r7bWUnX2
+and you can add a field `name` that will say who is that admin
+
 Import the file under
 `assets/database-example.json`
 and add the uid of the app admins
@@ -128,8 +133,11 @@ database.js:944 Uncaught Error in onSnapshot: Error: The query requires an index
 Click that link to create the indexing for it
 
 ## Labels Colors
+Create a collection named
+`labels`
 In order to create labels colors you need to create a collection called 'labels' with documents like so:
-Id - The actual tag name - for example - "art", Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
+Set for `Document Id` - The actual tag name - for example - "art"
+Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
 
 
 ## Backup

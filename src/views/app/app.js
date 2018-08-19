@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {BrowserRouter as Router, Route, withRouter, Switch } from 'react-router-dom';
 
+import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
 import Header from '../components/header';
 import Footer from '../components/footer';
@@ -16,27 +17,33 @@ import AboutPage from '../pages/about';
 import ReportsPage from '../pages/reports';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
+import i18n from '../../i18n.js';
 
 const App = ({auth, signOut}) => (
-  <div>
-    <Header
-      auth={auth}
-      signOut={signOut}
-    />
+  <I18n ns='translations'>
+    {
+      (t, { i18n }) => (
+    <div dir={t('lang-dir')}>
+      <Header
+        auth={auth}
+        signOut={signOut}
+      />
 
-    <main>
-      <Switch>
-        <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
-        <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
-        <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
-        <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
-        <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>
-        <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
-        <Route component={NotFound}/>
-      </Switch>
-    </main>
-    <Footer />
-  </div>
+      <main>
+        <Switch>
+          <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
+          <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>
+          <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
+          <Route component={NotFound}/>
+        </Switch>
+      </main>
+      <Footer />
+    </div>
+      )}
+  </I18n>
 );
 
 App.propTypes = {
