@@ -31,26 +31,9 @@ export class TaskView extends Component {
     this.state = {
       title: '',
       description: '',
-      circle: '',
       projectName: null,
       defaultProjectNames: [
         //TODO : add projects
-      ],
-      defaultCircle: [
-        { value: 'אור', label: 'אור' },
-        { value: 'אמיר', label: 'אמיר'},
-        { value: 'מיכאל', label: 'מיכאל'},
-        { value: 'מיה חסקל ושחר נאמן', label: 'מיה חסקל ושחר נאמן'},
-        { value: 'פלי = מתן אמיר', label: 'פלי = מתן אמיר'},
-        { value: 'ליהי אדיר', label: 'ליהי אדיר'},
-        { value: 'ניצן עמיתי', label: 'ניצן עמיתי'},
-        { value: 'יסמין נחום', label: 'יסמין נחום'},
-        { value: 'שחר גרנות', label: 'שחר גרנות'},
-        { value: 'אבינועם דורון', label: 'אבינועם דורון'},
-        { value: 'שרון אילון', label: 'שרון אילון'},
-        { value: 'דניאל מוראל', label: 'דניאל מוראל'},
-        { value: 'טלוטן', label: 'טלוטן'},
-        { value: 'מיטל ואוריה', label: 'מיטל ואוריה'},
       ],
       type: '',
       defaultType: [
@@ -62,8 +45,6 @@ export class TaskView extends Component {
       ],
       label: [],
       relevantContacts: '',
-      assigneePhone: '',
-      status: '',
       isCritical: false
     }
 
@@ -90,9 +71,8 @@ export class TaskView extends Component {
 
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
-    let { id, title, description, circle, type, projectName,
-      label, relevantContacts,
-      assigneePhone, status, isCritical, dueDate, createdDate,
+    let { id, title, description, type, projectName,
+      label, relevantContacts, isCritical, dueDate, createdDate,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
@@ -104,11 +84,8 @@ export class TaskView extends Component {
           id: id || '',
           title: title || '',
           description:description || '',
-          circle:circle || '',
           label: labelAsArray || [],
           relevantContacts:relevantContacts || '',
-          assigneePhone:assigneePhone || '',
-          status: status || '',
           isCritical: isCritical || false,
           createdDate: createdDate || '',
           dueDate: dueDate || null,
@@ -159,13 +136,10 @@ export class TaskView extends Component {
             <form onSubmit={this.handleSubmit} noValidate>
               {this.renderInput(task, 'title', t('task.name'), canEditTask)}
               {this.renderTextArea(task, 'description', t('task.description'), canEditTask)}
-              <span>{t('task.mentor')}</span> { this.renderSelect(task, 'circle', t('task.mentor'), this.state.defaultCircle, canEditTask, t)}
-              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
               <div><span>{t('task.type')}</span> { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}</div>
+              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
               <div><span>{t('task.relevantContacts')}</span> {this.renderTextArea(task, 'relevantContacts', t('task.relevantContacts'), canEditTask)}</div>
-              <div><span>{t('task.assigneePhone')}</span>{ this.renderInput(task, 'assigneePhone', t('task.assigneePhone'), canEditTask) }</div>
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
-              <span>{t('task.status')}</span> {this.renderTextArea(task, 'status', t('task.status'), canEditTask)}
               {this.renderTaskCreator(t, task) }
             </form>
             <span>{t('comments.title')}</span>
@@ -309,11 +283,8 @@ export class TaskView extends Component {
     const fieldsToUpdate = {
       title: this.state.title,
       description: this.state.description,
-      circle: this.state.circle,
       label: labelAsObject,
       relevantContacts: this.state.relevantContacts,
-      assigneePhone: this.state.assigneePhone,
-      status: this.state.status,
       isCritical: this.state.isCritical,
       type: this.state.type,
       projectName: this.state.projectName

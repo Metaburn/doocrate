@@ -5,7 +5,6 @@ export const Task = new Record({
   id: null,
   title: null,
   assignee: null,
-  circle: null,
   type: null,
   projectName: null,
   label: { }, //TODO: perhaps null is better here
@@ -16,7 +15,5 @@ export const Task = new Record({
   creatorSpecialComments: null,
   communitySpecialComments: null,
   relevantContacts: null,
-  assigneePhone: null, //TODO: might be better to put under user
-  status: null,
   isCritical: false
 });

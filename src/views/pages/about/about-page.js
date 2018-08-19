@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Button from 'src/views/components/button';
-import Img from 'react-image';
-import Icon from 'src/views/components/icon';
 import AboutCarosel from 'src/views/components/about-carousel';
 
 import './about-page.css';
