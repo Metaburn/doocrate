@@ -31,7 +31,6 @@
     "name": "Task name",
     "description": "Task description",
     "type": "Task type",
-    "relevantContacts": "Relevant contacts",
     "is-critical": "Is task critical for the event?",
     "creator": "Task Creator",
     "search-by-tags": "Search task by tags",
@@ -44,7 +43,8 @@
     "only-managers-can-unassign": "Only managers can remove responsibility",
     "maximum-reached": "You've reached the max amount of tasks you can create",
     "new-tasks-closed": "New task creation is currently on hold",
-    "input-tags": "Input Tags. Press Enter to accept Tags",
+    "automatic-tags": "Popular tags (Choose at least one):",
+    "input-tags": "Input Custom Tags. Press Enter to accept",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",

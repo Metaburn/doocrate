@@ -64,7 +64,7 @@ edit the file .firebaserc
 }
 ```
 
-Edit `config.production.js` and `config.js` to be set to
+Edit `config.production.js` and `app-config.js` to be set to
 ```javascript
 // src/firebase/config.production.js
 
@@ -139,6 +139,8 @@ In order to create labels colors you need to create a collection called 'labels'
 Set for `Document Id` - The actual tag name - for example - "art"
 Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
 
+# Labels
+Under `src/config/app-config` you have the popular labels that would appear when someone creates a task
 
 ## Backup
 To backup you first need to create a new multi regional bucket - for example - doocrate-new-backups

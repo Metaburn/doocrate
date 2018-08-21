@@ -14,6 +14,5 @@ export const Task = new Record({
   description: null,
   creatorSpecialComments: null,
   communitySpecialComments: null,
-  relevantContacts: null,
   isCritical: false
 });

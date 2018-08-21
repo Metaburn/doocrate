@@ -1,0 +1,27 @@
+@import 'views/styles/shared';
+
+
+.tags-suggestions {
+  button {
+    border: none;
+    margin-bottom: 0.9em;
+    padding: 2px;
+  }
+
+  li {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 400;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    border: 1px solid #999;
+
+    &:hover {
+      background-color: #cde69c;
+      color: #638421;
+      border: 1px solid #a5d24a;
+    }
+  }
+  margin-bottom: 10px;
+}

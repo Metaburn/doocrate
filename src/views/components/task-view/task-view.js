@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { ReactDom } from 'react-dom';
-import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -19,10 +18,12 @@ import 'react-tagsinput/react-tagsinput.css';
 import Select from 'react-select';
 import Button from '../button';
 import CommentList from '../comment-list';
+import TagsSuggestions from '../tags-suggestions';
 import AddComment from '../add-comment/add-comment';
 import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
+import { appConfig } from 'src/config/app-config'
 
 export class TaskView extends Component {
   constructor() {
@@ -44,12 +45,12 @@ export class TaskView extends Component {
         { value: 5, label: i18n.t('task.types.other')}
       ],
       label: [],
-      relevantContacts: '',
       isCritical: false
     }
 
     this.handleChange = this.handleChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
+    this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -72,7 +73,7 @@ export class TaskView extends Component {
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, type, projectName,
-      label, relevantContacts, isCritical, dueDate, createdDate,
+      label, isCritical, dueDate, createdDate,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
@@ -85,7 +86,6 @@ export class TaskView extends Component {
           title: title || '',
           description:description || '',
           label: labelAsArray || [],
-          relevantContacts:relevantContacts || '',
           isCritical: isCritical || false,
           createdDate: createdDate || '',
           dueDate: dueDate || null,
@@ -136,9 +136,19 @@ export class TaskView extends Component {
             <form onSubmit={this.handleSubmit} noValidate>
               {this.renderInput(task, 'title', t('task.name'), canEditTask)}
               {this.renderTextArea(task, 'description', t('task.description'), canEditTask)}
-              <div><span>{t('task.type')}</span> { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}</div>
+              <div className='instruction'><span>{t('task.type')}</span></div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}
+              <div className='instruction'><span>{t('task.automatic-tags')}</span></div>
+              <div>
+                <TagsSuggestions
+                  tags={appConfig.popularTags}
+                  onTagSelected={(tag) => {
+                    this.handleAddLabel(tag);
+                    this.updateStateByProps(this.props); //TODO - maybe add bugs
+                  }}
+                />
+              </div>
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
-              <div><span>{t('task.relevantContacts')}</span> {this.renderTextArea(task, 'relevantContacts', t('task.relevantContacts'), canEditTask)}</div>
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
               {this.renderTaskCreator(t, task) }
             </form>
@@ -229,7 +239,7 @@ export class TaskView extends Component {
   }
 
   renderLabel(isEditable, translation) {
-    const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
+    const showPlaceholder = true;
     const classNames = isEditable ? ' editable' : ''
     return (
       <TagsInput className={`react-tagsinput-changing${classNames}`}
@@ -267,8 +277,15 @@ export class TaskView extends Component {
     });
   }
 
+  handleAddLabel(label) {
+    var newLabels = this.state.label
+    newLabels.push(label)
+    this.handleLabelChange(newLabels)
+  }
+
   handleLabelChange(label) {
     this.setState({label})
+    this.handleSubmit() // TODO: might not be good as we want to have initially a save button
   }
 
   handleKeyUp(event) {
@@ -278,13 +295,14 @@ export class TaskView extends Component {
   }
 
   handleSubmit(event) {
-    event.preventDefault();
+    if(event) {
+      event.preventDefault();
+    }
     let labelAsObject = this.arrayToObject(this.state.label);
     const fieldsToUpdate = {
       title: this.state.title,
       description: this.state.description,
       label: labelAsObject,
-      relevantContacts: this.state.relevantContacts,
       isCritical: this.state.isCritical,
       type: this.state.type,
       projectName: this.state.projectName

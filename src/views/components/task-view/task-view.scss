@@ -9,6 +9,17 @@
   z-index: 10;
   font-size: 18px;
 
+  .instruction {
+    font-size: 16px;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+
   .avatar {
     margin: 0 20px;
     width: 40px;
