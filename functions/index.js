@@ -68,7 +68,8 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
     function getEmailParams(toEmail) {
       const mailOptions = {
         from: fromEmail,
-        to: toEmail
+        to: toEmail,
+        'h:Reply-To': comment.creator.email
       };
 
 
