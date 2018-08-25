@@ -59,7 +59,7 @@ export class SetUserInfo extends Component {
         {
           (t, { i18n }) => (
             <Modal open={isOpen} onClose={this.onCloseModal} center>
-              <div className='set-user-info'>
+              <div className='set-user-info' dir={t('lang-dir')}>
                 <div className='modal-content'>
                   {this.renderHeader(t, userInfo)}
                   {this.renderBody(t, userInfo)}
