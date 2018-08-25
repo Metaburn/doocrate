@@ -95,7 +95,7 @@ function getIsGuide(authUser) {
 // TODO - instead of await that waits for all users
 // We should load the interface and then make another call - for faster loading
 function getUserInfo(authUser) {
-  if(!getUserInfo) {
+  if(!authUser) {
     return new Promise( (resolve, reject) => {
       resolve(null);
     })
