@@ -35,7 +35,7 @@ const App = ({auth, signOut}) => (
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
           <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
-          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>
+          <RequireAuthRoute authenticated={authj && auth.authenticated} path="/reports" component={ReportsPage}/>
           <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
           <Route component={NotFound}/>
         </Switch>

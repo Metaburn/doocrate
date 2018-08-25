@@ -105,8 +105,8 @@ Register here - https://www.mailgun.com/google
 Run:
 ```
 firebase functions:config:set email.send_notifications='true'
-firebase functions:config:set email.from='Doocrate <noreply@midburnerot.com>'
-firebase functions:config:set email.domain='midburnerot.com'
+firebase functions:config:set email.from='Doocrate <noreply@burnerot.com>'
+firebase functions:config:set email.domain='burnerot.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 firebase deploy --only functions
 ```
@@ -171,3 +171,10 @@ You can open the page with the required language. For example use
 |`npm run deploy:production`|Build and deploy to production|
 |`npm run build`|Build the application to `./build` directory|
 |`npm test`|Test the application; watch for changes and retest|
+
+
+## FAQ
+#####Why is Mail is not being sent?
+Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
+
+Also, Check that all the settings are correct and you have created a mailgun username and set up the domain correctly
