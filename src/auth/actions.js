@@ -6,7 +6,8 @@ import {
   INIT_AUTH,
   SIGN_IN_ERROR,
   SIGN_IN_SUCCESS,
-  SIGN_OUT_SUCCESS
+  SIGN_OUT_SUCCESS,
+  UPDATE_PROFILE
 } from './action-types';
 
 
@@ -60,6 +61,15 @@ export function signOut() {
   return dispatch => {
     firebaseAuth.signOut()
       .then(() => dispatch(signOutSuccess()));
+  };
+}
+
+export function isShowUpdateProfile(isShow) {
+  return dispatch => {
+    dispatch({
+      type: UPDATE_PROFILE,
+      payload: isShow
+    })
   };
 }
 

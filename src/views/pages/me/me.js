@@ -29,7 +29,7 @@ const Me = ({authenticated, auth, signOut}) => (
             ''
           }
           {auth && auth.email?
-            <div>{t('my-space.email')}: { auth.email }</div>
+            <div>{t('my-space.email')}: { auth.updatedEmail }</div>
             :
             ''
           }

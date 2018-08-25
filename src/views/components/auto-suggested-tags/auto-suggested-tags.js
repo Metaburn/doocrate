@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import TagsInput from 'react-tagsinput';
@@ -7,7 +6,7 @@ import TagsInput from 'react-tagsinput';
 import './auto-suggested-tags.css';
 
 const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
-  const showPlaceholder = !value || value.length == 0 ;
+  const showPlaceholder = !value || value.length === 0 ;
 
   function renderLayout (tagComponents, inputComponent) {
     return (
@@ -35,13 +34,12 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
       } else {
         props.onChange(e)
       }
-    }
+    };
 
     const inputValue = (props.value && props.value.trim().toLowerCase()) || '';
-    const inputLength = inputValue.length;
 
-      let suggestions = Object.keys(labels).filter((l) => {        
-        return inputValue == l.slice(0, inputValue.length);
+      let suggestions = Object.keys(labels).filter((l) => {
+        return inputValue === l.slice(0, inputValue.length);
       });
 
     return (

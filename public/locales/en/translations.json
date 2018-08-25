@@ -12,7 +12,8 @@
   "header": {
     "disconnect": "Disconnect",
     "me": "Me",
-    "my-space":"Personal space"
+    "my-space":"Personal space",
+    "update-my-profile":"Update my profile"
   },
   "my-space": {
     "role": "Role",
@@ -52,6 +53,11 @@
       "art": "Art",
       "other": "Other"
     }
+  },
+  "user": {
+    "email": "Your email address (Will be used to notify me when someone comment on my task):"
+    "set-my-email": "My email:",
+    "submit" : "Save & Continue"
   },
   "admin": {
     "download-csv": "Download CSV"

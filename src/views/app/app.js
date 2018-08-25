@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {BrowserRouter as Router, Route, withRouter, Switch } from 'react-router-dom';
+import {Route, withRouter, Switch } from 'react-router-dom';
 
 import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
@@ -17,9 +17,8 @@ import AboutPage from '../pages/about';
 import ReportsPage from '../pages/reports';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
-import i18n from '../../i18n.js';
 
-const App = ({auth, signOut}) => (
+const App = ({auth, signOut, isShowUpdateProfile}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -27,6 +26,7 @@ const App = ({auth, signOut}) => (
       <Header
         auth={auth}
         signOut={signOut}
+        isShowUpdateProfile={isShowUpdateProfile}
       />
 
       <main>
@@ -35,7 +35,7 @@ const App = ({auth, signOut}) => (
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
           <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
-          <RequireAuthRoute authenticated={authj && auth.authenticated} path="/reports" component={ReportsPage}/>
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>
           <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
           <Route component={NotFound}/>
         </Switch>
@@ -48,7 +48,8 @@ const App = ({auth, signOut}) => (
 
 App.propTypes = {
   auth: PropTypes.object.isRequired,
-  signOut: PropTypes.func.isRequired
+  signOut: PropTypes.func.isRequired,
+  isShowUpdateProfile: PropTypes.func.isRequired
 };
 
 
@@ -65,7 +66,8 @@ const mapStateToProps = createSelector(
 
 
 const mapDispatchToProps = {
-  signOut: authActions.signOut
+  signOut: authActions.signOut,
+  isShowUpdateProfile: authActions.isShowUpdateProfile
 };
 
 export default withRouter(

@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
 import { projectActions } from 'src/projects';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import { commentsActions } from 'src/comments';
+import { authActions } from 'src/auth';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
@@ -18,6 +18,8 @@ import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
+import { SetUserInfo } from "../../components/set-user-info";
+import { updateUserData } from "src/auth/auth";
 
 export class TasksPage extends Component {
   constructor() {
@@ -30,6 +32,7 @@ export class TasksPage extends Component {
     this.goToTask = this.goToTask.bind(this);
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
+    this.updateUserInfo = this.updateUserInfo.bind(this);
 
     this.state = {
       tasks: this.props.tasks,
@@ -37,7 +40,8 @@ export class TasksPage extends Component {
       labels: null,
       projects: null,
       labelPool: {},
-      isLoadedComments: false
+      isLoadedComments: false,
+      showSetUserInfoScreen: true
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -73,6 +77,9 @@ export class TasksPage extends Component {
         search: firebaseConfig.defaultPageToLoad
       })
     }
+
+    this.showSetUserInfo();
+
     //this.props.loadProjects();
   }
 
@@ -172,7 +179,7 @@ export class TasksPage extends Component {
     let creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
-      email: this.props.auth.email,
+      email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
     }
 
@@ -258,8 +265,42 @@ export class TasksPage extends Component {
     this.props.history.push(taskParameter);
   }
 
+  showSetUserInfo() {
+    this.setState({showSetUserInfoScreen: !this.props.auth.isEmailConfigured})
+  }
+
+
+
   onLabelChanged(labels) {
     this.setState({labels});
+  }
+
+  renderSetUserInfo() {
+
+    return (
+      <div>
+        <SetUserInfo
+          isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
+          userInfo={ this.props.auth }
+          updateUserInfo={ this.updateUserInfo }
+          onClosed = { () => {
+            this.props.isShowUpdateProfile(false);
+          }
+          } />
+      </div>
+    );
+  }
+
+  updateUserInfo(userInfo) {
+    console.log(userInfo);
+    const oldUserData = this.props.auth
+    const newUserData = {};
+    newUserData.uid = oldUserData.id;
+    newUserData.email = userInfo.email;
+    newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
+    newUserData.displayName = oldUserData.name;
+    newUserData.photoURL = oldUserData.photoURL;
+    updateUserData(newUserData);
   }
 
   renderTaskView() {
@@ -319,6 +360,7 @@ export class TasksPage extends Component {
             <div className='task-view-bottom-loader'>&nbsp;</div>: ''
           }
         </div>
+        { this.renderSetUserInfo() }
       </div>
     );
   }
@@ -346,6 +388,7 @@ const mapDispatchToProps = Object.assign(
   notificationActions,
   labelActions,
   projectActions,
+  authActions,
 );
 
 export default connect(

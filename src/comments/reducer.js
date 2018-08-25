@@ -4,7 +4,7 @@ import { SELECT_TASK } from 'src/tasks/action-types';
 
 import {
   CREATE_COMMENT_SUCCESS,
-  LOAD_COMMENT_COMMENTS,
+  /*LOAD_COMMENT_COMMENTS,*/
   REMOVE_COMMENT_SUCCESS,
   LOAD_COMMENTS_SUCCESS,
   UPDATE_COMMENT_SUCCESS,
@@ -37,7 +37,7 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
         previous: state.list,
         list: state.list.filter(comment => comment.id !== payload.id)
       });
-    
+
     case LOAD_COMMENTS_SUCCESS:
       return state.set('list', new List(payload.reverse()));
 
@@ -52,7 +52,7 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
 
     case SIGN_OUT_SUCCESS:
       return new CommentsState();
-    
+
     case SELECT_TASK:
       return state.set('selectedTask', payload || null);
 

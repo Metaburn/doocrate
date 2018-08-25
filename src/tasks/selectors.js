@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect';
+//import { createSelector } from 'reselect';
 
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),

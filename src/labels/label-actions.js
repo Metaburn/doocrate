@@ -1,5 +1,4 @@
 import { labelList } from './label-list';
-import {store} from 'redux';
 import {
     CREATE_LABEL,LOAD_LABEL,
     REMOVE_LABEL, UPDATE_LABEL
@@ -9,7 +8,7 @@ export const loadLabels = () => {
     return (dispatch, getState) => {
       window.ll = labelList;
         labelList.path = `labels`;
-        labelList.subscribe(dispatch);    
+        labelList.subscribe(dispatch);
     }
 }
 

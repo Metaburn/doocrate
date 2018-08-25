@@ -16,7 +16,7 @@ const menuContent = `<div>
 <Button onClick={signOut}>{t('header.disconnect')}</Button>
 </div>`;
 
-const Header = ({auth, signOut}) => (
+const Header = ({auth, signOut, isShowUpdateProfile}) => (
   <I18n ns='translations'>
    {
     (t, { i18n }) => (
@@ -36,6 +36,7 @@ const Header = ({auth, signOut}) => (
                 <MyProfileTooltip
                   auth = { auth }
                   signOut = { signOut }
+                  isShowUpdateProfile = { isShowUpdateProfile }
                 />
                 { auth.photoURL ?
                   <div className='task-item-assignee' data-html={true} data-tip={menuContent}/>
@@ -77,7 +78,8 @@ function renderLanguageButton(t, i18n) {
 
 Header.propTypes = {
   auth: PropTypes.object.isRequired,
-  signOut: PropTypes.func.isRequired
+  signOut: PropTypes.func.isRequired,
+  isShowUpdateProfile: PropTypes.func.isRequired,
 };
 
 

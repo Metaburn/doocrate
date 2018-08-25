@@ -14,10 +14,21 @@ export function initAuth(dispatch) {
             if(authUser) {
               authUser.role = isAdmin.exists? 'admin': authUser.role;
             }
-            dispatch(authActions.initAuth(authUser));
-            updateUserData(authUser);
-            unsubscribe();
-            resolve();
+
+            getUserInfo(authUser).then(userInfo => {
+              if(userInfo && userInfo.exists) {
+                const userInfoData = userInfo.data()
+                authUser.isEmailConfigured = userInfoData.isEmailConfigured;
+                authUser.updatedEmail = userInfoData.email;
+              }else {
+                // Only update the fields if no user data exists
+                updateUserData(authUser);
+              }
+              dispatch(authActions.initAuth(authUser));
+
+              unsubscribe();
+              resolve();
+            });
           })
         })
       },
@@ -27,19 +38,36 @@ export function initAuth(dispatch) {
 }
 
 // TODO: perhaps should be in a better place and check if operation success
-function updateUserData(authUser) {
+export function updateUserData(authUser) {
   if(!authUser || !authUser.uid) {
     return;
   }
   const userDoc = firebaseDb.collection('users').doc(authUser.uid);
-  if(!userDoc.exists) {
-    userDoc.set({
-    name: authUser.displayName,
-    email: authUser.email,
-    photoURL : authUser.photoURL,
-    created: new Date()
-    })
-  }
+  userDoc.get().then( userSnapshot => {
+    if (!userSnapshot.exists) {
+      userDoc.set({
+
+        name: authUser.displayName,
+        email: authUser.email,
+        photoURL: authUser.photoURL,
+        created: new Date()
+      })
+    } else {
+      // For existing users check if we set the isEmailConfigured flag. We use it to allow users on first time to
+      // set their emails
+
+      // Only if the given object state we should update the email then we do so
+        if (authUser.isEmailConfigured) {
+          // Update user details
+          userDoc.set({
+            name: authUser.displayName,
+            email: authUser.email,
+            isEmailConfigured: true,
+            updated: new Date()
+          }, { merge: true })
+        }
+    }
+  })
 }
 
 // TODO - instead of await that waits for all users
@@ -62,4 +90,15 @@ function getIsGuide(authUser) {
     })
   }
   return firebaseDb.collection('guides').doc(authUser.uid).get();
+}
+
+// TODO - instead of await that waits for all users
+// We should load the interface and then make another call - for faster loading
+function getUserInfo(authUser) {
+  if(!getUserInfo) {
+    return new Promise( (resolve, reject) => {
+      resolve(null);
+    })
+  }
+  return firebaseDb.collection('users').doc(authUser.uid).get();
 }

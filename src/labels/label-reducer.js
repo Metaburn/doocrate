@@ -1,5 +1,4 @@
-import { Map, Record } from 'immutable';
-import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
+import { Map } from 'immutable';
 
 import {
     CREATE_LABEL,LOAD_LABEL,
@@ -15,8 +14,8 @@ export function labelsReducer(state = new Map({}), {payload, type}) {
         return  state.set(payload.get('name'), payload);
     break;
     case LOAD_LABEL: return state; break;
-    case REMOVE_LABEL: return state; break; 
-    
+    case REMOVE_LABEL: return state; break;
+
     default:
       return state;
   }
