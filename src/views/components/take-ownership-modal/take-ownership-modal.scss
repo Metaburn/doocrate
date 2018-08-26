@@ -1,0 +1,33 @@
+@import 'views/styles/shared';
+
+.take-ownership-modal {
+  margin-bottom: 1em;
+  font-size: 0.9em;
+
+  .modal-header {
+    display: block;
+
+    .avatar {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  }
+
+  .submit-wrapper {
+    margin-top: 2em;
+    text-align: center;
+
+    .button {
+      font-size: 1em;
+      background-color: #eb1478;
+      color: white;
+      padding: 0 6em;
+      height: 3em;
+
+      &:hover {
+        font-size: 1.1em;
+      }
+    }
+  }
+
+}

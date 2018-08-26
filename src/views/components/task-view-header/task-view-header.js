@@ -12,6 +12,14 @@ export class TaskViewHeader extends Component {
     const { task } = this.props;
 
     const isTaskEmpty = task && (!task.description || task.description === '');
+    const oneDay = 60 * 60 * 24 * 1000;
+
+    // We allow deletion of task which created in the last 24 hours
+    let isTaskCreatedInTheLastDay = false;
+    if(task && task.created) {
+      const now = new Date();
+      isTaskCreatedInTheLastDay = (now - task.created) <= oneDay;
+    }
 
     return(
       <I18n ns='translations'>
@@ -40,7 +48,7 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-            { isTaskEmpty && this.props.canDeleteTask ?
+            { (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
             <Button
               className='action-button button-grey'
               onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}

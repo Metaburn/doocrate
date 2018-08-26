@@ -73,7 +73,7 @@ export class TaskView extends Component {
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, type, projectName,
-      label, isCritical, dueDate, createdDate,
+      label, isCritical, dueDate, created,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
@@ -87,7 +87,7 @@ export class TaskView extends Component {
           description:description || '',
           label: labelAsArray || [],
           isCritical: isCritical || false,
-          createdDate: createdDate || '',
+          created: created || null,
           dueDate: dueDate || null,
           type: type || '',
           projectName: projectName || ''
