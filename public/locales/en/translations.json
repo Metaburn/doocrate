@@ -1,6 +1,8 @@
 {
   "lang": "en",
   "lang-dir": "ltr",
+  "lang-float": "left",
+  "lang-float-reverse": "right",
   "nav": {
     "en-lang": "English",
     "he-lang": "Hebrew"

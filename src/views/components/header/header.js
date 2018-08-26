@@ -53,7 +53,7 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
             }
           </ul>
           <h1 className='header-title'><a href='/'>Doocrate</a></h1>
-          <div className='lang-select'>
+          <div className={`lang-select lang-${t('lang-float-reverse')}`}>
             { renderLanguageButton(t, i18n) }
           </div>
 

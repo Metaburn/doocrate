@@ -14,6 +14,32 @@
       padding: 0 20px;
     }
   }
+
+  .lang-select {
+    margin-left: 1.5em;
+
+    button {
+      font-size:0.8em;
+      transition-duration: .2s;
+      transition: all 0.2s ease;
+
+      background-color: white;
+      border: solid 1px #ccc;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #eb1478;
+        color: white;
+      }
+    }
+  }
+
+  .lang-right {
+    float: right;
+  }
+  .lang-left {
+    float: left;
+  }
 }
 
 .header-title {
@@ -94,4 +120,5 @@
     width: 22px;
     height: 24px;
   }
+
 }
