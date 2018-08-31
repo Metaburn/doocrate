@@ -40,19 +40,20 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-            { isTaskEmpty && this.props.canDeleteTask ?
-            <Button
-              className='action-button button-grey'
-              onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
-              type='button'>{t('task.delete')}</Button> : '' }
+          { isTaskEmpty && this.props.canDeleteTask ?
+          <Button
+            className='action-button button-grey'
+            onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
+            type='button'>{t('task.delete')}</Button> : '' }
 
-            { task && task.isCritical ?
-              <span>
-                <Icon name='warning' className='header-icon grow' />
-                {t('task.critical')}
-              </span>
-            : ''
-            }
+          { task && task.isCritical ?
+            <span>
+              <Icon name='warning' className='header-icon grow' />
+              {t('task.critical')}
+            </span>
+          : ''
+          }
+          
         </div>
       )}
       </I18n>
@@ -67,7 +68,8 @@ TaskViewHeader.propTypes = {
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
-  showUnassignButton: PropTypes.bool.isRequired
+  showUnassignButton: PropTypes.bool.isRequired,
+  isTaskValid: PropTypes.bool.isRequired
 };
 
 

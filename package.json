@@ -52,6 +52,7 @@
     "react-i18next": "7.0.0",
     "react-image": "1.0.1",
     "react-infinite-scroller": "1.1.1",
+    "react-inputs-validation": "^1.0.5",
     "react-linkify": "0.2.1",
     "react-moment": "0.6.5",
     "react-portal-tooltip": "2.1.0",

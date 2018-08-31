@@ -33,6 +33,8 @@ export class TasksPage extends Component {
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
+    
+    this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
     this.state = {
       tasks: this.props.tasks,
@@ -41,7 +43,8 @@ export class TasksPage extends Component {
       projects: null,
       labelPool: {},
       isLoadedComments: false,
-      showSetUserInfoScreen: true
+      showSetUserInfoScreen: true,
+      isCurrentTaskValid: false
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -249,7 +252,22 @@ export class TasksPage extends Component {
     return csv;
   }
 
+  
+  confimUnsavedTask() {
+    if (!this.state.isCurrentTaskValid) {
+      if (!window.confirm("Task fields are not valid. Changes will not be saved")) {
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+
   goToTask(task) {
+   if (this.confimUnsavedTask()) {
+    return;
+   } 
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
     const filterText = params['text'];
@@ -321,6 +339,7 @@ export class TasksPage extends Component {
         unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}
+        isValidCallback={this.setCurrentTaskValid}
       />)
   }
 
