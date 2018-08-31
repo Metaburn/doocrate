@@ -49,7 +49,7 @@
     "new-tasks-closed": "New task creation is currently on hold",
     "automatic-tags": "Popular tags (Choose at least one):",
     "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
-    "mission-incomplete": "Aren't you forgetting something? Task fields are not complete. Changes will not be saved",
+    "mission-incomplete": "It is not possible to save a task before filling all the fields. Do you wish to stay in this task? Pressing cancel will erase the task",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",

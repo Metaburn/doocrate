@@ -257,7 +257,7 @@ export class TasksPage extends Component {
   confirmUnsavedTask() {
     // If task exists and it's invalid
     if (this.state.selectedTask && !this.state.isCurrentTaskValid) {
-      if (!window.confirm(i18n.t('task.mission-incomplete'))) {
+      if (window.confirm(i18n.t('task.mission-incomplete'))) {
         return true;
       }
     }

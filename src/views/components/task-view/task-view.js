@@ -233,7 +233,6 @@ export class TaskView extends Component {
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
-        validationOption={{ min: 3, msgOnError: t('task.errors.min-3') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
          />)
   }
@@ -252,7 +251,7 @@ export class TaskView extends Component {
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
-        validationOption={{ min: 3, msgOnError: t('task.errors.min-3') }}
+        validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
         />
     );
@@ -272,6 +271,8 @@ export class TaskView extends Component {
       onRemove= { this.handleLabelChange }
       disabled = { !isEditable }
       MaxTags = {6}
+      validationOption={{ required: true, msgOnError: translation('task.errors.not-empty') }}
+      validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
       />
     )
   }
@@ -315,8 +316,8 @@ export class TaskView extends Component {
     Object.values(this.state.validations).forEach( x => res = x || res)
     // also check actual values...
     res = res || this.state.label.length == 0; // check also there's at least one label
-    res = res || this.state.title.length < 3;
-    res = res || this.state.description.length < 3;
+    res = res || this.state.title.length == 0;
+    res = res || this.state.description.length == 0;
     res = res || this.state.type.length == 0;
 
     this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
