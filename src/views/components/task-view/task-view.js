@@ -150,7 +150,6 @@ export class TaskView extends Component {
               </div>
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
-              {this.renderTaskCreator(t, task) }
             </form>
             <span>{t('comments.title')}</span>
             { this.props.comments ?
@@ -164,20 +163,6 @@ export class TaskView extends Component {
       )}
       </I18n>
     );
-  }
-
-  renderTaskCreator(t, task) {
-    if (!task.creator) return;
-    const avatar = task.creator.photoURL ? <Img className='avatar' src={task.creator.photoURL} alt={task.creator.name}/> : '';
-      return (
-        <div>
-          <span>{t('task.creator')}</span>
-          <span className='avatar-creator' data-tip={task.creator.name}>
-            <ReactTooltip type='light' effect='solid'/>
-            { avatar }
-          </span>
-        </div>
-      );
   }
 
   renderAddComment() {
