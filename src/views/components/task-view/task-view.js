@@ -143,13 +143,13 @@ export class TaskView extends Component {
           isTaskValid = { this.isValid }
           />
           <div className='task-view'>
-            
+
             <form noValidate>
               {this.renderInput(task, 'title', t, canEditTask)}
               {this.renderTextArea(task, 'description', t, canEditTask)}
               <div className='instruction'><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}
-              
+
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
 
               <div className='instruction'><span>{t('task.automatic-tags')}</span></div>
@@ -162,8 +162,9 @@ export class TaskView extends Component {
                   }}
                 />
               </div>
-              
+
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
+              {this.renderTaskCreator(t, task) }
             </form>
             <span>{t('comments.title')}</span>
             { this.props.comments ?
@@ -172,12 +173,26 @@ export class TaskView extends Component {
             comments={this.props.comments}
             auth={this.props.auth} /> : ''}
           </div>
-          { this.renderAddComment() }
 
-          {}
+          {this.renderAddComment() }
+
         </div>
       )}
       </I18n>
+    );
+  }
+
+  renderTaskCreator(t, task) {
+    if (!task.creator) return;
+    const avatar = task.creator.photoURL ? <Img className='avatar' src={task.creator.photoURL} alt={task.creator.name}/> : '';
+    return (
+      <div>
+        <span>{t('task.creator')}</span>
+        <span className='avatar-creator' data-tip={task.creator.name}>
+                      <ReactTooltip type='light' effect='solid'/>
+          { avatar }
+                    </span>
+      </div>
     );
   }
 
@@ -195,7 +210,7 @@ export class TaskView extends Component {
       <Select
       type='text'
       name={fieldName}
-      value={this.state[fieldName]}      
+      value={this.state[fieldName]}
       ref={e => this[fieldName+'Input'] = e}
       onChange={(e) => { let val=null; if (e) { val = e.value };
                 this.setState({ [fieldName]: val}) }}
@@ -217,7 +232,7 @@ export class TaskView extends Component {
         value = { this.state[fieldName] }
         placeholder = { t('task.name') }
         ref = { e => this[fieldName+'Input'] = e }
-        onChange = { this.handleChange }        
+        onChange = { this.handleChange }
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
@@ -239,7 +254,7 @@ export class TaskView extends Component {
         onChange={this.handleChange}
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
-        disabled = { !isEditable } 
+        disabled = { !isEditable }
         validationOption={{ min: 3, msgOnError: t('task.errors.min-3') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
         />
@@ -259,7 +274,7 @@ export class TaskView extends Component {
       inputProps={{ placeholder: showPlaceholder ? translation('task.input-tags') : ''}}
       onRemove= { this.handleLabelChange }
       disabled = { !isEditable }
-      MaxTags = {6}      
+      MaxTags = {6}
       />
     )
   }
@@ -294,14 +309,14 @@ export class TaskView extends Component {
     this.handleLabelChange(newLabels)
   }
 
-  handleLabelChange(label) {    
-    this.setState({label})    
+  handleLabelChange(label) {
+    this.setState({label})
   }
 
   isValid() {
     let res = false;
     Object.values(this.state.validations).forEach( x => res = x || res)
-        
+
     // also check actual values...
     res = res || this.state.label.length == 0; // check also there's at least one label
     res = res || this.state.title.length < 3;
@@ -312,10 +327,10 @@ export class TaskView extends Component {
     return !res;
   }
 
-  componentDidUpdate(prevProps, prevState) {    
-    // if (prevState.title != this.state.title ) {      
-      this.debouncedHandleSubmit();      
-    // }    
+  componentDidUpdate(prevProps, prevState) {
+    // if (prevState.title != this.state.title ) {
+      this.debouncedHandleSubmit();
+    // }
   }
 
   handleSubmit(event) {
@@ -334,11 +349,11 @@ export class TaskView extends Component {
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
 
-    
-    if (this.isValid()) {  
+
+    if (this.isValid()) {
       this.props.updateTask(this.props.selectedTask, fieldsToUpdate);
     }
-  
+
   }
 
   arrayToObject(array) {

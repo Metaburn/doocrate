@@ -33,7 +33,7 @@ export class TasksPage extends Component {
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
-    
+
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
     this.state = {
@@ -252,22 +252,23 @@ export class TasksPage extends Component {
     return csv;
   }
 
-  
-  confimUnsavedTask() {
-    if (!this.state.isCurrentTaskValid) {
-      if (!window.confirm("Task fields are not valid. Changes will not be saved")) {
+
+  confirmUnsavedTask() {
+    // If task exists and it's invalid
+    if (this.state.selectedTask && !this.state.isCurrentTaskValid) {
+      if (!window.confirm(i18n.t('task.mission-incomplete'))) {
         return true;
       }
     }
-    
+
     return false;
   }
 
 
   goToTask(task) {
-   if (this.confimUnsavedTask()) {
+   if (this.confirmUnsavedTask()) {
     return;
-   } 
+   }
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
     const filterText = params['text'];

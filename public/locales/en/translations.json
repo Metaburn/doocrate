@@ -35,7 +35,8 @@
     "description": "Task description",
     "type": "Task type",
     "is-critical": "Is task critical for the event?",
-    "creator": "Task Creator",
+    "creator": "Dreamer",
+    "doer": "Doer",
     "search-by-tags": "Search task by tags",
     "unnamed-task": "Unnamed Task",
     "created-successfully": "Task created successfully",
@@ -48,6 +49,7 @@
     "new-tasks-closed": "New task creation is currently on hold",
     "automatic-tags": "Popular tags (Choose at least one):",
     "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
+    "mission-incomplete": "Aren't you forgetting something? Task fields are not complete. Changes will not be saved",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",
