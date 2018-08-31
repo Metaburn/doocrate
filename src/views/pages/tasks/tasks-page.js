@@ -36,6 +36,8 @@ export class TasksPage extends Component {
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
+    this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
+
     this.state = {
       tasks: this.props.tasks,
       selectedTask: null,
@@ -251,7 +253,6 @@ export class TasksPage extends Component {
 
     return csv;
   }
-
 
   confirmUnsavedTask() {
     // If task exists and it's invalid

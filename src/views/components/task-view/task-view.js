@@ -143,13 +143,11 @@ export class TaskView extends Component {
           isTaskValid = { this.isValid }
           />
           <div className='task-view'>
-
             <form noValidate>
               {this.renderInput(task, 'title', t, canEditTask)}
               {this.renderTextArea(task, 'description', t, canEditTask)}
               <div className='instruction'><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}
-
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
 
               <div className='instruction'><span>{t('task.automatic-tags')}</span></div>
@@ -163,6 +161,7 @@ export class TaskView extends Component {
                 />
               </div>
 
+
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
               {this.renderTaskCreator(t, task) }
             </form>
@@ -173,9 +172,7 @@ export class TaskView extends Component {
             comments={this.props.comments}
             auth={this.props.auth} /> : ''}
           </div>
-
-          {this.renderAddComment() }
-
+          { this.renderAddComment() }
         </div>
       )}
       </I18n>
@@ -316,7 +313,6 @@ export class TaskView extends Component {
   isValid() {
     let res = false;
     Object.values(this.state.validations).forEach( x => res = x || res)
-
     // also check actual values...
     res = res || this.state.label.length == 0; // check also there's at least one label
     res = res || this.state.title.length < 3;
@@ -348,7 +344,6 @@ export class TaskView extends Component {
       projectName: this.state.projectName
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
-
 
     if (this.isValid()) {
       this.props.updateTask(this.props.selectedTask, fieldsToUpdate);
