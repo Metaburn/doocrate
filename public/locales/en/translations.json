@@ -47,13 +47,17 @@
     "maximum-reached": "You've reached the max amount of tasks you can create",
     "new-tasks-closed": "New task creation is currently on hold",
     "automatic-tags": "Popular tags (Choose at least one):",
-    "input-tags": "Input Custom Tags. Press Enter to accept",
+    "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",
       "camps": "Camps",
       "art": "Art",
       "other": "Other"
+    },
+    "errors": {
+      "not-empty": "This field cannot be empty",
+      "min-3": "This field must have at least 3 characters"
     }
   },
   "user": {
