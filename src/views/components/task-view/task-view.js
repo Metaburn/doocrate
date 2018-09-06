@@ -349,7 +349,7 @@ export class TaskView extends Component {
     res = res || this.state.label.length == 0; // check also there's at least one label
     res = res || this.state.title.length == 0;
     res = res || this.state.description.length == 0;
-    res = res || this.state.type.length == 0;
+    res = res || (this.state.type && this.state.type.length == 0);
 
     this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
     return !res;

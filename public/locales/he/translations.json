@@ -58,6 +58,8 @@
     "input-tags": "הכנס לפחות תגית אחת או בחר מההצעות (לחץ Enter לאישור)",
     "mission-incomplete-short": "לא ניתן לשמור משימה לפני מילוי כל השדות. אנא מלאי את כל השדות. 👁",
     "mission-incomplete": "לא ניתן לשמור משימה לפני מילוי כל השדות. האם ברצונך להשאר במשימה? לחיצה על Cancel תוביל למחיקת המשימה",
+    "do-you-take-ownership": "האם תרצי לקחת אחריות על משימה זו?",
+    "do-you-take-ownership2": "במידה ולא, היא תשאר פתוחה עד שמישהי אחרת תקח עליה אחריות",
     "types": {
       "planning": "תכנון ארוע",
       "shifts": "משמרות בארוע",

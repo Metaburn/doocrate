@@ -70,9 +70,9 @@ export class TakeOwnershipModal extends Component {
     return (
       <div className='modal-header'>
         <span><br /></span>
-        <span>האם תרצי לקחת אחריות על משימה זו?</span>
+        <span>{t('task.do-you-take-ownership')}</span>
         <br />
-        <span>במידה ולא, היא תשאר פתוחה עד שמישהי אחרת תקח עליה אחריות</span>
+        <span>{t('task.do-you-take-ownership2')}</span>
       </div>
     );
   }

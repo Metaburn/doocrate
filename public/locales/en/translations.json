@@ -57,6 +57,8 @@
     "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
     "mission-incomplete-short": "Can't save task before all fields are complete. Please fill missing fields 👁",
     "mission-incomplete": "It is not possible to save a task before filling all the fields. Do you wish to stay in this task? Pressing cancel will erase the task",
+    "do-you-take-ownership": "Would you like to take ownership over this task?",
+    "do-you-take-ownership2": "In case you won't. She would stay open till someone would take responsibility over her.",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",
