@@ -207,11 +207,11 @@ export class TasksPage extends Component {
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
     }
-  
+
     this.props.createTask(
       {title: task.title, creator, created: new Date(), description: task.description, type: task.type, label: task.label},
       this.onNewTaskAdded);
-    
+
     this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
@@ -301,7 +301,7 @@ export class TasksPage extends Component {
         taskParameter += `&text=${filterText}`;
       }
     }
-    
+
     setTimeout(()=>{this.setState({newTask: null})}, 100);
     this.props.history.push(taskParameter);
   }
@@ -324,6 +324,7 @@ export class TasksPage extends Component {
           updateUserInfo={ this.updateUserInfo }
           onClosed = { () => {
             this.props.isShowUpdateProfile(false);
+            this.setState({showSetUserInfoScreen: false})
           }
           } />
       </div>
@@ -376,7 +377,7 @@ export class TasksPage extends Component {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-    
+
     return (
       <div>
           <div className="g-col">

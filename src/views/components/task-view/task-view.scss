@@ -14,11 +14,7 @@
     margin-top: 0.5em;
     margin-bottom: 0.4em;
     margin-left: 1em;
-    float: right; 
-
-    &:first-child {
-      margin-top: 0;
-    }
+    float: right;
   }
 
   .instruction-label {
@@ -72,11 +68,27 @@
   }
 
   input:disabled, select:disabled, textarea:disabled {
-    background: none;
+    background: none !important;
+    color: rgb(84,84,84) !important;
+    border: none !important;
+    font-size: 18px;
+    padding: 5px 0;
+    margin: 0;
+    font-family: $base-font-family !important;
   }
 
   .Select {
     vertical-align: middle;
+  }
+
+  .is-disabled {
+    .Select-control {
+      border: none !important;
+
+      &:hover {
+        border: none !important;
+      }
+    }
   }
 
   .Select-placeholder {
@@ -156,5 +168,5 @@
 }
 
 .form-input{
-  margin:0.5em;
+  margin:0em;
 }
