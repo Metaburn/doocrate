@@ -56,6 +56,7 @@ export class TaskView extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleTextBoxChange = this.handleTextBoxChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -262,14 +263,14 @@ export class TaskView extends Component {
   renderTextArea(task, fieldName, t, isEditable, tabIndex) {
     const classNames = isEditable ? ' editable' : ''
     return (
-        <Textbox
+        <Textarea
         className={`changing-input${classNames}`}
         name={fieldName}
         tabIndex={tabIndex}
         value={this.state[fieldName]}
         placeholder={t('task.description')}
         ref={e => this[fieldName+'Input'] = e}
-        onChange={this.handleChange}
+        onChange={this.handleTextBoxChange}
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
@@ -339,6 +340,13 @@ export class TaskView extends Component {
     let fieldName = e.target.name;
     this.setState({
       [fieldName]: e.target.value
+    });
+  }
+
+  handleTextBoxChange(o) {
+    let fieldName = o.target.name;
+    this.setState({
+      [fieldName]: o.target.value
     });
   }
 

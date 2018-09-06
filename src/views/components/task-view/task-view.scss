@@ -143,9 +143,10 @@
 }
 
 .editable {
+  border: 1px solid #e5dce0;
+
   &:hover {
     border: 1px solid #d5dce0;
-    padding: 4px;
   }
 }
 
