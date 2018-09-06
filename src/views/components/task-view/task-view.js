@@ -150,7 +150,7 @@ export class TaskView extends Component {
 
     const showDeleteButton = (!this.props.isDraft &&
       (isTaskEmpty || isTaskCreatedInTheLastDay) &&
-      this.props.canDeleteTask) || this.props.isAdmin;
+      canDeleteTask) || this.props.isAdmin;
 
     return (
       <I18n ns='translations'>
