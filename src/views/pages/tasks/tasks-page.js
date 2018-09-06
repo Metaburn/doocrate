@@ -246,8 +246,11 @@ export class TasksPage extends Component {
 
   unassignTask(task) {
     const isCreator = task.creator && task.creator.id == this.props.auth.id;
+    const isAssignee = task.assignee && task.assignee.id === this.props.auth.id;
 
-    if(this.isAdmin() || (this.isGuide() && isCreator)) {
+    // Uncomment this to allow only guide to unassign
+    //if(this.isAdmin() || (this.isGuide() && isCreator || isAssignee)) {
+    if(this.isAdmin() || isCreator || isAssignee) {
       this.props.unassignTask(task);
       this.props.showSuccess(i18n.t('task.unassigned'));
     }else {

@@ -269,6 +269,7 @@ export class TaskView extends Component {
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
         autofocus = { isAutoFocus }
+
         validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
          />)
