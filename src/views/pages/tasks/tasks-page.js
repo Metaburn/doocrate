@@ -284,6 +284,7 @@ export class TasksPage extends Component {
           userInfo={ this.props.auth }
           updateUserInfo={ this.updateUserInfo }
           onClosed = { () => {
+            this.setState({showSetUserInfoScreen: false})
             this.props.isShowUpdateProfile(false);
           }
           } />
