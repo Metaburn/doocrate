@@ -176,7 +176,7 @@ export class TaskView extends Component {
               <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask, "0")}</div>
               <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,"0")}</div>
-              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
+              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
 
               { canEditTask ?
                 <div>

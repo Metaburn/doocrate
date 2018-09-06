@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import ToolTip from 'react-portal-tooltip';
 import Button from '../button';
 import Img from 'react-image';
-import { I18n, Trans } from 'react-i18next';
+import { I18n } from 'react-i18next';
 
 import './my-profile-tooltip.css';
 

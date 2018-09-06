@@ -11,6 +11,7 @@ import { appConfig } from 'src/config/app-config'
 import 'react-toastify/dist/ReactToastify.min.css'
 
 import './header.css';
+import GoogleTranslate from '../google-translate/google-translate';
 
 const menuContent = `<div>
 <Img className='avatar' src={auth.photoURL} alt={auth.name}/>
@@ -57,7 +58,7 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
           <div className={`lang-select lang-${t('lang-float-reverse')}`}>
             { renderLanguageButton(t, i18n) }
           </div>
-
+          <GoogleTranslate />
         </div>
       </div>
     </header>
