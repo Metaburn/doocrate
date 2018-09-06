@@ -11,7 +11,8 @@ export class SetUserInfo extends Component {
     super(...arguments);
     this.state = {
       isOpen: true,
-      email: ''
+      email: '',
+      originalEmail: '',
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,10 +41,20 @@ export class SetUserInfo extends Component {
       return;
     }
 
+    if(this.state.originalEmail !== props.userInfo.updatedEmail &&
+        this.state.originalEmail !== props.userInfo.email) {
+
+      this.setState({
+        originalEmail: props.userInfo.updatedEmail || props.userInfo.email,
+        // First try to see if there is an updated mail.
+        // Otherwise revert to original mail
+        email: props.userInfo.updatedEmail || props.userInfo.email || '',
+        isOpen: props.isOpen || false,
+      });
+      return
+    }
+
     this.setState({
-      // First try to see if there is an updated mail.
-      // Otherwise revert to original mail
-      email: props.userInfo.updatedEmail || props.userInfo.email || '',
       isOpen: props.isOpen || false,
     })
   }
