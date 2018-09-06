@@ -77,6 +77,11 @@
     font-family: $base-font-family !important;
   }
 
+  input[type='checkbox'] {
+    opacity: 1;
+    position: relative;
+  }
+
   .Select {
     vertical-align: middle;
   }

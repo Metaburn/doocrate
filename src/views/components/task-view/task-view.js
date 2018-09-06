@@ -193,8 +193,11 @@ export class TaskView extends Component {
                   : ''
               }
 
-
-              <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>
+              {canEditTask ?
+                <div
+                  className='is-critical'>{this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask)}</div>
+                : ''
+              }
               {this.renderTaskCreator(t, task) }
             </form>
             <span>{t('comments.title')}</span>
@@ -321,6 +324,7 @@ export class TaskView extends Component {
     return (
       <label>
         <input
+          className={ classNames }
         type = 'checkbox'
         checked = { this.state[fieldName] }
         value = { placeholder }
