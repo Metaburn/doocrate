@@ -405,7 +405,7 @@ export class TasksPage extends Component {
                 this.props.showSuccess(i18n.t('task.creating-new'));
                 this.props.history.push('/task/new-task')
               }}
-              selectedTaskId={""} // this.state.selectedTask? this.state.selectedTask.get("id") : ""
+              selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
               labels = {this.props.labels}
             />
           </div>

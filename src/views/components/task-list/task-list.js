@@ -37,21 +37,23 @@ class TaskList extends Component {
   render() {
     const isAnyTasks = this.props.tasks && this.props.tasks.size > 0;
     let taskItems = null;
+    let selectedTaskId = this.props.selectedTaskId;
     if (isAnyTasks) {
       taskItems = this.props.tasks.slice(
         0,
         this.state.pageSize * (this.state.pageNumber + 1))
         .map((task, index) => {
-      return (
-        <TaskItem
-          key={index}
-          taskNumber={index}
-          task={task}
-          selectTask={this.props.selectTask}
-          isActive={task.get("id") == this.props.selectedTaskId}
-        />
-      );
-    });
+          let isActive = task.get('id') === selectedTaskId;
+          return (
+            <TaskItem
+              key={index}
+              taskNumber={index}
+              task={task}
+              selectTask={this.props.selectTask}
+              isActive={isActive}
+            />
+          );
+      });
     }
 
   const hasMoreTasks = this.props.tasks?
