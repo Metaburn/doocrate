@@ -98,7 +98,6 @@ export class TasksPage extends Component {
           this.setState({
             newTask: this.createNewTask()
           });
-          this.props.showSuccess("Creating...");
         }
       } else {
         // Select existing task by tid
@@ -401,7 +400,10 @@ export class TasksPage extends Component {
             <TaskList
               tasks={this.state.tasks}
               selectTask={this.goToTask}
-              createTask={()=>{this.props.history.push('/task/new-task')}}
+              createTask={()=>{
+                this.props.showSuccess(i18n.t('task.creating-new'));
+                this.props.history.push('/task/new-task')
+              }}
               selectedTaskId={""} // this.state.selectedTask? this.state.selectedTask.get("id") : ""
               labels = {this.props.labels}
             />

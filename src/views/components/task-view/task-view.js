@@ -27,6 +27,7 @@ import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
 import { appConfig } from 'src/config/app-config'
+import {notificationActions} from "../../../notification";
 
 export class TaskView extends Component {
   constructor() {
@@ -352,7 +353,16 @@ export class TaskView extends Component {
 
   handleSave() {
     if (this.isValid()) {
-      this.props.submitNewTask(this.getFormFields());
+      // Is task a draft and first time being saved
+      if(this.props.isDraft) {
+        this.props.submitNewTask(this.getFormFields());
+      }else {
+        // Not a draft but a normal save
+        this.handleSubmit();
+        this.props.showSuccess(i18n.t('task.updated-successfully'));
+      }
+    }else {
+      this.props.showError(i18n.t('task.mission-incomplete-short'));
     }
   }
 
@@ -391,6 +401,7 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = Object.assign(
   {},
+  notificationActions,
 );
 
 export default connect(

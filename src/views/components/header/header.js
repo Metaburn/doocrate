@@ -25,7 +25,7 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
       <div className='g-row'>
         <div className='g-col'>
         <ToastContainer
-            position='top-right'
+            position='top-center'
             autoClose={ appConfig.notificationShowTime }
             hideProgressBar={false}
             newestOnTop={true}
