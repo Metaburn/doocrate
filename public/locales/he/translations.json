@@ -9,7 +9,8 @@
   },
   "general": {
     "loading": "טוען ...",
-    "no-results-found": "לא נמצאו תוצאות"
+    "no-results-found": "לא נמצאו תוצאות",
+    "select-default": "בחר מהרשימה"
   },
   "header": {
     "disconnect": "התנתקי",

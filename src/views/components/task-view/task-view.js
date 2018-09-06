@@ -149,13 +149,13 @@ export class TaskView extends Component {
           />
           <div className='task-view'>
             <form noValidate>
-              {this.renderInput(task, 'title', t, canEditTask)}
-              {this.renderTextArea(task, 'description', t, canEditTask)}
-              <div className='instruction'><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}
+              <div className="form-input">{this.renderInput(task, 'title', t, canEditTask)}</div>
+              <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask)}</div>
+              <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}</div>
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
 
-              <div className='instruction'><span>{t('task.automatic-tags')}</span></div>
+              <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
               <div>
                 <TagsSuggestions
                   tags={appConfig.popularTags}
@@ -218,6 +218,7 @@ export class TaskView extends Component {
                 this.setState({ [fieldName]: val}) }}
       options={options}
       // onBlur={this.handleSubmit}
+      placeholder= {translation('general.select-default')}
       noResultsText={translation('general.no-results-found')}
       searchable={ false }
       disabled = { !isEditable }/>
@@ -266,8 +267,9 @@ export class TaskView extends Component {
   renderLabel(isEditable, translation) {
     const showPlaceholder = this.state.label.length == 0;
     const classNames = isEditable ? ' editable' : ''
+
     return (
-      <TagsInput className={`react-tagsinput-changing${classNames}`}
+      <TagsInput className={`react-tagsinput-changing ${classNames}`}
       tabIndex="3"
       value={this.state.label}
       onChange={this.handleLabelChange}

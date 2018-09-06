@@ -9,7 +9,8 @@
   },
   "general": {
     "loading": "Loading ...",
-    "no-results-found": "No results found"
+    "no-results-found": "No results found",
+    "select-default": "Select..."
   },
   "header": {
     "disconnect": "Disconnect",

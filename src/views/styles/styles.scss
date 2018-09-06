@@ -32,17 +32,21 @@ div:focus {
 
 .label-default {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: .2em .6em .2em;
   font-size: 67%;
   font-weight: 700;
   line-height: 1;
-  color: #fff;
+  color: #aaa;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
+  border-color: lightgreen;
   
-  background-color: #999;
+  // background-color: #999;
+}
+.label-default li {
+  border-color:red;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */

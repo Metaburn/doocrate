@@ -13,6 +13,18 @@
     font-size: 16px;
     margin-top: 0.5em;
     margin-bottom: 0.4em;
+    margin-left: 1em;
+    float: right; 
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .instruction-label {
+    font-size: 16px;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
 
     &:first-child {
       margin-top: 0;
@@ -50,7 +62,7 @@
 }
 
 .task-view {
-  padding: 10px 20px;
+  padding: 10px 25px;
   max-height: 19.35em;
   overflow-y: auto;
 
@@ -67,6 +79,10 @@
     vertical-align: middle;
   }
 
+  .Select-placeholder {
+    color: red
+  }
+
   .Select-value {
     background-color: white;
     padding-right: 0 !important;
@@ -74,7 +90,6 @@
 
   .Select-control {
     width: 200px !important;
-    border: none !important;
     font-size: 18px;
 
 
@@ -134,4 +149,12 @@
     font-family: $base-font-family;
     width: calc( 100% - 130px);
   }
+
+  ::placeholder {
+    color:red
+  }
+}
+
+.form-input{
+  margin:0.5em;
 }
