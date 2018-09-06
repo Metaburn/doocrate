@@ -49,10 +49,11 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-        { <Button
+          { this.props.showSaveButton && task.assignee ?
+          <Button
             className='button button-small action-button assign_task'
             onClick={()=> { this.props.saveTask() }}
-            type='button'>{t('task.save')}</Button>
+            type='button'>{t('task.save')}</Button> : ''
           }
 
             { this.props.isDraft ? '' : (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
@@ -83,6 +84,7 @@ TaskViewHeader.propTypes = {
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
   showUnassignButton: PropTypes.bool.isRequired,
+  showSaveButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
   saveTask: PropTypes.func.isRequired
 };

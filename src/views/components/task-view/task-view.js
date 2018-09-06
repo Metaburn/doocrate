@@ -132,7 +132,11 @@ export class TaskView extends Component {
     const isUserAssignee = task.assignee && task.assignee.id == this.props.auth.id;
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
     const canDeleteTask = isUserCreator || this.props.isAdmin;
-    const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
+    const showUnassignButton = isUserAssignee || this.props.isAdmin;
+    const showSaveButton = canEditTask;
+
+    // Uncomment this to allow to unassign only for admins / guides
+    //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
     return (
       <I18n ns='translations'>
@@ -147,6 +151,7 @@ export class TaskView extends Component {
           unassignTask={ this.props.unassignTask }
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
+          showSaveButton = { showSaveButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
           />
