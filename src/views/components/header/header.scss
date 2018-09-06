@@ -8,11 +8,15 @@
   line-height: 40px;
 
   @media only screen and (max-width: 480px) {
-    .toastify--top-right {
+    .toastify--top-center {
       left:0;
       right:0;
       padding: 0 20px;
     }
+  }
+
+  .toastify {
+    z-index: 10000;
   }
 
   .lang-select {
