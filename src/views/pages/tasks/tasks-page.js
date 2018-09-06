@@ -98,8 +98,10 @@ export class TasksPage extends Component {
           this.setState({
             newTask: this.createNewTask()
           });
+          this.props.showSuccess("Creating...");
         }
       } else {
+        // Select existing task by tid
         this.setState({
           selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
         })

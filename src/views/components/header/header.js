@@ -6,6 +6,7 @@ import ToolTip from 'react-portal-tooltip';
 import MyProfileTooltip from '../my-profile-tooltip';
 import { ToastContainer } from 'react-toastify';
 import { I18n, Trans } from 'react-i18next';
+import { appConfig } from 'src/config/app-config'
 
 import 'react-toastify/dist/ReactToastify.min.css'
 
@@ -25,7 +26,7 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
         <div className='g-col'>
         <ToastContainer
             position='top-right'
-            autoClose={5000}
+            autoClose={ appConfig.notificationShowTime }
             hideProgressBar={false}
             newestOnTop={true}
             pauseOnHover
