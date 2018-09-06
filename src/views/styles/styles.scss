@@ -32,7 +32,7 @@ div:focus {
 
 .label-default {
   display: inline;
-  padding: .2em .6em .3em;
+  padding: .2em .6em .2em;
   font-size: 67%;
   font-weight: 700;
   line-height: 1;
@@ -41,8 +41,12 @@ div:focus {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
-  
-  background-color: #999;
+  border-color: lightgreen;
+
+  // background-color: #999;
+}
+.label-default li {
+  border-color:red;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -69,11 +73,11 @@ div:focus {
 }
 
 
-textarea:hover, 
-input:hover, 
-textarea:active, 
-input:active, 
-textarea:focus, 
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
 input:focus,
 button:focus,
 button:active,

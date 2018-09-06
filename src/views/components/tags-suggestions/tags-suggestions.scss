@@ -8,6 +8,10 @@
     padding: 2px;
   }
 
+  .label-default {
+    color: #888;
+  }
+
   li {
     margin: 0;
     font-size: 13px;
@@ -15,7 +19,7 @@
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    border: 1px solid #999;
+    border: 1px solid #cde69c;
 
     &:hover {
       background-color: #cde69c;

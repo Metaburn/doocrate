@@ -13,6 +13,14 @@
     font-size: 16px;
     margin-top: 0.5em;
     margin-bottom: 0.4em;
+    margin-left: 1em;
+    float: right;
+  }
+
+  .instruction-label {
+    font-size: 16px;
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
 
     &:first-child {
       margin-top: 0;
@@ -50,7 +58,7 @@
 }
 
 .task-view {
-  padding: 10px 20px;
+  padding: 10px 25px;
   max-height: 19.35em;
   overflow-y: auto;
 
@@ -60,11 +68,31 @@
   }
 
   input:disabled, select:disabled, textarea:disabled {
-    background: none;
+    background: none !important;
+    color: rgb(84,84,84) !important;
+    border: none !important;
+    font-size: 18px;
+    padding: 5px 0;
+    margin: 0;
+    font-family: $base-font-family !important;
   }
 
   .Select {
     vertical-align: middle;
+  }
+
+  .is-disabled {
+    .Select-control {
+      border: none !important;
+
+      &:hover {
+        border: none !important;
+      }
+    }
+  }
+
+  .Select-placeholder {
+    color: red
   }
 
   .Select-value {
@@ -74,7 +102,6 @@
 
   .Select-control {
     width: 200px !important;
-    border: none !important;
     font-size: 18px;
 
 
@@ -134,4 +161,12 @@
     font-family: $base-font-family;
     width: calc( 100% - 130px);
   }
+
+  ::placeholder {
+    color:red
+  }
+}
+
+.form-input{
+  margin:0.4em 0;
 }

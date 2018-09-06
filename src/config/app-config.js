@@ -1,4 +1,6 @@
 export const appConfig = {
+  // Time in milliseconds to show the toast notification message
+  notificationShowTime: 9000,
   popularTags: [
     'מחנות נושא',
     'אמנות',

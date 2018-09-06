@@ -29,13 +29,14 @@
     font-size: 16px !important;
     border: 1px solid #d5dce0;
     padding: 4px 0 0 0;
-    
+
     input {
       font-size: 1.0em;
       font-family: $base-font-family;
       width: 10em;
+      background: none;
     }
-  
+
     &:hover {
       border: 1px solid $primary-color;
     }
@@ -67,7 +68,7 @@
         content: '';
       }
     }
-    
+
     a {
       color: #999;
       text-decoration: none;
@@ -79,7 +80,7 @@
         padding-bottom: 10px;
         border-bottom: 4px solid #666;
       }
-  
+
       &.active {
         color: $primary-color;
         padding-bottom: 10px;

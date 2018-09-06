@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import classNames from 'classnames';
+import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 
 import './add-comment.css';
 import Img from 'react-image';
-import Button from '../button';
 import Textarea from 'react-textarea-autosize';
 import { I18n } from 'react-i18next';
 

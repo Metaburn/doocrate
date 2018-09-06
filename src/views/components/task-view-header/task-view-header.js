@@ -31,10 +31,11 @@ export class TaskViewHeader extends Component {
             <Icon name='close' className='close-icon grow' />
           </Button>
 
-          {!task.assignee ? <Button
+          {this.props.isDraft ? '' : !task.assignee ? <Button
             className='button button-small action-button assign_task'
             onClick={()=>this.props.assignTask(task)}
             type='button'>{t('task.take-responsibility')}</Button> :
+
 
             <div className='avatar-container'>
               <Img className='avatar' src={task.assignee.photoURL}/>
@@ -48,19 +49,25 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-            { (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
+        { <Button
+            className='button button-small action-button assign_task'
+            onClick={()=> { this.props.saveTask() }}
+            type='button'>{t('task.save')}</Button>
+          }
+
+            { this.props.isDraft ? '' : (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
             <Button
               className='action-button button-grey'
               onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
               type='button'>{t('task.delete')}</Button> : '' }
+          { task && task.isCritical ?
+            <span>
+              <Icon name='warning' className='header-icon grow' />
+              {t('task.critical')}
+            </span>
+          : ''
+          }
 
-            { task && task.isCritical ?
-              <span>
-                <Icon name='warning' className='header-icon grow' />
-                {t('task.critical')}
-              </span>
-            : ''
-            }
         </div>
       )}
       </I18n>
@@ -75,7 +82,9 @@ TaskViewHeader.propTypes = {
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
-  showUnassignButton: PropTypes.bool.isRequired
+  showUnassignButton: PropTypes.bool.isRequired,
+  isDraft: PropTypes.bool.isRequired,
+  saveTask: PropTypes.func.isRequired
 };
 
 

@@ -9,7 +9,8 @@
   },
   "general": {
     "loading": "טוען ...",
-    "no-results-found": "לא נמצאו תוצאות"
+    "no-results-found": "לא נמצאו תוצאות",
+    "select-default": "בחר מהרשימה"
   },
   "header": {
     "disconnect": "התנתקי",
@@ -33,28 +34,38 @@
     "critical": "משימה קריטית לקיום הארוע",
     "name": "שם המשימה",
     "description": "תאור המשימה",
-    "type": "סוג המשימה",
+    "type": "סוג המשימה:",
     "is-critical": "האם המשימה קריטית לקיום הארוע?",
     "status": "סטטוס המשימה",
-    "creator": "יוצר המשימה",
+    "creator": "חולם",
+    "doer": "מבצע",
+    "save": "שמור",
     "search-by-tags": "חפשי משימה לפי תגיות",
     "unnamed-task": "משימה חדשה ללא שם",
+    "creating-new": "כמעט שם.. אנא הכנסי את כל פרטי המשימה ולחצי על שמור לסיום",
     "created-successfully": "משימה נוצרה בהצלחה",
     "cant-take-messages": "לא ניתן לקחת משימות כרגע",
     "cant-take-messages-limit": "הגעת למכסת המשימות לאדם. לא ניתן לקחת משימות נוספות כרגע",
     "task-is-yours": "💪❤️️️️️️️ ייאייי המשימה שלך ❤️💪",
+    "updated-successfully": "המשימה עודכנה בהצלחה! 🙌",
     "unassigned": "האחריות הוסרה - המשימה הפכה להיות פנויה",
     "only-managers-can-unassign": "רק מנהלים או מדריכים יכולים להסיר אחריות",
     "maximum-reached": "הגעת למכסת המשימות שניתן לייצר",
     "new-tasks-closed": "יצירת משימות חדשות סגורה כעת",
     "automatic-tags": "תגיות פופולריות (בחר לפחות אחת):",
-    "input-tags": "הכנס תגיות. לחץ Enter לאישור",
+    "input-tags": "הכנס לפחות תגית אחת או בחר מההצעות (לחץ Enter לאישור)",
+    "mission-incomplete-short": "לא ניתן לשמור משימה לפני מילוי כל השדות. אנא מלאי את כל השדות. 👁",
+    "mission-incomplete": "לא ניתן לשמור משימה לפני מילוי כל השדות. האם ברצונך להשאר במשימה? לחיצה על Cancel תוביל למחיקת המשימה",
     "types": {
       "planning": "תכנון ארוע",
       "shifts": "משמרות בארוע",
       "camps": "מחנות נושא",
       "art": "מיצבי אמנות",
       "other": "אחר"
+    },
+    "errors": {
+      "not-empty": "שדה חובה לא יכול להיות ריק",
+      "min-3": "שדה חייב להיות באורך לפחות שלושה תווים"
     }
   },
   "user": {
