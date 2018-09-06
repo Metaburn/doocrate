@@ -31,16 +31,17 @@ export class TaskViewHeader extends Component {
             <Icon name='close' className='close-icon grow' />
           </Button>
 
-          {!task.assignee ? <Button
+          {this.props.isDraft ? '' : !task.assignee ? <Button
             className='button button-small action-button assign_task'
             onClick={()=>this.props.assignTask(task)}
             type='button'>{t('task.take-responsibility')}</Button> :
-
+            
+            
             <div className='avatar-container'>
               <Img className='avatar' src={task.assignee.photoURL}/>
               <span>{task.assignee.name}</span>
             </div>}
-
+          
           { this.props.showUnassignButton && task.assignee ?
             <Button
             className='action-button button-grey'
@@ -48,7 +49,14 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-            { (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
+        { this.props.isDraft ?
+            <Button
+            className='button button-small action-button assign_task'
+            onClick={()=> { this.props.saveTask() }}
+            type='button'>{t('task.save')}</Button> : ''
+          }
+
+            { this.props.isDraft ? '' : (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
             <Button
               className='action-button button-grey'
               onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
@@ -76,7 +84,8 @@ TaskViewHeader.propTypes = {
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
   showUnassignButton: PropTypes.bool.isRequired,
-  isTaskValid: PropTypes.bool.isRequired
+  isDraft: PropTypes.bool.isRequired,
+  saveTask: PropTypes.func.isRequired
 };
 
 

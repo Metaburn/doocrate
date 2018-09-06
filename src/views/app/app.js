@@ -33,6 +33,7 @@ const App = ({auth, signOut, isShowUpdateProfile}) => (
         <Switch>
           <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage} />
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/new-task" component={TasksPage} />
           <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage} />
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>

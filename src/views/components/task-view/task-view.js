@@ -56,6 +56,8 @@ export class TaskView extends Component {
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.isValid = this.isValid.bind(this);
 
     this.debouncedHandleSubmit = debounce(this.handleSubmit, 300);
   }
@@ -70,7 +72,9 @@ export class TaskView extends Component {
     isAdmin: PropTypes.bool.isRequired,
     isGuide: PropTypes.bool.isRequired,
     unloadComments: PropTypes.func.isRequired,
-    isValidCallback: PropTypes.func.isRequired
+    isValidCallback: PropTypes.func.isRequired,
+    isDraft: PropTypes.bool.isRequired,
+    submitNewTask: PropTypes.func.isRequired
   };
 
   componentWillMount() {
@@ -140,7 +144,8 @@ export class TaskView extends Component {
           unassignTask={ this.props.unassignTask }
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
-          isTaskValid = { this.isValid }
+          isDraft = { this.props.isDraft }
+          saveTask = {this.handleSave}
           />
           <div className='task-view'>
             <form noValidate>
@@ -233,6 +238,7 @@ export class TaskView extends Component {
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
+        validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
          />)
   }
@@ -325,16 +331,10 @@ export class TaskView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // if (prevState.title != this.state.title ) {
-      this.debouncedHandleSubmit();
-    // }
+    this.debouncedHandleSubmit();
   }
 
-  handleSubmit(event) {
-    if(event) {
-      event.preventDefault();
-    }
-
+  getFormFields() {
     let labelAsObject = this.arrayToObject(this.state.label);
     const fieldsToUpdate = {
       title: this.state.title,
@@ -346,10 +346,25 @@ export class TaskView extends Component {
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
 
-    if (this.isValid()) {
-      this.props.updateTask(this.props.selectedTask, fieldsToUpdate);
-    }
+    return fieldsToUpdate;
+  }
 
+  handleSave() {
+    if (this.isValid()) {
+      this.props.submitNewTask(this.getFormFields());
+    }
+  }
+
+  handleSubmit(event) {
+    if(event) {
+      event.preventDefault();
+    }
+    
+    if (this.props.isDraft || !this.isValid()) { 
+      return;
+    }
+   
+    this.props.updateTask(this.props.selectedTask, this.getFormFields());
   }
 
   arrayToObject(array) {

@@ -33,14 +33,14 @@ export class TasksPage extends Component {
     this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
-
-    this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
+    this.submitNewTask = this.submitNewTask.bind(this);
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
     this.state = {
       tasks: this.props.tasks,
       selectedTask: null,
+      newTask: null,
       labels: null,
       projects: null,
       labelPool: {},
@@ -93,19 +93,27 @@ export class TasksPage extends Component {
     if (nextProps.match != null && nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 
-      this.setState({
-        selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
-      })
+      if (tid == "new-task") {
+        if (this.state.newTask == null) {
+          this.setState({
+            newTask: this.createNewTask()
+          });
+        }
+      } else {
+        this.setState({
+          selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
+        })
 
-      if(!this.state.selectedTask) {
-        this.setState({ isLoadedComments: false });
-      }
+        if(!this.state.selectedTask) {
+          this.setState({ isLoadedComments: false });
+        }
 
-      if(!this.state.isLoadedComments ||
-        this.state.selectedTask && tid != this.state.selectedTask.id) {
-          this.setState({ isLoadedComments: true });
-          this.props.unloadComments();
-          this.props.loadComments(tid);
+        if(!this.state.isLoadedComments ||
+          this.state.selectedTask && tid != this.state.selectedTask.id) {
+            this.setState({ isLoadedComments: true });
+            this.props.unloadComments();
+            this.props.loadComments(tid);
+        }
       }
     } else {
       this.setState({ isLoadedComments: false });
@@ -165,11 +173,12 @@ export class TasksPage extends Component {
   onNewTaskAdded(task) {
     const taskObj = this.props.tasks.find((t)=>( t.get('id') == task.id ))
     this.goToTask(taskObj);
+
+    setTimeout(()=>{this.setState({newTask: null})}, 100);
   }
 
   createNewTask() {
-    const filter = this.props.buildFilter(this.props.auth, "mine");
-    const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
+    // const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
 
     // TODO: Move to a better place
     //if (!this.isAdmin() && myTasks.size >= 20) {
@@ -181,18 +190,29 @@ export class TasksPage extends Component {
     //  return;
     //}
 
-    let creator = {
+    const creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
     }
 
-    this.props.showSuccess(i18n.t('task.created-successfully'));
+    return {id: null, creator: creator, created: new Date()}
+  }
 
+  submitNewTask(task) {
+    const creator = {
+      id: this.props.auth.id,
+      name: this.props.auth.name,
+      email: this.props.auth.updatedEmail || this.props.auth.email,
+      photoURL: this.props.auth.photoURL,
+    }
+  
     this.props.createTask(
-      {creator , created: new Date()},
+      {title: task.title, creator, created: new Date(), description: task.description, type: task.type, label: task.label},
       this.onNewTaskAdded);
+    
+    this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
   isAdmin() {
@@ -281,15 +301,14 @@ export class TasksPage extends Component {
         taskParameter += `&text=${filterText}`;
       }
     }
-
+    
+    setTimeout(()=>{this.setState({newTask: null})}, 100);
     this.props.history.push(taskParameter);
   }
 
   showSetUserInfo() {
     this.setState({showSetUserInfoScreen: !this.props.auth.isEmailConfigured})
   }
-
-
 
   onLabelChanged(labels) {
     this.setState({labels});
@@ -324,9 +343,15 @@ export class TasksPage extends Component {
   }
 
   renderTaskView() {
-    const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-    if (this.state.selectedTask == null) {
+    if (this.state.selectedTask == null && this.state.newTask == null) {
       return (<div className='task-view-loader'>&nbsp;</div>);
+    }
+
+    let taskObj;
+    if (this.state.newTask != null) {
+      taskObj = this.state.newTask;
+    } else if (this.state.selectedTask != null) {
+      taskObj = this.state.selectedTask.toJS();
     }
 
     return (
@@ -334,7 +359,7 @@ export class TasksPage extends Component {
         removeTask={this.props.removeTask}
         updateTask={this.props.updateTask}
         selectTask={this.goToTask}
-        selectedTask={this.state.selectedTask.toJS()}
+        selectedTask={taskObj}
         isAdmin={this.isAdmin()}
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
@@ -342,6 +367,8 @@ export class TasksPage extends Component {
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}
         isValidCallback={this.setCurrentTaskValid}
+        isDraft={this.state.newTask != null}
+        submitNewTask={this.submitNewTask}
       />)
   }
 
@@ -349,7 +376,7 @@ export class TasksPage extends Component {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-
+    
     return (
       <div>
           <div className="g-col">
@@ -371,8 +398,8 @@ export class TasksPage extends Component {
             <TaskList
               tasks={this.state.tasks}
               selectTask={this.goToTask}
-              createTask={this.createNewTask}
-              selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}
+              createTask={()=>{this.props.history.push('/task/new-task')}}
+              selectedTaskId={""} // this.state.selectedTask? this.state.selectedTask.get("id") : ""
               labels = {this.props.labels}
             />
           </div>
