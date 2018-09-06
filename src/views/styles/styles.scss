@@ -36,13 +36,13 @@ div:focus {
   font-size: 67%;
   font-weight: 700;
   line-height: 1;
-  color: #aaa;
+  color: #fff;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: .25em;
   border-color: lightgreen;
-  
+
   // background-color: #999;
 }
 .label-default li {
@@ -73,11 +73,11 @@ div:focus {
 }
 
 
-textarea:hover, 
-input:hover, 
-textarea:active, 
-input:active, 
-textarea:focus, 
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
 input:focus,
 button:focus,
 button:active,
