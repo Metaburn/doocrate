@@ -34,7 +34,8 @@ export class TaskItem extends Component {
       <I18n ns='translations'>
       {
       (t, { i18n }) => (
-        <div className={containerClasses} tabIndex={this.props.taskNumber+1}
+        // Removed tab index as it causes error in the active task when switching between fields
+        <div className={containerClasses} /* tabIndex={this.props.taskNumber+100} */
           onClick={this.select}
           onKeyUp={this.select}>
           { task && task.isCritical ?

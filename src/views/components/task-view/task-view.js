@@ -150,11 +150,11 @@ export class TaskView extends Component {
           />
           <div className='task-view'>
             <form noValidate>
-              <div className="form-input">{this.renderInput(task, 'title', t, canEditTask)}</div>
-              <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask)}</div>
+              <div className="form-input">{this.renderInput(task, 'title', t, canEditTask, 0, true)}</div>
+              <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask, 0)}</div>
               <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t)}</div>
-              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t)} </div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,0)}</div>
+              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t, 0)} </div>
 
               <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
               <div>
@@ -207,12 +207,13 @@ export class TaskView extends Component {
       key='addComment' />)
   }
 
-  renderSelect(task, fieldName, placeholder, options, isEditable, translation) {
+  renderSelect(task, fieldName, placeholder, options, isEditable, translation, tabIndex) {
     return (
       <Select
       type='text'
       name={fieldName}
       value={this.state[fieldName]}
+      tabIndex = { tabIndex }
       ref={e => this[fieldName+'Input'] = e}
       onChange={(e) => { let val=null; if (e) { val = e.value };
                 this.setState({ [fieldName]: val}) }}
@@ -225,12 +226,12 @@ export class TaskView extends Component {
   );
   }
 
-  renderInput(task, fieldName, t, isEditable) {
-    const classNames = isEditable ? ' editable' : ''
+  renderInput(task, fieldName, t, isEditable, tabIndex, isAutoFocus) {
+    const classNames = isEditable ? ' editable' : '';
     return( <Textbox
     className={`changing-input${classNames}`}
         type = 'text'
-        tabIndex = "1"
+        tabIndex = { tabIndex }
         name = { fieldName }
         value = { this.state[fieldName] }
         placeholder = { t('task.name') }
@@ -239,18 +240,19 @@ export class TaskView extends Component {
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
+        autofocus = { isAutoFocus }
         validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
         validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
          />)
   }
 
-  renderTextArea(task, fieldName, t, isEditable) {
+  renderTextArea(task, fieldName, t, isEditable, tabIndex) {
     const classNames = isEditable ? ' editable' : ''
     return (
         <Textbox
         className={`changing-input${classNames}`}
         name={fieldName}
-        tabIndex="2"
+        tabIndex={tabIndex}
         value={this.state[fieldName]}
         placeholder={t('task.description')}
         ref={e => this[fieldName+'Input'] = e}
@@ -264,13 +266,13 @@ export class TaskView extends Component {
     );
   }
 
-  renderLabel(isEditable, translation) {
+  renderLabel(isEditable, translation, tabIndex) {
     const showPlaceholder = this.state.label.length == 0;
     const classNames = isEditable ? ' editable' : ''
 
     return (
       <TagsInput className={`react-tagsinput-changing ${classNames}`}
-      tabIndex="3"
+      tabIndex={tabIndex}
       value={this.state.label}
       onChange={this.handleLabelChange}
       onlyUnique={true}

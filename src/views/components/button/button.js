@@ -8,7 +8,7 @@ import './button.css';
 const Button = ({children, className, onClick, type = 'button'}) => {
   const cssClasses = classNames('button', className);
   return (
-    <button className={cssClasses} onClick={onClick} type={type}>
+    <button className={cssClasses} onClick={onClick} type={type} tabindex={0}>
       {children}
     </button>
   );
@@ -18,7 +18,7 @@ Button.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
-  type: PropTypes.oneOf(['button', 'reset', 'submit'])
+  type: PropTypes.oneOf(['button', 'reset', 'submit']),
 };
 
 
