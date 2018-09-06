@@ -134,10 +134,23 @@ export class TaskView extends Component {
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
     const canDeleteTask = isUserCreator || this.props.isAdmin;
     const showUnassignButton = isUserAssignee || isUserCreator || this.props.isAdmin;
-    const showSaveButton = canEditTask;
-
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
+
+    const showSaveButton = canEditTask;
+    const isTaskEmpty = (!this.state.description || this.state.description === '');
+
+    const oneDay = 60 * 60 * 24 * 1000;
+    // We allow deletion of task which created in the last 24 hours
+    let isTaskCreatedInTheLastDay = false;
+    if(task && task.created) {
+      const now = new Date();
+      isTaskCreatedInTheLastDay = (now - task.created) <= oneDay;
+    }
+
+    const showDeleteButton = (!this.props.isDraft &&
+      (isTaskEmpty || isTaskCreatedInTheLastDay) &&
+      this.props.canDeleteTask) || this.props.isAdmin;
 
     return (
       <I18n ns='translations'>
@@ -153,6 +166,7 @@ export class TaskView extends Component {
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
           showSaveButton = { showSaveButton }
+          showDeleteButton = { showDeleteButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
           />
@@ -274,8 +288,8 @@ export class TaskView extends Component {
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
         onKeyUp={ () => {}} // here to trigger validation callback on Key up
         disabled = { !isEditable }
-        validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
-        validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
+        //validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
+        //validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
         />
     );
   }

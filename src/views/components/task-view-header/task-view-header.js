@@ -11,16 +11,6 @@ export class TaskViewHeader extends Component {
   render() {
     const { task } = this.props;
 
-    const isTaskEmpty = task && (!task.description || task.description === '');
-    const oneDay = 60 * 60 * 24 * 1000;
-
-    // We allow deletion of task which created in the last 24 hours
-    let isTaskCreatedInTheLastDay = false;
-    if(task && task.created) {
-      const now = new Date();
-      isTaskCreatedInTheLastDay = (now - task.created) <= oneDay;
-    }
-
     return(
       <I18n ns='translations'>
       {
@@ -49,18 +39,19 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.remove-responsibility')}</Button> : ''
           }
 
-          { this.props.showSaveButton && task.assignee ?
+          { this.props.showSaveButton ?
           <Button
             className='button button-small action-button assign_task'
             onClick={()=> { this.props.saveTask() }}
             type='button'>{t('task.save')}</Button> : ''
           }
 
-            { this.props.isDraft ? '' : (isTaskEmpty || isTaskCreatedInTheLastDay) && this.props.canDeleteTask ?
+          { this.props.showDeleteButton ?
             <Button
               className='action-button button-grey'
               onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
               type='button'>{t('task.delete')}</Button> : '' }
+
           { task && task.isCritical ?
             <span>
               <Icon name='warning' className='header-icon grow' />
@@ -85,6 +76,7 @@ TaskViewHeader.propTypes = {
   canDeleteTask: PropTypes.bool.isRequired,
   showUnassignButton: PropTypes.bool.isRequired,
   showSaveButton: PropTypes.bool.isRequired,
+  showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
   saveTask: PropTypes.func.isRequired
 };
