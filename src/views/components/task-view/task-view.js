@@ -100,7 +100,7 @@ export class TaskView extends Component {
           isCritical: isCritical || false,
           created: created || null,
           dueDate: dueDate || null,
-          type: type || this.state.defaultType[0],
+          type: type || null,
           projectName: projectName || '',
           validation: {}
         });
@@ -161,7 +161,6 @@ export class TaskView extends Component {
                   tags={appConfig.popularTags}
                   onTagSelected={(tag) => {
                     this.handleAddLabel(tag);
-                    this.updateStateByProps(this.props); //TODO - maybe add bugs
                   }}
                 />
               </div>
@@ -361,11 +360,11 @@ export class TaskView extends Component {
     if(event) {
       event.preventDefault();
     }
-    
-    if (this.props.isDraft || !this.isValid()) { 
+
+    if (this.props.isDraft || !this.isValid()) {
       return;
     }
-   
+
     this.props.updateTask(this.props.selectedTask, this.getFormFields());
   }
 
