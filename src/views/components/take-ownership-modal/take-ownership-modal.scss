@@ -13,21 +13,27 @@
     }
   }
 
-  .submit-wrapper {
-    margin-top: 2em;
-    text-align: center;
+  button {
+    font-size: 1em;
+    color: white;
+    padding: 0 6em;
+    height: 3em;
+    color: #1A181B;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    margin: 0.5em 0;
 
-    .button {
-      font-size: 1em;
-      background-color: #eb1478;
-      color: white;
-      padding: 0 6em;
-      height: 3em;
-
-      &:hover {
-        font-size: 1.1em;
-      }
+    &:hover {
+      font-size: 1.1em;
+      padding: 0.1em 5.4em;
     }
+  }
+
+  .yes-btn {
+    color: #1A181B;
+    background-color: #32936F;
+    margin-left: 1em;
   }
 
 }

@@ -28,6 +28,7 @@ import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
 import { appConfig } from 'src/config/app-config'
 import {notificationActions} from "../../../notification";
+import { TakeOwnershipModal }  from "../take-ownership-modal";
 
 export class TaskView extends Component {
   constructor() {
@@ -50,7 +51,8 @@ export class TaskView extends Component {
       ],
       label: [],
       isCritical: false,
-      validations: {}
+      validations: {},
+      shouldOpenTakeOwnerModal: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -150,11 +152,11 @@ export class TaskView extends Component {
           />
           <div className='task-view'>
             <form noValidate>
-              <div className="form-input">{this.renderInput(task, 'title', t, canEditTask, 0, true)}</div>
-              <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask, 0)}</div>
+              <div className="form-input">{this.renderInput(task, 'title', t, canEditTask, "0", true)}</div>
+              <div className="form-input">{this.renderTextArea(task, 'description', t, canEditTask, "0")}</div>
               <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,0)}</div>
-              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t, 0)} </div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,"0")}</div>
+              <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
 
               <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
               <div>
@@ -178,6 +180,7 @@ export class TaskView extends Component {
             auth={this.props.auth} /> : ''}
           </div>
           { this.renderAddComment() }
+          { this.renderTakeOwnershipModal() }
         </div>
       )}
       </I18n>
@@ -304,6 +307,24 @@ export class TaskView extends Component {
     );
   }
 
+  renderTakeOwnershipModal() {
+    return (
+      <div>
+        <TakeOwnershipModal
+          isOpen = { this.state.shouldOpenTakeOwnerModal }
+          onClosed = { () => {
+            this.setState({shouldOpenTakeOwnerModal: false});
+            console.log('Closed');
+          }}
+          onYes ={() => {
+            this.setState({shouldOpenTakeOwnerModal: false});
+            this.props.assignTask(this.props.selectedTask);
+          }
+          }/>
+      </div>
+    );
+  }
+
   handleChange(n, e) {
     let fieldName = e.target.name;
     this.setState({
@@ -358,6 +379,7 @@ export class TaskView extends Component {
       // Is task a draft and first time being saved
       if(this.props.isDraft) {
         this.props.submitNewTask(this.getFormFields());
+        this.setState({shouldOpenTakeOwnerModal: true});
       }else {
         // Not a draft but a normal save
         this.handleSubmit();

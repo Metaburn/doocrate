@@ -10,13 +10,31 @@ export class TakeOwnershipModal extends Component {
   constructor() {
     super(...arguments);
     this.state = {
-      isOpen: true,
+      isOpen: false,
       email: ''
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
+
+  componentWillMount() {
+    this.updateStateByProps(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateStateByProps(nextProps);
+  }
+
+  updateStateByProps(props) {
+    if (!props) {
+      return;
+    }
+
+    this.setState({
+      isOpen: props.isOpen || false,
+    })
+  }
+
 
   onOpenModal = () => {
     this.setState({ isOpen: true });
@@ -27,12 +45,8 @@ export class TakeOwnershipModal extends Component {
     this.props.onClosed();
   };
 
-  componentWillMount() {
-    this.updateStateByProps(this.props);
-  }
-
   render() {
-    const { isOpen} = this.state;
+    const { isOpen } = this.state;
 
     return (
       <I18n ns='translations'>
@@ -55,7 +69,9 @@ export class TakeOwnershipModal extends Component {
   renderHeader(t) {
     return (
       <div className='modal-header'>
+        <span><br /></span>
         <span>האם תרצי לקחת אחריות על משימה זו?</span>
+        <br />
         <span>במידה ולא, היא תשאר פתוחה עד שמישהי אחרת תקח עליה אחריות</span>
       </div>
     );
@@ -64,17 +80,12 @@ export class TakeOwnershipModal extends Component {
   renderBody(t) {
     return (
       <div className='modal-body'>
-        <button onClick={onYes}>כן</button>
-        <button onClick={onCloseModal}>לא</button>
-      </div>
-    );
-  }
-
-  renderSubmit(t) {
-    return (
-      <div className={'submit-wrapper'}>
-        <input className={`button button-small` }
-               type="submit" value={t('user.submit')}/>
+        <button onClick={() => {
+          this.props.onYes();
+          this.onCloseModal();
+        }
+        } className={'yes-btn'}>{t('task.yes')}</button>
+        <button onClick={this.onCloseModal}>{t('task.no')}</button>
       </div>
     );
   }
@@ -86,23 +97,10 @@ export class TakeOwnershipModal extends Component {
     });
   }
 
-  handleSubmit(event) {
-    if(event) {
-      event.preventDefault();
-    }
-    const fieldsToUpdate = {
-      email: this.state.email,
-    };
-
-    if(this.state.email)
-
-    this.onCloseModal();
-  }
-
 }
 
 TakeOwnershipModal.propTypes = {
-  onClosed: PropTypes.func.isRequired
+  onClosed: PropTypes.func.isRequired,
   onYes: PropTypes.func.isRequired
 };
 
