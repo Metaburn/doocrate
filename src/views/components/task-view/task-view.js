@@ -163,15 +163,20 @@ export class TaskView extends Component {
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,"0")}</div>
               <div><Icon className='label' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
 
-              <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
-              <div>
-                <TagsSuggestions
-                  tags={appConfig.popularTags}
-                  onTagSelected={(tag) => {
-                    this.handleAddLabel(tag);
-                  }}
-                />
-              </div>
+              { canEditTask ?
+                <div>
+                  <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
+                  <div>
+                      <TagsSuggestions
+                        tags={appConfig.popularTags}
+                        onTagSelected={(tag) => {
+                          this.handleAddLabel(tag);
+                        }}
+                      />
+                  </div>
+                </div>
+                  : ''
+              }
 
 
               <div className='is-critical'>{ this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask) }</div>

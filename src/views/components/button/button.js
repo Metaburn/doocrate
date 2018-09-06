@@ -8,7 +8,7 @@ import './button.css';
 const Button = ({children, className, onClick, type = 'button'}) => {
   const cssClasses = classNames('button', className);
   return (
-    <button className={cssClasses} onClick={onClick} type={type} tabindex={0}>
+    <button className={cssClasses} onClick={onClick} type={type} tabIndex={0}>
       {children}
     </button>
   );
