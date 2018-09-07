@@ -35,7 +35,7 @@ export class ReportsPage extends Component {
     this.props.loadTasks();
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
-      const contributors = {}
+      const contributors = {};
       querySnapshot.forEach(function(doc) {
         contributors[doc.id] = doc.data();
       });
@@ -49,23 +49,25 @@ export class ReportsPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.users != this.state.users || prevProps.tasks != this.props.tasks) {
+    if (prevState.users !== this.state.users || prevProps.tasks !== this.props.tasks) {
       const collborators = {};
-      const query = [["#", "name", "id", "email"]]
+      const query = [["#", "name", "id", "email", "task"]]
 
-      this.props.tasks.forEach((t) =>  {
-        if (t.assignee !=null)
-          collborators[t.assignee.id] = true
+      this.props.tasks.forEach((task) =>  {
+        if (task.assignee !=null) {
+          collborators[task.assignee.id] = task.id;
+        }
       });
 
       let counter = 1;
-      Object.keys(collborators).forEach(c => {
-        if (this.state.users.has(c)) {
-          const u = this.state.users.get(c);
-          query.push([counter++, u.name, c, u.email])
+      Object.entries(collborators).forEach(entry => {
+        const [collaboratorId, taskId] = entry;
+        if (this.state.users.has(collaboratorId)) {
+          const collaborator = this.state.users.get(collaboratorId);
+          query.push([counter++, collaborator.name, collaboratorId, collaborator.email, taskId])
         }
       }
-    )
+    );
 
       this.setState({query});
     }
@@ -91,7 +93,7 @@ export class ReportsPage extends Component {
 
         <table className="report-table" >
           {
-            this.state.query.map( (r) => (<tr><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+            this.state.query.map( (r) => (<tr><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
           }
           </table>
       </div>

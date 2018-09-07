@@ -143,6 +143,9 @@ Then inside have a field "name" with value "art" and another field "colorInHex" 
 Under `src/config/app-config` you have the popular labels that would appear when someone creates a task
 
 ## Backup
+Downloag gcloud:
+https://cloud.google.com/sdk/docs/downloads-versioned-archives
+
 To backup you first need to create a new multi regional bucket - for example - doocrate-new-backups
 
 Then, Run the following command to backup - 
