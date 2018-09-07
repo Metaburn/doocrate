@@ -96,9 +96,11 @@ export class ReportsPage extends Component {
           <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
         <table className="report-table" >
+          <tbody>
           {
             this.state.query.map( (r) => (<tr><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
           }
+              </tbody>
           </table>
       </div>
     );
