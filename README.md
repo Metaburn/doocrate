@@ -182,7 +182,8 @@ You can press on the button their - This would go over all the users in the syst
 
 
 ## FAQ
-#####Why is Mail is not being sent?
+
+#### Why is Mail is not being sent?
 Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
 
 Also, Check that all the settings are correct and you have created a mailgun username and set up the domain correctly
