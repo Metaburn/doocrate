@@ -6,32 +6,30 @@ export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(
       authUser => {
-        getIsGuide(authUser).then(isGuide => {
+        if(authUser) {
+          authUser.role = 'user';
+        }
+        getIsAdmin(authUser).then(isAdmin => {
           if(authUser) {
-            authUser.role = isGuide.exists? 'guide' : 'user';
+            authUser.role = isAdmin.exists? 'admin': authUser.role;
           }
-          getIsAdmin(authUser).then(isAdmin => {
-            if(authUser) {
-              authUser.role = isAdmin.exists? 'admin': authUser.role;
+
+          getUserInfo(authUser).then(userInfo => {
+            if(userInfo && userInfo.exists) {
+              const userInfoData = userInfo.data()
+              authUser.isEmailConfigured = userInfoData.isEmailConfigured;
+              authUser.canAssignTask = userInfoData.canAssignTask;
+              authUser.canCreateTask = userInfoData.canCreateTask;
+              authUser.updatedEmail = userInfoData.email;
+            }else {
+              // Only update the fields if no user data exists
+              updateUserData(authUser);
             }
+            dispatch(authActions.initAuth(authUser));
 
-            getUserInfo(authUser).then(userInfo => {
-              if(userInfo && userInfo.exists) {
-                const userInfoData = userInfo.data()
-                authUser.isEmailConfigured = userInfoData.isEmailConfigured;
-                authUser.canAssignTask = userInfoData.canAssignTask;
-                authUser.canCreateTask = userInfoData.canCreateTask;
-                authUser.updatedEmail = userInfoData.email;
-              }else {
-                // Only update the fields if no user data exists
-                updateUserData(authUser);
-              }
-              dispatch(authActions.initAuth(authUser));
-
-              unsubscribe();
-              resolve();
-            });
-          })
+            unsubscribe();
+            resolve();
+          });
         })
       },
       error => reject(error)
@@ -81,17 +79,6 @@ function getIsAdmin(authUser) {
     })
   }
   return firebaseDb.collection('admins').doc(authUser.uid).get();
-}
-
-// TODO - instead of await that waits for all users
-// We should load the interface and then make another call - for faster loading
-function getIsGuide(authUser) {
-  if(!authUser) {
-    return new Promise( (resolve, reject) => {
-      resolve('guest');
-    })
-  }
-  return firebaseDb.collection('guides').doc(authUser.uid).get();
 }
 
 // TODO - instead of await that waits for all users
