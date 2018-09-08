@@ -1,0 +1,20 @@
+@import 'views/styles/shared';
+
+.admin-dashboard {
+  margin: 1.5em;
+
+  .hide-me {
+    transition: opacity 300ms 0ms;
+    opacity: 0.0;
+  }
+
+  .button {
+    color: red;
+    height: 2em;
+    margin: 1em 0;
+  }
+
+  .button[disabled] {
+    color: #ccc;
+  }
+}

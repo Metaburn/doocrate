@@ -164,6 +164,11 @@ You can open the page with the required language. For example use
 `http://localhost:3000/sign-in?lng=he` to open the hebrew version
 `http://localhost:3000/sign-in?lng=en` to open the english version
 
+# Stop the system
+You can user the `/admin-dashboard` page if you are an admin to set permissions
+You can press on the button their - This would go over all the users in the system and would set the
+"canCreateTask, "canAssignTask" permissions which allows to create new tasks and assign / unassign themself 
+
 ## NPM Commands
 
 |Script|Description|

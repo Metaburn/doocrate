@@ -34,6 +34,7 @@ export class TasksPage extends Component {
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
+    this.createTask = this.createTask.bind(this);
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
@@ -191,6 +192,13 @@ export class TasksPage extends Component {
     //  return;
     //}
 
+    if (!this.props.auth || !(this.props.auth.canCreateTask)) {
+      this.props.showError(i18n.t('task.user-new-tasks-closed'));
+      this.props.history.push('/task/1');
+
+      return;
+    }
+
     const creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
@@ -239,6 +247,11 @@ export class TasksPage extends Component {
     //  this.props.showError(i18n.t('task.cant-take-messages'));
     //  return;
     //}
+
+    if (!this.props.auth.canAssignTask) {
+      this.props.showError(i18n.t('task.user-cannot-assign'));
+      return;
+    }
 
     this.props.assignTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.task-is-yours'));
@@ -378,6 +391,16 @@ export class TasksPage extends Component {
       />)
   }
 
+  createTask() {
+    if (!this.props.auth || !(this.props.auth.canCreateTask)) {
+      this.props.showError(i18n.t('task.user-new-tasks-closed'));
+      return;
+    }
+
+    this.props.showSuccess(i18n.t('task.creating-new'));
+    this.props.history.push('/task/new-task');
+  }
+
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
@@ -404,10 +427,7 @@ export class TasksPage extends Component {
             <TaskList
               tasks={this.state.tasks}
               selectTask={this.goToTask}
-              createTask={()=>{
-                this.props.showSuccess(i18n.t('task.creating-new'));
-                this.props.history.push('/task/new-task')
-              }}
+              createTask={this.createTask}
               selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
               labels = {this.props.labels}
             />

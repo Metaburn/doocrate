@@ -16,6 +16,7 @@ export class AddComment extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.toggleShowHideSubmit = this.toggleShowHideSubmit.bind(this);
+    this.getCreatorData = this.getCreatorData.bind(this);
   }
 
   render() {
@@ -66,14 +67,30 @@ export class AddComment extends Component {
     if(!this.state.body || this.state.body.length <= 1) {
       return;
     }
+
+    const creator = this.getCreatorData()
+
     this.props.createComment({
       taskId: this.props.task.id,
       body: this.state.body,
-      creator: this.props.auth,
+      creator: creator,
       created: new Date()
     });
 
     this.setState({body: ''});
+  }
+
+  getCreatorData() {
+    if (!this.props.auth) {
+      return null;
+    }
+    const user = this.props.auth;
+    return {
+      id: user.id,
+      email: user.updatedEmail || user.email,
+      name: user.name,
+      photoURL: user.photoURL
+    };
   }
 
   renderHeader() {

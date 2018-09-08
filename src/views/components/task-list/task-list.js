@@ -14,7 +14,7 @@ class TaskList extends Component {
     this.state = {
       pageSize: 20,
       pageNumber: 0,
-    }
+    };
 
     this.loadMore = this.loadMore.bind(this);
   }

@@ -16,6 +16,7 @@ import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
 import SystemClosedPage from '../pages/system-closed';
 import ReportsPage from '../pages/reports';
+import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
 import { appConfig } from 'src/config/app-config'
@@ -44,7 +45,10 @@ const App = ({auth, signOut, isShowUpdateProfile}) => (
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/task/new-task" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
+            <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/reports" component={ReportsPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>
             <Route component={NotFound}/>
           </Switch>
         }

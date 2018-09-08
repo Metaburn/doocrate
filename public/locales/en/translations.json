@@ -53,6 +53,9 @@
     "only-managers-can-unassign": "Only managers can remove responsibility",
     "maximum-reached": "You've reached the max amount of tasks you can create",
     "new-tasks-closed": "New task creation is currently on hold",
+    "user-cannot-assign": "The platform is closed now for new users. You cannot take missions only view them.",
+    "user-new-tasks-closed": "Creating new tasks is closed now for new users. You cannot create tasks just view the existing tasks.",
+
     "automatic-tags": "Popular tags (Choose at least one):",
     "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
     "mission-incomplete-short": "Can't save task before all fields are complete. Please fill missing fields 👁",

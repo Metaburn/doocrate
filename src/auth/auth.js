@@ -19,6 +19,8 @@ export function initAuth(dispatch) {
               if(userInfo && userInfo.exists) {
                 const userInfoData = userInfo.data()
                 authUser.isEmailConfigured = userInfoData.isEmailConfigured;
+                authUser.canAssignTask = userInfoData.canAssignTask;
+                authUser.canCreateTask = userInfoData.canCreateTask;
                 authUser.updatedEmail = userInfoData.email;
               }else {
                 // Only update the fields if no user data exists

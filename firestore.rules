@@ -50,7 +50,7 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow read: if request.auth != null; // Auth users can read
-      allow write: if userId == request.auth.uid;
+      allow write: if userId == request.auth.uid || isAdmin();
     }
 
     match /admins/{anyAdmin} {
