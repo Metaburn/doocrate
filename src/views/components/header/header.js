@@ -18,7 +18,7 @@ const menuContent = `<div>
 <Button onClick={signOut}>{t('header.disconnect')}</Button>
 </div>`;
 
-const Header = ({auth, signOut, isShowUpdateProfile}) => (
+const Header = ({auth, signOut, isShowUpdateProfile, onShowSuccess}) => (
   <I18n ns='translations'>
    {
     (t, { i18n }) => (
@@ -56,7 +56,7 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
           </ul>
           <h1 className='header-title'><a href='/'>Doocrate</a></h1>
           <div className={`lang-select lang-${t('lang-float-reverse')}`}>
-            { renderLanguageButton(t, i18n) }
+            { renderLanguageButton(t, i18n, onShowSuccess) }
           </div>
           <GoogleTranslate />
         </div>
@@ -66,13 +66,19 @@ const Header = ({auth, signOut, isShowUpdateProfile}) => (
   </I18n>
 );
 
-function renderLanguageButton(t, i18n) {
-  const changeLang = (i18n.language === 'en') ? 'he' : 'en'
+function changeLanguage(changeLang, t, i18n, onShowSuccess) {
+  i18n.changeLanguage(changeLang);
+  onShowSuccess('To see translated tasks - press on "Select language" on the top left and choose English');
+}
+
+function renderLanguageButton(t, i18n, onShowSuccess) {
+  const changeLang = (i18n.language === 'en') ? 'he' : 'en';
 
   return(
     <div>
       <button
-        onClick={() => { i18n.changeLanguage(changeLang)}}>{t(`nav.${changeLang}-lang`)}
+        onClick={() => {changeLanguage(changeLang, t, i18n, onShowSuccess)}}>
+        {t('nav.' + changeLang + '-lang')}
       </button>
     </div>
   )
@@ -82,6 +88,7 @@ Header.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
   isShowUpdateProfile: PropTypes.func.isRequired,
+  onShowSuccess: PropTypes.func.isRequired,
 };
 
 

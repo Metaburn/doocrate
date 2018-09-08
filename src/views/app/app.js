@@ -5,6 +5,7 @@ import {Route, withRouter, Switch } from 'react-router-dom';
 
 import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
+import { notificationActions } from 'src/notification';
 import Header from '../components/header';
 import Footer from '../components/footer';
 import RequireAuthRoute from '../components/require-auth-route';
@@ -20,7 +21,7 @@ import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
 import { appConfig } from 'src/config/app-config'
-const App = ({auth, signOut, isShowUpdateProfile}) => (
+const App = ({auth, signOut, isShowUpdateProfile, showSuccess}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -29,6 +30,7 @@ const App = ({auth, signOut, isShowUpdateProfile}) => (
         auth={auth}
         signOut={signOut}
         isShowUpdateProfile={isShowUpdateProfile}
+        onShowSuccess={showSuccess}
       />
 
       <main>
@@ -62,7 +64,8 @@ const App = ({auth, signOut, isShowUpdateProfile}) => (
 App.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
-  isShowUpdateProfile: PropTypes.func.isRequired
+  isShowUpdateProfile: PropTypes.func.isRequired,
+  showSuccess: PropTypes.func.isRequired
 };
 
 
@@ -80,7 +83,8 @@ const mapStateToProps = createSelector(
 
 const mapDispatchToProps = {
   signOut: authActions.signOut,
-  isShowUpdateProfile: authActions.isShowUpdateProfile
+  isShowUpdateProfile: authActions.isShowUpdateProfile,
+  showSuccess: notificationActions.showSuccess
 };
 
 export default withRouter(
