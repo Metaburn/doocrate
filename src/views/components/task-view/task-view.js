@@ -387,6 +387,10 @@ export class TaskView extends Component {
   }
 
   handleLabelChange(label) {
+    // Clear leading and trailing white space
+    for(var i=0;i<label.length;i++) {
+      label[i] = label[i].trim();
+    }
     this.setState({label})
   }
 
