@@ -92,10 +92,7 @@ export class ReportsPage extends Component {
         {this.state.users.size}
         <h3> אנשים שלקחו על עצמם לפחות משימה אחת </h3>
         {this.state.query.length}
-
-        <h3> אנשים שפתחו משימה אבל לא לקחו אחראיות על משימה</h3>
-        {this.state.query.length}
-
+        
         <br/>
           <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
