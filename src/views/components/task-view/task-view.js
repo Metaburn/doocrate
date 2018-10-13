@@ -219,7 +219,7 @@ export class TaskView extends Component {
             auth={this.props.auth} /> : ''}
           </div>
           { this.renderAddComment() }
-          { this.renderTakeOwnershipModal() }
+          { this.renderTakeOwnershipModal(task) }
         </div>
       )}
       </I18n>
@@ -348,18 +348,19 @@ export class TaskView extends Component {
     );
   }
 
-  renderTakeOwnershipModal() {
+  // We are checking that task.id exist to prevent a race condition
+  renderTakeOwnershipModal(task) {
     return (
       <div>
         <TakeOwnershipModal
-          isOpen = { this.state.shouldOpenTakeOwnerModal }
+          isOpen = { task && task.id && this.state.shouldOpenTakeOwnerModal }
           onClosed = { () => {
             this.setState({shouldOpenTakeOwnerModal: false});
             console.log('Closed');
           }}
           onYes ={() => {
             this.setState({shouldOpenTakeOwnerModal: false});
-            this.props.assignTask(this.props.selectedTask);
+            this.props.assignTask(task);
           }
           }/>
       </div>
