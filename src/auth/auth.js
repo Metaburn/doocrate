@@ -18,8 +18,9 @@ export function initAuth(dispatch) {
             if(userInfo && userInfo.exists) {
               const userInfoData = userInfo.data()
               authUser.isEmailConfigured = userInfoData.isEmailConfigured;
-              authUser.canAssignTask = userInfoData.canAssignTask;
-              authUser.canCreateTask = userInfoData.canCreateTask;
+              authUser.canAssignTask = userInfoData.canAssignTask; // Can a person assign a task to himself
+              authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
+              authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
               authUser.updatedEmail = userInfoData.email;
             }else {
               // Only update the fields if no user data exists

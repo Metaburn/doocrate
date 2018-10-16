@@ -14,6 +14,7 @@ export const AuthState = new Record({
   isEmailConfigured: false,
   canCreateTask: false,
   canAssignTask: false,
+  didntBuy: false,
   shouldShowUpdateProfile: false
 });
 
@@ -34,6 +35,7 @@ export function authReducer(state = new AuthState(), {payload, type}) {
         isEmailConfigured: payload? payload.isEmailConfigured: null,
         canCreateTask: payload? payload.canCreateTask: null,
         canAssignTask: payload? payload.canAssignTask: null,
+        didntBuy: payload? payload.didntBuy: null,
       });
 
     case SIGN_OUT_SUCCESS:
