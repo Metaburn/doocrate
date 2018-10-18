@@ -20,6 +20,7 @@ export class ReportsPage extends Component {
 
     this.state = {
       users: Map(),
+      usersWhoDidntBuy: Map(),
       query: [],
     }
   }
@@ -36,11 +37,19 @@ export class ReportsPage extends Component {
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
       const contributors = {};
+      const usersWhoDidntBuy = {};
       querySnapshot.forEach(function(doc) {
-        contributors[doc.id] = doc.data();
+        let contributor = doc.data()
+        contributors[doc.id] = contributor;
+        if(contributor.didntBuy) {
+          usersWhoDidntBuy[doc.id] = contributor;
+        }
       });
 
-      this.setState({users: Map(contributors)});
+      this.setState({
+        users: Map(contributors),
+        usersWhoDidntBuy: Map(usersWhoDidntBuy)
+      });
   });
   }
 
@@ -64,7 +73,10 @@ export class ReportsPage extends Component {
         const [collaboratorId, taskId] = entry;
         if (this.state.users.has(collaboratorId)) {
           const collaborator = this.state.users.get(collaboratorId);
-          query.push([counter++, collaborator.name, collaboratorId, collaborator.email, taskId])
+          // Filter out the didntBuy people
+          if(!collaborator.didntBuy) {
+            query.push([counter++, collaborator.name, collaboratorId, collaborator.email, taskId])
+          }
         }
       }
     );
@@ -90,9 +102,11 @@ export class ReportsPage extends Component {
       <div className='reports-page'>
         <h3>מספר אנשים רשומים לדואוקרט</h3>
         {this.state.users.size}
-        <h3> אנשים שלקחו על עצמם לפחות משימה אחת </h3>
+        <h3>אנשים שלא קנו כרטיס</h3>
+        {this.state.usersWhoDidntBuy.size}
+        <h3> אנשים שלקחו על עצמם לפחות משימה אחת (וזכרו לקנות כרטיס)</h3>
         {this.state.query.length}
-        
+
         <br/>
           <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
