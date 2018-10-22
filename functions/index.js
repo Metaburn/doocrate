@@ -67,7 +67,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
 
     function getEmailParams(toEmail) {
       const mailOptions = {
-        from: comment.creator.name + ' ' + fromEmail, // For example Gal Bracha <support@burnerot.com>
+        from: comment.creator.name + ' ' + fromEmail, // For example Gal Bracha <support@doocrate.com>
         to: toEmail,
         'h:Reply-To': comment.creator.email
       };
@@ -81,7 +81,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
         <div><img src='${comment.creator.photoURL}' style='display:block; border-radius:70px;width:140px;height:140px;'/></div><br/>
         
         <button style='background:#eb1478;cursor: pointer;color: white;padding:0.7em;font-size:0.8em;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;margin:20px'>
-          <a style='text-decoration: none;color: white' href='https://doocrate.burnerot.com/task/${comment.taskId}'>
+          <a style='text-decoration: none;color: white' href='https://doocrate.com/task/${comment.taskId}'>
           לחץ כאן למעבר למשימה
           </a>
         </button>

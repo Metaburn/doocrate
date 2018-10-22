@@ -224,3 +224,6 @@ Yes - under `src->config->app-config` set the parameter `isSystemClosed` to true
 
 #### Is there a way to open / close new users from openning / assigning tasks
 Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssignTask` to false
+
+#### Comments are not working
+Check you console. You need to follow the error using the link and create an index for comments
