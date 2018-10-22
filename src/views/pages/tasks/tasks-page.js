@@ -47,7 +47,8 @@ export class TasksPage extends Component {
       labelPool: {},
       isLoadedComments: false,
       showSetUserInfoScreen: true,
-      isCurrentTaskValid: false
+      isCurrentTaskValid: false,
+      projectUrl: null //TODO - should be in an actual store
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -75,8 +76,8 @@ export class TasksPage extends Component {
 
   componentWillMount() {
     // TODO
-    const PROJECT_ID = 'project_test';
-    this.props.loadTasks(PROJECT_ID);
+    const project_url = this.props.match.params.projectUrl;
+    this.props.loadTasks(project_url);
     this.props.loadLabels();
 
     // Sets the default loading page
@@ -93,7 +94,8 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
-    if (nextProps.match != null && nextProps.match.params.id) {
+    if (nextProps.match != null && nextProps.match.params.projectUrl && nextProps.match.params.id) {
+      //const projectUrl = nextProps.match.params.projectUrl;
       const tid = nextProps.match.params.id;
 
       if (tid === "new-task") {
@@ -196,7 +198,8 @@ export class TasksPage extends Component {
 
     if (!this.props.auth || !(this.props.auth.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
-      this.props.history.push('/task/1');
+      const project_url = this.props.match.params.projectUrl;
+      this.props.history.push('/'+project_url+'/task/1');
 
       return;
     }
@@ -312,7 +315,8 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
     const filterText = params['text'];
-    let taskParameter = task? `/task/${task.get("id")}` : `/task/1`;
+    const project_url = this.props.match.params.projectUrl;
+    let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `${project_url}/task/1`;
 
     if (filterType) {
       taskParameter = `${taskParameter}?filter=${filterType}`
@@ -400,7 +404,9 @@ export class TasksPage extends Component {
     }
 
     this.props.showSuccess(i18n.t('task.creating-new'));
-    this.props.history.push('/task/new-task');
+    // TODO project should be taken from store
+    const project_url = this.props.match.params.projectUrl;
+    this.props.history.push('/'+project_url+'/task/new-task');
   }
 
   render() {
