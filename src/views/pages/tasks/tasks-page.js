@@ -48,7 +48,7 @@ export class TasksPage extends Component {
       isLoadedComments: false,
       showSetUserInfoScreen: true,
       isCurrentTaskValid: false,
-      projectUrl: null //TODO - should be in an actual store
+      projectUrl: null //TODO - should be in an actual store - This is the default project
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -76,7 +76,12 @@ export class TasksPage extends Component {
 
   componentWillMount() {
     // TODO
-    const project_url = this.props.match.params.projectUrl;
+    let project_url = this.props.match.params.projectUrl;
+    // Redirect to test project
+    if (!project_url) {
+      project_url = 'project_test';
+      this.props.history.push('/project_test/task/1');
+    }
     this.props.loadTasks(project_url);
     this.props.loadLabels();
 
