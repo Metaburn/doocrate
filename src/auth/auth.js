@@ -22,14 +22,18 @@ export function initAuth(dispatch) {
               authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
               authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
               authUser.updatedEmail = userInfoData.email;
+
+              dispatch(authActions.initAuth(authUser));
+              unsubscribe();
+              resolve();
             }else {
               // Only update the fields if no user data exists
-              updateUserData(authUser);
+              updateUserData(authUser).then(authUserResult => {
+                dispatch(authActions.initAuth(authUserResult));
+                unsubscribe();
+                resolve();
+              });
             }
-            dispatch(authActions.initAuth(authUser));
-
-            unsubscribe();
-            resolve();
           });
         })
       },
@@ -40,32 +44,34 @@ export function initAuth(dispatch) {
 
 // TODO: perhaps should be in a better place and check if operation success
 export function updateUserData(authUser) {
-  if(!authUser || !authUser.uid) {
-    return;
-  }
-  const userDoc = firebaseDb.collection('users').doc(authUser.uid);
-  userDoc.get().then( userSnapshot => {
-    if (!userSnapshot.exists) {
-      // Create it for the first time
-      let userSeed = {
-        name: authUser.displayName,
-        email: authUser.email,
-        photoURL: authUser.photoURL,
-        created: new Date()
-      };
+  return new Promise((resolve, reject) => {
+    if (!authUser || !authUser.uid) {
+      return resolve(null);
+    }
+    const userDoc = firebaseDb.collection('users').doc(authUser.uid);
+    userDoc.get().then(userSnapshot => {
+      if (!userSnapshot.exists) {
+        // Create it for the first time
+        let userSeed = {
+          name: authUser.displayName,
+          email: authUser.email,
+          photoURL: authUser.photoURL,
+          created: new Date()
+        };
 
-      // Set if new users can assign / create task (client side only)
-      if (appConfig.canNewUsersCreateAssignTask) {
-        userSeed.canAssignTask = true;
-        userSeed.canAssignTask = true;
-      }
+        // Set if new users can assign / create task (client side only)
+        if (appConfig.canNewUsersCreateAssignTask) {
+          userSeed.canAssignTask = authUser.canAssignTask = true;
+          userSeed.canCreateTask = authUser.canCreateTask = true;
+        }
 
-      userDoc.set(userSeed)
-    } else {
-      // For existing users check if we set the isEmailConfigured flag. We use it to allow users on first time to
-      // set their emails
+        userDoc.set(userSeed)
+        resolve(authUser);
+      } else {
+        // For existing users check if we set the isEmailConfigured flag. We use it to allow users on first time to
+        // set their emails
 
-      // Only if the given object state we should update the email then we do so
+        // Only if the given object state we should update the email then we do so
         if (authUser.isEmailConfigured) {
           // Update user details
           userDoc.set({
@@ -73,9 +79,11 @@ export function updateUserData(authUser) {
             email: authUser.email,
             isEmailConfigured: true,
             updated: new Date()
-          }, { merge: true })
+          }, {merge: true})
         }
-    }
+        resolve(authUser);
+      }
+    })
   })
 }
 
