@@ -48,7 +48,6 @@ export class TasksPage extends Component {
       isLoadedComments: false,
       showSetUserInfoScreen: true,
       isCurrentTaskValid: false,
-      projectUrl: null //TODO - should be in an actual store - This is the default project
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -100,7 +99,6 @@ export class TasksPage extends Component {
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
     if (nextProps.match != null && nextProps.match.params.projectUrl && nextProps.match.params.id) {
-      //const projectUrl = nextProps.match.params.projectUrl;
       const tid = nextProps.match.params.id;
 
       if (tid === "new-task") {
@@ -418,12 +416,13 @@ export class TasksPage extends Component {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-
+    const projectUrl = this.props.match.params.projectUrl;
     return (
       <div>
           <div className="g-col">
             { <TaskFilters
               filter = { this.props.filterType }
+              projectUrl = { projectUrl } //TODO - should be from state
               labels = { this.state.labelPool }
               onLabelChange = { this.onLabelChanged }
               generateCSV={this.generateCSV.bind(this)}

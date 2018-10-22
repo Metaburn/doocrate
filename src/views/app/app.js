@@ -44,6 +44,7 @@ const App = ({auth, signOut, isShowUpdateProfile, showSuccess}) => (
 
           <Switch>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
