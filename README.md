@@ -31,8 +31,9 @@ Admins
 -----
 Admins can edit any task.
 
+1.Create a collection named `admins`
+
 Navigate to users table to get the user UID
-Create a collection named `admins`
 Then a document ID set to the user UID for example - 3x1jMQtwuHTVfnU31Ad3r7bWUnX2
 and you can add a field `name` that will say who is that admin
 
@@ -48,6 +49,12 @@ and add the uid of the app admins
   Your firebase project->Authentication->Set up sign-in method-> Facebook -> Enable
   (Go to http://developers.facebook.com/ and My Apps-> Create a new app. Use that app id and app secret. Add under your facebook app Add a new Facebook Login and set the Valid OAuth Redirect URIs to the one firebase gives youA)
   Then for google perform -> Google -> Enable - set a project name
+- Configure firebase Firestore. Database->Firestore->Enable
+
+## Set up firestore rules
+copy the content of `firestore.rules` file into Rules of your project. For example - 
+`https://console.firebase.google.com/u/0/project/doocrate-production/database/firestore/rules`
+Then hit `Publish` to save it
 
 ## Create new firestore database
 Go to Database->Create new Firestore database and set the default settings
@@ -76,20 +83,6 @@ export const firebaseConfig = {
 };
 ```
 
-## Deploy command
-`npm run deploy:staging`
-OR 
-`npm run deploy:production`
-Will build - use the correct config file and deploy
-
-#### Staging
-You can also set staging env and use:
-`firebase use --add` to add your staging site
-Then run like
-`npm run build-staging`
-`firebase use` and choose staging
-`npm run deploy:staging`
-
 #### Install firebase-tools:
 ```shell
 npm install -g firebase-tools
@@ -105,11 +98,27 @@ Register here - https://www.mailgun.com/google
 Run:
 ```
 firebase functions:config:set email.send_notifications='true'
-firebase functions:config:set email.from='<support@burnerot.com>'
-firebase functions:config:set email.domain='burnerot.com'
+firebase functions:config:set email.from='<support@doocrate.com>'
+firebase functions:config:set email.domain='doocrate.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
+
+Then in the future if you want to deploy only function - use this command (No need right now - better run deploy staging / production)
 firebase deploy --only functions
 ```
+
+## Deploy command
+`npm run deploy:staging`
+OR 
+`npm run deploy:production`
+Will build - use the correct config file and deploy
+
+#### Staging
+You can also set staging env and use:
+`firebase use --add` to add your staging site
+Then run like
+`npm run build-staging`
+`firebase use` and choose staging
+`npm run deploy:staging`
 
 #### Build and deploy the app:
 ```shell
@@ -193,3 +202,12 @@ Yes `/reports`
 
 #### Is there an admin page
 Yes. `/admin-dashboard`
+
+#### I'm getting this error:
+```Uncaught DOMException: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': 'projects/doocrate-production
+                 /databases/(default)' is not a valid HTTP header field value.
+```
+
+1.Make sure you set up Firestore database by activating it in firebase console
+
+2.run `npm install` in `root` folder and then in `functions` folder
