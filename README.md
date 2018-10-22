@@ -50,6 +50,9 @@ and add the uid of the app admins
   (Go to http://developers.facebook.com/ and My Apps-> Create a new app. Use that app id and app secret. Add under your facebook app Add a new Facebook Login and set the Valid OAuth Redirect URIs to the one firebase gives youA)
   Then for google perform -> Google -> Enable - set a project name
 - Configure firebase Firestore. Database->Firestore->Enable
+- Add a Webapp to your firebase by going here:
+`https://console.firebase.google.com/u/0/project/doocrate-production/settings/general/`
+And choosing `Add Firebase to your web app`
 
 ## Set up firestore rules
 copy the content of `firestore.rules` file into Rules of your project. For example - 
@@ -210,4 +213,14 @@ Yes. `/admin-dashboard`
 
 1.Make sure you set up Firestore database by activating it in firebase console
 
-2.run `npm install` in `root` folder and then in `functions` folder
+2.Make sure that your config doesnt have a wrong char such as \n in the end:
+`projectId: 'doocrate-production\n',
+
+#### Why am I seeing the loader runs and runs on a new install
+Only when there is at least one task it would stop running - Press on add task
+
+#### Is there a way to close the system on the frontend side
+Yes - under `src->config->app-config` set the parameter `isSystemClosed` to true
+
+#### Is there a way to open / close new users from openning / assigning tasks
+Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssignTask` to false

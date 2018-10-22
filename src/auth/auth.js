@@ -1,6 +1,6 @@
 import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
-
+import { appConfig } from 'src/config/app-config'
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
@@ -46,13 +46,21 @@ export function updateUserData(authUser) {
   const userDoc = firebaseDb.collection('users').doc(authUser.uid);
   userDoc.get().then( userSnapshot => {
     if (!userSnapshot.exists) {
-      userDoc.set({
-
+      // Create it for the first time
+      let userSeed = {
         name: authUser.displayName,
         email: authUser.email,
         photoURL: authUser.photoURL,
         created: new Date()
-      })
+      };
+
+      // Set if new users can assign / create task (client side only)
+      if (appConfig.canNewUsersCreateAssignTask) {
+        userSeed.canAssignTask = true;
+        userSeed.canAssignTask = true;
+      }
+
+      userDoc.set(userSeed)
     } else {
       // For existing users check if we set the isEmailConfigured flag. We use it to allow users on first time to
       // set their emails
