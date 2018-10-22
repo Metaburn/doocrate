@@ -105,7 +105,7 @@ Register here - https://www.mailgun.com/google
 Run:
 ```
 firebase functions:config:set email.send_notifications='true'
-firebase functions:config:set email.from='Doocrate <noreply@burnerot.com>'
+firebase functions:config:set email.from='<support@burnerot.com>'
 firebase functions:config:set email.domain='burnerot.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 firebase deploy --only functions
