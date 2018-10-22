@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
+import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { projectActions } from 'src/projects';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
@@ -74,7 +74,9 @@ export class TasksPage extends Component {
   };
 
   componentWillMount() {
-    this.props.loadTasks();
+    // TODO
+    const PROJECT_ID = 'project_test';
+    this.props.loadTasks(PROJECT_ID);
     this.props.loadLabels();
 
     // Sets the default loading page
@@ -94,7 +96,7 @@ export class TasksPage extends Component {
     if (nextProps.match != null && nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 
-      if (tid == "new-task") {
+      if (tid === "new-task") {
         if (this.state.newTask == null) {
           this.setState({
             newTask: this.createNewTask()
@@ -103,15 +105,15 @@ export class TasksPage extends Component {
       } else {
         // Select existing task by tid
         this.setState({
-          selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
-        })
+          selectedTask: nextProps.tasks.find((task)=>( task.get('id') === tid ))
+        });
 
         if(!this.state.selectedTask) {
           this.setState({ isLoadedComments: false });
         }
 
         if(!this.state.isLoadedComments ||
-          this.state.selectedTask && tid != this.state.selectedTask.id) {
+          this.state.selectedTask && tid !== this.state.selectedTask.id) {
             this.setState({ isLoadedComments: true });
             this.props.unloadComments();
             this.props.loadComments(tid);
@@ -141,7 +143,7 @@ export class TasksPage extends Component {
       Object.keys(t.label).forEach((l) => {
         labelPool[l] = true;
       })
-    })
+    });
 
     currentTasks = this.filterTaskFromLabel(currentTasks)
 
@@ -159,7 +161,7 @@ export class TasksPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.labels != this.state.labels) {
+    if (prevState.labels !== this.state.labels) {
       this.setState({tasks: this.filterTaskFromLabel(this.props.tasks)});
     }
   }
@@ -173,7 +175,7 @@ export class TasksPage extends Component {
   }
 
   onNewTaskAdded(task) {
-    const taskObj = this.props.tasks.find((t)=>( t.get('id') == task.id ))
+    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ))
     this.goToTask(taskObj);
 
     setTimeout(()=>{this.setState({newTask: null})}, 100);
@@ -225,11 +227,11 @@ export class TasksPage extends Component {
   }
 
   isAdmin() {
-    return this.props.auth.role == 'admin';
+    return this.props.auth.role === 'admin';
   }
 
   isGuide() {
-    return this.props.auth.role == 'guide';
+    return this.props.auth.role === 'guide';
   }
 
   assignTaskToSignedUser(task) {
@@ -258,7 +260,7 @@ export class TasksPage extends Component {
   }
 
   unassignTask(task) {
-    const isCreator = task.creator && task.creator.id == this.props.auth.id;
+    const isCreator = task.creator && task.creator.id === this.props.auth.id;
     const isAssignee = task.assignee && task.assignee.id === this.props.auth.id;
 
     // Uncomment this to allow only guide to unassign
@@ -340,7 +342,7 @@ export class TasksPage extends Component {
           userInfo={ this.props.auth }
           updateUserInfo={ this.updateUserInfo }
           onClosed = { () => {
-            this.setState({showSetUserInfoScreen: false})
+            this.setState({showSetUserInfoScreen: false});
             this.props.isShowUpdateProfile(false);
             this.setState({showSetUserInfoScreen: false})
           }
@@ -351,7 +353,7 @@ export class TasksPage extends Component {
 
   updateUserInfo(userInfo) {
     console.log(userInfo);
-    const oldUserData = this.props.auth
+    const oldUserData = this.props.auth;
     const newUserData = {};
     newUserData.uid = oldUserData.id;
     newUserData.email = userInfo.email;

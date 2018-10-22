@@ -28,17 +28,19 @@ service cloud.firestore {
       && !resource.data.keys().hasAll(['assignee']));
     }
 
-    match /tasks/{anyTask} {
-    	allow read: if request.auth != null;
-      // Allow create for admins and guides
-      // allow create: if request.auth != null && (isAdmin() || isGuide());
-      // Uncomment the following to allow create for all
-      allow create: if request.auth != null;
-      // Uncomment the following to allow unassigned task to be assigned by all
-      allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
-      //allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator());
-      allow delete: if request.auth != null && (isAdmin() || isCreator());
-    }
+    match /projects/{anyProject} {
+      match /tasks/{anyTask} {
+        allow read: if request.auth != null;
+        // Allow create for admins and guides
+        // allow create: if request.auth != null && (isAdmin() || isGuide());
+        // Uncomment the following to allow create for all
+        allow create: if request.auth != null;
+        // Uncomment the following to allow unassigned task to be assigned by all
+        allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
+        //allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator());
+        allow delete: if request.auth != null && (isAdmin() || isCreator());
+      }
+     }
 
 
     match /comments/{anyComment} {

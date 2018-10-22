@@ -125,9 +125,12 @@ export function filterTasks(filterType) {
   };
 }
 
-export function loadTasks() {
+/* Loads all the tasks for a given project */
+export function loadTasks(projectId) {
   return (dispatch, getState) => {
-    taskList.path = `tasks`;
+    taskList.rootPath = 'projects';
+    taskList.rootDocId = projectId;
+    taskList.path = 'tasks';
     taskList.orderBy = {
       name: 'created',
       direction: 'asc'
