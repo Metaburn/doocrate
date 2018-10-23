@@ -46,7 +46,7 @@ console.log(emailApiKey);
 console.log(emailDomain);
 const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
-exports.firestore = new Firestore();
+const firestore = new Firestore();
 
 exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite((change, context)=> {
 

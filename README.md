@@ -27,20 +27,6 @@ npm run copy-staging
 npm start
 ```
 
-Admins
------
-Admins can edit any task.
-
-1.Create a collection named `admins`
-
-Navigate to users table to get the user UID
-Then a document ID set to the user UID for example - 3x1jMQtwuHTVfnU31Ad3r7bWUnX2
-and you can add a field `name` that will say who is that admin
-
-Import the file under
-`assets/database-example.json`
-and add the uid of the app admins
-
 ## Deploying a new version
 #### Prerequisites:
 - Create a free Firebase account at https://firebase.google.com
@@ -194,6 +180,15 @@ You can press on the button their - This would go over all the users in the syst
 
 
 ## FAQ
+
+#### What are projects
+Project is the root for a task. Each task exists within a project
+
+#### What are Admins
+Admins can edit any task under a project.
+Once a user creates a new project he is added into the `admins`
+`admins`->`user id`->`projects`->`project id`
+This helps us know which admin belongs to which projects
 
 #### Why is Mail is not being sent?
 Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
