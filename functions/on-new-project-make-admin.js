@@ -1,11 +1,12 @@
 const functions = require('firebase-functions');
-import firestore from './index'
+const firestore = require('./index').firestore;
 
 /*
   Whenever a new project is created - the user who created it becomes an admin for that project
  */
-exports.onNewProjectMakeAdmin = functions.firestore.document('/project/{projectId}').onCreate((change, context)=> {
+exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}').onCreate((change, context)=> {
   const project = change.after.data();
+  console.log(project);
 
   // Check for deleted project
   if(!project || !project.name || !project.creator) {
