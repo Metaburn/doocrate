@@ -9,36 +9,50 @@ export function initAuth(dispatch) {
         if(authUser) {
           authUser.role = 'user';
         }
-        getIsAdmin(authUser).then(isAdmin => {
+        getIsAdmin(authUser).then(adminRef => {
+          // if admin
           if(authUser) {
-            authUser.role = isAdmin.exists? 'admin': authUser.role;
-          }
-
-          getUserInfo(authUser).then(userInfo => {
-            if(userInfo && userInfo.exists) {
-              const userInfoData = userInfo.data()
-              authUser.isEmailConfigured = userInfoData.isEmailConfigured;
-              authUser.canAssignTask = userInfoData.canAssignTask; // Can a person assign a task to himself
-              authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
-              authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
-              authUser.updatedEmail = userInfoData.email;
-
-              dispatch(authActions.initAuth(authUser));
-              unsubscribe();
-              resolve();
+            authUser.role = adminRef.exists? 'admin': authUser.role;
+            authUser.adminProjects = [];
+            if(adminRef.exists) {
+              getAdminProjects(authUser).then(res => {
+                authUser.adminProjects = res;
+                getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
+              })
             }else {
-              // Only update the fields if no user data exists
-              updateUserData(authUser).then(authUserResult => {
-                dispatch(authActions.initAuth(authUserResult));
-                unsubscribe();
-                resolve();
-              });
+              getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
             }
-          });
+          }else {
+            getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
+          }
         })
       },
       error => reject(error)
     );
+  });
+}
+
+function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
+  getUserInfo(authUser).then(userInfo => {
+    if (userInfo && userInfo.exists) {
+      const userInfoData = userInfo.data()
+      authUser.isEmailConfigured = userInfoData.isEmailConfigured;
+      authUser.canAssignTask = userInfoData.canAssignTask; // Can a person assign a task to himself
+      authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
+      authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
+      authUser.updatedEmail = userInfoData.email;
+
+      dispatch(authActions.initAuth(authUser));
+      unsubscribe();
+      resolve();
+    } else {
+      // Only update the fields if no user data exists
+      updateUserData(authUser).then(authUserResult => {
+        dispatch(authActions.initAuth(authUserResult));
+        unsubscribe();
+        resolve();
+      });
+    }
   });
 }
 
@@ -96,6 +110,18 @@ function getIsAdmin(authUser) {
     })
   }
   return firebaseDb.collection('admins').doc(authUser.uid).get();
+}
+
+function getAdminProjects(authUser) {
+  return new Promise( (resolve, reject) => {
+    firebaseDb.collection('admins').doc(authUser.uid).collection('projects').onSnapshot(snapshot => {
+      let projects = [];
+      snapshot.docs.forEach(doc => {
+        projects.push(doc.id);
+      });
+      resolve(projects);
+    })
+  })
 }
 
 // TODO - instead of await that waits for all users
