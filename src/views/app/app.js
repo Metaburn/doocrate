@@ -13,6 +13,8 @@ import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
 import TasksPage from '../pages/tasks';
 import MePage from '../pages/me';
+import CreateProjectPage from '../pages/create-project';
+
 import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
 import SystemClosedPage from '../pages/system-closed';
@@ -21,7 +23,7 @@ import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
 import { appConfig } from 'src/config/app-config'
-const App = ({auth, signOut, isShowUpdateProfile, showSuccess}) => (
+const App = ({auth, signOut, createProjectRedirect, isShowUpdateProfile, showSuccess}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -29,6 +31,7 @@ const App = ({auth, signOut, isShowUpdateProfile, showSuccess}) => (
       <Header
         auth={auth}
         signOut={signOut}
+        createProject={createProjectRedirect}
         isShowUpdateProfile={isShowUpdateProfile}
         onShowSuccess={showSuccess}
       />
@@ -44,6 +47,7 @@ const App = ({auth, signOut, isShowUpdateProfile, showSuccess}) => (
 
           <Switch>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>

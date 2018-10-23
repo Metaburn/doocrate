@@ -14,7 +14,6 @@ import {
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
 } from './action-types';
-import { debug } from 'util';
 
 
 export function createTask(task, cb = (t)=>{}) {
@@ -25,14 +24,14 @@ export function createTask(task, cb = (t)=>{}) {
 }
 
 export function createTaskError(error) {
-  console.warn(`task error: ${error}`)
+  console.warn(`task error: ${error}`);
   return {
     type: CREATE_TASK_ERROR,
     payload: error
   };
 }
 
-export function createTaskSuccess(task, isLocallyCreated) {
+export function createTaskSuccess(task) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: task
@@ -134,7 +133,7 @@ export function loadTasks(projectId) {
     taskList.orderBy = {
       name: 'created',
       direction: 'asc'
-    }
+    };
     taskList.subscribe(dispatch);
   };
 }

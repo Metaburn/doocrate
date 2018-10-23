@@ -1,5 +1,3 @@
-//import { createSelector } from 'reselect';
-
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
   complete: (auth, value) => ({type: "complete"}),
@@ -18,18 +16,18 @@ export function buildFilter(auth, type, value) {
 //  MEMOIZED SELECTORS
 //-------------------------------------
 export const taskFilters = {
-  complete: (tasks, filter) => {
+  complete: (tasks) => {
     return tasks.filter(task => task.completed)
   },
 
   // Unassigned is free tasks which are not camps nor art
-  unassigned: (tasks, filter) => {
+  unassigned: (tasks) => {
     return tasks.filter(task => !task.assignee &&
-      task.type != 3 && task.type != 4);
+      task.type !== 3 && task.type !== 4);
   },
 
     // Unassigned is free tasks which are not camps nor art
-  unassignedWithArtAndCamps: (tasks, filter) => {
+  unassignedWithArtAndCamps: (tasks) => {
     return tasks.filter(task => !task.assignee);
   },
 
@@ -41,7 +39,7 @@ export const taskFilters = {
 
   taskType: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.type && task.type == filter.text;
+      return task.type && task.type === filter.text;
     });
   },
 
@@ -53,4 +51,4 @@ export const taskFilters = {
           (task.creator && task.creator.id === auth));
       });
   }
-}
+};

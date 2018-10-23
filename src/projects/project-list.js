@@ -1,5 +1,5 @@
 import { FirebaseList } from 'src/firebase';
-import * as projectActions from './project-actions';
+import * as projectActions from './actions';
 import { Project } from './project';
 
 

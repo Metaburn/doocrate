@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
-import { projectActions } from 'src/projects';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import { commentsActions } from 'src/comments';
@@ -43,7 +42,6 @@ export class TasksPage extends Component {
       selectedTask: null,
       newTask: null,
       labels: null,
-      projects: null,
       labelPool: {},
       isLoadedComments: false,
       showSetUserInfoScreen: true,
@@ -62,7 +60,6 @@ export class TasksPage extends Component {
     buildFilter: PropTypes.func.isRequired,
     loadTasks: PropTypes.func.isRequired,
     loadLabels: PropTypes.func.isRequired,
-    loadProjects: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
@@ -92,8 +89,6 @@ export class TasksPage extends Component {
     }
 
     this.showSetUserInfo();
-
-    //this.props.loadProjects();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -464,7 +459,6 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     labels: state.labels.list,
-    projects: state.projects.list,
     filters: taskFilters,
     buildFilter: buildFilter
   }
@@ -476,7 +470,6 @@ const mapDispatchToProps = Object.assign(
   commentsActions,
   notificationActions,
   labelActions,
-  projectActions,
   authActions,
 );
 

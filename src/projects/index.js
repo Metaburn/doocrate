@@ -1,4 +1,4 @@
-import * as projectActions from './project-actions';
+import * as projectActions from './actions';
 
 export { projectActions };
 export * from './action-types';

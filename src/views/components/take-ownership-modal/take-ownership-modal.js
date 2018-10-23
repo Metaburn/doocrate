@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import './take-ownership-modal.css';
-import Img from 'react-image';
+
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 

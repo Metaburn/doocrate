@@ -4,7 +4,7 @@ import AboutCarosel from 'src/views/components/about-carousel';
 
 import './about-page.css';
 
-const AboutPage = ({}) => {
+const AboutPage = () => {
   return (
     <div className="g-row sign-in">
       <div className="g-col">

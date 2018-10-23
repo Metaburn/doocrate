@@ -65,7 +65,7 @@ export class TaskItem extends Component {
   renderTitle(task, translate) {
     return (
       <div className='task-item-title'>
-        {task.title && task.title != '' ?
+        {task.title && task.title !== '' ?
          task.title :
         <span className='new-task'>{translate('task.unnamed-task')}</span>}
       </div>
@@ -110,7 +110,7 @@ const mapStateToProps = (state) => {
   return {
     labels: state.labels.toJS()
   }
-}
+};
 
 export default connect(
   mapStateToProps,

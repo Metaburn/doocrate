@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { authActions } from 'src/auth';
 import Button from 'src/views/components/button';
-import Img from 'react-image';
 import Icon from 'src/views/components/icon';
 import { NavLink } from 'react-router-dom';
 import { I18n } from 'react-i18next';

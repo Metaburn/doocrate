@@ -11,10 +11,11 @@ import {
   UPDATE_PROJECT_SUCCESS,
 } from './action-types';
 
-
-export function createProject(project) {
+export function createProject(projectId, project) {
+  projectList.path = `projects`;
   return dispatch => {
-    projectList.push(project)
+    projectList.set(projectId,
+      project)
       .catch(error => dispatch(createProjectError(error)));
   };
 }
@@ -82,7 +83,7 @@ export function loadProjectsSuccess(projects) {
   };
 }
 
-export function loadProjects(selectedTaskId) {
+export function loadProjects() {
   return (dispatch, getState) => {
     projectList.path = `projects`;
 

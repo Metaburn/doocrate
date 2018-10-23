@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ReactDom } from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -19,7 +18,6 @@ import Img from 'react-image'
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
 import Select from 'react-select';
-import Button from '../button';
 import CommentList from '../comment-list';
 import TagsSuggestions from '../tags-suggestions';
 import AddComment from '../add-comment/add-comment';
@@ -37,10 +35,6 @@ export class TaskView extends Component {
     this.state = {
       title: '',
       description: '',
-      projectName: null,
-      defaultProjectNames: [
-        //TODO : add projects
-      ],
       type: '',
       defaultType: [
         { value: 1, label: i18n.t('task.types.planning')},
@@ -53,7 +47,7 @@ export class TaskView extends Component {
       isCritical: false,
       validations: {},
       shouldOpenTakeOwnerModal: false
-    }
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleTextBoxChange = this.handleTextBoxChange.bind(this);
@@ -87,12 +81,12 @@ export class TaskView extends Component {
 
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
-    let { id, title, description, type, projectName,
+    let { id, title, description, type,
       label, isCritical, dueDate, created,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
-      if (id != this.state.id) {
+      if (id !== this.state.id) {
         const labelAsArray = label ?
           (Object.keys(label).map( l => { return l })) : [];
 
@@ -105,7 +99,6 @@ export class TaskView extends Component {
           created: created || null,
           dueDate: dueDate || null,
           type: type || null,
-          projectName: projectName || '',
           validation: {}
         });
       }
@@ -257,7 +250,7 @@ export class TaskView extends Component {
       value={this.state[fieldName]}
       tabIndex = { tabIndex }
       ref={e => this[fieldName+'Input'] = e}
-      onChange={(e) => { let val=null; if (e) { val = e.value };
+      onChange={(e) => { let val=null; if (e) { val = e.value }
                 this.setState({ [fieldName]: val}) }}
       options={options}
       // onBlur={this.handleSubmit}
@@ -290,7 +283,7 @@ export class TaskView extends Component {
   }
 
   renderTextArea(task, fieldName, t, isEditable, tabIndex) {
-    const classNames = isEditable ? ' editable' : ''
+    const classNames = isEditable ? ' editable' : '';
     return (
         <Textarea
         className={`changing-input${classNames}`}
@@ -310,8 +303,8 @@ export class TaskView extends Component {
   }
 
   renderLabel(isEditable, translation, tabIndex) {
-    const showPlaceholder = this.state.label.length == 0;
-    const classNames = isEditable ? ' editable' : ''
+    const showPlaceholder = this.state.label.length === 0;
+    const classNames = isEditable ? ' editable' : '';
 
     return (
       <TagsInput className={`react-tagsinput-changing ${classNames}`}
@@ -331,7 +324,7 @@ export class TaskView extends Component {
   }
 
   renderCheckbox(task, fieldName, placeholder, isEditable) {
-    const classNames = isEditable ? ' editable' : ''
+    const classNames = isEditable ? ' editable' : '';
     return (
       <label>
         <input
@@ -341,7 +334,6 @@ export class TaskView extends Component {
         value = { placeholder }
         onChange={e => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
         disabled = { !isEditable }
-        // onBlur={this.handleSubmit}
         />
         { placeholder }
       </label>
@@ -382,14 +374,14 @@ export class TaskView extends Component {
   }
 
   handleAddLabel(label) {
-    var newLabels = this.state.label
+    let newLabels = this.state.label
     newLabels.push(label)
     this.handleLabelChange(newLabels)
   }
 
   handleLabelChange(label) {
     // Clear leading and trailing white space
-    for(var i=0;i<label.length;i++) {
+    for(let i=0;i<label.length;i++) {
       label[i] = label[i].trim();
     }
     this.setState({label})
@@ -397,12 +389,12 @@ export class TaskView extends Component {
 
   isValid() {
     let res = false;
-    Object.values(this.state.validations).forEach( x => res = x || res)
+    Object.values(this.state.validations).forEach( x => res = x || res);
     // also check actual values...
-    res = res || this.state.label.length == 0; // check also there's at least one label
-    res = res || this.state.title.length == 0;
-    res = res || this.state.description.length == 0;
-    res = res || (this.state.type && this.state.type.length == 0);
+    res = res || this.state.label.length === 0; // check also there's at least one label
+    res = res || this.state.title.length === 0;
+    res = res || this.state.description.length === 0;
+    res = res || (this.state.type && this.state.type.length === 0);
 
     this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
     return !res;
@@ -413,14 +405,13 @@ export class TaskView extends Component {
   }
 
   getFormFields() {
-    let labelAsObject = this.arrayToObject(this.state.label);
+    let labelAsObject = TaskView.arrayToObject(this.state.label);
     const fieldsToUpdate = {
       title: this.state.title,
       description: this.state.description,
       label: labelAsObject,
       isCritical: this.state.isCritical,
       type: this.state.type,
-      projectName: this.state.projectName
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
 
@@ -455,9 +446,9 @@ export class TaskView extends Component {
     this.props.updateTask(this.props.selectedTask, this.getFormFields());
   }
 
-  arrayToObject(array) {
-    var result = {};
-    for (var i = 0; i < array.length; ++i)
+  static arrayToObject(array) {
+    let result = {};
+    for (let i = 0; i < array.length; ++i)
       result[array[i]] = true;
     return result;
   }

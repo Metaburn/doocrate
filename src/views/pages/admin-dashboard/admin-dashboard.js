@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { OrderedMap, List } from 'immutable';
+import { OrderedMap } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { Redirect } from 'react-router';
 import { firebaseDb } from 'src/firebase';
 
 import './admin-dashboard.css';
 import Button from "../../components/button/button";
-import i18n from "../../../i18n";
 import {notificationActions} from "../../../notification";
 import { Textbox } from 'react-inputs-validation';
 import Textarea from 'react-textarea-autosize';
@@ -234,7 +232,7 @@ export class AdminDashboard extends Component {
     });
 
     console.log('Success emails: ' + successEmails);
-    this.setState({successEmails})
+    this.setState({successEmails});
 
     this.props.showSuccess('People who didnt have ticket and now have ' + dontHaveTicketCounter + ' People\r\n'+
       'People who have ticket ' + haveTicketCounter);
@@ -299,7 +297,7 @@ export class AdminDashboard extends Component {
     tasks: state.tasks.list,
     auth: state.auth,
   }
-}
+};
 
 
 const mapDispatchToProps = Object.assign(

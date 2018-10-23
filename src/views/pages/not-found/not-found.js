@@ -1,11 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import './not-found.css';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import Button from '../../components/button';
 
-const NotFound = ({authenticated, signOut}) => (
+const NotFound = () => (
   <div className='g-row not-found'>
     <br/>
     <h1>404 - איבדת את הדרך. לא מצאנו את הדף הזה.</h1>

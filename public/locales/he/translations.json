@@ -16,7 +16,18 @@
     "disconnect": "התנתקי",
     "me": "אני",
     "my-space":"האזור האישי שלי",
-    "update-my-profile":"עדכון הפרופיל שלי"
+    "update-my-profile":"עדכון הפרופיל שלי",
+    "create-project": "צור פרוייקט משלך"
+  },
+  "create-project": {
+    "header": "צור פרוייקט חדש",
+    "subtitle": "צור פרוייקט משלך - עבור ארוע, או כל דבר אחר",
+    "name-placeholder": "שם הפרוייקט שלי",
+    "project-url-placeholder": "כתובת אתר הפרוייקט באנגלית",
+    "project-url-explain": "זה יהיה doocrate.com/PROJECT-URL",
+    "err-incomplete": "לא ניתן לפתוח פרוייקט לפני מילוי כל השדות בצורה תקינה. אנא וודא שהשדות תקינים 👁",
+    "submit-btn": "צור פרוייקט חדש!",
+    "success": "הפרוייקט נוצר בהצלחה. כעת הוסף את המשימה הראשונה!"
   },
   "my-space": {
     "role": "תפקידך",

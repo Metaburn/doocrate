@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import { Map, List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { Redirect } from 'react-router';
-import { authActions, getAuth } from 'src/auth';
-import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
-import classNames from 'classnames';
-import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
+import { tasksActions} from 'src/tasks';
 import { firebaseDb } from 'src/firebase';
-import {CSVLink, CSVDownload} from 'react-csv';
+import {CSVLink} from 'react-csv';
 
 import './reports-page.css';
 
@@ -39,7 +35,7 @@ export class ReportsPage extends Component {
       const contributors = {};
       const usersWhoDidntBuy = {};
       querySnapshot.forEach(function(doc) {
-        let contributor = doc.data()
+        let contributor = doc.data();
         contributors[doc.id] = contributor;
         if(contributor.didntBuy) {
           usersWhoDidntBuy[doc.id] = contributor;
@@ -59,17 +55,17 @@ export class ReportsPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.users !== this.state.users || prevProps.tasks !== this.props.tasks) {
-      const collborators = {};
-      const query = [["#", "name", "id", "email", "task"]]
+      const collaborators = {};
+      const query = [["#", "name", "id", "email", "task"]];
 
       this.props.tasks.forEach((task) =>  {
         if (task.assignee !=null) {
-          collborators[task.assignee.id] = task.id;
+          collaborators[task.assignee.id] = task.id;
         }
       });
 
       let counter = 1;
-      Object.entries(collborators).forEach(entry => {
+      Object.entries(collaborators).forEach(entry => {
         const [collaboratorId, taskId] = entry;
         if (this.state.users.has(collaboratorId)) {
           const collaborator = this.state.users.get(collaboratorId);
@@ -86,7 +82,7 @@ export class ReportsPage extends Component {
   }
 
   isAdmin() {
-    return this.props.auth.role == 'admin';
+    return this.props.auth.role === 'admin';
   }
 
   render() {
@@ -131,7 +127,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
   }
-}
+};
 
 const mapDispatchToProps = Object.assign(
   {},

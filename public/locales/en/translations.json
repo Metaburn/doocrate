@@ -16,7 +16,18 @@
     "disconnect": "Disconnect",
     "me": "Me",
     "my-space": "Personal space",
-    "update-my-profile":"Update my profile"
+    "update-my-profile":"Update my profile",
+    "create-project": "Start your own project"
+  },
+  "create-project": {
+    "header": "Start a new project",
+    "subtitle": "Create your own project for your event or anything else",
+    "name-placeholder": "My project name",
+    "project-url-placeholder": "Project url",
+    "project-url-explain": "This would be doocrate.com/PROJECT-URL",
+    "err-incomplete": "Can't create project before all fields are complete and valid. Please fill missing fields 👁",
+    "submit-btn": "Create project!",
+    "success": "Project created successfully! Next - create your first task"
   },
   "my-space": {
     "role": "Role",
