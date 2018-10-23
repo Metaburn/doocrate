@@ -6,13 +6,15 @@ const Firestore = require('@google-cloud/firestore');
 // Max number of tasks per creator
 const MAX_TASK_PER_CREATOR = 80;
 
-export * from './on-new-project-make-admin';
+const onNewProjectMakeAdminFunctions = require('./on-new-project-make-admin');
+
+exports.onNewProjectMakeAdminFunctions = onNewProjectMakeAdminFunctions;
 
 // Limit the number of tasks by creator
 exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate((snap, context) => {
   console.log("On create");
   const parentRef = snap.ref.parent;
-  const task = snap.data()
+  const task = snap.data();
 
   // If delete occur or this is an existing record or no creator
   if (!task || !task.creator || !task.creator.id)
@@ -44,7 +46,7 @@ console.log(emailApiKey);
 console.log(emailDomain);
 const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
-export const firestore = new Firestore();
+exports.firestore = new Firestore();
 
 exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite((change, context)=> {
 
@@ -103,7 +105,7 @@ exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrit
     let promises = [];
 
     promises.push(mailgun.messages().send(getEmailParams(creatorEmail)));
-    if(task.assignee && task.assignee.email && task.assignee.email != creatorEmail) {
+    if(task.assignee && task.assignee.email && task.assignee.email !== creatorEmail) {
       promises.push(mailgun.messages().send(getEmailParams(task.assignee.email)));
     }
 
