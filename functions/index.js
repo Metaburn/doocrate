@@ -6,6 +6,8 @@ const Firestore = require('@google-cloud/firestore');
 // Max number of tasks per creator
 const MAX_TASK_PER_CREATOR = 80;
 
+export * from './on-new-project-make-admin';
+
 // Limit the number of tasks by creator
 exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate((snap, context) => {
   console.log("On create");
@@ -42,7 +44,7 @@ console.log(emailApiKey);
 console.log(emailDomain);
 const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
-const firestore = new Firestore();
+export const firestore = new Firestore();
 
 exports.sendEmail = functions.firestore.document('/comments/{commentId}').onWrite((change, context)=> {
 

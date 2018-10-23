@@ -118,8 +118,16 @@ class CreateProject  extends Component {
   }
 
   getFormFields() {
+    const creator = {
+      id: this.props.auth.id,
+      name: this.props.auth.name,
+      email: this.props.auth.updatedEmail || this.props.auth.email,
+      photoURL: this.props.auth.photoURL,
+    };
+
     return {
       name: this.state.name,
+      creator: creator
     };
   }
 }
