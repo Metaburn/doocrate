@@ -102,7 +102,7 @@ class CreateProject  extends Component {
 
     this.props.createProject(this.state.projectUrl, this.getFormFields());
     this.props.showSuccess(i18n.t('create-project.success'));
-    this.props.history.push('/' + this.state.projectUrl);
+    this.props.history.push('/' + this.state.projectUrl + '/task/1');
   }
 
   isValid() {
