@@ -48,11 +48,12 @@ const App = ({auth, signOut, createProjectRedirect, isShowUpdateProfile, showSuc
           <Switch>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
-            <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>
+            // Uncommenting the following line causes the app to not allow users to login
+            {/*<RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>*/}
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
+            <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in/" component={SignInPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
-            <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in" component={SignInPage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/reports" component={ReportsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>

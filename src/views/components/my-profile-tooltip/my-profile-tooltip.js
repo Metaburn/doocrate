@@ -47,7 +47,7 @@ class MyProfileTooltip extends Component {
 
             <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left' parent='.my-profile-tooltip-container'>
               <span className='tooltip-container'>
-                <NavLink to={{ pathname: '/', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
+                <NavLink to={{ pathname: '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
                 <NavLink to='/me'>{t('header.my-space')}</NavLink><br/>
                 <div><Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button></div>
                 <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>

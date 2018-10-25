@@ -10,7 +10,7 @@ const RequireAuthRoute = ({component: Component, authenticated, ...rest}) => (
         <Component {...props}/>
       ) : (
         <Redirect to={{
-          pathname: '/sign-in',
+          pathname: '/sign-in/',
           state: {from: props.location}
         }}/>
       )

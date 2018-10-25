@@ -159,8 +159,8 @@ Import a specific collection by calling: `gcloud alpha firestore import --collec
 You can find translations under `public/locales/`
 
 You can open the page with the required language. For example use
-`http://localhost:3000/sign-in?lng=he` to open the hebrew version
-`http://localhost:3000/sign-in?lng=en` to open the english version
+`http://localhost:3000/sign-in/?lng=he` to open the hebrew version
+`http://localhost:3000/sign-in/?lng=en` to open the english version
 
 # Stop the system
 You can user the `/admin-dashboard` page if you are an admin to set permissions
