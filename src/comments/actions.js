@@ -10,6 +10,7 @@ import {
   UPDATE_COMMENT_ERROR,
   UPDATE_COMMENT_SUCCESS,
 } from './action-types';
+import {taskList} from "../tasks/task-list";
 
 
 export function createComment(comment) {
@@ -82,8 +83,10 @@ export function loadCommentsSuccess(comments) {
   };
 }
 
-export function loadComments(selectedTaskId) {
+export function loadComments(projectId, selectedTaskId) {
   return (dispatch, getState) => {
+    commentList.rootPath = 'projects';
+    commentList.rootDocId = projectId;
     commentList.path = `comments`;
     if(selectedTaskId) {
       commentList.query = ['taskId','==', selectedTaskId];

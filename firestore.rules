@@ -47,15 +47,15 @@ service cloud.firestore {
         //allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator());
         allow delete: if request.auth != null && (isAdmin() || isCreator());
       }
+
+      match /comments/{anyComment} {
+        allow read: if request.auth != null;
+        allow create: if request.auth != null;
+        allow update: if request.auth != null && isCreator();
+        allow delete: if request.auth != null && isCreator();
+      }
      }
 
-
-    match /comments/{anyComment} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null && isCreator();
-      allow delete: if request.auth != null && isCreator();
-    }
 
     match /users/{userId} {
       allow read: if request.auth != null; // Auth users can read

@@ -116,7 +116,8 @@ export class TasksPage extends Component {
           this.state.selectedTask && tid !== this.state.selectedTask.id) {
             this.setState({ isLoadedComments: true });
             this.props.unloadComments();
-            this.props.loadComments(tid);
+            let project_url = this.props.match.params.projectUrl;
+            this.props.loadComments(project_url, tid);
         }
       }
     } else {

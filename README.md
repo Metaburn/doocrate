@@ -222,3 +222,9 @@ Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssign
 
 #### Comments are not working
 Check you console. You need to follow the error using the link and create an index for comments
+
+#### Can I deploy only the hosting without the functions?
+Yes run ```
+npm run build
+firebase deploy --hosting
+```
