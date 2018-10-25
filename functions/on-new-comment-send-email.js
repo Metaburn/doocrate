@@ -63,7 +63,7 @@ exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{project
           </a>
         </button>
         <h3>תוכן: ${comment.body}</h3> <br/>
-        <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-burnerot@gmail.com
+        <br>אם ברצונך להסיר את עצמך מנוטיפקציות כאלו. אנא שלח אימייל ל-support@doocrate.com
         <br>        דואוקרט
         </div>
       `;
