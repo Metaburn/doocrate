@@ -6,10 +6,12 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_SUCCESS,
 } from './action-types';
+import { SELECT_PROJECT } from './action-types';
 
 
 export const ProjectState = new Record({
   list: new List(),
+  selectedProject: null,
 });
 
 
@@ -24,7 +26,7 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
       return state.merge({
         list: state.list.filter(project => project.id !== payload.id)
       });
-    
+
     case LOAD_PROJECTS_SUCCESS:
       return state.set('list', new List(payload.reverse()));
 
@@ -34,6 +36,9 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
           return project.id === payload.id ? payload : project;
         })
       });
+
+    case SELECT_PROJECT:
+      return state.set('selectedProject', payload || null);
 
     default:
       return state;

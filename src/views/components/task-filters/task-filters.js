@@ -16,10 +16,12 @@ class TaskFilters extends Component {
     };
 
     this.handleLabelChange = this.handleLabelChange.bind(this);
+    this.getTaskTypeFromProject = this.getTaskTypeFromProject.bind(this);
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
     projectUrl: PropTypes.object.isRequired,
+    selectedProject: PropTypes.object.isRequired,
     labels: PropTypes.object.isRequired,
     generateCSV:  PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
@@ -42,6 +44,17 @@ class TaskFilters extends Component {
     this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>Download CSV</CSVLink></li>});
   }
 
+  getTaskTypeFromProject(index) {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return ''; //TODO - should look better like a placeholder
+    }else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  }
   render() {
     let downloadCSV = null;
     if (this.props.isAdmin) {
@@ -59,26 +72,26 @@ class TaskFilters extends Component {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '2')
-          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1', search: 'filter=taskType&text=2'}}>{t('task.types.shifts')}</NavLink></li>
+          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1', search: 'filter=taskType&text=2'}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return (TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '1')
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=1'}}>{t('task.types.planning')}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=1'}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
             TaskFilters.getFilterText(location) === '3'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=3'}}>{t('task.types.camps')}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=3'}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '4'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=4'}}>{t('task.types.art')}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=4'}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink></li>
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=unassigned'}}>{t('task.free-tasks')}</NavLink></li>

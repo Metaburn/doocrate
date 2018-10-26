@@ -418,6 +418,7 @@ export class TasksPage extends Component {
           <div className="g-col">
             { <TaskFilters
               filter = { this.props.filterType }
+              selectedProject = { this.props.selectedProject }
               projectUrl = { projectUrl } //TODO - should be from state
               labels = { this.state.labelPool }
               onLabelChange = { this.onLabelChanged }
@@ -459,11 +460,12 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
+    selectedProject: state.projects.selectedProject,
     labels: state.labels.list,
     filters: taskFilters,
     buildFilter: buildFilter
   }
-}
+};
 
 const mapDispatchToProps = Object.assign(
   {},

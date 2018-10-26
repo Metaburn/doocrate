@@ -27,7 +27,9 @@
     "project-url-explain": "זה יהיה doocrate.com/PROJECT-URL",
     "err-incomplete": "לא ניתן לפתוח פרוייקט לפני מילוי כל השדות בצורה תקינה. אנא וודא שהשדות תקינים 👁",
     "submit-btn": "צור פרוייקט חדש!",
-    "success": "הפרוייקט נוצר בהצלחה. כעת הוסף את המשימה הראשונה!"
+    "success": "הפרוייקט נוצר בהצלחה. כעת הוסף את המשימה הראשונה!",
+    "task-types": "סוגי המשימות",
+    "task-types-explain": "מומלץ מאוד לחלק את המשימות לסוגים שונים כדי שיהיה קל יותר לסנן אחר-כך. לדוגמא - תכנון ארוע, משמרות, אחר. ניתן לחלק לעד 5 סוגי משימות"
   },
   "my-space": {
     "role": "תפקידך",

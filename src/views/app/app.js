@@ -5,6 +5,7 @@ import {Route, withRouter, Switch } from 'react-router-dom';
 
 import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
+import { getProject } from 'src/projects';
 import { notificationActions } from 'src/notification';
 import Header from '../components/header';
 import Footer from '../components/footer';
@@ -23,7 +24,7 @@ import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
 import { appConfig } from 'src/config/app-config'
-const App = ({auth, signOut, createProjectRedirect, isShowUpdateProfile, showSuccess}) => (
+const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile, showSuccess}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -34,6 +35,7 @@ const App = ({auth, signOut, createProjectRedirect, isShowUpdateProfile, showSuc
         createProject={createProjectRedirect}
         isShowUpdateProfile={isShowUpdateProfile}
         onShowSuccess={showSuccess}
+        selectedProject={selectedProject}
       />
 
       <main>
@@ -81,8 +83,10 @@ App.propTypes = {
 
 const mapStateToProps = createSelector(
   getAuth,
-  (auth) => ({
-    auth
+  getProject,
+  (auth, selectedProject) => ({
+    auth,
+    selectedProject: selectedProject || {}
   })
 );
 

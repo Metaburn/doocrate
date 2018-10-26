@@ -21,6 +21,7 @@ const menuContent =
 class Header extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
+    selectedProject: PropTypes.object.isRequired,
     signOut: PropTypes.func.isRequired,
     isShowUpdateProfile: PropTypes.func.isRequired,
     onShowSuccess: PropTypes.func.isRequired,
@@ -75,11 +76,15 @@ class Header extends Component {
                     }
                   </ul>
                   <h1 className='header-title'><a href='/'>Doocrate</a></h1>
+                  <h4>{this.props.selectedProject?
+                    this.props.selectedProject.name :
+                    ''
+                  }</h4>
                   <div className={`lang-select lang-${t('lang-float-reverse')}`}>
                     {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
                   </div>
                   <GoogleTranslate/>
-                  <div className={'create-project'}>
+                  <div className={'create-project-header'}>
                     <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
                     {this.renderRedirectToCreateProject()}
                   </div>

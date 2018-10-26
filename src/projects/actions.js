@@ -10,6 +10,7 @@ import {
   UPDATE_PROJECT_ERROR,
   UPDATE_PROJECT_SUCCESS,
 } from './action-types';
+import { SELECT_PROJECT } from "./action-types";
 
 export function createProject(projectId, project) {
   projectList.path = `projects`;
@@ -95,5 +96,23 @@ export function unloadProjects() {
   projectList.unsubscribe();
   return {
     type: UNLOAD_PROJECTS_SUCCESS
+  };
+}
+
+// Parse the /project parameter from the url
+export function getProjectFromUrl() {
+  const url = new URL(window.location.href);
+  const urlSplitted = url.pathname.split('/');
+  if(urlSplitted && urlSplitted.length > 1 && urlSplitted[1]) {
+    //right after the first char
+    return urlSplitted[1];
+  }
+  return null;
+}
+
+export function selectProject(project) {
+  return {
+    type: SELECT_PROJECT,
+    payload: project
   };
 }
