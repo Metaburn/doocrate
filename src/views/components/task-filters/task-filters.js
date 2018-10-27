@@ -55,6 +55,7 @@ class TaskFilters extends Component {
       return this.props.selectedProject.taskTypes[index];
     }
   }
+
   render() {
     let downloadCSV = null;
     if (this.props.isAdmin) {

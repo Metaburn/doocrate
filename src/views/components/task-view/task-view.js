@@ -36,13 +36,7 @@ export class TaskView extends Component {
       title: '',
       description: '',
       type: '',
-      defaultType: [
-        { value: 1, label: i18n.t('task.types.planning')},
-        { value: 2, label: i18n.t('task.types.shifts')},
-        { value: 3, label: i18n.t('task.types.camps')},
-        { value: 4, label: i18n.t('task.types.art')},
-        { value: 5, label: i18n.t('task.types.other')}
-      ],
+      defaultType: [],
       label: [],
       isCritical: false,
       validations: {},
@@ -67,6 +61,7 @@ export class TaskView extends Component {
     assignTask: PropTypes.func.isRequired,
     unassignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
+    selectedProject: PropTypes.object,
     isAdmin: PropTypes.bool.isRequired,
     isGuide: PropTypes.bool.isRequired,
     unloadComments: PropTypes.func.isRequired,
@@ -74,6 +69,18 @@ export class TaskView extends Component {
     isDraft: PropTypes.bool.isRequired,
     submitNewTask: PropTypes.func.isRequired
   };
+
+  getTaskTypeFromProject(index) {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return '';
+    } else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  }
 
   componentWillMount() {
     this.updateStateByProps(this.props);
@@ -90,6 +97,9 @@ export class TaskView extends Component {
         const labelAsArray = label ?
           (Object.keys(label).map( l => { return l })) : [];
 
+        // Set default task types
+        let defaultType = this.getDefaultTaskTypes(props);
+
         this.setState({
           id: id || '',
           title: title || '',
@@ -99,9 +109,25 @@ export class TaskView extends Component {
           created: created || null,
           dueDate: dueDate || null,
           type: type || null,
+          defaultType: defaultType || [],
           validation: {}
         });
       }
+  }
+
+  getDefaultTaskTypes(props) {
+    if (props.selectedProject &&
+      props.selectedProject.taskTypes &&
+      props.selectedProject.taskTypes.length >=5) {
+      const taskTypes = props.selectedProject.taskTypes;
+      return [
+        {value: 1, label: taskTypes[0]},
+        {value: 2, label: taskTypes[1]},
+        {value: 3, label: taskTypes[2]},
+        {value: 4, label: taskTypes[3]},
+        {value: 5, label: taskTypes[4]}
+      ];
+    }
   }
 
   componentWillReceiveProps(nextProps) {

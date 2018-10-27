@@ -384,6 +384,7 @@ export class TasksPage extends Component {
         updateTask={this.props.updateTask}
         selectTask={this.goToTask}
         selectedTask={taskObj}
+        selectedProject={this.props.selectedProject}
         isAdmin={this.isAdmin()}
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
