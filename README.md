@@ -211,6 +211,10 @@ Yes. `/admin-dashboard`
 2.Make sure that your config doesnt have a wrong char such as \n in the end:
 `projectId: 'doocrate-production\n',
 
+#### How can I deploy in a fast way
+If you haven't modified the functions folder you can run the following to deploy only the app without the functions:
+`npm run build && firebase deploy --only=hosting`
+
 #### Why am I seeing the loader runs and runs on a new install
 Only when there is at least one task it would stop running - Press on add task
 
