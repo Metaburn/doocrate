@@ -112,6 +112,15 @@ export class TaskView extends Component {
           defaultType: defaultType || [],
           validation: {}
         });
+      }else {
+        // A new task?
+
+        // Set default task types
+        let defaultType = this.getDefaultTaskTypes(props);
+
+        this.setState({
+          defaultType: defaultType || [],
+        });
       }
   }
 
