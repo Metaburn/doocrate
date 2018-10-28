@@ -6,7 +6,7 @@ const filters = {
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
   mine: (auth, value) => ({type: "user", uid: auth.id})
-}
+};
 
 export function buildFilter(auth, type, value) {
   return filters[type](auth, value);
@@ -39,7 +39,7 @@ export const taskFilters = {
 
   taskType: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.type && task.type === filter.text;
+      return task.type && task.type === parseInt(filter.text);
     });
   },
 
