@@ -13,7 +13,7 @@ export class ProjectsPage extends Component {
     super(...arguments);
 
     this.state = {
-      projects: []
+      projects: [],
     };
   }
 
@@ -36,7 +36,6 @@ export class ProjectsPage extends Component {
 
     let counter = 1;
     this.props.projects.forEach((project) => {
-      console.log(project.name);
       projectsArray.push([counter++, project.name, project.url])
     });
 

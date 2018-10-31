@@ -87,6 +87,10 @@ export function loadProjectsSuccess(projects) {
 export function loadProjects() {
   return (dispatch, getState) => {
     projectList.path = `projects`;
+    projectList.orderBy = {
+      name: 'created',
+      direction: 'asc'
+    };
 
     projectList.subscribe(dispatch);
   };
