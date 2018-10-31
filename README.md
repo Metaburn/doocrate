@@ -10,8 +10,11 @@ This allows organization to manage tasks in a TEAL way
 
 ## Stack
 
-- React, Redux, Thunk, React Router
+- React, Redux, Thunk, React Router, Node
 - Firebase Firestore
+
+## Needed
+Node v8.11.0
 
 Quick Start
 -----------
