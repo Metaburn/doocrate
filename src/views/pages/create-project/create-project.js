@@ -143,6 +143,7 @@ class CreateProject  extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
+      created: new Date()
     };
 
     const taskTypes = [

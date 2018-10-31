@@ -20,6 +20,7 @@ import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
 import SystemClosedPage from '../pages/system-closed';
 import ReportsPage from '../pages/reports';
+import ProjectsPage from '../pages/projects';
 import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'react-select/dist/react-select.css';
@@ -57,6 +58,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in/" component={SignInPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
+            <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>
             <Route component={NotFound}/>

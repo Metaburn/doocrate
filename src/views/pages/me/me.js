@@ -29,7 +29,8 @@ const Me = ({authenticated, auth, selectedProject}) => (
             :
             ''
           }
-          { auth.role === 'admin' ?
+          { auth.role === 'admin' &&
+          selectedProject ?
             <NavLink to={`/${selectedProject.url}/reports`}>{t('my-space.reports')}</NavLink>
             :
             ''
