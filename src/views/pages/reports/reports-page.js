@@ -95,7 +95,10 @@ export class ReportsPage extends Component {
     return (
       <div className='reports-page'>
         {this.props.selectedProject ?
-          <h2>{this.props.selectedProject.name}</h2>
+          <div>
+            <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+            <br/>
+          </div>
           : ''
         }
         <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
