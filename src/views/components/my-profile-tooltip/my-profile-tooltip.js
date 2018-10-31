@@ -17,7 +17,7 @@ class MyProfileTooltip extends Component {
 
   state = {
     isTooltipActive: false
-  }
+  };
 
   showTooltip() {
     this.setState({isTooltipActive: true})
@@ -33,7 +33,7 @@ class MyProfileTooltip extends Component {
       return (
         <I18n ns='translations'>
         {
-         (t, { i18n }) => (
+         (t, { }) => (
           <div className='my-profile-tooltip-container'
           onMouseEnter={this.showTooltip}
           onMouseLeave={this.hideTooltip}>
@@ -47,7 +47,7 @@ class MyProfileTooltip extends Component {
 
             <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left' parent='.my-profile-tooltip-container'>
               <span className='tooltip-container'>
-                <NavLink to={{ pathname: '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
+                <NavLink to={{ pathname: this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
                 <NavLink to='/me'>{t('header.my-space')}</NavLink><br/>
                 <div><Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button></div>
                 <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>

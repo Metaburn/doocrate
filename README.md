@@ -196,7 +196,7 @@ Check that you are on the `blaze` (Pay as you go) plan. Otherwise external servi
 Also, Check that all the settings are correct and you have created a mailgun username and set up the domain correctly
 
 #### Is there a reports page
-Yes `/reports`
+Yes `/:project-id/reports`
 
 #### Is there an admin page
 Yes. `/admin-dashboard`

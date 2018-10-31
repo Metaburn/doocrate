@@ -9,6 +9,7 @@ import { firebaseDb } from 'src/firebase';
 import {CSVLink} from 'react-csv';
 
 import './reports-page.css';
+import * as projectsActions from "../../../projects/actions";
 
 export class ReportsPage extends Component {
   constructor() {
@@ -24,12 +25,13 @@ export class ReportsPage extends Component {
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
+    selectedProject: PropTypes.object,
     auth: PropTypes.object.isRequired
   };
 
   componentWillMount() {
-
-    this.props.loadTasks();
+    const projectUrl = projectsActions.getProjectFromUrl();
+    this.props.loadTasks(projectUrl);
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
       const contributors = {};
@@ -46,11 +48,7 @@ export class ReportsPage extends Component {
         users: Map(contributors),
         usersWhoDidntBuy: Map(usersWhoDidntBuy)
       });
-  });
-  }
-
-  componentWillReceiveProps(nextProps) {
-
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -96,11 +94,11 @@ export class ReportsPage extends Component {
 
     return (
       <div className='reports-page'>
-        <h3>מספר אנשים רשומים לדואוקרט</h3>
-        {this.state.users.size}
-        <h3>אנשים שלא קנו כרטיס</h3>
-        {this.state.usersWhoDidntBuy.size}
-        <h3> אנשים שלקחו על עצמם לפחות משימה אחת (וזכרו לקנות כרטיס)</h3>
+        {this.props.selectedProject ?
+          <h2>{this.props.selectedProject.name}</h2>
+          : ''
+        }
+        <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
         {this.state.query.length}
 
         <br/>
@@ -109,7 +107,7 @@ export class ReportsPage extends Component {
         <table className="report-table" >
               <tbody>
               {
-                this.state.query.map( (r) => (<tr><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+                this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
               }
               </tbody>
           </table>
@@ -126,6 +124,7 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
+    selectedProject: state.projects.selectedProject
   }
 };
 

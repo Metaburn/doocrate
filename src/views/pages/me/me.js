@@ -7,7 +7,7 @@ import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import './me.css';
 
-const Me = ({authenticated, auth}) => (
+const Me = ({authenticated, auth, selectedProject}) => (
   <I18n ns='translations'>
       {
       (t, { i18n }) => (
@@ -30,7 +30,7 @@ const Me = ({authenticated, auth}) => (
             ''
           }
           { auth.role === 'admin' ?
-            <NavLink to='/reports'>{t('my-space.reports')}</NavLink>
+            <NavLink to={`/${selectedProject.url}/reports`}>{t('my-space.reports')}</NavLink>
             :
             ''
           }
@@ -50,6 +50,7 @@ Me.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    selectedProject: state.projects.selectedProject
   }
 };
 

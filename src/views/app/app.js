@@ -43,7 +43,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           <Switch>
             <Route authenticated={auth && auth.authenticated} exact path="/" component={SystemClosedPage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
-            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/reports" component={ReportsPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
             <Route component={NotFound}/>
           </Switch> :
 
@@ -57,7 +57,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in/" component={SignInPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
-            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/reports" component={ReportsPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>
             <Route component={NotFound}/>
           </Switch>

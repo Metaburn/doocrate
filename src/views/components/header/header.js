@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
 import { Redirect, Switch} from 'react-router-dom'
+import { NavLink } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.min.css'
 
@@ -21,7 +22,6 @@ const menuContent =
 class Header extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    selectedProject: PropTypes.object.isRequired,
     signOut: PropTypes.func.isRequired,
     isShowUpdateProfile: PropTypes.func.isRequired,
     onShowSuccess: PropTypes.func.isRequired,
@@ -77,7 +77,7 @@ class Header extends Component {
                   </ul>
                   <h1 className='header-title'><a href='/'>Doocrate</a></h1>
                   <h4>{this.props.selectedProject?
-                    this.props.selectedProject.name :
+                    <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
                     ''
                   }</h4>
                   <div className={`lang-select lang-${t('lang-float-reverse')}`}>

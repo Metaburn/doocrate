@@ -155,6 +155,7 @@ class CreateProject  extends Component {
     console.log(taskTypes);
 
     return {
+      url: this.state.projectUrl,
       name: this.state.name,
       creator: creator,
       taskTypes: taskTypes

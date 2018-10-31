@@ -7,11 +7,18 @@
   overflow: hidden;
   line-height: 40px;
 
+  a {
+    &:hover {
+      color: #eb1478;
+    }
+  }
+
   h4 {
     display: inline-block;
   }
   .create-project-header {
     display: inline-block;
+    margin: 0 0.5em;
   }
 
   button {
