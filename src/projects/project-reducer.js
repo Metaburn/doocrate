@@ -5,6 +5,7 @@ import {
   REMOVE_PROJECT_SUCCESS,
   LOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_SUCCESS,
+  NEW_PROJECT_CREATED,
 } from './action-types';
 import { SELECT_PROJECT } from './action-types';
 
@@ -17,6 +18,10 @@ export const ProjectState = new Record({
 
 export function projectsReducer(state = new ProjectState(), {payload, type}) {
   switch (type) {
+    // When creating a new project we set the selected project
+    case NEW_PROJECT_CREATED:
+      return state.set('selectedProject', payload || null);
+
     case CREATE_PROJECT_SUCCESS:
       return state.merge({
         list: state.list.unshift(payload)

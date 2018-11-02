@@ -153,8 +153,6 @@ class CreateProject  extends Component {
       this.state.type3,
       this.state.type4];
 
-    console.log(taskTypes);
-
     return {
       url: this.state.projectUrl,
       name: this.state.name,

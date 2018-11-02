@@ -8,7 +8,7 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UNLOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_ERROR,
-  UPDATE_PROJECT_SUCCESS,
+  UPDATE_PROJECT_SUCCESS, NEW_PROJECT_CREATED,
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 
@@ -17,6 +17,9 @@ export function createProject(projectId, project) {
   return dispatch => {
     projectList.set(projectId,
       project)
+      .then( () => {
+        return dispatch(newProjectCreated(project))
+      })
       .catch(error => dispatch(createProjectError(error)));
   };
 }
@@ -25,6 +28,13 @@ export function createProjectError(error) {
   return {
     type: CREATE_PROJECT_ERROR,
     payload: error
+  };
+}
+
+export function newProjectCreated(project) {
+  return {
+    type: NEW_PROJECT_CREATED,
+    payload: project
   };
 }
 
