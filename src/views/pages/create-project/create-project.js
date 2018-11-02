@@ -143,7 +143,6 @@ class CreateProject  extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
-      created: new Date()
     };
 
     const taskTypes = [
@@ -157,7 +156,8 @@ class CreateProject  extends Component {
       url: this.state.projectUrl,
       name: this.state.name,
       creator: creator,
-      taskTypes: taskTypes
+      taskTypes: taskTypes,
+      created: new Date()
     };
   }
 }
