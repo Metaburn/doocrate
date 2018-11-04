@@ -105,6 +105,7 @@ export class TasksPage extends Component {
       } else {
         // Select existing task by tid
         this.setState({
+          // TODO - perhaps it's faster to use the backend to actually find this specific task
           selectedTask: nextProps.tasks.find((task)=>( task.get('id') === tid ))
         });
 

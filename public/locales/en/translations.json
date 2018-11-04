@@ -22,13 +22,17 @@
   },
   "create-project": {
     "header": "Start a new project",
-    "subtitle": "Create your own project for your event or anything else",
+    "header-edit": "Edit existing project",
+    "subtitle": "Create your own project - For your event or anything else",
+    "subtitle-edit": "Edit your existing project",
     "name-placeholder": "My project name",
     "project-url-placeholder": "Project url",
     "project-url-explain": "This would be doocrate.com/PROJECT-URL",
     "err-incomplete": "Can't create project before all fields are complete and valid. Please fill missing fields 👁",
     "submit-btn": "Create project!",
-    "success": "Project created successfully! Next - create your first task",
+    "submit-btn-edit": "Save changes!",
+    "success": "Project created successfully! Next - create your first task. 🙌",
+    "success-edit": "Project updated successfully! 🙌",
     "task-types": "Task types",
     "task-types-explain": "It's recommended to divide the tasks into type so it would be easier to filter afterwards. For example - Event planning, Shifts, Other. You can have up to 5 task types."
   },
@@ -38,8 +42,10 @@
   },
   "my-space": {
     "role": "Role",
-    "email": "Email",
-    "reports": "Reports"
+    "projects": "My projects",
+    "edit-project": "Edit project",
+    "project-report": "Project Report",
+    "email": "Email"
   },
   "task": {
     "add-task": "Add a new task",

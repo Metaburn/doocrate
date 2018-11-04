@@ -6,14 +6,16 @@ import { I18n } from 'react-i18next';
 import { projectActions } from 'src/projects';
 import {notificationActions} from '../../../notification';
 import i18n from '../../../i18n.js';
-import './create-project.css';
+import './set-project.css';
+import {List} from "immutable";
 
-class CreateProject  extends Component {
+class SetProject extends Component {
 
   constructor() {
     super(...arguments);
 
     this.state = {
+      isExisting: false, //Whether or not we are editing an existing project
       name: '',
       projectUrl: '',
       validations: {},
@@ -29,15 +31,81 @@ class CreateProject  extends Component {
     this.isValid = this.isValid.bind(this);
   }
 
+  findProject(props, projectUrl) {
+    return props.projects.find((project)=>( project.get('url') === projectUrl ));
+  }
+
+  componentWillMount() {
+    // Load projects if not loaded
+    // TODO - perhaps should be in a better place in the app on the loader
+    if(!this.props.projects || this.props.projects.size <= 0) {
+      this.props.loadProjects();
+    }
+    this.updateStateByProps(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateStateByProps(nextProps);
+  }
+
+  updateStateByProps(props) {
+    // Load an existing project
+    // Since update state by props is getting called for each project it might be called too many times
+    // so we Stop loading when found it - isExisting
+    if (props.match != null && props.match.params.projectUrl &&
+      props.projects && props.projects.size > 0 && !this.state.isExisting) {
+      const projectUrl = props.match.params.projectUrl;
+      let existingProject = this.findProject(props, projectUrl);
+      if(!existingProject) {
+        return;
+      }
+
+      let { name, taskTypes, creator } = existingProject;
+      let type0,type1,type2,type3,type4;
+      if(taskTypes && taskTypes.length > 4) {
+        type0 = taskTypes[0];
+        type1 = taskTypes[1];
+        type2 = taskTypes[2];
+        type3 = taskTypes[3];
+        type4 = taskTypes[4];
+      }
+
+      // Only allow edit if the user is the creator of this project
+      if(!creator.id === props.auth.id){
+        return;
+      }
+
+      this.setState({
+        isExisting: true,
+        projectUrl: projectUrl,
+        name: name || '',
+        type0: type0 || '',
+        type1: type1 || '',
+        type2: type2 || '',
+        type3: type3 || '',
+        type4: type4 || '',
+      });
+    }
+  }
+
   render() {
     return (
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className='g-row create-project'>
+            <div className='g-row set-project'>
               <br/>
-              <h1>{t('create-project.header')}</h1>
-              <h3>{t('create-project.subtitle')}</h3>
+              {
+                this.state.isExisting ?
+                <h1>{t('create-project.header-edit')}</h1>
+                :
+                <h1>{t('create-project.header')}</h1>
+              }
+              { this.state.isExisting ?
+                <h3>{t('create-project.subtitle-edit')}</h3>
+                :
+                <h3>{t('create-project.subtitle')}</h3>
+              }
               <form noValidate onSubmit={this.handleSubmit}>
                 <div className='form-input'>
                   <span>{t('create-project.name-placeholder')}</span>
@@ -93,9 +161,14 @@ class CreateProject  extends Component {
   }
 
   renderSubmit(t) {
-    return (
-      <input className={`button button-small` }
-             type='submit' value={t('create-project.submit-btn')}/>);
+    {
+      return this.state.isExisting ?
+        <input className={`button button-small`}
+               type='submit' value={t('create-project.submit-btn-edit')}/>
+    :
+        <input className={`button button-small`}
+               type='submit' value={t('create-project.submit-btn')}/>
+    }
   }
 
   handleChange(n, e) {
@@ -115,8 +188,13 @@ class CreateProject  extends Component {
       return;
     }
 
+    // Create is actually set, so it works the same for update / create
     this.props.createProject(this.state.projectUrl, this.getFormFields());
-    this.props.showSuccess(i18n.t('create-project.success'));
+    if(this.state.isExisting) {
+      this.props.showSuccess(i18n.t('create-project.success-edit'));
+    }else {
+      this.props.showSuccess(i18n.t('create-project.success'));
+    }
     this.props.history.push('/' + this.state.projectUrl + '/task/1');
   }
 
@@ -162,8 +240,11 @@ class CreateProject  extends Component {
   }
 }
 
-CreateProject.propTypes = {
+SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  editProject: PropTypes.func.isRequired,
+  loadProjects: PropTypes.func.isRequired,
+  projects: PropTypes.instanceOf(List).isRequired,
 };
 
 
@@ -173,6 +254,7 @@ CreateProject.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    projects: state.projects.list,
   }
 };
 
@@ -185,4 +267,4 @@ const mapDispatchToProps = Object.assign(
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CreateProject);
+)(SetProject);

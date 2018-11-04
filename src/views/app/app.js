@@ -14,7 +14,7 @@ import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
 import TasksPage from '../pages/tasks';
 import MePage from '../pages/me';
-import CreateProjectPage from '../pages/create-project';
+import CreateProjectPage from '../pages/set-project';
 
 import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
@@ -53,6 +53,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
             // Uncommenting the following line causes the app to not allow users to login
             {/*<RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>*/}
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
             <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in/" component={SignInPage}/>

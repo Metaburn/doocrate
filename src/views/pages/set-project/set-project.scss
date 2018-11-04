@@ -1,6 +1,6 @@
 @import 'views/styles/shared';
 
-.create-project {
+.set-project {
   a {
     color: $primary-color;
   }
@@ -26,7 +26,7 @@
 
   input[type=submit] {
     &:focus {
-      
+
     }
   }
 }

@@ -35,7 +35,7 @@ export function initAuth(dispatch) {
 function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
   getUserInfo(authUser).then(userInfo => {
     if (userInfo && userInfo.exists) {
-      const userInfoData = userInfo.data()
+      const userInfoData = userInfo.data();
       authUser.isEmailConfigured = userInfoData.isEmailConfigured;
       authUser.canAssignTask = userInfoData.canAssignTask; // Can a person assign a task to himself
       authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task

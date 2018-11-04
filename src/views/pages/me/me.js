@@ -29,11 +29,21 @@ const Me = ({authenticated, auth, selectedProject}) => (
             :
             ''
           }
-          { auth.role === 'admin' &&
-          selectedProject ?
-            <NavLink to={`/${selectedProject.url}/reports`}>{t('my-space.reports')}</NavLink>
-            :
-            ''
+          { auth && auth.adminProjects && auth.adminProjects.size > 0 ?
+            <div className={'projects'}>
+              {
+                auth.adminProjects.map(project => {
+                  return (
+                    <div className={'project'}>
+                      <span>{project}</span>
+                      <span><NavLink to={`/${project}/reports`}>{t('my-space.project-report')}</NavLink></span>
+                      <span><NavLink to={`/${project}/edit`}>{t('my-space.edit-project')}</NavLink></span>
+                    </div>
+                  )
+                })
+              }
+            </div>
+            : ''
           }
         <br/>
       </div>
