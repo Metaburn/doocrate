@@ -10,7 +10,6 @@ import {CSVLink} from 'react-csv';
 
 import {I18n} from 'react-i18next';
 import './reports-page.css';
-import * as projectsActions from "../../../projects/actions";
 
 export class ReportsPage extends Component {
   constructor() {
@@ -31,7 +30,7 @@ export class ReportsPage extends Component {
   };
 
   componentWillMount() {
-    const projectUrl = projectsActions.getProjectFromUrl();
+    const projectUrl = this.props.match.params.projectUrl;
     this.props.loadTasks(projectUrl);
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
@@ -93,18 +92,18 @@ export class ReportsPage extends Component {
       )
     }
 
+    if(!this.props.selectedProject) {
+      return <div></div>;
+    }
     return (
       <I18n ns='translations'>
         {
           (t) => (
           <div className='reports-page'>
-            {this.props.selectedProject ?
-              <div>
-                <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
-                <br/>
-              </div>
-              : ''
-            }
+            <div>
+              <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+              <br/>
+            </div>
             <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
             {this.state.query.length}
 
@@ -123,7 +122,7 @@ export class ReportsPage extends Component {
               </thead>
                 <tbody>
                 {
-                  this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+                  this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
                 }
                 </tbody>
               </table>
