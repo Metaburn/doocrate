@@ -8,6 +8,7 @@ import { tasksActions} from 'src/tasks';
 import { firebaseDb } from 'src/firebase';
 import {CSVLink} from 'react-csv';
 
+import {I18n} from 'react-i18next';
 import './reports-page.css';
 import * as projectsActions from "../../../projects/actions";
 
@@ -54,7 +55,7 @@ export class ReportsPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.users !== this.state.users || prevProps.tasks !== this.props.tasks) {
       const collaborators = {};
-      const query = [["#", "name", "id", "email", "task"]];
+      const query = [];
 
       this.props.tasks.forEach((task) =>  {
         if (task.assignee !=null) {
@@ -93,28 +94,42 @@ export class ReportsPage extends Component {
     }
 
     return (
-      <div className='reports-page'>
-        {this.props.selectedProject ?
-          <div>
-            <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+      <I18n ns='translations'>
+        {
+          (t) => (
+          <div className='reports-page'>
+            {this.props.selectedProject ?
+              <div>
+                <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+                <br/>
+              </div>
+              : ''
+            }
+            <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
+            {this.state.query.length}
+
             <br/>
+              <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
+
+            <table className="report-table" >
+              <thead>
+              <tr className={`dir-${t('lang-float-reverse')}`}>
+                <th>#</th>
+                <th>Name</th>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Task</th>
+              </tr>
+              </thead>
+                <tbody>
+                {
+                  this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+                }
+                </tbody>
+              </table>
           </div>
-          : ''
-        }
-        <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
-        {this.state.query.length}
-
-        <br/>
-          <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
-
-        <table className="report-table" >
-              <tbody>
-              {
-                this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
-              }
-              </tbody>
-          </table>
-      </div>
+          )}
+      </I18n>
     );
   }
 }
