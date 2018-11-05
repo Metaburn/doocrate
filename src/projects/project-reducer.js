@@ -38,7 +38,7 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
     case UPDATE_PROJECT_SUCCESS:
       return state.merge({
         list: state.list.map(project => {
-          return project.id === payload.id ? payload : project;
+          return project.url === payload.url ? payload : project;
         })
       });
 

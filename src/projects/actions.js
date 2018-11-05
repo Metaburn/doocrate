@@ -94,9 +94,12 @@ export function loadProjectsSuccess(projects) {
   };
 }
 
+// We are hiding any projects that are not public
+// TODO: It's only done on the client side so you can still filter by a project name
 export function loadProjects() {
   return (dispatch, getState) => {
     projectList.path = `projects`;
+    projectList.query = ['isPublic', '==', true];
     projectList.orderBy = {
       name: 'created',
       direction: 'asc'

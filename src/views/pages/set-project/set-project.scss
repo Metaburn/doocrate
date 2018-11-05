@@ -24,6 +24,12 @@
     }
   }
 
+  input[type=checkbox] {
+    opacity: 1;
+    position: relative;
+    display: inline-block;
+  }
+
   input[type=submit] {
     &:focus {
 

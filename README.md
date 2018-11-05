@@ -44,6 +44,9 @@ npm start
 And choosing `Add Firebase to your web app`
 
 ## Set up firestore rules
+Rules are a way to restrict access to the database and give different users different permissions
+For example - Anyone can create a task. But only a task creator (And assignee)can edit a task
+
 copy the content of `firestore.rules` file into Rules of your project. For example - 
 `https://console.firebase.google.com/u/0/project/doocrate-production/database/firestore/rules`
 Then hit `Publish` to save it

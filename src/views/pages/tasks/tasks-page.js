@@ -238,7 +238,7 @@ export class TasksPage extends Component {
   }
 
   assignTaskToSignedUser(task) {
-    const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
+    //const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id === this.props.auth.id});
 
     // TODO: Move to a better place
     // if(myAssignedTasks.size >= 5) {

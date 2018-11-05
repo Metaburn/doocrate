@@ -7,7 +7,6 @@ import { projectActions } from 'src/projects';
 import {notificationActions} from '../../../notification';
 import i18n from '../../../i18n.js';
 import './set-project.css';
-import {List} from "immutable";
 
 class SetProject extends Component {
 
@@ -19,6 +18,7 @@ class SetProject extends Component {
       name: '',
       projectUrl: '',
       validations: {},
+      isPublic: true,
       type0: '',
       type1: '',
       type2: '',
@@ -31,16 +31,7 @@ class SetProject extends Component {
     this.isValid = this.isValid.bind(this);
   }
 
-  findProject(props, projectUrl) {
-    return props.projects.find((project)=>( project.get('url') === projectUrl ));
-  }
-
   componentWillMount() {
-    // Load projects if not loaded
-    // TODO - perhaps should be in a better place in the app on the loader
-    if(!this.props.projects || this.props.projects.size <= 0) {
-      this.props.loadProjects();
-    }
     this.updateStateByProps(this.props);
   }
 
@@ -53,14 +44,14 @@ class SetProject extends Component {
     // Since update state by props is getting called for each project it might be called too many times
     // so we Stop loading when found it - isExisting
     if (props.match != null && props.match.params.projectUrl &&
-      props.projects && props.projects.size > 0 && !this.state.isExisting) {
+      props.selectedProject && !this.state.isExisting) {
       const projectUrl = props.match.params.projectUrl;
-      let existingProject = this.findProject(props, projectUrl);
+      let existingProject = props.selectedProject;
       if(!existingProject) {
         return;
       }
 
-      let { name, taskTypes, creator } = existingProject;
+      let { name, taskTypes, creator, isPublic } = existingProject;
       let type0,type1,type2,type3,type4;
       if(taskTypes && taskTypes.length > 4) {
         type0 = taskTypes[0];
@@ -75,10 +66,15 @@ class SetProject extends Component {
         return;
       }
 
+      if (isPublic === undefined) {
+        isPublic = true
+      }
+
       this.setState({
         isExisting: true,
         projectUrl: projectUrl,
         name: name || '',
+        isPublic: isPublic,
         type0: type0 || '',
         type1: type1 || '',
         type2: type2 || '',
@@ -111,12 +107,13 @@ class SetProject extends Component {
                   <span>{t('create-project.name-placeholder')}</span>
                   { this.renderInput('name', t('create-project.name-placeholder'), t, true, '0', true)}
                 </div>
+
                 <div className='form-input'>
                   <span>{t('create-project.project-url-placeholder')}</span>
                   { this.renderInput('projectUrl', t('create-project.project-url-placeholder'), t, true, '0', true)}
                   {
                     this.state.projectUrl ?
-                      <span>{`doocrate.com/${this.state.projectUrl}`}</span> :
+                      <span>{'doocrate.com/'+this.state.projectUrl}</span> :
                       <span>{t('create-project.project-url-explain')}</span>
                   }
                 </div>
@@ -130,6 +127,15 @@ class SetProject extends Component {
                   { this.renderInput('type3', t('task.types.art'), t, true, '0', true)}
                   { this.renderInput('type4', t('task.types.other'), t, true, '0', true)}
                 </div>
+
+                <div className='form-input'>
+                  <span>{t('create-project.visibility-placeholder')}</span>
+                  <br/>
+                  <span>{t('create-project.visibility-explain')}</span>
+                  <br/>
+                  { this.renderCheckbox('isPublic', t('create-project.visibility'), t, true)}
+                </div>
+
                 <br/>
                 { this.renderSubmit(t) }
               </form>
@@ -143,7 +149,7 @@ class SetProject extends Component {
   renderInput(fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus) {
     const classNames = isEditable ? ' editable' : '';
     return( <Textbox
-      className={`changing-input${classNames}`}
+      className={'changing-input'+ classNames}
       type = 'text'
       tabIndex = { tabIndex }
       name = { fieldName }
@@ -160,13 +166,30 @@ class SetProject extends Component {
     />)
   }
 
+  renderCheckbox(fieldName, placeholder, t, isEditable) {
+    const classNames = isEditable ? ' editable' : '';
+    return (
+      <label>
+        <input
+          className={ classNames }
+          type = 'checkbox'
+          checked = { this.state[fieldName] }
+          value = { placeholder }
+          onChange={e => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
+          disabled = { !isEditable }
+        />
+        { placeholder }
+      </label>
+    );
+  }
+
   renderSubmit(t) {
     {
       return this.state.isExisting ?
-        <input className={`button button-small`}
+        <input className={'button button-small'}
                type='submit' value={t('create-project.submit-btn-edit')}/>
     :
-        <input className={`button button-small`}
+        <input className={'button button-small'}
                type='submit' value={t('create-project.submit-btn')}/>
     }
   }
@@ -235,6 +258,7 @@ class SetProject extends Component {
       name: this.state.name,
       creator: creator,
       taskTypes: taskTypes,
+      isPublic: this.state.isPublic,
       created: new Date()
     };
   }
@@ -242,9 +266,7 @@ class SetProject extends Component {
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  editProject: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
-  projects: PropTypes.instanceOf(List).isRequired,
 };
 
 
@@ -254,7 +276,7 @@ SetProject.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
-    projects: state.projects.list,
+    selectedProject: state.projects.selectedProject
   }
 };
 
