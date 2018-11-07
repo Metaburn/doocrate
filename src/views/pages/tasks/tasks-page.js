@@ -93,7 +93,8 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
-    if (nextProps.match != null && nextProps.match.params.projectUrl && nextProps.match.params.id) {
+    if (nextProps.match != null && nextProps.match.params.projectUrl &&
+      nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 
       if (tid === "new-task") {
@@ -101,7 +102,12 @@ export class TasksPage extends Component {
           this.setState({
             newTask: this.createNewTask()
           });
+          this.props.unloadComments();
         }
+      } else if (tid === "1") {
+        this.setState({
+          isLoadedComments: false,
+          selectedTask: null});
       } else {
         // Select existing task by tid
         this.setState({
@@ -114,7 +120,7 @@ export class TasksPage extends Component {
         }
 
         if(!this.state.isLoadedComments ||
-          this.state.selectedTask && tid !== this.state.selectedTask.id) {
+          (this.state.selectedTask && tid !== this.state.selectedTask.id)) {
             this.setState({ isLoadedComments: true });
             this.props.unloadComments();
             let project_url = this.props.match.params.projectUrl;
@@ -316,7 +322,7 @@ export class TasksPage extends Component {
     const filterType = params['filter'];
     const filterText = params['text'];
     const project_url = this.props.match.params.projectUrl;
-    let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `${project_url}/task/1`;
+    let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
     if (filterType) {
       taskParameter = `${taskParameter}?filter=${filterType}`
