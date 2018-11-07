@@ -9,6 +9,7 @@ tmp/
 
 # Config file is copied from config.production.js or config.staging.js using npm run build or npm run build-staging
 src/firebase/app-config.js
+src/firebase/config.js
 
 #======================================
 # Extensions
