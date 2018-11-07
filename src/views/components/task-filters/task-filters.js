@@ -72,13 +72,13 @@ class TaskFilters extends Component {
           <li><NavLink isActive={(match, location) => {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '2')
-          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1', search: 'filter=taskType&text=2'}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
+              TaskFilters.getFilterText(location) === '1')
+          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1', search: 'filter=taskType&text=1'}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return (TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '1')
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=1'}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
+              TaskFilters.getFilterText(location) === '2')
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=2'}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
