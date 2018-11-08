@@ -104,7 +104,7 @@ export class FirebaseList {
         initialized = true;
       }
       const isLocalChange = snapshot.metadata.hasPendingWrites;
-      snapshot.docChanges.forEach(change => {
+      snapshot.docChanges().forEach(change => {
           if (change.type === "added") {
             if (initialized) {
               emit(this._actions.onAdd(this.unwrapSnapshot(change.doc), isLocalChange));

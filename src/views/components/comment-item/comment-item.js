@@ -38,7 +38,7 @@ export class CommentItem extends Component {
     const avatar = creator.photoURL ? <Img className='avatar' src={creator.photoURL} alt={comment.creator.name}/> : '';
     return (
       <div className='comment-item-creator'>
-        <span>{ avatar } { creator.name } <Moment locale={t('lang')} fromNow>{comment.created}</Moment></span>
+        <span>{ avatar } { creator.name } <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
       </div>
     );
   }
