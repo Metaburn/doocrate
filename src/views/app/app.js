@@ -51,8 +51,10 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           <Switch>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
-            // Uncommenting the following line causes the app to not allow users to login
-            {/*<RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/>*/}
+            {
+              /* Uncommenting the following line causes the app to not allow users to login */
+              /* <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/> */
+            }
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>

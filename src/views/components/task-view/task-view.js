@@ -383,7 +383,6 @@ export class TaskView extends Component {
           isOpen = { task && task.id && this.state.shouldOpenTakeOwnerModal }
           onClosed = { () => {
             this.setState({shouldOpenTakeOwnerModal: false});
-            console.log('Closed');
           }}
           onYes ={() => {
             this.setState({shouldOpenTakeOwnerModal: false});

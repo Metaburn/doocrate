@@ -184,14 +184,12 @@ class SetProject extends Component {
   }
 
   renderSubmit(t) {
-    {
-      return this.state.isExisting ?
-        <input className={'button button-small'}
-               type='submit' value={t('create-project.submit-btn-edit')}/>
-    :
-        <input className={'button button-small'}
-               type='submit' value={t('create-project.submit-btn')}/>
-    }
+    return this.state.isExisting ?
+      <input className={'button button-small'}
+             type='submit' value={t('create-project.submit-btn-edit')}/>
+  :
+      <input className={'button button-small'}
+             type='submit' value={t('create-project.submit-btn')}/>
   }
 
   handleChange(n, e) {

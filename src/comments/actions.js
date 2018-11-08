@@ -10,7 +10,6 @@ import {
   UPDATE_COMMENT_ERROR,
   UPDATE_COMMENT_SUCCESS,
 } from './action-types';
-import {taskList} from "../tasks/task-list";
 
 
 export function createComment(comment) {

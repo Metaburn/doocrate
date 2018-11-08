@@ -84,7 +84,7 @@ export class TaskItem extends Component {
   }
 
   renderLabel(task) {
-    if(!task.label || Object.keys(task.label).length === 0 && task.label.constructor === Object) {
+    if(!task.label || (Object.keys(task.label).length === 0 && task.label.constructor === Object)) {
       return null;
     }
     return (

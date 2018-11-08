@@ -33,7 +33,7 @@ class MyProfileTooltip extends Component {
       return (
         <I18n ns='translations'>
         {
-         (t, { }) => (
+         (t) => (
           <div className='my-profile-tooltip-container'
           onMouseEnter={this.showTooltip}
           onMouseLeave={this.hideTooltip}>

@@ -65,7 +65,7 @@ class TaskFilters extends Component {
     return(
       <I18n ns='translations'>
       {
-      (t, {  }) => (
+      (t) => (
         <div className="task-filters">
         <ul className='main-filters'>
 

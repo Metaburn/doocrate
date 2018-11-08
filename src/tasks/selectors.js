@@ -39,7 +39,7 @@ export const taskFilters = {
 
   taskType: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.type && task.type === parseInt(filter.text);
+      return task.type && task.type === parseInt(filter.text, 10);
     });
   },
 
