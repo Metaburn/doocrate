@@ -4,11 +4,11 @@ const functions = require('firebase-functions');
 // For example: firebase functions:config:set email.send_notifications="true"
 // For example: firebase functions:config:set email.apiKey=KEY
 // For example: firebase functions:config:set email.domain=DOMAIN
-const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
-const shouldSendNotifications = firebaseConfig.email? encodeURIComponent(firebaseConfig.email.send_notifications) : false;
-const fromEmail = firebaseConfig.email? decodeURIComponent(firebaseConfig.email.from) : null;
-const emailApiKey = firebaseConfig.email? encodeURIComponent(firebaseConfig.email.apikey) : 'No env variable set';
-const emailDomain = firebaseConfig.email? encodeURIComponent(firebaseConfig.email.domain) : 'No env variable set';
+const emailConfig = functions.config().email;
+const shouldSendNotifications = emailConfig? encodeURIComponent(emailConfig.send_notifications) : false;
+const fromEmail = emailConfig? decodeURIComponent(emailConfig.from) : null;
+const emailApiKey = emailConfig? encodeURIComponent(emailConfig.apikey) : 'No env variable set';
+const emailDomain = emailConfig? encodeURIComponent(emailConfig.domain) : 'No env variable set';
 
 const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
@@ -23,8 +23,8 @@ firestore.settings({
 exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}/comments/{commentId}').onWrite((change, context)=> {
 
   if(!shouldSendNotifications) {
-    console.log('send notifications turned off');
-    return;
+    console.warn('send notifications turned off');
+    return false;
   }
 
   const projectId = context.params.projectId;
@@ -87,8 +87,10 @@ exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{project
 
       return Promise.all(promises).then(values => {
         console.log('email sent successfully');
+        return true;
       }).catch(error => {
         console.error('error sending mail:', error);
+        return error;
       });
     }
   )});
