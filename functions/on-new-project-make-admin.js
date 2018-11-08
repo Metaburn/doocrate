@@ -2,7 +2,6 @@ const functions = require('firebase-functions');
 const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore();
-const functions = require('firebase-functions');
 /*
   Whenever a new project is created - the user who created it becomes an admin for that project
  */

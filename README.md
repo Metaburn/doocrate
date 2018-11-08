@@ -112,7 +112,7 @@ You can also set staging env and use:
 `firebase use --add` to add your staging site
 Then run like
 `npm run build-staging`
-`firebase use` and choose staging
+`firebase use staging`
 `npm run deploy:staging`
 
 #### Build and deploy the app:
@@ -238,3 +238,7 @@ Yes run ```
 npm run build
 firebase deploy --hosting
 ```
+
+#### I'm having issue running npm install
+Make sure you use node ~v8.11.0 by running:
+`nvm use v8.11.0`
