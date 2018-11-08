@@ -5,10 +5,11 @@ const functions = require('firebase-functions');
 // For example: firebase functions:config:set email.send_notifications="true"
 // For example: firebase functions:config:set email.apiKey=KEY
 // For example: firebase functions:config:set email.domain=DOMAIN
-const shouldSendNotifications = encodeURIComponent(functions.config().email.send_notifications);
-const fromEmail = decodeURIComponent(functions.config().email.from);
-const emailApiKey = encodeURIComponent(functions.config().email.apikey);
-const emailDomain = encodeURIComponent(functions.config().email.domain);
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+const shouldSendNotifications = encodeURIComponent(firebaseConfig.email.send_notifications);
+const fromEmail = decodeURIComponent(firebaseConfig.email.from);
+const emailApiKey = encodeURIComponent(firebaseConfig.email.apikey);
+const emailDomain = encodeURIComponent(firebaseConfig.email.domain);
 
 const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 

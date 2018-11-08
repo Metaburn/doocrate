@@ -2,10 +2,11 @@ const functions = require('firebase-functions');
 const Firestore = require('@google-cloud/firestore');
 
 const firestore = new Firestore();
+const functions = require('firebase-functions');
 /*
   Whenever a new project is created - the user who created it becomes an admin for that project
  */
-exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}').onCreate((change, context)=> {
+exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}').onCreate((change, cononWritetext)=> {
   const project = change.data();
   const projectId = context.params.projectId;
   console.log(project);
