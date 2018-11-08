@@ -1,7 +1,4 @@
 //----------------SendEmail----------------
-
-import {firebaseDb} from "../src/firebase/firebase";
-
 const functions = require('firebase-functions');
 // TODO: Configure the `email.from`, `send_notifications`, `email.apikey`, `email.domain` Google Cloud environment variables.
 // For example: firebase functions:config:set email.send_notifications="true"
