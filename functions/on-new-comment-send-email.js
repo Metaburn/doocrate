@@ -1,5 +1,7 @@
 //----------------SendEmail----------------
 
+import {firebaseDb} from "../src/firebase/firebase";
+
 const functions = require('firebase-functions');
 // TODO: Configure the `email.from`, `send_notifications`, `email.apikey`, `email.domain` Google Cloud environment variables.
 // For example: firebase functions:config:set email.send_notifications="true"
@@ -15,6 +17,9 @@ const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
 
 const Firestore = require('@google-cloud/firestore');
 const firestore = new Firestore();
+firestore.settings({
+  timestampsInSnapshots: true
+});
 /*
   Whenever a new project is created - the user who created it becomes an admin for that project
  */
