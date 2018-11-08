@@ -5,7 +5,7 @@ const firestore = new Firestore();
 /*
   Whenever a new project is created - the user who created it becomes an admin for that project
  */
-exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}').onCreate((change, cononWritetext)=> {
+exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}').onCreate((change, context)=> {
   const project = change.data();
   const projectId = context.params.projectId;
   console.log(project);
