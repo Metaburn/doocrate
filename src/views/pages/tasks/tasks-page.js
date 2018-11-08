@@ -215,7 +215,7 @@ export class TasksPage extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
-    }
+    };
 
     return {id: null, creator: creator, created: new Date()}
   }
@@ -226,7 +226,7 @@ export class TasksPage extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
-    }
+    };
 
     this.props.createTask(
       {title: task.title, creator, created: new Date(), description: task.description, type: task.type, label: task.label},
@@ -235,8 +235,11 @@ export class TasksPage extends Component {
     this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
+  // Check if admin of that project
   isAdmin() {
-    return this.props.auth.role === 'admin';
+    const project_url = this.props.match.params.projectUrl;
+    return this.props.auth.role === 'admin' &&
+      this.props.auth.adminProjects.includes(project_url);
   }
 
   isGuide() {

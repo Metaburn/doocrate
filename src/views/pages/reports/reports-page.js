@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 import { Redirect } from 'react-router';
 import { tasksActions} from 'src/tasks';
+import { projectActions } from 'src/projects';
+
 import { firebaseDb } from 'src/firebase';
 import {CSVLink} from 'react-csv';
 
@@ -26,12 +28,17 @@ export class ReportsPage extends Component {
     loadTasks: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
+    selectProjectFromUrl: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
   };
 
   componentWillMount() {
     const projectUrl = this.props.match.params.projectUrl;
     this.props.loadTasks(projectUrl);
+    if (!this.props.selectedProject) {
+      // Load the project
+      this.props.selectProjectFromUrl();
+    }
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
       const contributors = {};
@@ -80,7 +87,9 @@ export class ReportsPage extends Component {
   }
 
   isAdmin() {
-    return this.props.auth.role === 'admin';
+    const projectUrl = this.props.match.params.projectUrl;
+    return this.props.auth.role === 'admin' &&
+      this.props.auth.adminProjects.includes(projectUrl);
   }
 
   render() {
@@ -147,7 +156,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = Object.assign(
   {},
-  tasksActions
+  tasksActions,
+  projectActions,
 );
 
 export default connect(

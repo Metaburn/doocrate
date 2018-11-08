@@ -11,6 +11,7 @@ import {
   UPDATE_PROJECT_SUCCESS, NEW_PROJECT_CREATED,
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
+import {firebaseDb} from "../firebase";
 
 export function createProject(projectId, project) {
   projectList.path = `projects`;
@@ -125,6 +126,23 @@ export function getProjectFromUrl() {
     return urlSplitted[1];
   }
   return null;
+}
+
+// Use the browser url to get the project id and then get the actual project and select it
+export function selectProjectFromUrl() {
+  return dispatch => {
+    const projectUrl = getProjectFromUrl();
+
+    if (!projectUrl) {
+      return;
+    }
+    firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
+      if (snapshot.exists) {
+        const project = snapshot.data();
+        return dispatch(selectProject(project));
+      }
+    })
+  }
 }
 
 export function selectProject(project) {
