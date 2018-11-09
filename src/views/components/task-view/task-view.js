@@ -17,6 +17,7 @@ import Textarea from 'react-textarea-autosize';
 import Img from 'react-image'
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
+import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import Select from 'react-select';
 import CommentList from '../comment-list';
 import TagsSuggestions from '../tags-suggestions';
@@ -25,8 +26,8 @@ import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
 import { appConfig } from 'src/config/app-config'
-import {notificationActions} from "../../../notification";
-import { TakeOwnershipModal }  from "../take-ownership-modal";
+import {notificationActions} from '../../../notification';
+import { TakeOwnershipModal }  from '../take-ownership-modal';
 
 export class TaskView extends Component {
   constructor() {
@@ -149,8 +150,8 @@ export class TaskView extends Component {
     const task = this.props.selectedTask;
     if(!task) {
       return(
-        <div className="task-view g-row">
-          <div className="g-col">
+        <div className='task-view g-row'>
+          <div className='g-col'>
             <h1>&nbsp;</h1>
           </div>
         </div>
@@ -200,22 +201,22 @@ export class TaskView extends Component {
           />
           <div className='task-view'>
             <form noValidate>
-              <div className="form-input">
+              <div className='form-input'>
                 {canEditTask ?
-                  this.renderInput(task, 'title', t, canEditTask, "0", true) :
+                  this.renderInput(task, 'title', t, canEditTask, '0', true) :
                   <span>{task.title}</span>
                 }
                 </div>
-              <div className="form-input">
+              <div className='form-input'>
                 {canEditTask ?
-                  this.renderTextArea(task, 'description', t, canEditTask, "0")
+                  this.renderTextArea(task, 'description', t, canEditTask, '0')
                   :
                   <span>{task.description}</span>
                 }
                 </div>
-              <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,"0")}</div>
-              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
+              <div className='form-input'><div className='instruction'><span>{t('task.type')}</span></div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
+              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, '0')} </div>
 
               { canEditTask ?
                 <div>
@@ -299,22 +300,22 @@ export class TaskView extends Component {
   renderInput(task, fieldName, t, isEditable, tabIndex, isAutoFocus) {
     const classNames = isEditable ? ' editable' : '';
     return( <Textbox
-    className={`changing-input${classNames}`}
-        type = 'text'
-        tabIndex = { tabIndex }
-        name = { fieldName }
-        value = { this.state[fieldName] }
-        placeholder = { t('task.name') }
-        ref = { e => this[fieldName+'Input'] = e }
-        onChange = { this.handleChange }
-        onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
-        onKeyUp={ () => {}} // here to trigger validation callback on Key up
-        disabled = { !isEditable }
-        autofocus = { isAutoFocus }
+      classNameInput={`changing-input${classNames}`}
+      type = 'text'
+      tabIndex = { tabIndex }
+      name = { fieldName }
+      value = { this.state[fieldName] }
+      placeholder = { t('task.name') }
+      ref = { e => this[fieldName+'Input'] = e }
+      onChange = { this.handleChange }
+      onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
+      onKeyUp={ () => {}} // here to trigger validation callback on Key up
+      disabled = { !isEditable }
+      autofocus = { isAutoFocus }
 
-        validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
-        validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
-         />)
+      validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
+      validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
+    />)
   }
 
   renderTextArea(task, fieldName, t, isEditable, tabIndex) {
