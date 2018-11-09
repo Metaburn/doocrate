@@ -50,6 +50,7 @@ export class TasksPage extends Component {
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
 
+    // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
   }
 
@@ -79,7 +80,7 @@ export class TasksPage extends Component {
       this.props.history.push('/project_test/task/1');
     }
     this.props.loadTasks(project_url);
-    this.props.loadLabels();
+    this.props.loadLabels(project_url);
 
     // Sets the default loading page
     if(!this.props.filterType && firebaseConfig.defaultPageToLoad) {

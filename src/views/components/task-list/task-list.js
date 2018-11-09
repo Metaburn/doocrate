@@ -36,7 +36,7 @@ class TaskList extends Component {
 
   render() {
     const isAnyTasks = this.props.tasks && this.props.tasks.size > 0;
-    let taskItems = null;
+    let taskItems = [];
     let selectedTaskId = this.props.selectedTaskId;
     if (isAnyTasks) {
       taskItems = this.props.tasks.slice(
