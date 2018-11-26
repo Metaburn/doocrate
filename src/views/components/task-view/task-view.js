@@ -40,6 +40,7 @@ export class TaskView extends Component {
       defaultType: [],
       label: [],
       isCritical: false,
+      isDone: false,
       validations: {},
       shouldOpenTakeOwnerModal: false
     };
@@ -50,6 +51,7 @@ export class TaskView extends Component {
     this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
 
     this.debouncedHandleSubmit = debounce(this.handleSubmit, 300);
@@ -90,7 +92,7 @@ export class TaskView extends Component {
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, type,
-      label, isCritical, dueDate, created,
+      label, isCritical, dueDate, created, isDone, doneDate,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
@@ -107,7 +109,9 @@ export class TaskView extends Component {
           description:description || '',
           label: labelAsArray || [],
           isCritical: isCritical || false,
+          isDone: isDone || false,
           created: created || null,
+          doneDate: doneDate || null,
           dueDate: dueDate || null,
           type: type || null,
           defaultType: defaultType || [],
@@ -198,6 +202,7 @@ export class TaskView extends Component {
           showDeleteButton = { showDeleteButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
+          markAsDoneUndone = {this.handleMarkAsDoneUndone}
           />
           <div className='task-view'>
             <form noValidate>
@@ -446,6 +451,7 @@ export class TaskView extends Component {
       description: this.state.description,
       label: labelAsObject,
       isCritical: this.state.isCritical,
+      isDone: this.state.isDone,
       type: this.state.type,
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
@@ -467,6 +473,13 @@ export class TaskView extends Component {
     }else {
       this.props.showError(i18n.t('task.mission-incomplete-short'));
     }
+  }
+
+  handleMarkAsDoneUndone() {
+    debugger;
+    this.setState({isDone: !this.state.isDone});
+    this.props.updateTask(this.props.selectedTask, {isDone: !this.state.isDone});
+    this.props.showSuccess(i18n.t('task.updated-successfully'));
   }
 
   handleSubmit(event) {

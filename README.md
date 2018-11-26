@@ -196,6 +196,11 @@ Once a user creates a new project he is added into the `admins`
 `admins`->`user id`->`projects`->`project id`
 This helps us know which admin belongs to which projects
 
+#### What are Super Admins
+Super Admins can edit any task under ANY project.
+These are root level admins.
+They are defined manually in the collection super_admins -> UID
+
 #### Why is Mail is not being sent?
 Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
 

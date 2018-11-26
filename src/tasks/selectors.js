@@ -1,6 +1,8 @@
+import {ALL_TASKS, COMPLETED_TASKS, INCOMPLETE_TASKS} from "./filter-types";
+
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
-  complete: (auth, value) => ({type: "complete"}),
+  complete: (auth, value) => ({type: "complete", text: value}),
   unassigned: (auth, value) => ({type: "unassigned"}),
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
@@ -16,8 +18,20 @@ export function buildFilter(auth, type, value) {
 //  MEMOIZED SELECTORS
 //-------------------------------------
 export const taskFilters = {
-  complete: (tasks) => {
-    return tasks.filter(task => task.completed)
+  // TODO: Complete should be set on all other filter types
+  complete: (tasks, filter) => {
+    // Show all
+    if(!filter.text) {
+      return tasks;
+    }
+    // Show completed tasks
+    if(filter.text === "true") {
+      return tasks.filter(task => task.isDone)
+    }
+    // Show in-completed tasks
+    if(filter.text === "false") {
+      return tasks.filter(task => !task.isDone)
+    }
   },
 
   // Unassigned is free tasks which are not camps nor art
@@ -26,7 +40,7 @@ export const taskFilters = {
       task.type !== 3 && task.type !== 4);
   },
 
-    // Unassigned is free tasks which are not camps nor art
+  // Unassigned is free tasks which are not camps nor art
   unassignedWithArtAndCamps: (tasks) => {
     return tasks.filter(task => !task.assignee);
   },

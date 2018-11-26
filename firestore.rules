@@ -47,8 +47,8 @@ service cloud.firestore {
         // Uncomment the following to allow create for all
         allow create: if request.auth != null;
         // Uncomment the following to allow unassigned task to be assigned by all
-        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator());
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator() || isSuperAdmin());
       }
 
       match /comments/{anyComment} {
@@ -61,15 +61,15 @@ service cloud.firestore {
       match /colors/{anyColor} {
         allow create: if request.auth != null;
         allow read: if request.auth != null;
-        allow update: if request.auth != null && isSpecificProjectAdmin();
-        allow delete: if request.auth != null && isSpecificProjectAdmin();
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
       }
 
       match /labels/{anyLabel} {
         allow create: if request.auth != null;
         allow read: if request.auth != null;
-        allow update: if request.auth != null && (isSpecificProjectAdmin());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
       }
      }
 

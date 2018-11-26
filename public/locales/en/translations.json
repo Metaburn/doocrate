@@ -68,6 +68,8 @@
     "creator": "Dreamer",
     "doer": "Doer",
     "save": "Save",
+    "mark-complete": "Mark Complete",
+    "mark-uncomplete": "Mark Not Complete",
     "search-by-tags": "Search task by tags",
     "unnamed-task": "Unnamed Task",
     "creating-new": "Almost there... Please enter all the tasks fields and press Save to finish",

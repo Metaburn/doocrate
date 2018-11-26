@@ -95,7 +95,7 @@ export function loadComments(projectId, selectedTaskId) {
     commentList.orderBy = {
       name: 'created',
       direction: 'asc'
-    }
+    };
 
     commentList.subscribe(dispatch);
   };

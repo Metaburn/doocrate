@@ -46,6 +46,13 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.save')}</Button> : ''
           }
 
+          { this.props.showSaveButton ?
+            <Button
+              className='button button-small action-button'
+              onClick={()=> { this.props.markAsDoneUndone() }}
+              type='button'>{ task.isDone? t('task.mark-uncomplete') : t('task.mark-complete')}</Button> : ''
+          }
+
           { this.props.showDeleteButton ?
             <Button
               className='action-button button-grey'
@@ -78,7 +85,8 @@ TaskViewHeader.propTypes = {
   showSaveButton: PropTypes.bool.isRequired,
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
-  saveTask: PropTypes.func.isRequired
+  saveTask: PropTypes.func.isRequired,
+  markAsDoneUndone: PropTypes.func.isRequired
 };
 
 

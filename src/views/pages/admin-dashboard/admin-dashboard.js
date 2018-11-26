@@ -30,6 +30,7 @@ export class AdminDashboard extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.setUsersToDidntBuy = this.setUsersToDidntBuy.bind(this);
     this.setUsersAllowCreateTasks = this.setUsersAllowCreateTasks.bind(this);
+    //this.migrateIsDone = this.migrateIsDone.bind(this);
   }
 
   static propTypes = {
@@ -109,6 +110,10 @@ export class AdminDashboard extends Component {
             <span>{this.state.successEmails.join(',')}</span>
           </div>
           : ''}
+
+          <br />
+        {/*<h1>4.מיגרציה להוסיף לכל המשימות את ה isDone פלאג</h1>*/}
+        {/*<Button disabled={!this.state.isButtonsUnlocked} onClick={this.migrateIsDone}>בצע מיגרציה</Button>*/}
       </div>
     );
   }
@@ -283,9 +288,43 @@ export class AdminDashboard extends Component {
       this.props.showSuccess('Updating ' + this.state.users.size + ' Users... - all have permission to create tasks and assign tasks. Check console and wait for it to reach ' + this.state.users.size);
     }
 
-    unlockDashboard() {
-      this.setState({isButtonsUnlocked: !this.state.isButtonsUnlocked});
-    }
+
+  /**
+   * Adds a flag isDone to all the existing tasks
+   * Done once. Stored here for future migrations till we have a proper migration system
+   */
+  // migrateIsDone() {
+  //   firebaseDb.collection('projects').get().then((projectSnapshot) => {
+  //     let projectCounter = 0;
+  //     projectSnapshot.forEach((project) => {
+  //       projectCounter++;
+  //       const projectData = project.data();
+  //       const projectTasksCollection = firebaseDb.collection('projects').doc(projectData.url).collection('tasks');
+  //       projectTasksCollection.get().then((tasksSnapshot) => {
+  //         let counter = 1;
+  //         tasksSnapshot.forEach((task) => {
+  //           const taskId = task.id;
+  //           projectTasksCollection.doc(taskId).update({
+  //             isDone: false
+  //           }).then(res => {
+  //             counter++;
+  //             console.log("Project " + projectCounter + ": Counter " + counter);
+  //           }).catch(err => {
+  //             console.error(err);
+  //           });
+  //         })
+  //       });
+  //       debugger;
+  //
+  //     })
+  //
+  //   });
+  //
+  // }
+
+  unlockDashboard() {
+    this.setState({isButtonsUnlocked: !this.state.isButtonsUnlocked});
+  }
 }
 
 //=====================================

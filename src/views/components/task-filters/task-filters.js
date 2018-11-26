@@ -94,8 +94,24 @@ class TaskFilters extends Component {
             )
           }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=4'}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
+          <li><NavLink isActive={(match, location) => {
+            return(
+              TaskFilters.getFilterQuery(location) === 'complete' &&
+              TaskFilters.getFilterText(location) === 'true'
+            )
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=complete&text=true'}}>Completed</NavLink></li>
+
+          <li><NavLink isActive={(match, location) => {
+            return(
+              TaskFilters.getFilterQuery(location) === 'complete' &&
+              TaskFilters.getFilterText(location) === 'false'
+            )
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=complete&text=false'}}>Incompleted</NavLink></li>
+
+
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink></li>
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=unassigned'}}>{t('task.free-tasks')}</NavLink></li>
+
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={'/'+ this.props.projectUrl + '/task/1' }>{t('task.all-tasks')}</NavLink></li>
           {downloadCSV}
           <li>

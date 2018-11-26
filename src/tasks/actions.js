@@ -2,6 +2,12 @@ import { taskList } from './task-list';
 import firebase from 'firebase/app';
 
 import {
+  INCOMPLETE_TASKS,
+  COMPLETED_TASKS,
+  ALL_TASKS,
+} from './filter-types';
+
+import {
   CREATE_TASK_ERROR,
   CREATE_TASK_SUCCESS,
   REMOVE_TASK_ERROR,
@@ -14,6 +20,8 @@ import {
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
 } from './action-types';
+import {commentList} from "../comments/comment-list";
+import {INIT_AUTH} from "../auth/action-types";
 
 
 export function createTask(task, cb = (t)=>{}) {
@@ -130,6 +138,7 @@ export function loadTasks(projectId) {
     taskList.rootPath = 'projects';
     taskList.rootDocId = projectId;
     taskList.path = 'tasks';
+
     taskList.orderBy = {
       name: 'created',
       direction: 'asc'

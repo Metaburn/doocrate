@@ -6,6 +6,8 @@ import { connect } from 'react-redux';
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
+import { INCOMPLETE_TASKS, COMPLETED_TASKS, ALL_TASKS } from 'src/tasks';
+
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
 import TaskFilters from '../../components/task-filters';
@@ -72,14 +74,15 @@ export class TasksPage extends Component {
   };
 
   componentWillMount() {
-    // TODO
     let project_url = this.props.match.params.projectUrl;
     // Redirect to test project
+    // TODO - Instead should redirect to all project in the world
     if (!project_url) {
       project_url = 'project_test';
       this.props.history.push('/project_test/task/1');
     }
-    this.props.loadTasks(project_url);
+    // TODO - should be set by a filter on the user view
+    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
     this.props.loadLabels(project_url);
 
     // Sets the default loading page
