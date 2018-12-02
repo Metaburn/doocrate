@@ -141,9 +141,9 @@ export class TasksPage extends Component {
       Object.keys(t.label).forEach((l) => {
         labelPool[l] = true;
       })
-    })
+    });
 
-    currentTasks = this.filterTaskFromLabel(currentTasks)
+    currentTasks = this.filterTaskFromLabel(currentTasks);
 
     this.setState({tasks: currentTasks, labelPool});
   }
@@ -276,13 +276,28 @@ export class TasksPage extends Component {
     console.log("generating csv...");
     if (!this.isAdmin()) return;
 
-    const csv = [["TaskId", "Task Name", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email"]];
+    const csv = [["TaskId", "Task Name", "Type", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
 
     this.state.tasks.forEach((t) => {
-      const tsk = t.toJS();
-      let tcsv = [t.id, t.title, t.creator.id, t.creator.name];
+      const defaultTypes = [
+        i18n.t('task.types.planning'),
+        i18n.t('task.types.shifts'),
+        i18n.t('task.types.camps'),
+        i18n.t('task.types.art'),
+        i18n.t('task.types.other')
+      ];
+
+      const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
+      debugger;
+      let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
+
+      let labels = [];
+      Object.keys(t.label).forEach((label) => {
+        labels.push(label);
+      });
+
       if (t.assignee != null) {
-        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email]);
+        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
       }
       csv.push(tcsv);
 
