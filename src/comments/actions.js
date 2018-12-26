@@ -82,8 +82,10 @@ export function loadCommentsSuccess(comments) {
   };
 }
 
-export function loadComments(selectedTaskId) {
+export function loadComments(projectId, selectedTaskId) {
   return (dispatch, getState) => {
+    commentList.rootPath = 'projects';
+    commentList.rootDocId = projectId;
     commentList.path = `comments`;
     if(selectedTaskId) {
       commentList.query = ['taskId','==', selectedTaskId];
@@ -93,7 +95,7 @@ export function loadComments(selectedTaskId) {
     commentList.orderBy = {
       name: 'created',
       direction: 'asc'
-    }
+    };
 
     commentList.subscribe(dispatch);
   };

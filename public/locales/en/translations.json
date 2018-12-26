@@ -16,12 +16,39 @@
     "disconnect": "Disconnect",
     "me": "Me",
     "my-space": "Personal space",
-    "update-my-profile":"Update my profile"
+    "all-projects": "All projects",
+    "update-my-profile":"Update my profile",
+    "create-project": "Start your own project"
+  },
+  "create-project": {
+    "header": "Start a new project",
+    "header-edit": "Edit existing project",
+    "subtitle": "Create your own project - For your event or anything else",
+    "subtitle-edit": "Edit your existing project",
+    "name-placeholder": "My project name",
+    "project-url-placeholder": "Project url",
+    "project-url-explain": "This would be doocrate.com/PROJECT-URL",
+    "visibility-placeholder": "Is the project public or private?",
+    "visibility-explain": "Public projects would appear under all the projects",
+    "visibility": "Public 👁",
+    "err-incomplete": "Can't create project before all fields are complete and valid. Please fill missing fields 👁",
+    "submit-btn": "Create project!",
+    "submit-btn-edit": "Save changes!",
+    "success": "Project created successfully! Next - create your first task. 🙌",
+    "success-edit": "Project updated successfully! 🙌",
+    "task-types": "Task types",
+    "task-types-explain": "It's recommended to divide the tasks into type so it would be easier to filter afterwards. For example - Event planning, Shifts, Other. You can have up to 5 task types."
+  },
+  "projects": {
+    "header": "All the projects in the world",
+    "name": "Name"
   },
   "my-space": {
     "role": "Role",
-    "email": "Email",
-    "reports": "Reports"
+    "projects": "My projects",
+    "edit-project": "Edit project",
+    "project-report": "Project Report",
+    "email": "Email"
   },
   "task": {
     "add-task": "Add a new task",
@@ -41,6 +68,14 @@
     "creator": "Dreamer",
     "doer": "Doer",
     "save": "Save",
+    "mark-complete": "Mark Complete",
+    "mark-uncomplete": "Mark Not Complete",
+    "incomplete-tasks": "Incomplete Tasks",
+    "complete-tasks": "Completed Tasks",
+    "all-the-tasks": "All Tasks",
+    "no-tasks-placeholder": "No tasks found",
+    "click-here": "Click here",
+    "no-tasks-placeholder2": "To clean the filters and see all tasks",
     "search-by-tags": "Search task by tags",
     "unnamed-task": "Unnamed Task",
     "creating-new": "Almost there... Please enter all the tasks fields and press Save to finish",
@@ -92,9 +127,6 @@
     "heading2": "A co-creational events task management system",
     "registration": "Upon registering you will be transferred to the task system",
     "about": "About the system",
-    "old_system": "To see last year tasks (2017)",
-    "old_system_url": "https://doocrate.midburnerot.com/",
-    "click_here": "click here",
     "before-start": "A few important notes before we begin:",
     "instruction1": "Anyone can take ownership of a task (As long as it's unassigned)",
     "instruction2": "Please only take ownership of one task to allow everyone to participate",

@@ -4,4 +4,33 @@
   a {
     color: $primary-color;
   }
+
+  .projects {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .project {
+    display: inline-flex;
+    flex-flow: wrap;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: white;
+    padding: 5px;
+    margin: 10px 0;
+
+    &:hover {
+      background-color: rgb(238, 238, 238);
+    }
+
+    span {
+      margin: 0 10px;
+
+      &:first-child {
+        margin: 0;
+      }
+    }
+  }
 }

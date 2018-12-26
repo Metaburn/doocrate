@@ -1,13 +1,23 @@
 import { firebaseDb } from './firebase';
 
 
+/*
+ Represent a Firebase collection.
+ If given a rootPath and rootDocId then this might be under a sub collecrion.
+ For example - /projects/PROJECT-ID/tasks
+ rootPath = projects
+ rootDocId = PROJECT-ID
+ path = tasks
+ */
 export class FirebaseList {
-  constructor(actions, modelClass, path = null, query = null, orderBy = null) {
+  constructor(actions, modelClass, path = null, query = null, orderBy = null, rootPath = null, rootDocId = null) {
     this._actions = actions;
     this._modelClass = modelClass;
     this._path = path;
     this._query = query;
     this._orderBy = orderBy;
+    this._rootPath = rootPath;
+    this._rootDocId = rootDocId;
   }
 
   get path() {
@@ -26,6 +36,22 @@ export class FirebaseList {
     this._orderBy = value;
   }
 
+  set rootPath(value) {
+    this._rootPath = value;
+  }
+
+  get rootPath() {
+    return this._rootPath;
+  }
+
+  set rootDocId(value) {
+    this._rootDocId = value;
+  }
+
+  get rootDocId() {
+    return this._rootDocId;
+  }
+
   get orderBy() {
     return this._orderBy;
   }
@@ -34,24 +60,33 @@ export class FirebaseList {
     this._query = value;
   }
 
+  get collectionPath() {
+    if(this._rootPath && this._rootDocId) {
+      return firebaseDb.collection(this._rootPath).doc(this._rootDocId).collection(this._path);
+    }else {
+      return firebaseDb.collection(`${this._path}`);
+    }
+  }
+
   push(value) {
-    return firebaseDb.collection(`${this._path}`).add(value);
+    return this.collectionPath.add(value);
   }
 
   remove(id) {
-    return firebaseDb.collection(`${this._path}`).doc(id).delete();
+    return this.collectionPath.doc(id).delete();
   }
 
   set(id, value) {
-    return firebaseDb.collection(`${this._path}`).doc(id).set(value);
+    return this.collectionPath.doc(id).set(value);
   }
 
   update(id, value) {
-    return firebaseDb.collection(`${this._path}`).doc(id).update(value);
+    return this.collectionPath.doc(id).update(value);
   }
 
   subscribe(emit) {
-    let collection = firebaseDb.collection(this._path);
+    // This list might be under a root collection
+    let collection = this.collectionPath;
     if(this._query) {
       collection = collection.where(
         this._query[0],this._query[1],this._query[2]);
@@ -62,14 +97,14 @@ export class FirebaseList {
     }
     let initialized = false;
     let list = [];
-    
+
     let unsubscribe = collection.onSnapshot(snapshot => {
       if(!initialized) {
         emit(this._actions.onLoad(list));
         initialized = true;
       }
       const isLocalChange = snapshot.metadata.hasPendingWrites;
-      snapshot.docChanges.forEach(change => {
+      snapshot.docChanges().forEach(change => {
           if (change.type === "added") {
             if (initialized) {
               emit(this._actions.onAdd(this.unwrapSnapshot(change.doc), isLocalChange));

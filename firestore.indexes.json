@@ -6,6 +6,32 @@
         { "fieldPath": "created", "mode": "DESCENDING" },
         { "fieldPath": "creator", "mode": "ASCENDING" }
       ]
+    },
+    {
+      "collectionId": "comments",
+      "fields": [
+        {
+          "fieldPath": "taskId",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "mode": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "comments",
+      "fields": [
+        {
+          "fieldPath": "taskId",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "mode": "DESCENDING"
+        }
+      ]
     }
   ]
 }

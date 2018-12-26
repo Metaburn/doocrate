@@ -16,12 +16,39 @@
     "disconnect": "התנתקי",
     "me": "אני",
     "my-space":"האזור האישי שלי",
-    "update-my-profile":"עדכון הפרופיל שלי"
+    "all-projects": "כל הפרוייקטים בעולם",
+    "update-my-profile":"עדכון הפרופיל שלי",
+    "create-project": "צור פרוייקט משלך"
+  },
+  "create-project": {
+    "header": "צור פרוייקט חדש",
+    "header-edit": "ערוך פרוייקט קיים",
+    "subtitle": "צור פרוייקט משלך - עבור ארוע, או כל דבר אחר",
+    "subtitle-edit": "ערוך פרוייקט קיים",
+    "name-placeholder": "שם הפרוייקט שלי",
+    "project-url-placeholder": "כתובת אתר הפרוייקט באנגלית",
+    "project-url-explain": "זה יהיה doocrate.com/PROJECT-URL",
+    "visibility-placeholder": "האם הפרוייקט ציבורי או פרטי?",
+    "visibility-explain": "פרוייקטים ציבוריים יופיעו תחת כל הפרוייקטים בעולם",
+    "visibility": "👁 ציבורי",
+    "err-incomplete": "לא ניתן לפתוח פרוייקט לפני מילוי כל השדות בצורה תקינה. אנא וודא שהשדות תקינים 👁",
+    "submit-btn": "צור פרוייקט חדש!",
+    "submit-btn-edit": "שמור שינויים!",
+    "success": "הפרוייקט נוצר בהצלחה! כעת הוסף את המשימה הראשונה. 🙌",
+    "success-edit": "הפרוייקט עודכן בהצלחה! 🙌",
+    "task-types": "סוגי המשימות",
+    "task-types-explain": "מומלץ מאוד לחלק את המשימות לסוגים שונים כדי שיהיה קל יותר לסנן אחר-כך. לדוגמא - תכנון ארוע, משמרות, אחר. ניתן לחלק לעד 5 סוגי משימות"
+  },
+  "projects": {
+    "header": "כל הפרוייקטים בעולם",
+    "name": "שם"
   },
   "my-space": {
     "role": "תפקידך",
-    "email": "אימייל",
-    "reports": "דוחות"
+    "projects": "הפרוייקטים שלי",
+    "edit-project": "ערוך פרוייקט",
+    "project-report": "דוח פרוייקט",
+    "email": "אימייל"
   },
   "task": {
     "add-task": "הוסף משימה",
@@ -42,6 +69,14 @@
     "creator": "חולם",
     "doer": "מבצע",
     "save": "שמור",
+    "mark-complete": "סמן כהסתיים",
+    "mark-uncomplete": "סמן כלא הסתיים",
+    "incomplete-tasks": "משימות שלא הסתיימו",
+    "complete-tasks": "משימות שהסתיימו",
+    "all-the-tasks": "כל המשימות",
+    "no-tasks-placeholder": "לא נמצאו משימות",
+    "click-here": "לחץ כאן",
+    "no-tasks-placeholder2": "לנקות את הפילטרים ולראות את כל המשימות",
     "search-by-tags": "חפשי משימה לפי תגיות",
     "unnamed-task": "משימה חדשה ללא שם",
     "creating-new": "כמעט שם.. אנא הכנסי את כל פרטי המשימה ולחצי על שמור לסיום",
@@ -90,11 +125,8 @@
   "welcome": {
     "heading": "ברוכים הבאות לדואוקרט",
     "heading2": "מערכת לניהול ארועי יצירה משותפת",
-    "registration": "בהרשמה כאן תכנסו למערכת ניהול המשימות השיתופי של מידברנרות",
+    "registration": "בהרשמה כאן תכנסו למערכת ניהול המשימות השיתופי של הדואוקרט",
     "about": "קצת על המערכת",
-    "old_system": "כדי לראות את המשימות של שנה שעברה (2017)",
-    "old_system_url": "https://doocrate.midburnerot.com/",
-    "click_here": "לחצו כאן",
     "before-start": "כמה נקודות חשובות לפי שמתחילים:",
     "instruction1": "כל אחד מוזמן להירשם לכל משימה (כל עוד היא פנויה)",
     "instruction2": "נבקש שתרשמו למשימה אחת בלבד כדי לאפשר לכולם להשתתף ",

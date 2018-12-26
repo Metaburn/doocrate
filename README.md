@@ -10,8 +10,11 @@ This allows organization to manage tasks in a TEAL way
 
 ## Stack
 
-- React, Redux, Thunk, React Router
+- React, Redux, Thunk, React Router, Node
 - Firebase Firestore
+
+## Needed
+Node v8.11.0
 
 Quick Start
 -----------
@@ -27,19 +30,6 @@ npm run copy-staging
 npm start
 ```
 
-Admins
------
-Admins can edit any task.
-
-Navigate to users table to get the user UID
-Create a collection named `admins`
-Then a document ID set to the user UID for example - 3x1jMQtwuHTVfnU31Ad3r7bWUnX2
-and you can add a field `name` that will say who is that admin
-
-Import the file under
-`assets/database-example.json`
-and add the uid of the app admins
-
 ## Deploying a new version
 #### Prerequisites:
 - Create a free Firebase account at https://firebase.google.com
@@ -48,6 +38,18 @@ and add the uid of the app admins
   Your firebase project->Authentication->Set up sign-in method-> Facebook -> Enable
   (Go to http://developers.facebook.com/ and My Apps-> Create a new app. Use that app id and app secret. Add under your facebook app Add a new Facebook Login and set the Valid OAuth Redirect URIs to the one firebase gives youA)
   Then for google perform -> Google -> Enable - set a project name
+- Configure firebase Firestore. Database->Firestore->Enable
+- Add a Webapp to your firebase by going here:
+`https://console.firebase.google.com/u/0/project/doocrate-production/settings/general/`
+And choosing `Add Firebase to your web app`
+
+## Set up firestore rules
+Rules are a way to restrict access to the database and give different users different permissions
+For example - Anyone can create a task. But only a task creator (And assignee)can edit a task
+
+copy the content of `firestore.rules` file into Rules of your project. For example - 
+`https://console.firebase.google.com/u/0/project/doocrate-production/database/firestore/rules`
+Then hit `Publish` to save it
 
 ## Create new firestore database
 Go to Database->Create new Firestore database and set the default settings
@@ -76,20 +78,6 @@ export const firebaseConfig = {
 };
 ```
 
-## Deploy command
-`npm run deploy:staging`
-OR 
-`npm run deploy:production`
-Will build - use the correct config file and deploy
-
-#### Staging
-You can also set staging env and use:
-`firebase use --add` to add your staging site
-Then run like
-`npm run build-staging`
-`firebase use` and choose staging
-`npm run deploy:staging`
-
 #### Install firebase-tools:
 ```shell
 npm install -g firebase-tools
@@ -105,11 +93,27 @@ Register here - https://www.mailgun.com/google
 Run:
 ```
 firebase functions:config:set email.send_notifications='true'
-firebase functions:config:set email.from='<support@burnerot.com>'
-firebase functions:config:set email.domain='burnerot.com'
+firebase functions:config:set email.from='<support@doocrate.com>'
+firebase functions:config:set email.domain='doocrate.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
+
+Then in the future if you want to deploy only function - use this command (No need right now - better run deploy staging / production)
 firebase deploy --only functions
 ```
+
+## Deploy command
+`npm run deploy:staging`
+OR 
+`npm run deploy:production`
+Will build - use the correct config file and deploy
+
+#### Staging
+You can also set staging env and use:
+`firebase use --add` to add your staging site
+Then run like
+`npm run build-staging`
+`firebase use staging`
+`npm run deploy:staging`
 
 #### Build and deploy the app:
 ```shell
@@ -161,8 +165,8 @@ Import a specific collection by calling: `gcloud alpha firestore import --collec
 You can find translations under `public/locales/`
 
 You can open the page with the required language. For example use
-`http://localhost:3000/sign-in?lng=he` to open the hebrew version
-`http://localhost:3000/sign-in?lng=en` to open the english version
+`http://localhost:3000/sign-in/?lng=he` to open the hebrew version
+`http://localhost:3000/sign-in/?lng=en` to open the english version
 
 # Stop the system
 You can user the `/admin-dashboard` page if you are an admin to set permissions
@@ -183,13 +187,63 @@ You can press on the button their - This would go over all the users in the syst
 
 ## FAQ
 
+#### What are projects
+Project is the root for a task. Each task exists within a project
+
+#### What are Admins
+Admins can edit any task under a project.
+Once a user creates a new project he is added into the `admins`
+`admins`->`user id`->`projects`->`project id`
+This helps us know which admin belongs to which projects
+
+#### What are Super Admins
+Super Admins can edit any task under ANY project.
+These are root level admins.
+They are defined manually in the collection super_admins -> UID
+
 #### Why is Mail is not being sent?
 Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
 
 Also, Check that all the settings are correct and you have created a mailgun username and set up the domain correctly
 
 #### Is there a reports page
-Yes `/reports`
+Yes `/:project-id/reports`
 
 #### Is there an admin page
 Yes. `/admin-dashboard`
+
+#### I'm getting this error:
+```Uncaught DOMException: Failed to execute 'setRequestHeader' on 'XMLHttpRequest': 'projects/doocrate-production
+                 /databases/(default)' is not a valid HTTP header field value.
+```
+
+1.Make sure you set up Firestore database by activating it in firebase console
+
+2.Make sure that your config doesnt have a wrong char such as \n in the end:
+`projectId: 'doocrate-production\n',
+
+#### How can I deploy in a fast way
+If you haven't modified the functions folder you can run the following to deploy only the app without the functions:
+`npm run build && firebase deploy --only=hosting`
+
+#### Why am I seeing the loader runs and runs on a new install
+Only when there is at least one task it would stop running - Press on add task
+
+#### Is there a way to close the system on the frontend side
+Yes - under `src->config->app-config` set the parameter `isSystemClosed` to true
+
+#### Is there a way to open / close new users from openning / assigning tasks
+Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssignTask` to false
+
+#### Comments are not working
+Check you console. You need to follow the error using the link and create an index for comments
+
+#### Can I deploy only the hosting without the functions?
+Yes run ```
+npm run build
+firebase deploy --hosting
+```
+
+#### I'm having issue running npm install
+Make sure you use node ~v8.11.0 by running:
+`nvm use v8.11.0`

@@ -7,6 +7,7 @@ import {
   /*LOAD_COMMENT_COMMENTS,*/
   REMOVE_COMMENT_SUCCESS,
   LOAD_COMMENTS_SUCCESS,
+  UNLOAD_COMMENTS_SUCCESS,
   UPDATE_COMMENT_SUCCESS,
 } from './action-types';
 
@@ -40,6 +41,9 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
 
     case LOAD_COMMENTS_SUCCESS:
       return state.set('list', new List(payload.reverse()));
+
+    case UNLOAD_COMMENTS_SUCCESS:
+      return state.set('list', new List());
 
     case UPDATE_COMMENT_SUCCESS:
       return state.merge({

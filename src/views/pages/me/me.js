@@ -1,17 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
-import { authActions, getAuth } from 'src/auth';
+import { authActions } from 'src/auth';
 import { NavLink } from 'react-router-dom';
 
-import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
-import Button from '../../components/button';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import './me.css';
 
-const Me = ({authenticated, auth, signOut}) => (
+const Me = ({authenticated, auth, selectedProject}) => (
   <I18n ns='translations'>
       {
       (t, { i18n }) => (
@@ -19,11 +15,11 @@ const Me = ({authenticated, auth, signOut}) => (
         <br/>
         <h1>{t('header.my-space')}</h1>
           { authenticated && authenticated.photoURL ?
-            <Img src='authenticated.photoURL' />
+            <Img src={authenticated.photoURL} />
             :
             ''
           }
-          { auth && auth.role != 'user' ?
+          { auth && auth.role !== 'user' ?
             <div>{t('my-space.role')}: { auth.role }</div>
             :
             ''
@@ -33,10 +29,21 @@ const Me = ({authenticated, auth, signOut}) => (
             :
             ''
           }
-          { auth.role == 'admin' ?
-            <NavLink to='/reports'>{t('my-space.reports')}</NavLink>
-            :
-            ''
+          { auth && auth.adminProjects && auth.adminProjects.size > 0 ?
+            <div className={'projects'}>
+              {
+                auth.adminProjects.map(project => {
+                  return (
+                    <div className={'project'}>
+                      <span>{project}</span>
+                      <span><NavLink to={`/${project}/reports`}>{t('my-space.project-report')}</NavLink></span>
+                      <span><NavLink to={`/${project}/edit`}>{t('my-space.edit-project')}</NavLink></span>
+                    </div>
+                  )
+                })
+              }
+            </div>
+            : ''
           }
         <br/>
       </div>
@@ -54,8 +61,9 @@ Me.propTypes = {
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
+    selectedProject: state.projects.selectedProject
   }
-}
+};
 
 const mapDispatchToProps = Object.assign(
   {},

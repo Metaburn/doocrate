@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import TagsInput from 'react-tagsinput';
-import { getUrlSearchParams } from 'src/utils/browser-utils.js';
-import { Redirect } from 'react-router';
-import Autosuggest from 'react-autosuggest';
+import { getUrlSearchParams, urlSearchParamsToString} from 'src/utils/browser-utils.js';
 import AutoSuggestedTags from '../auto-suggested-tags';
-import {CSVLink, CSVDownload} from 'react-csv';
+import {CSVLink} from 'react-csv';
 import { I18n } from 'react-i18next';
 import './task-filters.css';
 
@@ -19,37 +16,72 @@ class TaskFilters extends Component {
     };
 
     this.handleLabelChange = this.handleLabelChange.bind(this);
+    this.getTaskTypeFromProject = this.getTaskTypeFromProject.bind(this);
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
+    projectUrl: PropTypes.string.isRequired,
+    selectedProject: PropTypes.object.isRequired,
     labels: PropTypes.object.isRequired,
     generateCSV:  PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
-  }
+  };
 
   // Since react router doesn't support query we read it manually from the url
-  getFilterQuery(location) {
+  static getFilterQuery() {
     const params = getUrlSearchParams();
     return params['filter'];
   }
 
-  getFilterText(location) {
+  static getCompleteQuery() {
+    const params = getUrlSearchParams();
+    return params['complete'];
+  }
+
+  static getFilterText() {
     const params = getUrlSearchParams();
     return params['text'];
   }
 
+  // This function handles replacing / concatting params to location
+  // Can receive complete=true for example
+  static addQueryParam(newQueryParams) {
+    let currentSearchParams = getUrlSearchParams();
+    const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
+    Object.keys(newQueryParamsObj).forEach(param => {
+      if (param == null || param === '') return;
+      currentSearchParams[param] = newQueryParamsObj[param];
+    });
+    return urlSearchParamsToString(currentSearchParams);
+  }
+
+  // This function handles replacing / concatting params to location
+  // Can receive complete for example will remove complete
+  static removeQueryParam(paramToRemove) {
+    let currentSearchParams = getUrlSearchParams();
+    delete currentSearchParams[paramToRemove];
+    return urlSearchParamsToString(currentSearchParams);
+  }
+
   onCSVLink() {
     console.log("inCSV");
-    let csvLink = undefined;
 
     this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>Download CSV</CSVLink></li>});
   }
 
+  getTaskTypeFromProject(index) {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return ''; //TODO - should look better like a placeholder
+    }else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  }
+
   render() {
-    const showPlaceholder = !this.state.label || this.state.label.length == 0 ;
-    const { filter } = this.props;
-
-
     let downloadCSV = null;
     if (this.props.isAdmin) {
       downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
@@ -58,38 +90,50 @@ class TaskFilters extends Component {
     return(
       <I18n ns='translations'>
       {
-      (t, { i18n }) => (
+      (t) => (
         <div className="task-filters">
         <ul className='main-filters'>
 
           <li><NavLink isActive={(match, location) => {
             return(
-            this.getFilterQuery(location) === 'taskType' &&
-            this.getFilterText(location) === '2')
-          }} to={{ pathname: '/', search: 'filter=taskType&text=2'}}>{t('task.types.shifts')}</NavLink></li>
+              TaskFilters.getFilterQuery(location) === 'taskType' &&
+              TaskFilters.getFilterText(location) === '1')
+          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
-            return (this.getFilterQuery(location) === 'taskType' &&
-            this.getFilterText(location) === '1')
-          }} to={{ pathname: '/', search: 'filter=taskType&text=1'}}>{t('task.types.planning')}</NavLink></li>
-
-          <li><NavLink isActive={(match, location) => {
-            return(
-            this.getFilterQuery(location) === 'taskType' &&
-            this.getFilterText(location) === '3'
-            )
-          }} to={{ pathname: '/', search: 'filter=taskType&text=3'}}>{t('task.types.camps')}</NavLink></li>
+            return (TaskFilters.getFilterQuery(location) === 'taskType' &&
+              TaskFilters.getFilterText(location) === '2')
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
-            this.getFilterQuery(location) === 'taskType' &&
-            this.getFilterText(location) === '4'
+              TaskFilters.getFilterQuery(location) === 'taskType' &&
+            TaskFilters.getFilterText(location) === '3'
             )
-          }} to={{ pathname: '/', search: 'filter=taskType&text=4'}}>{t('task.types.art')}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
-          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'mine'} to={{ pathname: '/', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink></li>
-          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/', search: 'filter=unassigned'}}>{t('task.free-tasks')}</NavLink></li>
-          <li><NavLink isActive={(match, location) => this.getFilterQuery(location) === undefined} to='/'>{t('task.all-tasks')}</NavLink></li>
+          <li><NavLink isActive={(match, location) => {
+            return(
+              TaskFilters.getFilterQuery(location) === 'taskType' &&
+              TaskFilters.getFilterText(location) === '4'
+            )
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
+
+
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=mine')}}>
+            {t('task.my-tasks')}
+            </NavLink></li>
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=unassigned')}}>
+            {t('task.free-tasks')}
+            </NavLink></li>
+
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={'/'+ this.props.projectUrl + '/task/1' }>{t('task.all-tasks')}</NavLink></li>
           {downloadCSV}
           <li>
 

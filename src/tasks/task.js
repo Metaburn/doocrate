@@ -11,6 +11,8 @@ export const Task = new Record({
   created: null,
   dueDate: null,
   creator: null,
+  isDone: false,
+  doneDate: null,
   description: null,
   creatorSpecialComments: null,
   communitySpecialComments: null,

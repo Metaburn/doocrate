@@ -1,0 +1,38 @@
+@import 'views/styles/shared';
+
+.set-project {
+  a {
+    color: $primary-color;
+  }
+
+  background: white;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+
+  max-width: 700px;
+
+  input {
+    display: block;
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    &:hover {
+      border-color: #eb1478;
+    }
+  }
+
+  input[type=checkbox] {
+    opacity: 1;
+    position: relative;
+    display: inline-block;
+  }
+
+  input[type=submit] {
+    &:focus {
+
+    }
+  }
+}

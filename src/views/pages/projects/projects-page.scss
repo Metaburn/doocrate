@@ -1,0 +1,50 @@
+@import 'views/styles/shared';
+
+.projects-page {
+  padding: 1em 2em 0 2em;
+
+  a {
+    color: $primary-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .report-table{
+      width: 90%;
+      margin: auto;
+      margin-top: 20px;
+  }
+
+  .report-table th {
+      border: 1px solid #bbb;
+      text-align: left;
+      padding: 2px 4px;
+      font-size: 1em;
+      font-weight: 400;
+  }
+
+  .dir-right {
+    th {
+      text-align: left;
+    }
+  }
+
+  .dir-left {
+    th {
+      text-align: right;
+    }
+  }
+
+  .report-table thead tr{
+      font-weight: 600;
+      background: gray;
+      font-size: 1em;
+      text-transform: capitalize;
+  }
+
+  .report-table tr:nth-child(odd) th{
+      background: #ddd;
+  }
+}

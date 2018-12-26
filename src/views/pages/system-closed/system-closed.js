@@ -2,7 +2,7 @@ import React from 'react';
 
 import './system-closed.css';
 
-const SystemClosedPage = ({}) => {
+const SystemClosedPage = () => {
   return (
     <div className="g-row sign-in">
       <div className="g-col">

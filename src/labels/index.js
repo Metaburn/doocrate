@@ -6,19 +6,18 @@ export { labelActions };
 export { labelsReducer } from './label-reducer';
 export { Label } from './label';
 
-
-
-const colorsRef = firebaseDb.collection('colors')
+// TODO: Unused
+const colorsRef = firebaseDb.collection('colors');
 window.fb = firebaseDb;
 
 
 export const changeLabelColor = (labelName, colorInHex) => {
-      labelList.update(labelName, { colorInHex });
-  }
+    labelList.update(labelName, { colorInHex });
+};
 
 export const setLabelWithRandomColor = (labelName) => {
     colorsRef.get().then( (a) => {
-        const rand = ~~(Math.random()*a.size)
+        const rand = ~~(Math.random()*a.size);
         changeLabelColor(labelName, a.docs[rand].get('colorInHex').substr(1));
     } );
-}
+};

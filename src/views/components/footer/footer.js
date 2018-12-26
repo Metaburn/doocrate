@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import Button from '../button';
 import { I18n } from 'react-i18next';
 
 import './footer.css';
@@ -23,7 +21,7 @@ const Footer = ({authenticated, signOut}) => (
 );
 
 Footer.propTypes = {
-  
+
 };
 
 

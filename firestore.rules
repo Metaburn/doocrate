@@ -1,8 +1,13 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function isAdmin() {
-      return exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    // This is root level admin
+    function isSuperAdmin() {
+      return exists(/databases/$(database)/documents/super_admins/$(request.auth.uid));
+    }
+
+    function isSpecificProjectAdmin() {
+      return exists(/databases/$(database)/documents/admins/$(request.auth.uid)/projects/$(anyProject))
     }
 
     function isGuide() {
@@ -28,58 +33,61 @@ service cloud.firestore {
       && !resource.data.keys().hasAll(['assignee']));
     }
 
-    match /tasks/{anyTask} {
-    	allow read: if request.auth != null;
-      // Allow create for admins and guides
-      // allow create: if request.auth != null && (isAdmin() || isGuide());
-      // Uncomment the following to allow create for all
+    // Allow create for anyone who is auth
+    // Allow to update it the user is the project creator
+    match /projects/{anyProject} {
       allow create: if request.auth != null;
-      // Uncomment the following to allow unassigned task to be assigned by all
-      allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned());
-      //allow update: if request.auth != null && (isAdmin() || isGuide() || isUserAssigneeOrCreator());
-      allow delete: if request.auth != null && (isAdmin() || isCreator());
-    }
-
-
-    match /comments/{anyComment} {
       allow read: if request.auth != null;
-      allow create: if request.auth != null;
       allow update: if request.auth != null && isCreator();
       allow delete: if request.auth != null && isCreator();
-    }
+
+      match /tasks/{anyTask} {
+        allow read: if request.auth != null;
+        // Allow create: if authenticated
+        // Uncomment the following to allow create for all
+        allow create: if request.auth != null;
+        // Uncomment the following to allow unassigned task to be assigned by all
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator() || isSuperAdmin());
+      }
+
+      match /comments/{anyComment} {
+        allow read: if request.auth != null;
+        allow create: if request.auth != null;
+        allow update: if request.auth != null && isCreator();
+        allow delete: if request.auth != null && isCreator();
+      }
+
+      match /colors/{anyColor} {
+        allow create: if request.auth != null;
+        allow read: if request.auth != null;
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+      }
+
+      match /labels/{anyLabel} {
+        allow create: if request.auth != null;
+        allow read: if request.auth != null;
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+      }
+     }
+
 
     match /users/{userId} {
       allow read: if request.auth != null; // Auth users can read
-      allow write: if userId == request.auth.uid || isAdmin();
+      allow write: if userId == request.auth.uid || isSuperAdmin();
     }
 
     match /admins/{anyAdmin} {
       allow read: if request.auth != null;
+      match /projects/{anyProject} {
+        allow read: if request.auth != null;
+      }
     }
 
     match /guides/{anyGuide} {
       allow read: if request.auth != null;
-    }
-
-    match /colors/{anyColor} {
-    	allow create: if request.auth != null;
-      allow read: if request.auth != null;
-      allow update: if request.auth != null && isAdmin();
-      allow delete: if request.auth != null && isAdmin();
-    }
-
-    match /labels/{anyLabel} {
-    	allow create: if request.auth != null;
-      allow read: if request.auth != null;
-      allow update: if request.auth != null && (isAdmin() || isGuide());
-      allow delete: if request.auth != null && (isAdmin() || isGuide());
-    }
-
-    match /projects/{anyLabel} {
-    	allow create: if request.auth != null && isAdmin();
-      allow read: if request.auth != null;
-      allow update: if request.auth != null && isAdmin();
-      allow delete: if request.auth != null && isAdmin();
     }
   }
 }

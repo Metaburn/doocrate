@@ -2,6 +2,12 @@ import { taskList } from './task-list';
 import firebase from 'firebase/app';
 
 import {
+  INCOMPLETE_TASKS,
+  COMPLETED_TASKS,
+  ALL_TASKS,
+} from './filter-types';
+
+import {
   CREATE_TASK_ERROR,
   CREATE_TASK_SUCCESS,
   REMOVE_TASK_ERROR,
@@ -14,7 +20,6 @@ import {
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
 } from './action-types';
-import { debug } from 'util';
 
 
 export function createTask(task, cb = (t)=>{}) {
@@ -25,14 +30,14 @@ export function createTask(task, cb = (t)=>{}) {
 }
 
 export function createTaskError(error) {
-  console.warn(`task error: ${error}`)
+  console.warn(`task error: ${error}`);
   return {
     type: CREATE_TASK_ERROR,
     payload: error
   };
 }
 
-export function createTaskSuccess(task, isLocallyCreated) {
+export function createTaskSuccess(task) {
   return {
     type: CREATE_TASK_SUCCESS,
     payload: task
@@ -125,13 +130,17 @@ export function filterTasks(filterType) {
   };
 }
 
-export function loadTasks() {
+/* Loads all the tasks for a given project */
+export function loadTasks(projectId) {
   return (dispatch, getState) => {
-    taskList.path = `tasks`;
+    taskList.rootPath = 'projects';
+    taskList.rootDocId = projectId;
+    taskList.path = 'tasks';
+
     taskList.orderBy = {
       name: 'created',
       direction: 'asc'
-    }
+    };
     taskList.subscribe(dispatch);
   };
 }

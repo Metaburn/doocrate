@@ -5,6 +5,7 @@ import './google-translate.css';
 class GoogleTranslate extends Component {
   googleTranslateElementInit () {
     /* eslint-disable no-new */
+    // iw = hebrew
     new window.google.translate.TranslateElement({
       pageLanguage: 'iw',
       layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE
@@ -20,7 +21,7 @@ class GoogleTranslate extends Component {
 
   render() {
     return (
-      <div id="google_translate_element"></div>
+      <div id='google_translate_element' />
     );
   }
 }

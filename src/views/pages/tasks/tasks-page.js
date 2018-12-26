@@ -3,10 +3,11 @@ import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { labelActions, changeLabelColor, setLabelWithRandomColor } from 'src/labels';
-import { projectActions } from 'src/projects';
+import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
+import { INCOMPLETE_TASKS, COMPLETED_TASKS, ALL_TASKS } from 'src/tasks';
+
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
 import TaskFilters from '../../components/task-filters';
@@ -43,15 +44,15 @@ export class TasksPage extends Component {
       selectedTask: null,
       newTask: null,
       labels: null,
-      projects: null,
       labelPool: {},
       isLoadedComments: false,
       showSetUserInfoScreen: true,
-      isCurrentTaskValid: false
+      isCurrentTaskValid: false,
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
 
+    // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
   }
 
@@ -62,7 +63,6 @@ export class TasksPage extends Component {
     buildFilter: PropTypes.func.isRequired,
     loadTasks: PropTypes.func.isRequired,
     loadLabels: PropTypes.func.isRequired,
-    loadProjects: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
@@ -74,8 +74,16 @@ export class TasksPage extends Component {
   };
 
   componentWillMount() {
-    this.props.loadTasks();
-    this.props.loadLabels();
+    let project_url = this.props.match.params.projectUrl;
+    // Redirect to test project
+    // TODO - Instead should redirect to all project in the world
+    if (!project_url) {
+      project_url = 'project_test';
+      this.props.history.push('/project_test/task/1');
+    }
+    // TODO - should be set by a filter on the user view
+    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
+    this.props.loadLabels(project_url);
 
     // Sets the default loading page
     if(!this.props.filterType && firebaseConfig.defaultPageToLoad) {
@@ -85,36 +93,42 @@ export class TasksPage extends Component {
     }
 
     this.showSetUserInfo();
-
-    //this.props.loadProjects();
   }
 
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
-    if (nextProps.match != null && nextProps.match.params.id) {
+    if (nextProps.match != null && nextProps.match.params.projectUrl &&
+      nextProps.match.params.id) {
       const tid = nextProps.match.params.id;
 
-      if (tid == "new-task") {
+      if (tid === "new-task") {
         if (this.state.newTask == null) {
           this.setState({
             newTask: this.createNewTask()
           });
+          this.props.unloadComments();
         }
+      } else if (tid === "1") {
+        this.setState({
+          isLoadedComments: false,
+          selectedTask: null});
       } else {
         // Select existing task by tid
         this.setState({
-          selectedTask: nextProps.tasks.find((task)=>( task.get('id') == tid ))
-        })
+          // TODO - perhaps it's faster to use the backend to actually find this specific task
+          selectedTask: nextProps.tasks.find((task)=>( task.get('id') === tid ))
+        });
 
         if(!this.state.selectedTask) {
           this.setState({ isLoadedComments: false });
         }
 
         if(!this.state.isLoadedComments ||
-          this.state.selectedTask && tid != this.state.selectedTask.id) {
+          (this.state.selectedTask && tid !== this.state.selectedTask.id)) {
             this.setState({ isLoadedComments: true });
             this.props.unloadComments();
-            this.props.loadComments(tid);
+            let project_url = this.props.match.params.projectUrl;
+            this.props.loadComments(project_url, tid);
         }
       }
     } else {
@@ -130,11 +144,19 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
     const filterTextType = params['text'];
+
+    const completeFilterValue = params['complete'];
     const labelPool = {};
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
       currentTasks = this.props.filters[filter.type](currentTasks, filter);
+    }
+
+    // Complete can be - None, false, true
+    if(completeFilterValue || completeFilterValue === 'false') {
+      const completeFilter = this.props.buildFilter(this.props.auth, 'complete', completeFilterValue);
+      currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
     }
 
     nextProps.tasks.forEach( (t)=> {
@@ -159,7 +181,7 @@ export class TasksPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.labels != this.state.labels) {
+    if (prevState.labels !== this.state.labels) {
       this.setState({tasks: this.filterTaskFromLabel(this.props.tasks)});
     }
   }
@@ -173,7 +195,7 @@ export class TasksPage extends Component {
   }
 
   onNewTaskAdded(task) {
-    const taskObj = this.props.tasks.find((t)=>( t.get('id') == task.id ))
+    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ))
     this.goToTask(taskObj);
 
     setTimeout(()=>{this.setState({newTask: null})}, 100);
@@ -194,7 +216,8 @@ export class TasksPage extends Component {
 
     if (!this.props.auth || !(this.props.auth.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
-      this.props.history.push('/task/1');
+      const project_url = this.props.match.params.projectUrl;
+      this.props.history.push('/'+project_url+'/task/1');
 
       return;
     }
@@ -204,7 +227,7 @@ export class TasksPage extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
-    }
+    };
 
     return {id: null, creator: creator, created: new Date()}
   }
@@ -215,7 +238,7 @@ export class TasksPage extends Component {
       name: this.props.auth.name,
       email: this.props.auth.updatedEmail || this.props.auth.email,
       photoURL: this.props.auth.photoURL,
-    }
+    };
 
     this.props.createTask(
       {title: task.title, creator, created: new Date(), description: task.description, type: task.type, label: task.label},
@@ -224,16 +247,19 @@ export class TasksPage extends Component {
     this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
+  // Check if admin of that project
   isAdmin() {
-    return this.props.auth.role == 'admin';
+    const project_url = this.props.match.params.projectUrl;
+    return this.props.auth.role === 'admin' &&
+      this.props.auth.adminProjects.includes(project_url);
   }
 
   isGuide() {
-    return this.props.auth.role == 'guide';
+    return this.props.auth.role === 'guide';
   }
 
   assignTaskToSignedUser(task) {
-    const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id == this.props.auth.id});
+    //const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id === this.props.auth.id});
 
     // TODO: Move to a better place
     // if(myAssignedTasks.size >= 5) {
@@ -258,7 +284,7 @@ export class TasksPage extends Component {
   }
 
   unassignTask(task) {
-    const isCreator = task.creator && task.creator.id == this.props.auth.id;
+    const isCreator = task.creator && task.creator.id === this.props.auth.id;
     const isAssignee = task.assignee && task.assignee.id === this.props.auth.id;
 
     // Uncomment this to allow only guide to unassign
@@ -273,12 +299,13 @@ export class TasksPage extends Component {
   }
 
   generateCSV() {
-    console.log("generating csv...");
+    console.log("Generating csv...");
     if (!this.isAdmin()) return;
 
     const csv = [["TaskId", "Task Name", "Type", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
 
     this.state.tasks.forEach((t) => {
+
       const defaultTypes = [
         i18n.t('task.types.planning'),
         i18n.t('task.types.shifts'),
@@ -288,13 +315,13 @@ export class TasksPage extends Component {
       ];
 
       const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
-      debugger;
       let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
 
       let labels = [];
       Object.keys(t.label).forEach((label) => {
         labels.push(label);
       });
+
 
       if (t.assignee != null) {
         tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
@@ -325,7 +352,8 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(this.props.location.search);
     const filterType = params['filter'];
     const filterText = params['text'];
-    let taskParameter = task? `/task/${task.get("id")}` : `/task/1`;
+    const project_url = this.props.match.params.projectUrl;
+    let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
     if (filterType) {
       taskParameter = `${taskParameter}?filter=${filterType}`
@@ -355,7 +383,7 @@ export class TasksPage extends Component {
           userInfo={ this.props.auth }
           updateUserInfo={ this.updateUserInfo }
           onClosed = { () => {
-            this.setState({showSetUserInfoScreen: false})
+            this.setState({showSetUserInfoScreen: false});
             this.props.isShowUpdateProfile(false);
             this.setState({showSetUserInfoScreen: false})
           }
@@ -366,7 +394,7 @@ export class TasksPage extends Component {
 
   updateUserInfo(userInfo) {
     console.log(userInfo);
-    const oldUserData = this.props.auth
+    const oldUserData = this.props.auth;
     const newUserData = {};
     newUserData.uid = oldUserData.id;
     newUserData.email = userInfo.email;
@@ -394,6 +422,7 @@ export class TasksPage extends Component {
         updateTask={this.props.updateTask}
         selectTask={this.goToTask}
         selectedTask={taskObj}
+        selectedProject={this.props.selectedProject}
         isAdmin={this.isAdmin()}
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
@@ -413,19 +442,23 @@ export class TasksPage extends Component {
     }
 
     this.props.showSuccess(i18n.t('task.creating-new'));
-    this.props.history.push('/task/new-task');
+    // TODO project should be taken from store
+    const project_url = this.props.match.params.projectUrl;
+    this.props.history.push('/'+project_url+'/task/new-task');
   }
 
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
-
+    const projectUrl = this.props.match.params.projectUrl;
     return (
       <div>
           <div className="g-col">
             { <TaskFilters
               filter = { this.props.filterType }
+              selectedProject = { this.props.selectedProject }
+              projectUrl = { projectUrl } //TODO - should be from state
               labels = { this.state.labelPool }
               onLabelChange = { this.onLabelChanged }
               generateCSV={this.generateCSV.bind(this)}
@@ -445,6 +478,7 @@ export class TasksPage extends Component {
               createTask={this.createTask}
               selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
               labels = {this.props.labels}
+              projectUrl = { projectUrl } //TODO - should be from state
             />
           </div>
 
@@ -466,12 +500,12 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
+    selectedProject: state.projects.selectedProject,
     labels: state.labels.list,
-    projects: state.projects.list,
     filters: taskFilters,
     buildFilter: buildFilter
   }
-}
+};
 
 const mapDispatchToProps = Object.assign(
   {},
@@ -479,7 +513,6 @@ const mapDispatchToProps = Object.assign(
   commentsActions,
   notificationActions,
   labelActions,
-  projectActions,
   authActions,
 );
 

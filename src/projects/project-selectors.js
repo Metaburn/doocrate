@@ -1,17 +1,17 @@
 import { createSelector } from 'reselect';
 
 
-export function getProjects(state) {
-  return state.projects;
+export function getSelectedProject(state) {
+  return state.projects.selectedProject;
 }
 
-export function getProjectList(state) {
-  return getProjects(state).list;
-}
+//=====================================
+//  MEMOIZED SELECTORS
+//-------------------------------------
 
-export const getVisibleProjects = createSelector(
-  getProjectList,
-  (projects) => {
-    return projects;
+export const getProject = createSelector(
+  getSelectedProject,
+  (selectedProject) => {
+    return selectedProject;
   }
 );

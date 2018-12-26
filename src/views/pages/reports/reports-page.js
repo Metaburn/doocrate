@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { Map, List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createSelector } from 'reselect';
 
 import { Redirect } from 'react-router';
-import { authActions, getAuth } from 'src/auth';
-import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
-import classNames from 'classnames';
-import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
-import { firebaseDb } from 'src/firebase';
-import {CSVLink, CSVDownload} from 'react-csv';
+import { tasksActions} from 'src/tasks';
+import { projectActions } from 'src/projects';
 
+import { firebaseDb } from 'src/firebase';
+import {CSVLink} from 'react-csv';
+
+import {I18n} from 'react-i18next';
 import './reports-page.css';
 
 export class ReportsPage extends Component {
@@ -28,18 +27,24 @@ export class ReportsPage extends Component {
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
+    selectedProject: PropTypes.object,
+    selectProjectFromUrl: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
   };
 
   componentWillMount() {
-
-    this.props.loadTasks();
+    const projectUrl = this.props.match.params.projectUrl;
+    this.props.loadTasks(projectUrl);
+    if (!this.props.selectedProject) {
+      // Load the project
+      this.props.selectProjectFromUrl();
+    }
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
       const contributors = {};
       const usersWhoDidntBuy = {};
       querySnapshot.forEach(function(doc) {
-        let contributor = doc.data()
+        let contributor = doc.data();
         contributors[doc.id] = contributor;
         if(contributor.didntBuy) {
           usersWhoDidntBuy[doc.id] = contributor;
@@ -50,26 +55,22 @@ export class ReportsPage extends Component {
         users: Map(contributors),
         usersWhoDidntBuy: Map(usersWhoDidntBuy)
       });
-  });
-  }
-
-  componentWillReceiveProps(nextProps) {
-
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.users !== this.state.users || prevProps.tasks !== this.props.tasks) {
-      const collborators = {};
-      const query = [["#", "name", "id", "email", "task"]]
+      const collaborators = {};
+      const query = [];
 
       this.props.tasks.forEach((task) =>  {
         if (task.assignee !=null) {
-          collborators[task.assignee.id] = task.id;
+          collaborators[task.assignee.id] = task.id;
         }
       });
 
       let counter = 1;
-      Object.entries(collborators).forEach(entry => {
+      Object.entries(collaborators).forEach(entry => {
         const [collaboratorId, taskId] = entry;
         if (this.state.users.has(collaboratorId)) {
           const collaborator = this.state.users.get(collaboratorId);
@@ -86,7 +87,9 @@ export class ReportsPage extends Component {
   }
 
   isAdmin() {
-    return this.props.auth.role == 'admin';
+    const projectUrl = this.props.match.params.projectUrl;
+    return this.props.auth.role === 'admin' &&
+      this.props.auth.adminProjects.includes(projectUrl);
   }
 
   render() {
@@ -98,26 +101,43 @@ export class ReportsPage extends Component {
       )
     }
 
+    if(!this.props.selectedProject) {
+      return <div></div>;
+    }
     return (
-      <div className='reports-page'>
-        <h3>מספר אנשים רשומים לדואוקרט</h3>
-        {this.state.users.size}
-        <h3>אנשים שלא קנו כרטיס</h3>
-        {this.state.usersWhoDidntBuy.size}
-        <h3> אנשים שלקחו על עצמם לפחות משימה אחת (וזכרו לקנות כרטיס)</h3>
-        {this.state.query.length}
+      <I18n ns='translations'>
+        {
+          (t) => (
+          <div className='reports-page'>
+            <div>
+              <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+              <br/>
+            </div>
+            <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
+            {this.state.query.length}
 
-        <br/>
-          <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
+            <br/>
+              <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
-        <table className="report-table" >
-              <tbody>
-              {
-                this.state.query.map( (r) => (<tr><th><a href={'/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
-              }
-              </tbody>
-          </table>
-      </div>
+            <table className="report-table" >
+              <thead>
+              <tr className={`dir-${t('lang-float-reverse')}`}>
+                <th>#</th>
+                <th>Name</th>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Task</th>
+              </tr>
+              </thead>
+                <tbody>
+                {
+                  this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+                }
+                </tbody>
+              </table>
+          </div>
+          )}
+      </I18n>
     );
   }
 }
@@ -130,12 +150,14 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
+    selectedProject: state.projects.selectedProject
   }
-}
+};
 
 const mapDispatchToProps = Object.assign(
   {},
-  tasksActions
+  tasksActions,
+  projectActions,
 );
 
 export default connect(

@@ -1,35 +1,45 @@
-//import { createSelector } from 'reselect';
-
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
-  complete: (auth, value) => ({type: "complete"}),
+  complete: (auth, value) => ({type: "complete", text: value}),
   unassigned: (auth, value) => ({type: "unassigned"}),
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
   mine: (auth, value) => ({type: "user", uid: auth.id})
-}
+};
 
 export function buildFilter(auth, type, value) {
   return filters[type](auth, value);
 }
+
 
 //=====================================
 //  MEMOIZED SELECTORS
 //-------------------------------------
 export const taskFilters = {
   complete: (tasks, filter) => {
-    return tasks.filter(task => task.completed)
+    // Show all
+    if(!filter.text) {
+      return tasks;
+    }
+    // Show completed tasks
+    if(filter.text === "true") {
+      return tasks.filter(task => task.isDone)
+    }
+    // Show in-completed tasks
+    if(filter.text === "false") {
+      return tasks.filter(task => !task.isDone)
+    }
   },
 
   // Unassigned is free tasks which are not camps nor art
-  unassigned: (tasks, filter) => {
+  unassigned: (tasks) => {
     return tasks.filter(task => !task.assignee &&
-      task.type != 3 && task.type != 4);
+      task.type !== 3 && task.type !== 4);
   },
 
-    // Unassigned is free tasks which are not camps nor art
-  unassignedWithArtAndCamps: (tasks, filter) => {
+  // Unassigned is free tasks which are not camps nor art
+  unassignedWithArtAndCamps: (tasks) => {
     return tasks.filter(task => !task.assignee);
   },
 
@@ -41,7 +51,7 @@ export const taskFilters = {
 
   taskType: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.type && task.type == filter.text;
+      return task.type && task.type === parseInt(filter.text, 10);
     });
   },
 
@@ -53,4 +63,4 @@ export const taskFilters = {
           (task.creator && task.creator.id === auth));
       });
   }
-}
+};

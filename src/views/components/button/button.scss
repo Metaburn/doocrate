@@ -53,7 +53,8 @@ $primary-color: #eb1478;
   height: 30px;
   line-height: 30px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border-color: none;
     box-shadow: 0 0 0 2px $primary-color;
     color: $primary-color;

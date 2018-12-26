@@ -4,11 +4,13 @@ import {
     REMOVE_LABEL, UPDATE_LABEL
 } from './action-types';
 
-export const loadLabels = () => {
+export const loadLabels = (projectId) => {
     return (dispatch, getState) => {
       window.ll = labelList;
-        labelList.path = `labels`;
-        labelList.subscribe(dispatch);
+      labelList.rootPath = 'projects';
+      labelList.rootDocId = projectId;
+      labelList.path = `labels`;
+      labelList.subscribe(dispatch);
     }
 }
 

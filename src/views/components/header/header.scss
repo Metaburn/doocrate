@@ -7,6 +7,36 @@
   overflow: hidden;
   line-height: 40px;
 
+  a {
+    &:hover {
+      color: #eb1478;
+    }
+  }
+
+  h4 {
+    display: inline-block;
+  }
+  .create-project-header {
+    display: inline-block;
+    margin: 0 0.5em;
+  }
+
+  button {
+    font-size:0.8em;
+    padding: 0.3em;
+
+    transition-duration: .2s;
+    transition: all 0.2s ease;
+
+    background: none;
+    border: solid 1px #ccc;
+    border-radius: 4px;
+
+    &:hover {
+      color: #eb1478;
+    }
+  }
+
   @media only screen and (max-width: 480px) {
     .toastify--top-center {
       left:0;
@@ -21,21 +51,6 @@
 
   .lang-select {
     margin-left: 1.5em;
-
-    button {
-      font-size:0.8em;
-      transition-duration: .2s;
-      transition: all 0.2s ease;
-
-      background-color: white;
-      border: solid 1px #ccc;
-      border-radius: 4px;
-
-      &:hover {
-        background-color: #eb1478;
-        color: white;
-      }
-    }
   }
 
   .lang-right {
@@ -43,6 +58,11 @@
   }
   .lang-left {
     float: left;
+  }
+
+  .start-project {
+    float: right;
+    margin: 0 0.5em;
   }
 }
 

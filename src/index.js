@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
 import { initAuth } from './auth';
+import { initProject } from './projects/initializer';
 import history from './history';
 import configureStore from './store';
 import /*registerServiceWorker, */{ unregister } from './utils/register-service-worker';
@@ -42,5 +43,9 @@ unregister();
 
 
 initAuth(store.dispatch)
-  .then(() => render(App))
+  .then(() => {
+      render(App);
+      initProject(store.dispatch);
+    }
+  )
   .catch(error => console.error(error));

@@ -21,7 +21,7 @@ class AboutCarousel extends React.Component {
     },{
       name:'אור גרנות',
       img:'http://placekitten.com/550/350?image=15'
-    },,{
+    },{
       name:'רקפת בר סלע',
       img:'http://placekitten.com/550/350?image=11'
     },{
@@ -37,7 +37,7 @@ class AboutCarousel extends React.Component {
       name:'טל לותן',
       img:'http://placekitten.com/550/350?image=15'
     }
-    ]
+    ];
 
     const settings = {
       dots: true,
@@ -53,7 +53,7 @@ class AboutCarousel extends React.Component {
     return (
       <div className='about-carousel'>
         <Slider {...settings}>
-        { 
+        {
           humans.map(person => {
             return (
             <div key={person.name}><h3 className='person-name'>{person.name}</h3>

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { authActions } from 'src/auth';
 import Button from 'src/views/components/button';
-import Img from 'react-image';
 import Icon from 'src/views/components/icon';
 import { NavLink } from 'react-router-dom';
 import { I18n } from 'react-i18next';
@@ -35,10 +34,6 @@ const SignInPage = ({signInWithFacebook, signInWithGoogle}) => {
             <br />
             <h3>
               {t('welcome.before-start')}
-            </h3>
-            <h3>
-              {t('welcome.old_system')}&nbsp;
-               (<a href ={t('welcome.old_system_url')}>{t('welcome.click_here')}</a>)
             </h3>
             <h3>
             <Icon name='done' className='grow done' />

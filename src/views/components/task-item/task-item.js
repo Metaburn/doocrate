@@ -63,9 +63,14 @@ export class TaskItem extends Component {
 
 
   renderTitle(task, translate) {
+    let classNames = 'task-item-title';
+    if (task.isDone) {
+      classNames += ' is-done';
+    }
+
     return (
-      <div className='task-item-title'>
-        {task.title && task.title != '' ?
+      <div className={classNames}>
+        {task.title && task.title !== '' ?
          task.title :
         <span className='new-task'>{translate('task.unnamed-task')}</span>}
       </div>
@@ -84,7 +89,7 @@ export class TaskItem extends Component {
   }
 
   renderLabel(task) {
-    if(!task.label || Object.keys(task.label).length === 0 && task.label.constructor === Object) {
+    if(!task.label || (Object.keys(task.label).length === 0 && task.label.constructor === Object)) {
       return null;
     }
     return (
@@ -110,7 +115,7 @@ const mapStateToProps = (state) => {
   return {
     labels: state.labels.toJS()
   }
-}
+};
 
 export default connect(
   mapStateToProps,

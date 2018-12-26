@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ReactDom } from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -18,8 +17,8 @@ import Textarea from 'react-textarea-autosize';
 import Img from 'react-image'
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
+import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import Select from 'react-select';
-import Button from '../button';
 import CommentList from '../comment-list';
 import TagsSuggestions from '../tags-suggestions';
 import AddComment from '../add-comment/add-comment';
@@ -27,8 +26,8 @@ import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
 import { appConfig } from 'src/config/app-config'
-import {notificationActions} from "../../../notification";
-import { TakeOwnershipModal }  from "../take-ownership-modal";
+import {notificationActions} from '../../../notification';
+import { TakeOwnershipModal }  from '../take-ownership-modal';
 
 export class TaskView extends Component {
   constructor() {
@@ -37,23 +36,14 @@ export class TaskView extends Component {
     this.state = {
       title: '',
       description: '',
-      projectName: null,
-      defaultProjectNames: [
-        //TODO : add projects
-      ],
       type: '',
-      defaultType: [
-        { value: 1, label: i18n.t('task.types.planning')},
-        { value: 2, label: i18n.t('task.types.shifts')},
-        { value: 3, label: i18n.t('task.types.camps')},
-        { value: 4, label: i18n.t('task.types.art')},
-        { value: 5, label: i18n.t('task.types.other')}
-      ],
+      defaultType: [],
       label: [],
       isCritical: false,
+      isDone: false,
       validations: {},
       shouldOpenTakeOwnerModal: false
-    }
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleTextBoxChange = this.handleTextBoxChange.bind(this);
@@ -61,6 +51,7 @@ export class TaskView extends Component {
     this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
 
     this.debouncedHandleSubmit = debounce(this.handleSubmit, 300);
@@ -73,6 +64,7 @@ export class TaskView extends Component {
     assignTask: PropTypes.func.isRequired,
     unassignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
+    selectedProject: PropTypes.object,
     isAdmin: PropTypes.bool.isRequired,
     isGuide: PropTypes.bool.isRequired,
     unloadComments: PropTypes.func.isRequired,
@@ -81,20 +73,35 @@ export class TaskView extends Component {
     submitNewTask: PropTypes.func.isRequired
   };
 
+  getTaskTypeFromProject(index) {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return '';
+    } else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  }
+
   componentWillMount() {
     this.updateStateByProps(this.props);
   }
 
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
-    let { id, title, description, type, projectName,
-      label, isCritical, dueDate, created,
+    let { id, title, description, type,
+      label, isCritical, dueDate, created, isDone, doneDate,
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
-      if (id != this.state.id) {
+      if (id !== this.state.id) {
         const labelAsArray = label ?
           (Object.keys(label).map( l => { return l })) : [];
+
+        // Set default task types
+        let defaultType = this.getDefaultTaskTypes(props);
 
         this.setState({
           id: id || '',
@@ -102,13 +109,39 @@ export class TaskView extends Component {
           description:description || '',
           label: labelAsArray || [],
           isCritical: isCritical || false,
+          isDone: isDone || false,
           created: created || null,
+          doneDate: doneDate || null,
           dueDate: dueDate || null,
           type: type || null,
-          projectName: projectName || '',
+          defaultType: defaultType || [],
           validation: {}
         });
+      }else {
+        // A new task?
+
+        // Set default task types
+        let defaultType = this.getDefaultTaskTypes(props);
+
+        this.setState({
+          defaultType: defaultType || [],
+        });
       }
+  }
+
+  getDefaultTaskTypes(props) {
+    if (props.selectedProject &&
+      props.selectedProject.taskTypes &&
+      props.selectedProject.taskTypes.length >=5) {
+      const taskTypes = props.selectedProject.taskTypes;
+      return [
+        {value: 1, label: taskTypes[0]},
+        {value: 2, label: taskTypes[1]},
+        {value: 3, label: taskTypes[2]},
+        {value: 4, label: taskTypes[3]},
+        {value: 5, label: taskTypes[4]}
+      ];
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -121,8 +154,8 @@ export class TaskView extends Component {
     const task = this.props.selectedTask;
     if(!task) {
       return(
-        <div className="task-view g-row">
-          <div className="g-col">
+        <div className='task-view g-row'>
+          <div className='g-col'>
             <h1>&nbsp;</h1>
           </div>
         </div>
@@ -169,25 +202,26 @@ export class TaskView extends Component {
           showDeleteButton = { showDeleteButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
+          markAsDoneUndone = {this.handleMarkAsDoneUndone}
           />
           <div className='task-view'>
             <form noValidate>
-              <div className="form-input">
+              <div className='form-input'>
                 {canEditTask ?
-                  this.renderInput(task, 'title', t, canEditTask, "0", true) :
+                  this.renderInput(task, 'title', t, canEditTask, '0', true) :
                   <span>{task.title}</span>
                 }
                 </div>
-              <div className="form-input">
+              <div className='form-input'>
                 {canEditTask ?
-                  this.renderTextArea(task, 'description', t, canEditTask, "0")
+                  this.renderTextArea(task, 'description', t, canEditTask, '0')
                   :
                   <span>{task.description}</span>
                 }
                 </div>
-              <div className="form-input"><div className='instruction'><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,"0")}</div>
-              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, "0")} </div>
+              <div className='form-input'><div className='instruction'><span>{t('task.type')}</span></div>
+              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
+              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, '0')} </div>
 
               { canEditTask ?
                 <div>
@@ -257,7 +291,7 @@ export class TaskView extends Component {
       value={this.state[fieldName]}
       tabIndex = { tabIndex }
       ref={e => this[fieldName+'Input'] = e}
-      onChange={(e) => { let val=null; if (e) { val = e.value };
+      onChange={(e) => { let val=null; if (e) { val = e.value }
                 this.setState({ [fieldName]: val}) }}
       options={options}
       // onBlur={this.handleSubmit}
@@ -271,26 +305,26 @@ export class TaskView extends Component {
   renderInput(task, fieldName, t, isEditable, tabIndex, isAutoFocus) {
     const classNames = isEditable ? ' editable' : '';
     return( <Textbox
-    className={`changing-input${classNames}`}
-        type = 'text'
-        tabIndex = { tabIndex }
-        name = { fieldName }
-        value = { this.state[fieldName] }
-        placeholder = { t('task.name') }
-        ref = { e => this[fieldName+'Input'] = e }
-        onChange = { this.handleChange }
-        onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
-        onKeyUp={ () => {}} // here to trigger validation callback on Key up
-        disabled = { !isEditable }
-        autofocus = { isAutoFocus }
+      classNameInput={`changing-input${classNames}`}
+      type = 'text'
+      tabIndex = { tabIndex }
+      name = { fieldName }
+      value = { this.state[fieldName] }
+      placeholder = { t('task.name') }
+      ref = { e => this[fieldName+'Input'] = e }
+      onChange = { this.handleChange }
+      onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
+      onKeyUp={ () => {}} // here to trigger validation callback on Key up
+      disabled = { !isEditable }
+      autofocus = { isAutoFocus }
 
-        validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
-        validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
-         />)
+      validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
+      validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
+    />)
   }
 
   renderTextArea(task, fieldName, t, isEditable, tabIndex) {
-    const classNames = isEditable ? ' editable' : ''
+    const classNames = isEditable ? ' editable' : '';
     return (
         <Textarea
         className={`changing-input${classNames}`}
@@ -310,8 +344,8 @@ export class TaskView extends Component {
   }
 
   renderLabel(isEditable, translation, tabIndex) {
-    const showPlaceholder = this.state.label.length == 0;
-    const classNames = isEditable ? ' editable' : ''
+    const showPlaceholder = this.state.label.length === 0;
+    const classNames = isEditable ? ' editable' : '';
 
     return (
       <TagsInput className={`react-tagsinput-changing ${classNames}`}
@@ -331,7 +365,7 @@ export class TaskView extends Component {
   }
 
   renderCheckbox(task, fieldName, placeholder, isEditable) {
-    const classNames = isEditable ? ' editable' : ''
+    const classNames = isEditable ? ' editable' : '';
     return (
       <label>
         <input
@@ -341,7 +375,6 @@ export class TaskView extends Component {
         value = { placeholder }
         onChange={e => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
         disabled = { !isEditable }
-        // onBlur={this.handleSubmit}
         />
         { placeholder }
       </label>
@@ -356,7 +389,6 @@ export class TaskView extends Component {
           isOpen = { task && task.id && this.state.shouldOpenTakeOwnerModal }
           onClosed = { () => {
             this.setState({shouldOpenTakeOwnerModal: false});
-            console.log('Closed');
           }}
           onYes ={() => {
             this.setState({shouldOpenTakeOwnerModal: false});
@@ -382,14 +414,14 @@ export class TaskView extends Component {
   }
 
   handleAddLabel(label) {
-    var newLabels = this.state.label
+    let newLabels = this.state.label
     newLabels.push(label)
     this.handleLabelChange(newLabels)
   }
 
   handleLabelChange(label) {
     // Clear leading and trailing white space
-    for(var i=0;i<label.length;i++) {
+    for(let i=0;i<label.length;i++) {
       label[i] = label[i].trim();
     }
     this.setState({label})
@@ -397,12 +429,12 @@ export class TaskView extends Component {
 
   isValid() {
     let res = false;
-    Object.values(this.state.validations).forEach( x => res = x || res)
+    Object.values(this.state.validations).forEach( x => res = x || res);
     // also check actual values...
-    res = res || this.state.label.length == 0; // check also there's at least one label
-    res = res || this.state.title.length == 0;
-    res = res || this.state.description.length == 0;
-    res = res || (this.state.type && this.state.type.length == 0);
+    res = res || this.state.label.length === 0; // check also there's at least one label
+    res = res || this.state.title.length === 0;
+    res = res || this.state.description.length === 0;
+    res = res || (this.state.type && this.state.type.length === 0);
 
     this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
     return !res;
@@ -413,14 +445,14 @@ export class TaskView extends Component {
   }
 
   getFormFields() {
-    let labelAsObject = this.arrayToObject(this.state.label);
+    let labelAsObject = TaskView.arrayToObject(this.state.label);
     const fieldsToUpdate = {
       title: this.state.title,
       description: this.state.description,
       label: labelAsObject,
       isCritical: this.state.isCritical,
+      isDone: this.state.isDone,
       type: this.state.type,
-      projectName: this.state.projectName
     };
     fieldsToUpdate.dueDate = this.state.dueDate || null;
 
@@ -443,6 +475,12 @@ export class TaskView extends Component {
     }
   }
 
+  handleMarkAsDoneUndone() {
+    this.setState({isDone: !this.state.isDone});
+    this.props.updateTask(this.props.selectedTask, {isDone: !this.state.isDone});
+    this.props.showSuccess(i18n.t('task.updated-successfully'));
+  }
+
   handleSubmit(event) {
     if(event) {
       event.preventDefault();
@@ -455,9 +493,9 @@ export class TaskView extends Component {
     this.props.updateTask(this.props.selectedTask, this.getFormFields());
   }
 
-  arrayToObject(array) {
-    var result = {};
-    for (var i = 0; i < array.length; ++i)
+  static arrayToObject(array) {
+    let result = {};
+    for (let i = 0; i < array.length; ++i)
       result[array[i]] = true;
     return result;
   }
