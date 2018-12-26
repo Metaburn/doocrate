@@ -68,7 +68,7 @@ export class ProjectsPage extends Component {
                       <tr key={project[0]} className={`dir-${t('lang-float-reverse')}`}>
                         <th>{project[0]}</th>
                         <th>
-                          <a href={'/'+project[2]+'/task/1'}>{project[1]}</a>
+                          <a href={'/'+project[2]+'/task/1?complete=false'}>{project[1]}</a>
                         </th>
                       </tr>))
                   }
