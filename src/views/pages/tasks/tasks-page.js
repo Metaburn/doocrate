@@ -350,16 +350,11 @@ export class TasksPage extends Component {
     return;
    }
     const params = getUrlSearchParams(this.props.location.search);
-    const filterType = params['filter'];
-    const filterText = params['text'];
     const project_url = this.props.match.params.projectUrl;
     let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
-    if (filterType) {
-      taskParameter = `${taskParameter}?filter=${filterType}`
-      if(filterText) {
-        taskParameter += `&text=${filterText}`;
-      }
+    if (this.props.location.search) {
+      taskParameter += this.props.location.search;
     }
 
     setTimeout(()=>{this.setState({newTask: null})}, 100);

@@ -133,7 +133,8 @@ class TaskFilters extends Component {
             {t('task.free-tasks')}
             </NavLink></li>
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={'/'+ this.props.projectUrl + '/task/1' }>{t('task.all-tasks')}</NavLink></li>
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.removeQueryParam('filter')}}>{t('task.all-tasks')}</NavLink></li>
           {downloadCSV}
           <li>
 
