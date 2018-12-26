@@ -63,8 +63,13 @@ export class TaskItem extends Component {
 
 
   renderTitle(task, translate) {
+    let classNames = 'task-item-title';
+    if (task.isDone) {
+      classNames += ' is-done';
+    }
+
     return (
-      <div className='task-item-title'>
+      <div className={classNames}>
         {task.title && task.title !== '' ?
          task.title :
         <span className='new-task'>{translate('task.unnamed-task')}</span>}

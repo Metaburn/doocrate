@@ -476,7 +476,6 @@ export class TaskView extends Component {
   }
 
   handleMarkAsDoneUndone() {
-    debugger;
     this.setState({isDone: !this.state.isDone});
     this.props.updateTask(this.props.selectedTask, {isDone: !this.state.isDone});
     this.props.showSuccess(i18n.t('task.updated-successfully'));

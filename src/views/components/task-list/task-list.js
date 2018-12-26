@@ -3,10 +3,16 @@ import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import TaskItem from '../task-item/task-item';
 
+import { NavLink } from 'react-router-dom';
+
 import './task-list.css';
 import Button from '../button';
 import InfiniteScroll from 'react-infinite-scroller';
 import { I18n } from 'react-i18next';
+import CompleteFilter from '../complete-filter';
+import { getUrlSearchParams } from 'src/utils/browser-utils.js';
+import TaskFilters from "../task-filters/task-filters";
+
 class TaskList extends Component {
   constructor() {
     super(...arguments);
@@ -24,6 +30,7 @@ class TaskList extends Component {
     selectTask: PropTypes.func.isRequired,
     selectedTaskId: PropTypes.string.isRequired,
     createTask: PropTypes.func.isRequired,
+    projectUrl: PropTypes.string.isRequired
   };
 
 
@@ -69,9 +76,27 @@ class TaskList extends Component {
               onClick={ this.props.createTask }>
               {t(`task.add-task`)}
             </Button>
+
+            <CompleteFilter
+              projectUrl={ this.props.projectUrl }/>
           </div>
 
           <div className='task-list'>
+
+            {/* Suggest to remove filters */}
+            { !isAnyTasks &&
+              (getUrlSearchParams()['complete'] !== undefined) ?
+              <div className={'no-tasks-placeholder'}>
+                <span>{t('task.no-tasks-placeholder')}
+                  <br/>
+                  <NavLink
+                  to={{search: TaskFilters.removeQueryParam('complete')}}>
+                  {t('task.click-here')}
+                  </NavLink>&nbsp;
+                  {t('task.no-tasks-placeholder2')}
+                </span>
+              </div>
+            : ''}
           <InfiniteScroll
               pageStart={0}
               loadMore={this.loadMore}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { getUrlSearchParams } from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, urlSearchParamsToString} from 'src/utils/browser-utils.js';
 import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
 import { I18n } from 'react-i18next';
@@ -20,7 +20,7 @@ class TaskFilters extends Component {
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
-    projectUrl: PropTypes.object.isRequired,
+    projectUrl: PropTypes.string.isRequired,
     selectedProject: PropTypes.object.isRequired,
     labels: PropTypes.object.isRequired,
     generateCSV:  PropTypes.func.isRequired,
@@ -33,9 +33,34 @@ class TaskFilters extends Component {
     return params['filter'];
   }
 
+  static getCompleteQuery() {
+    const params = getUrlSearchParams();
+    return params['complete'];
+  }
+
   static getFilterText() {
     const params = getUrlSearchParams();
     return params['text'];
+  }
+
+  // This function handles replacing / concatting params to location
+  // Can receive complete=true for example
+  static addQueryParam(newQueryParams) {
+    let currentSearchParams = getUrlSearchParams();
+    const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
+    Object.keys(newQueryParamsObj).forEach(param => {
+      if (param == null || param === '') return;
+      currentSearchParams[param] = newQueryParamsObj[param];
+    });
+    return urlSearchParamsToString(currentSearchParams);
+  }
+
+  // This function handles replacing / concatting params to location
+  // Can receive complete for example will remove complete
+  static removeQueryParam(paramToRemove) {
+    let currentSearchParams = getUrlSearchParams();
+    delete currentSearchParams[paramToRemove];
+    return urlSearchParamsToString(currentSearchParams);
   }
 
   onCSVLink() {
@@ -73,44 +98,40 @@ class TaskFilters extends Component {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '1')
-          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1', search: 'filter=taskType&text=1'}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
+          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return (TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '2')
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=2'}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
             TaskFilters.getFilterText(location) === '3'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=3'}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '4'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=taskType&text=4'}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
-
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'complete' &&
-              TaskFilters.getFilterText(location) === 'true'
-            )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=complete&text=true'}}>Completed</NavLink></li>
-
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'complete' &&
-              TaskFilters.getFilterText(location) === 'false'
-            )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=complete&text=false'}}>Incompleted</NavLink></li>
+          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink></li>
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1', search: 'filter=unassigned'}}>{t('task.free-tasks')}</NavLink></li>
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=mine')}}>
+            {t('task.my-tasks')}
+            </NavLink></li>
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+            search: TaskFilters.addQueryParam('filter=unassigned')}}>
+            {t('task.free-tasks')}
+            </NavLink></li>
 
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={'/'+ this.props.projectUrl + '/task/1' }>{t('task.all-tasks')}</NavLink></li>
           {downloadCSV}

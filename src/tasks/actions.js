@@ -20,8 +20,6 @@ import {
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
 } from './action-types';
-import {commentList} from "../comments/comment-list";
-import {INIT_AUTH} from "../auth/action-types";
 
 
 export function createTask(task, cb = (t)=>{}) {

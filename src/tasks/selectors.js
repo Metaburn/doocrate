@@ -1,5 +1,3 @@
-import {ALL_TASKS, COMPLETED_TASKS, INCOMPLETE_TASKS} from "./filter-types";
-
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
   complete: (auth, value) => ({type: "complete", text: value}),
@@ -14,11 +12,11 @@ export function buildFilter(auth, type, value) {
   return filters[type](auth, value);
 }
 
+
 //=====================================
 //  MEMOIZED SELECTORS
 //-------------------------------------
 export const taskFilters = {
-  // TODO: Complete should be set on all other filter types
   complete: (tasks, filter) => {
     // Show all
     if(!filter.text) {

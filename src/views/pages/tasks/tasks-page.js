@@ -144,11 +144,19 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
     const filterTextType = params['text'];
+
+    const completeFilterValue = params['complete'];
     const labelPool = {};
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
       currentTasks = this.props.filters[filter.type](currentTasks, filter);
+    }
+
+    // Complete can be - None, false, true
+    if(completeFilterValue || completeFilterValue === 'false') {
+      const completeFilter = this.props.buildFilter(this.props.auth, 'complete', completeFilterValue);
+      currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
     }
 
     nextProps.tasks.forEach( (t)=> {
@@ -157,7 +165,7 @@ export class TasksPage extends Component {
       })
     });
 
-    currentTasks = this.filterTaskFromLabel(currentTasks)
+    currentTasks = this.filterTaskFromLabel(currentTasks);
 
     this.setState({tasks: currentTasks, labelPool});
   }
@@ -453,6 +461,7 @@ export class TasksPage extends Component {
               createTask={this.createTask}
               selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
               labels = {this.props.labels}
+              projectUrl = { projectUrl } //TODO - should be from state
             />
           </div>
 

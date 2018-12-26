@@ -1,0 +1,35 @@
+@import 'views/styles/shared';
+
+.complete-filter {
+  display: inline-block;
+}
+
+.complete-tooltip-container {
+  span {
+    display:block;
+  }
+
+  a {
+    font-size: 14px !important;
+    color: $primary-color;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 5px;
+
+    &:hover {
+      color: #666;
+      padding-bottom: 1px;
+      border-bottom: 1px solid #666;
+    }
+
+    &.active {
+      color: $primary-color;
+      padding-bottom: 10px;
+      font-weight: bold;
+    }
+  }
+
+  button {
+    border-radius: 0;
+  }
+}
