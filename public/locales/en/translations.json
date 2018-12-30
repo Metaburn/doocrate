@@ -37,7 +37,8 @@
     "success": "Project created successfully! Next - create your first task. 🙌",
     "success-edit": "Project updated successfully! 🙌",
     "task-types": "Task types",
-    "task-types-explain": "It's recommended to divide the tasks into type so it would be easier to filter afterwards. For example - Event planning, Shifts, Other. You can have up to 5 task types."
+    "task-types-explain": "It's recommended to divide the tasks into type so it would be easier to filter afterwards. For example - Event planning, Shifts, Other. You can have up to 5 task types.",
+    "popular-tags": "Set Popular tags (Enter to add)"
   },
   "projects": {
     "header": "All the projects in the world",

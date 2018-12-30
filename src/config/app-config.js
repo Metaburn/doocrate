@@ -5,21 +5,4 @@ export const appConfig = {
   isSystemClosed: false,
   // Set this flag to decide if new users can create / assign task or not - TODO this is Client side only
   canNewUsersCreateAssignTask: true,
-  popularTags: [
-    'מחנות נושא',
-    'אמנות',
-    'גייט',
-    'גריטרס',
-    'חשלש',
-    'לוגיסטיקה',
-    'הקמות',
-    'רישוי',
-    'פירוקים',
-    'תקציב',
-    'תקשורת',
-    'סאונד',
-    'מפה',
-    'משמרות',
-    'משמרת גייט', 'משמרת הקמה', 'משמרת חניה', 'משמרת ערות', 'משמרת פירוק', 'משמרת אמא של נרות'
-  ]
-}
+};

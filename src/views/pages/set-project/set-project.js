@@ -5,6 +5,7 @@ import { Textbox } from 'react-inputs-validation';
 import { I18n } from 'react-i18next';
 import { projectActions } from 'src/projects';
 import {notificationActions} from '../../../notification';
+import TagsInput from 'react-tagsinput';
 import i18n from '../../../i18n.js';
 import './set-project.css';
 
@@ -24,10 +25,12 @@ class SetProject extends Component {
       type2: '',
       type3: '',
       type4: '',
+      popularTags: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleTagsChange = this.handleTagsChange.bind(this);
     this.isValid = this.isValid.bind(this);
   }
 
@@ -51,7 +54,9 @@ class SetProject extends Component {
         return;
       }
 
-      let { name, taskTypes, creator, isPublic } = existingProject;
+      let { name, taskTypes, creator, isPublic, popularTags } = existingProject;
+      popularTags = this.fromTagObject(popularTags);
+
       let type0,type1,type2,type3,type4;
       if(taskTypes && taskTypes.length > 4) {
         type0 = taskTypes[0];
@@ -73,6 +78,7 @@ class SetProject extends Component {
       this.setState({
         isExisting: true,
         projectUrl: projectUrl,
+        popularTags: popularTags || [],
         name: name || '',
         isPublic: isPublic,
         type0: type0 || '',
@@ -127,6 +133,8 @@ class SetProject extends Component {
                   { this.renderInput('type3', t('task.types.art'), t, true, '0', true)}
                   { this.renderInput('type4', t('task.types.other'), t, true, '0', true)}
                 </div>
+
+                { this.renderPopularTags(t)}
 
                 <div className='form-input'>
                   <span>{t('create-project.visibility-placeholder')}</span>
@@ -183,6 +191,21 @@ class SetProject extends Component {
     );
   }
 
+  renderPopularTags(translation) {
+    const showPlaceholder = this.state.popularTags.length === 0;
+    return (
+      <TagsInput className={'react-tagsinput-changing'}
+         tabIndex={'0'}
+         value={this.state.popularTags}
+         onChange={this.handleTagsChange}
+         onlyUnique={true}
+         addOnBlur={true}
+         inputProps={{ placeholder: showPlaceholder ? translation('create-project.popular-tags') : ''}}
+         onRemove= { this.handleTagsChange }
+    />
+    );
+  }
+
   renderSubmit(t) {
     return this.state.isExisting ?
       <input className={'button button-small'}
@@ -197,6 +220,14 @@ class SetProject extends Component {
     this.setState({
       [fieldName]: e.target.value
     });
+  }
+
+  handleTagsChange(popularTags) {
+    // Clear leading and trailing white space
+    for(let i=0; i<popularTags.length; i++) {
+      popularTags[i] = popularTags[i].trim();
+    }
+    this.setState({popularTags: popularTags})
   }
 
   handleSubmit(event) {
@@ -236,6 +267,20 @@ class SetProject extends Component {
     return !res;
   }
 
+  toTagObject(array) {
+    let result = {};
+    array.forEach(tag=> {
+      result[tag] = 'eb1478'; //TODO - replace with actual color
+    });
+    return result;
+  }
+
+  fromTagObject(tagObjects) {
+    if(tagObjects) {
+      return Object.keys(tagObjects);
+    }
+  }
+
   getFormFields() {
     const creator = {
       id: this.props.auth.id,
@@ -251,12 +296,16 @@ class SetProject extends Component {
       this.state.type3,
       this.state.type4];
 
+    // TODO: add color support
+    const popularTagsAsMap = this.toTagObject(this.state.popularTags);
+
     return {
       url: this.state.projectUrl,
       name: this.state.name,
       creator: creator,
       taskTypes: taskTypes,
       isPublic: this.state.isPublic,
+      popularTags: popularTagsAsMap,
       created: new Date()
     };
   }
