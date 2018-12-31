@@ -93,7 +93,7 @@ export class TaskItem extends Component {
     if(!task.label || (Object.keys(task.label).length === 0 && task.label.constructor === Object)) {
       return null;
     }
-    const labels = this.props.selectedProject.popularTags || [];
+    const labels = (this.props.selectedProject && this.props.selectedProject.popularTags)?  this.props.selectedProject.popularTags : [];
     return (
       <div>
         {
