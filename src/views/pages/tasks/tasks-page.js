@@ -497,7 +497,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    labels: (state.projects.selectedProject)? Object.keys(state.projects.selectedProject.popularTags) : null,
+    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     buildFilter: buildFilter
   }
