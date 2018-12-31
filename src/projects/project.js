@@ -5,5 +5,7 @@ export const Project = new Record({
   name: null,
   url: null,
   creator: null,
-  taskTypes: null
+  taskTypes: null,
+  popularTags: null
 });
+

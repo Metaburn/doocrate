@@ -37,7 +37,8 @@
     "success": "הפרוייקט נוצר בהצלחה! כעת הוסף את המשימה הראשונה. 🙌",
     "success-edit": "הפרוייקט עודכן בהצלחה! 🙌",
     "task-types": "סוגי המשימות",
-    "task-types-explain": "מומלץ מאוד לחלק את המשימות לסוגים שונים כדי שיהיה קל יותר לסנן אחר-כך. לדוגמא - תכנון ארוע, משמרות, אחר. ניתן לחלק לעד 5 סוגי משימות"
+    "task-types-explain": "מומלץ מאוד לחלק את המשימות לסוגים שונים כדי שיהיה קל יותר לסנן אחר-כך. לדוגמא - תכנון ארוע, משמרות, אחר. ניתן לחלק לעד 5 סוגי משימות",
+    "popular-tags": "תגיות פופולריות (לחץ על ENTER להוספה)"
   },
   "projects": {
     "header": "כל הפרוייקטים בעולם",

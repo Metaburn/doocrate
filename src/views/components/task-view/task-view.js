@@ -103,6 +103,8 @@ export class TaskView extends Component {
         // Set default task types
         let defaultType = this.getDefaultTaskTypes(props);
 
+        let popularTags = this.getPopularTags(props);
+
         this.setState({
           id: id || '',
           title: title || '',
@@ -115,7 +117,8 @@ export class TaskView extends Component {
           dueDate: dueDate || null,
           type: type || null,
           defaultType: defaultType || [],
-          validation: {}
+          validation: {},
+          popularTags: popularTags
         });
       }else {
         // A new task?
@@ -123,8 +126,11 @@ export class TaskView extends Component {
         // Set default task types
         let defaultType = this.getDefaultTaskTypes(props);
 
+        let popularTags = this.getPopularTags(props);
+
         this.setState({
           defaultType: defaultType || [],
+          popularTags: popularTags
         });
       }
   }
@@ -141,6 +147,17 @@ export class TaskView extends Component {
         {value: 4, label: taskTypes[3]},
         {value: 5, label: taskTypes[4]}
       ];
+    }
+  }
+
+  getPopularTags(props) {
+    if (props.selectedProject &&
+      props.selectedProject.popularTags)
+    {
+      const popularTagsAsKeys = Object.keys(props.selectedProject.popularTags);
+      if(popularTagsAsKeys.length >=0) {
+        return popularTagsAsKeys;
+      }
     }
   }
 
@@ -223,12 +240,12 @@ export class TaskView extends Component {
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
               <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, '0')} </div>
 
-              { canEditTask ?
+              { canEditTask && this.state.popularTags ?
                 <div>
                   <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
                   <div>
                       <TagsSuggestions
-                        tags={appConfig.popularTags}
+                        tags={this.state.popularTags}
                         onTagSelected={(tag) => {
                           this.handleAddLabel(tag);
                         }}
@@ -414,8 +431,8 @@ export class TaskView extends Component {
   }
 
   handleAddLabel(label) {
-    let newLabels = this.state.label
-    newLabels.push(label)
+    let newLabels = this.state.label;
+    newLabels.push(label);
     this.handleLabelChange(newLabels)
   }
 

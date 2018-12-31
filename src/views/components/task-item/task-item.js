@@ -16,6 +16,7 @@ export class TaskItem extends Component {
     this.state = {};
 
     this.select = this.select.bind(this);
+    this.renderLabel = this.renderLabel.bind(this);
   }
 
   select() {
@@ -92,11 +93,12 @@ export class TaskItem extends Component {
     if(!task.label || (Object.keys(task.label).length === 0 && task.label.constructor === Object)) {
       return null;
     }
+    const labels = this.props.selectedProject.popularTags || [];
     return (
       <div>
         {
           Object.keys(task.label).map((label) => {
-            const bg = this.props.labels[label] ? this.props.labels[label].colorInHex : '999';
+            const bg = labels[label] ? labels[label] : '999';
             return (<span key={label} style={{'backgroundColor': `#${bg}` }} className='label-default'>{label}</span>)
           }) }
       </div>
@@ -108,13 +110,11 @@ TaskItem.propTypes = {
   task: PropTypes.object.isRequired,
   selectTask: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
-  labels: PropTypes.object.isRequired,
+  selectedProject: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => {
-  return {
-    labels: state.labels.toJS()
-  }
+  return {}
 };
 
 export default connect(
