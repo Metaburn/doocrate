@@ -12,32 +12,32 @@ export const loadLabels = (projectId) => {
       labelList.path = `labels`;
       labelList.subscribe(dispatch);
     }
-}
+};
 
 export function createLabel(label) {
-    return {
-      type: CREATE_LABEL,
-      payload: label
-    };
-  }
+  return {
+    type: CREATE_LABEL,
+    payload: label
+  };
+}
 
 export function loadLabel(label) {
-    return {
-      type: LOAD_LABEL,
-      payload: label
-    };
-  }
+  return {
+    type: LOAD_LABEL,
+    payload: label
+  };
+}
 
 export function removeLabel(label) {
-    return {
-      type: REMOVE_LABEL,
-      payload: label
-    };
-  }
+  return {
+    type: REMOVE_LABEL,
+    payload: label
+  };
+}
 
 export function updateLabel(label) {
-    return {
-      type: UPDATE_LABEL,
-      payload: label
-    };
-  }
+  return {
+    type: UPDATE_LABEL,
+    payload: label
+  };
+}

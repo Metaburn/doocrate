@@ -29,6 +29,7 @@ class TaskList extends Component {
     tasks: PropTypes.instanceOf(List).isRequired,
     selectTask: PropTypes.func.isRequired,
     selectedTaskId: PropTypes.string.isRequired,
+    selectedProject: PropTypes.object,
     createTask: PropTypes.func.isRequired,
     projectUrl: PropTypes.string.isRequired
   };
@@ -57,6 +58,8 @@ class TaskList extends Component {
               taskNumber={index}
               task={task}
               selectTask={this.props.selectTask}
+              selectedProject={this.props.selectedProject}
+              labels={this.props.labels}
               isActive={isActive}
             />
           );

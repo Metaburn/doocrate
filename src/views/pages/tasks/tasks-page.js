@@ -83,6 +83,7 @@ export class TasksPage extends Component {
     }
     // TODO - should be set by a filter on the user view
     this.props.loadTasks(project_url, INCOMPLETE_TASKS);
+
     this.props.loadLabels(project_url);
 
     // Sets the default loading page
@@ -472,7 +473,7 @@ export class TasksPage extends Component {
               selectTask={this.goToTask}
               createTask={this.createTask}
               selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
-              labels = {this.props.labels}
+              selectedProject = { this.props.selectedProject }
               projectUrl = { projectUrl } //TODO - should be from state
             />
           </div>
@@ -496,7 +497,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    labels: state.labels.list,
+    labels: (state.projects.selectedProject)? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     buildFilter: buildFilter
   }

@@ -14,7 +14,6 @@ export const appConfig = {
     'D4ADCF',
     '9DBC0',
     'F0A6CA',
-    'FF6663',
     'FCAA67',
     '253237',
     'F0A6CA',
