@@ -8,6 +8,7 @@ import {notificationActions} from '../../../notification';
 import TagsInput from 'react-tagsinput';
 import i18n from '../../../i18n.js';
 import './set-project.css';
+import { appConfig } from '../../../config/app-config';
 
 class SetProject extends Component {
 
@@ -269,8 +270,10 @@ class SetProject extends Component {
 
   toTagObject(array) {
     let result = {};
+    let counter = 0;
     array.forEach(tag=> {
-      result[tag] = 'eb1478'; //TODO - replace with actual color
+      const color = (appConfig.colorTags.length > counter) ? appConfig.colorTags[counter++] : 'eb1478';
+      result[tag] = color;
     });
     return result;
   }
