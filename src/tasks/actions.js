@@ -2,12 +2,6 @@ import { taskList } from './task-list';
 import firebase from 'firebase/app';
 
 import {
-  INCOMPLETE_TASKS,
-  COMPLETED_TASKS,
-  ALL_TASKS,
-} from './filter-types';
-
-import {
   CREATE_TASK_ERROR,
   CREATE_TASK_SUCCESS,
   REMOVE_TASK_ERROR,

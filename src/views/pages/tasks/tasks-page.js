@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
-import { INCOMPLETE_TASKS, COMPLETED_TASKS, ALL_TASKS } from 'src/tasks';
+import { INCOMPLETE_TASKS } from 'src/tasks';
 
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
@@ -350,7 +350,6 @@ export class TasksPage extends Component {
    if (this.confirmUnsavedTask()) {
     return;
    }
-    const params = getUrlSearchParams(this.props.location.search);
     const project_url = this.props.match.params.projectUrl;
     let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
