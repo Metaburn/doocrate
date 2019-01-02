@@ -34,7 +34,7 @@ const Me = ({authenticated, auth, selectedProject}) => (
               {
                 auth.adminProjects.map(project => {
                   return (
-                    <div className={'project'}>
+                    <div className={'project'} key={project}>
                       <span>{project}</span>
                       <span><NavLink to={`/${project}/reports`}>{t('my-space.project-report')}</NavLink></span>
                       <span><NavLink to={`/${project}/edit`}>{t('my-space.edit-project')}</NavLink></span>

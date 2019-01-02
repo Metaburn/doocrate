@@ -36,6 +36,7 @@ class SetProject extends Component {
   }
 
   componentWillMount() {
+    this.props.selectProjectFromUrl();
     this.updateStateByProps(this.props);
   }
 
@@ -44,11 +45,8 @@ class SetProject extends Component {
   }
 
   updateStateByProps(props) {
-    // Load an existing project
-    // Since update state by props is getting called for each project it might be called too many times
-    // so we Stop loading when found it - isExisting
     if (props.match != null && props.match.params.projectUrl &&
-      props.selectedProject && !this.state.isExisting) {
+      props.selectedProject) {
       const projectUrl = props.match.params.projectUrl;
       let existingProject = props.selectedProject;
       if(!existingProject) {
@@ -316,6 +314,7 @@ class SetProject extends Component {
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  selectProjectFromUrl: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
 };
 
