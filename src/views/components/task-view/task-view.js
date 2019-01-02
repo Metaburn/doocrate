@@ -25,7 +25,6 @@ import AddComment from '../add-comment/add-comment';
 import TaskViewHeader from '../task-view-header/task-view-header';
 import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
-import { appConfig } from 'src/config/app-config'
 import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
 

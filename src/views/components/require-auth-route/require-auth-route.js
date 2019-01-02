@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom'
+import {getProjectFromUrl} from "../../../projects/actions";
 
 
 const RequireAuthRoute = ({component: Component, authenticated, ...rest}) => (
@@ -11,6 +12,7 @@ const RequireAuthRoute = ({component: Component, authenticated, ...rest}) => (
       ) : (
         <Redirect to={{
           pathname: '/sign-in/',
+          search: 'project='+ (getProjectFromUrl() || ''),
           state: {from: props.location}
         }}/>
       )

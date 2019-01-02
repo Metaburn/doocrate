@@ -7,6 +7,7 @@ import { projectActions } from 'src/projects';
 
 import './projects-page.css';
 import {I18n} from 'react-i18next';
+import { getCookie } from 'src/utils/browser-utils';
 
 export class ProjectsPage extends Component {
   constructor() {
@@ -24,7 +25,19 @@ export class ProjectsPage extends Component {
   };
 
   componentWillMount() {
+    // Check if need to redirect to the project the user got from when he first received the link
+    this.checkIfRedirectByProjectCookie();
     this.props.loadProjects();
+  }
+
+  // A user may have receive a link with a redirect request - We do that only once
+  checkIfRedirectByProjectCookie() {
+    const project = getCookie('project');
+    const isRedirected = getCookie('is_redirected');
+    if (project && !isRedirected) {
+      document.cookie = 'is_redirected=true';
+      this.props.history.push('/'+ project +'/task/1');
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
