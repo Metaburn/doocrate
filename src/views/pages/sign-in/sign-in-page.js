@@ -12,9 +12,6 @@ import './sign-in-page.css';
 
 
 class SignInPage extends Component {
-  constructor() {
-    super(...arguments);
-  }
 
   static propTypes = {
     signInWithFacebook: PropTypes.func.isRequired,

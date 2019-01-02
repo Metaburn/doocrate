@@ -29,7 +29,7 @@
     "start": "run-p start:css start:js",
     "start:css": "npm run build:css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
     "start:js": "cross-env NODE_PATH=. react-scripts start",
-    "test": "cross-env NODE_PATH=. react-scripts test --env=jsdom",
+    "test": "cross-env CI=true NODE_PATH=. react-scripts test --env=jsdom",
     "test:ci": "cross-env CI=true NODE_PATH=. react-scripts test --env=jsdom",
     "copy-staging": "cp -R src/firebase/config.staging.js src/firebase/config.js",
     "copy-production": "cp -R src/firebase/config.production.js src/firebase/config.js",

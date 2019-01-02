@@ -31,4 +31,4 @@ jobs:
           name: Build and test
           command: |
             npm run build
-            npm test
+            npm test:ci
