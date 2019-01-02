@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/r-park/todo-react-redux.svg?style=shield&circle-token=6caf8c493bd66544717ff9a47ae01d8be036e53c)](https://circleci.com/gh/r-park/todo-react-redux)
+[![CircleCI](https://circleci.com/gh/Metaburn/doocrate.svg?style=svg)](https://circleci.com/gh/Metaburn/doocrate)
 
 
 # Doocrate
