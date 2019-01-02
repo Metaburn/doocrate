@@ -92,5 +92,18 @@
 
   @media only screen and (min-width: 320px)  {
     padding: 0em 1em 0.3em 1em;
+
+    .task-filters {
+
+      li:last-child {
+        width:100%;
+      }
+    }
+  }
+
+  @media (max-width: 480px)  {
+    li:last-child {
+      width:100%;
+    }
   }
 }
