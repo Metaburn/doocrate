@@ -24,12 +24,11 @@
 
 .task-view-wrapper {
   justify-content: flex-start;
-  min-width: 1em;
+  min-width: 50%;
   max-width: 800px;
   position: relative;
   padding-left: 25px;
   padding-right: 25px;
-
 }
 
 @media (max-width: 767px) {
