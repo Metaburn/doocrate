@@ -19,7 +19,7 @@
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
   padding-left: 10px;
-  padding-right: 15px;
+  padding-right: 10px;
 }
 
 .task-view-wrapper {
@@ -27,8 +27,8 @@
   min-width: 50%;
   max-width: 800px;
   position: relative;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 @media (max-width: 767px) {
@@ -41,18 +41,18 @@
   }
 
   .task-view-wrapper {
-    min-width: 0;
+    min-width: 50%
   }
 }
 
 @media (max-width: 1120px) {
   .task-view-wrapper {
-    min-width: 20em;
+    min-width: 50%;
   }
 }
 
 @media (max-width: 795px) {
   .task-view-wrapper {
-    min-width: 8em;
+    min-width: 50%;
   }
 }
