@@ -14,6 +14,7 @@
 }
 
 .task-list-wrapper {
+  z-index: 2;
   max-width: 50%;
   flex: 5500 1 605px;
   -webkit-box-flex: 5500;
@@ -53,6 +54,7 @@
 
 @media (max-width: 795px) {
   .task-view-wrapper {
+    width: 100%;
     min-width: 50%;
   }
 }
