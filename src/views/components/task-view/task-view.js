@@ -17,7 +17,6 @@ import Textarea from 'react-textarea-autosize';
 import Img from 'react-image'
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
-import 'react-inputs-validation/lib/react-inputs-validation.min.css';
 import Select from 'react-select';
 import CommentList from '../comment-list';
 import TagsSuggestions from '../tags-suggestions';
@@ -237,7 +236,10 @@ export class TaskView extends Component {
                 </div>
               <div className='form-input'><div className='instruction'><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
-              <div><Icon className='label notranslate' name='loyalty' /> {this.renderLabel(canEditTask, t, '0')} </div>
+
+              <div className='tags-container'>
+                <Icon className='label notranslate' name='loyalty' /> {this.renderTags(canEditTask, t, '0')}
+              </div>
 
               { canEditTask && this.state.popularTags ?
                 <div>
@@ -261,13 +263,8 @@ export class TaskView extends Component {
               }
               {this.renderTaskCreator(t, task) }
             </form>
-            <span>{t('comments.title')}</span>
-            { this.props.comments ?
-            <CommentList
-            task={task}
-            comments={this.props.comments}
-            auth={this.props.auth} /> : ''}
           </div>
+          { this.renderCommentsList(t, task) }
           { this.renderAddComment() }
           { this.renderTakeOwnershipModal(task) }
         </div>
@@ -297,6 +294,17 @@ export class TaskView extends Component {
       createComment={this.props.createComment }
       auth={this.props.auth}
       key='addComment' />)
+  }
+
+  renderCommentsList(translation, task) {
+    if(this.props.comments) {
+      return (
+        <CommentList
+          task={task}
+          comments={this.props.comments}
+          auth={this.props.auth}/>
+      )
+    }
   }
 
   renderSelect(task, fieldName, placeholder, options, isEditable, translation, tabIndex) {
@@ -359,7 +367,7 @@ export class TaskView extends Component {
     );
   }
 
-  renderLabel(isEditable, translation, tabIndex) {
+  renderTags(isEditable, translation, tabIndex) {
     const showPlaceholder = this.state.label.length === 0;
     const classNames = isEditable ? ' editable' : '';
 

@@ -3,6 +3,7 @@ import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import CommentItem from '../comment-item/comment-item';
 import './comment-list.css';
+import { I18n } from 'react-i18next';
 
 class CommentList extends Component {
   static propTypes = {
@@ -19,12 +20,20 @@ class CommentList extends Component {
           commentNumber={index}
           comment={comment}
         />
-      );
+      )
     });
-    
+
     return (
       <div className='comment-list'>
-        { commentItems }
+        <I18n ns='translations'>
+          {
+            (t, { i18n }) => (
+              <div>
+                <div className={'comment-title'}>{t('comments.title')}</div>
+                {commentItems}
+              </div>
+            )}
+        </I18n>
       </div>
     );
   };

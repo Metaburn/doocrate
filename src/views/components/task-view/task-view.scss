@@ -21,15 +21,11 @@
     font-size: 16px;
     margin-top: 0.5em;
     margin-bottom: 0.4em;
-
-    &:first-child {
-      margin-top: 0;
-    }
   }
 
 
   .avatar {
-    margin: 0 20px;
+    margin: 8px 5px;
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -59,12 +55,10 @@
 
 .task-view {
   padding: 10px 25px;
-  max-height: 19.35em;
   overflow-y: auto;
 
   textarea {
     resize:none;
-    font-family: $base-font-family;
   }
 
   input:disabled, select:disabled, textarea:disabled {
@@ -139,6 +133,7 @@
   width: 100%; //TODO
   transition: border-color 100ms;
   font-size: 18px;
+  height: 35px;
   padding: 5px;
   border: none;
   text-rendering: optimizeSpeed;
@@ -153,6 +148,10 @@
   &:hover {
     border: 1px solid #d5dce0;
   }
+}
+
+.tags-container {
+
 }
 
 .react-tagsinput-changing {

@@ -68,7 +68,6 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           </Switch>
         }
       </main>
-      <Footer />
     </div>
       )}
   </I18n>
