@@ -7,7 +7,7 @@ import { projectActions } from 'src/projects';
 
 import './projects-page.css';
 import {I18n} from 'react-i18next';
-import { getCookie } from 'src/utils/browser-utils';
+import { getCookie, createCookie} from 'src/utils/browser-utils';
 
 export class ProjectsPage extends Component {
   constructor() {
@@ -35,7 +35,7 @@ export class ProjectsPage extends Component {
     const project = getCookie('project');
     const isRedirected = getCookie('is_redirected');
     if (project && !isRedirected) {
-      document.cookie = 'is_redirected=true';
+      createCookie('is_redirected', 'true');
       this.props.history.push('/'+ project +'/task/1');
     }
   }
