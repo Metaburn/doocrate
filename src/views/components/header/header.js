@@ -83,7 +83,8 @@ class Header extends Component {
                   <div className={`lang-select lang-${t('lang-float-reverse')}`}>
                     {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
                   </div>
-                  <GoogleTranslate/>
+                  <GoogleTranslate
+                  shouldClose={ this.props.shouldClose }/>
                   <div className={'create-project-header'}>
                     <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
                     {this.renderRedirectToCreateProject()}

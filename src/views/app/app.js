@@ -8,7 +8,6 @@ import { authActions, getAuth } from 'src/auth';
 import { getProject } from 'src/projects';
 import { notificationActions } from 'src/notification';
 import Header from '../components/header';
-import Footer from '../components/footer';
 import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';

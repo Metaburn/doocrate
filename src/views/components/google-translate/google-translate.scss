@@ -12,3 +12,17 @@
     display: none;
   }
 }
+
+.google-translate-container {
+  float: left;
+
+  .close-button {
+    padding: 0;
+    min-width: 0;
+    margin: 0 8px 0 8px;
+
+    .close-icon {
+      font-size: 16px;
+    }
+  }
+}
