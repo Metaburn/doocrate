@@ -85,10 +85,12 @@ class Header extends Component {
                   </div>
                   <GoogleTranslate
                   shouldClose={ this.props.shouldClose }/>
-                  <div className={'create-project-header'}>
-                    <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
-                    {this.renderRedirectToCreateProject()}
-                  </div>
+                  {this.props.auth && this.props.auth.id ?
+                    <div className={'create-project-header'}>
+                      <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
+                      {this.renderRedirectToCreateProject()}
+                    </div> : ''
+                  }
                 </div>
               </div>
             </header>
