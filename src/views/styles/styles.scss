@@ -107,3 +107,8 @@ input[type='checkbox']
 .float-dir-left {
   float: left;
 }
+
+
+// Hide google translate on safari browsers
+.goog-te-banner-frame.skiptranslate {display: none !important;}
+body { top: 0px !important; }
