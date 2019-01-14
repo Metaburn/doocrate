@@ -40,7 +40,8 @@ export class TaskView extends Component {
       isCritical: false,
       isDone: false,
       validations: {},
-      shouldOpenTakeOwnerModal: false
+      shouldOpenTakeOwnerModal: false,
+      didDebounce: false //TODO - not sure why it helps with debounced
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -471,7 +472,10 @@ export class TaskView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
+    if(!prevState.didDebounce) {
+      this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
+      this.setState({didDebounce: true});
+    }
   }
 
   getFormFields() {
