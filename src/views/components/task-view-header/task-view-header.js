@@ -46,7 +46,7 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.save')}</Button> : ''
           }
 
-          { this.props.showSaveButton ?
+          { !this.props.isDraft ?
             <Button
               className='button button-small action-button'
               onClick={()=> { this.props.markAsDoneUndone() }}
