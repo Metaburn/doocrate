@@ -54,10 +54,19 @@ export class TaskViewHeader extends Component {
           }
 
           { this.props.showDeleteButton ?
+
             <Button
-              className='action-button button-grey'
-              onClick={()=> { this.props.removeTask(task); this.props.selectTask(); }}
-              type='button'>{t('task.delete')}</Button> : '' }
+              className='button button-small action-button'
+              onClick={()=> {
+                if (!window.confirm(t('task.sure-delete'))) {
+                  return;
+                }
+                this.props.removeTask(task);
+                this.props.selectTask();
+              }}
+              type='button'>
+              <Icon name='delete' className='header-icon grow delete' />
+            </Button> : '' }
 
           { task && task.isCritical ?
             <span>

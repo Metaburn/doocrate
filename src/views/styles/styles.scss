@@ -72,6 +72,12 @@ div:focus {
   transform: scale(1.1);
 }
 
+input {
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  border: 1px solid #e5dce0;
+  height: 2em;
+}
 
 textarea:hover,
 input:hover,
@@ -112,3 +118,11 @@ input[type='checkbox']
 // Hide google translate on safari browsers
 .goog-te-banner-frame.skiptranslate {display: none !important;}
 body { top: 0px !important; }
+
+// Fix Select bug on firefox
+//.Select-control {
+//
+//}
+//.Select-value {
+//  border: 1px solid #ccc;
+//}

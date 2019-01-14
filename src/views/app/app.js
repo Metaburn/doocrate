@@ -22,7 +22,6 @@ import ReportsPage from '../pages/reports';
 import ProjectsPage from '../pages/projects';
 import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
-import 'react-select/dist/react-select.css';
 import { appConfig } from 'src/config/app-config'
 const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile, showSuccess}) => (
   <I18n ns='translations'>

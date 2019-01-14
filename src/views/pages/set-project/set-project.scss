@@ -5,23 +5,36 @@
     color: $primary-color;
   }
 
+  padding: 0 1em 1em 1em;
+  margin-top: 1em;
+
   background: white;
   -webkit-border-radius: 8px;
   -moz-border-radius: 8px;
   border-radius: 8px;
 
-  max-width: 700px;
+  max-width: 450px;
 
   input {
+    margin-top: 5px;
+    margin-bottom: 5px;
     display: block;
-    -webkit-transition: all 1s ease;
-    -moz-transition: all 1s ease;
-    -ms-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease;
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -ms-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
     &:hover {
       border-color: #eb1478;
     }
+  }
+
+  .form-input {
+    margin-bottom: 1em;
+  }
+
+  input[type=text] {
+    min-width: 400px;
   }
 
   input[type=checkbox] {

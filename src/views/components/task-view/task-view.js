@@ -49,6 +49,7 @@ export class TaskView extends Component {
     this.handleAddLabel = this.handleAddLabel.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
+    this.selectedTaskType = this.selectedTaskType.bind(this);
     this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
 
@@ -163,6 +164,11 @@ export class TaskView extends Component {
     // TODO - check this maybe called several times now that we use comments
 
     this.updateStateByProps(nextProps);
+  }
+
+  selectedTaskType(selected, fieldName) {
+    let val=null; if (selected) { val = selected}
+    this.setState({ [fieldName]: val})
   }
 
   render() {
@@ -314,11 +320,11 @@ export class TaskView extends Component {
       name={fieldName}
       value={this.state[fieldName]}
       tabIndex = { tabIndex }
-      ref={e => this[fieldName+'Input'] = e}
-      onChange={(e) => { let val=null; if (e) { val = e.value }
-                this.setState({ [fieldName]: val}) }}
+      //ref={e => this[fieldName+'Input'] = e}
+      onChange={(e) => { this.selectedTaskType(e, fieldName)}}
       options={options}
       // onBlur={this.handleSubmit}
+      isSearchable={false}
       placeholder= {translation('general.select-default')}
       noResultsText={translation('general.no-results-found')}
       searchable={ false }
@@ -465,7 +471,7 @@ export class TaskView extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    this.debouncedHandleSubmit();
+    //this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
   }
 
   getFormFields() {

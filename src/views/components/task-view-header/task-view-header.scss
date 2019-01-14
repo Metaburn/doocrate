@@ -17,6 +17,12 @@
 
   .action-button {
     margin: 5px 20px;
+
+    .delete {
+      vertical-align: sub;
+      font-size: 20px;
+      color: black;
+    }
   }
 
   .avatar-container {

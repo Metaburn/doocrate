@@ -61,6 +61,7 @@
     "take-responsibility": "Take responsibility for this task",
     "remove-responsibility": "Remove responsibility for this task",
     "delete": "Delete task",
+    "sure-delete": "Are you sure you want to delete this task?",
     "critical": "Critical task",
     "name": "Task name",
     "description": "Task description",
