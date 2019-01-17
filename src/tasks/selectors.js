@@ -35,7 +35,7 @@ export const taskFilters = {
   // Unassigned is free tasks which are not camps nor art
   unassigned: (tasks) => {
     return tasks.filter(task => !task.assignee &&
-      task.type !== 3 && task.type !== 4);
+      (task.type && task.type.value !== 3) && (task.type && task.type.value !== 4));
   },
 
   // Unassigned is free tasks which are not camps nor art
@@ -51,7 +51,7 @@ export const taskFilters = {
 
   taskType: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.type && task.type === parseInt(filter.text, 10);
+      return task.type && task.type.value === parseInt(filter.text, 10);
     });
   },
 
