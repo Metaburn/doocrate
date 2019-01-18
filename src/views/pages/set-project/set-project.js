@@ -26,12 +26,15 @@ class SetProject extends Component {
       type2: '',
       type3: '',
       type4: '',
-      popularTags: []
+      popularTags: [],
+      extraFields: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
+    this.handleExtraFieldsChange = this.handleExtraFieldsChange.bind(this);
+
     this.isValid = this.isValid.bind(this);
   }
 
@@ -53,7 +56,7 @@ class SetProject extends Component {
         return;
       }
 
-      let { name, taskTypes, creator, isPublic, popularTags } = existingProject;
+      let { name, taskTypes, creator, isPublic, popularTags, extraFields } = existingProject;
       popularTags = this.fromTagObject(popularTags);
 
       let type0,type1,type2,type3,type4;
@@ -78,6 +81,7 @@ class SetProject extends Component {
         isExisting: true,
         projectUrl: projectUrl,
         popularTags: popularTags || [],
+        extraFields: extraFields || [],
         name: name || '',
         isPublic: isPublic,
         type0: type0 || '',
@@ -134,6 +138,10 @@ class SetProject extends Component {
                 </div>
 
                 { this.renderPopularTags(t)}
+                <br/><span>
+                  {t('create-project.extra-fields-explain')}
+                </span>
+                { this.renderExtraFields(t)}
 
                 <div className='form-input'>
                   <span>{t('create-project.visibility-placeholder')}</span>
@@ -205,6 +213,21 @@ class SetProject extends Component {
     );
   }
 
+  renderExtraFields(translation) {
+    const showPlaceholder = this.state.extraFields.length === 0;
+    return (
+      <TagsInput className={'react-tagsinput-changing extra-fields'}
+                 tabIndex={'0'}
+                 value={this.state.extraFields}
+                 onChange={this.handleExtraFieldsChange}
+                 onlyUnique={true}
+                 addOnBlur={true}
+                 inputProps={{ placeholder: showPlaceholder ? translation('create-project.extra-fields') : ''}}
+                 onRemove= { this.handleExtraFieldsChange}
+      />
+    );
+  }
+
   renderSubmit(t) {
     return this.state.isExisting ?
       <input className={'button button-small'}
@@ -227,6 +250,14 @@ class SetProject extends Component {
       popularTags[i] = popularTags[i].trim();
     }
     this.setState({popularTags: popularTags})
+  }
+
+  handleExtraFieldsChange(extraFields) {
+    // Clear leading and trailing white space
+    for(let i=0; i<extraFields.length; i++) {
+      extraFields[i] = extraFields[i].trim();
+    }
+    this.setState({extraFields: extraFields})
   }
 
   handleSubmit(event) {
@@ -307,6 +338,7 @@ class SetProject extends Component {
       taskTypes: taskTypes,
       isPublic: this.state.isPublic,
       popularTags: popularTagsAsMap,
+      extraFields: this.state.extraFields,
       created: new Date()
     };
   }

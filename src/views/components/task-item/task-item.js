@@ -110,7 +110,7 @@ TaskItem.propTypes = {
   task: PropTypes.object.isRequired,
   selectTask: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
-  selectedProject: PropTypes.object.isRequired,
+  selectedProject: PropTypes.object,
 };
 
 const mapStateToProps = (state) => {

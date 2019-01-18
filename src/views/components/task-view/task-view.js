@@ -41,10 +41,12 @@ export class TaskView extends Component {
       isDone: false,
       validations: {},
       shouldOpenTakeOwnerModal: false,
+      extraFields: {},
       didDebounce: false //TODO - not sure why it helps with debounced
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleExtraFieldChange = this.handleExtraFieldChange.bind(this);
     this.handleTextBoxChange = this.handleTextBoxChange.bind(this);
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.handleAddLabel = this.handleAddLabel.bind(this);
@@ -85,6 +87,17 @@ export class TaskView extends Component {
     }
   }
 
+  getExtraFieldsKeysFromProject() {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.extraFields ||
+      this.props.selectedProject.extraFields.length <= 0
+    ) {
+      return null;
+    } else {
+      return this.props.selectedProject.extraFields;
+    }
+  }
+
   componentWillMount() {
     this.updateStateByProps(this.props);
   }
@@ -93,6 +106,7 @@ export class TaskView extends Component {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, type,
       label, isCritical, dueDate, created, isDone, doneDate,
+      extraFields
     } = nextSelectedTask;
 
       // this checks if we got another task, or we're updating the same one
@@ -117,8 +131,9 @@ export class TaskView extends Component {
           dueDate: dueDate || null,
           type: type || null,
           defaultType: defaultType || [],
-          validation: {},
-          popularTags: popularTags
+          popularTags: popularTags,
+          extraFields: extraFields || {},
+          validation: {}
         });
       }else {
         // A new task?
@@ -230,17 +245,17 @@ export class TaskView extends Component {
             <form noValidate>
               <div className='form-input'>
                 {canEditTask ?
-                  this.renderInput(task, 'title', t, canEditTask, '0', true) :
+                  this.renderInput(task, 'title', t('task.name'), t, canEditTask, '0', true, true) :
                   <span>{task.title}</span>
                 }
-                </div>
+              </div>
               <div className='form-input'>
                 {canEditTask ?
                   this.renderTextArea(task, 'description', t, canEditTask, '0')
                   :
                   <span>{task.description}</span>
                 }
-                </div>
+              </div>
               <div className='form-input'><div className='instruction'><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
 
@@ -261,6 +276,11 @@ export class TaskView extends Component {
                   </div>
                 </div>
                   : ''
+              }
+
+              { canEditTask && this.state.extraFields?
+                this.renderExtraFields(t,task, canEditTask)
+                : ''
               }
 
               {canEditTask ?
@@ -292,6 +312,31 @@ export class TaskView extends Component {
                     </span>
       </div>
     );
+  }
+
+  renderExtraFields(t, task, canEditTask) {
+    const extraFields = this.getExtraFieldsKeysFromProject();
+    if(!extraFields) {
+      return;
+    }
+
+    let extraFieldItems = extraFields.map((extraField, index) => {
+      return (
+        <div className='form-input' key={index}>
+          {canEditTask ?
+            this.renderExtraFieldInput(task, 'extra-field-' + extraField, extraField, t, canEditTask, '0', true) :
+            <span>{ extraField }</span>
+          }
+        </div>
+      )
+    });
+
+
+    return(
+    <div>
+      { extraFieldItems }
+    </div>
+    )
   }
 
   renderAddComment() {
@@ -333,7 +378,7 @@ export class TaskView extends Component {
   );
   }
 
-  renderInput(task, fieldName, t, isEditable, tabIndex, isAutoFocus) {
+  renderInput(task, fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
     const classNames = isEditable ? ' editable' : '';
     return( <Textbox
       classNameInput={`changing-input${classNames}`}
@@ -341,7 +386,7 @@ export class TaskView extends Component {
       tabIndex = { tabIndex }
       name = { fieldName }
       value = { this.state[fieldName] }
-      placeholder = { t('task.name') }
+      placeholder = { placeholder }
       ref = { e => this[fieldName+'Input'] = e }
       onChange = { this.handleChange }
       onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
@@ -349,7 +394,29 @@ export class TaskView extends Component {
       disabled = { !isEditable }
       autofocus = { isAutoFocus }
 
-      validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
+      validationOption={{ required: isRequired, msgOnError: t('task.errors.not-empty') }}
+      validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
+    />)
+  }
+
+  renderExtraFieldInput(task, fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
+    const classNames = isEditable ? ' editable' : '';
+    return( <Textbox
+      classNameInput={`changing-input${classNames}`}
+      type = 'text'
+      tabIndex = { tabIndex }
+      name = { fieldName }
+
+      value = { this.state.extraFields[fieldName] }
+      placeholder = { placeholder }
+      ref = { e => this[fieldName+'Input'] = e }
+      onChange = { this.handleExtraFieldChange }
+      onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
+      onKeyUp={ () => {}} // here to trigger validation callback on Key up
+      disabled = { !isEditable }
+      autofocus = { isAutoFocus }
+
+      validationOption={{ required: isRequired, msgOnError: t('task.errors.not-empty') }}
       validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
     />)
   }
@@ -437,6 +504,16 @@ export class TaskView extends Component {
     });
   }
 
+  // We use one object - extraFields to store all the extra fields data
+  // So it can be: {'name':'extra name', 'another_field': 'extra_field_value'}
+  handleExtraFieldChange(n, e) {
+    let fieldName = e.target.name;
+    const newObject = { [fieldName]: e.target.value };
+    this.setState({
+      'extraFields': Object.assign(this.state.extraFields, newObject)
+    });
+  }
+
   handleTextBoxChange(o) {
     let fieldName = o.target.name;
     this.setState({
@@ -487,7 +564,10 @@ export class TaskView extends Component {
       isCritical: this.state.isCritical,
       isDone: this.state.isDone,
       type: this.state.type,
+      extraFields: this.state.extraFields
     };
+
+
     fieldsToUpdate.dueDate = this.state.dueDate || null;
 
     return fieldsToUpdate;

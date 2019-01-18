@@ -6,6 +6,7 @@ export const Project = new Record({
   url: null,
   creator: null,
   taskTypes: null,
-  popularTags: null
+  popularTags: null,
+  extraFields: null
 });
 

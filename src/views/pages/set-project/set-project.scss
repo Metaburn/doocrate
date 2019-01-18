@@ -48,4 +48,16 @@
 
     }
   }
+
+  .extra-fields {
+    .react-tagsinput-tag {
+      color: white;
+      background-color: $primary-color;
+      border: none;
+    }
+    .react-tagsinput-remove {
+      color: white;
+    }
+  }
 }
+
