@@ -145,7 +145,7 @@ export class TaskView extends Component {
 
         this.setState({
           defaultType: defaultType || [],
-          popularTags: popularTags
+          popularTags: popularTags,
         });
       }
   }
