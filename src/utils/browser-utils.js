@@ -46,7 +46,7 @@ export function getCookie(cookieName) {
 }
 
 
-export function createCookie(name, value,years=10) {
+export function setCookie(name, value,years=10) {
   let date = new Date();
   date.setTime(date.getTime()+(years*365*24*60*60*1000));
   var expires = "expires="+date.toGMTString();

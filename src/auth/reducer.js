@@ -16,7 +16,8 @@ export const AuthState = new Record({
   canAssignTask: false,
   didntBuy: false,
   shouldShowUpdateProfile: false,
-  adminProjects: []
+  adminProjects: [],
+  defaultProject: null
 });
 
 
@@ -37,7 +38,8 @@ export function authReducer(state = new AuthState(), {payload, type}) {
         canCreateTask: payload? payload.canCreateTask: null,
         canAssignTask: payload? payload.canAssignTask: null,
         didntBuy: payload? payload.didntBuy: null,
-        adminProjects: payload? payload.adminProjects: []
+        adminProjects: payload? payload.adminProjects: [],
+        defaultProject: payload? payload.defaultProject: null,
       });
 
     case SIGN_OUT_SUCCESS:

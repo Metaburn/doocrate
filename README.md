@@ -244,10 +244,14 @@ Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssign
 Check you console. You need to follow the error using the link and create an index for comments
 
 #### Can I deploy only the hosting without the functions?
-Yes run ```
+Yes run
+```
 npm run build
 firebase deploy --hosting
 ```
+
+#### Project redirection
+Yes done through a cookie `is_redirected` and a url for example `?project=adacontra-2019`
 
 #### I'm having issue running npm install
 Make sure you use node ~v8.11.0 by running:

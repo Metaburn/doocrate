@@ -49,7 +49,7 @@ class MyProfileTooltip extends Component {
               <span className='tooltip-container'>
                 <NavLink to={{ pathname: this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
                 <NavLink to='/me'>{t('header.my-space')}</NavLink><br/>
-                <NavLink to='/projects'>{t('header.all-projects')}</NavLink><br/>
+                <NavLink to={{ pathname: '/projects/', search: 'show=true'}}>{t('header.all-projects')}</NavLink><br/>
                 <div><Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button></div>
                 <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>
               </span>

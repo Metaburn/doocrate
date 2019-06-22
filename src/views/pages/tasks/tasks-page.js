@@ -21,6 +21,7 @@ import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { SetUserInfo } from "../../components/set-user-info";
 import { updateUserData } from "src/auth/auth";
+import {setCookie} from "../../../utils/browser-utils";
 
 export class TasksPage extends Component {
   constructor() {
@@ -96,10 +97,19 @@ export class TasksPage extends Component {
     this.showSetUserInfo();
   }
 
+  setProjectCookie(projectUrl) {
+    if(projectUrl) {
+      setCookie('project', projectUrl);
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     // if url has a task id - select it
     if (nextProps.match != null && nextProps.match.params.projectUrl &&
       nextProps.match.params.id) {
+
+      this.setProjectCookie(nextProps.match.params.projectUrl);
+
       const tid = nextProps.match.params.id;
 
       if (tid === "new-task") {

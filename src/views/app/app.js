@@ -49,18 +49,18 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           <Switch>
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
-            {
-              /* Uncommenting the following line causes the app to not allow users to login */
-              /* <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/:projectUrl/" component={TasksPage}/> */
-            }
-            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
-            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
-            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
-            <RequireUnauthRoute authenticated={auth && auth.authenticated} path="/sign-in/" component={SignInPage}/>
+            <RequireUnauthRoute authenticated={auth && auth.authenticated} exact path="/sign-in/" component={SignInPage}/>
+            <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
-            <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
+            /* The hierarchy here is important - /:projectUrl/task/:id should come before /:projectUrl
+             * Otherwise React router doesn't parse task id properly */
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/" component={TasksPage} />
+
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>
             <Route component={NotFound}/>
           </Switch>

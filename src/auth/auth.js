@@ -1,6 +1,7 @@
 import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
 import { appConfig } from 'src/config/app-config'
+import {getCookie} from "../utils/browser-utils";
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
@@ -41,11 +42,16 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
       authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
       authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
       authUser.updatedEmail = userInfoData.email;
+      authUser.defaultProject = userInfoData.defaultProject;
 
       dispatch(authActions.initAuth(authUser));
       unsubscribe();
       resolve();
     } else {
+      const project = getCookie('project');
+      if(authUser && authUser.uid && project) {
+        authUser.project = project;
+      }
       // Only update the fields if no user data exists
       updateUserData(authUser).then(authUserResult => {
         dispatch(authActions.initAuth(authUserResult));
@@ -62,6 +68,7 @@ export function updateUserData(authUser) {
     if (!authUser || !authUser.uid) {
       return resolve(null);
     }
+
     const userDoc = firebaseDb.collection('users').doc(authUser.uid);
     userDoc.get().then(userSnapshot => {
       if (!userSnapshot.exists) {
@@ -70,6 +77,7 @@ export function updateUserData(authUser) {
           name: authUser.displayName,
           email: authUser.email,
           photoURL: authUser.photoURL,
+          defaultProject: authUser.defaultProject,
           created: new Date()
         };
 
@@ -79,7 +87,7 @@ export function updateUserData(authUser) {
           userSeed.canCreateTask = authUser.canCreateTask = true;
         }
 
-        userDoc.set(userSeed)
+        userDoc.set(userSeed);
         resolve(authUser);
       } else {
         // For existing users check if we set the isEmailConfigured flag. We use it to allow users on first time to

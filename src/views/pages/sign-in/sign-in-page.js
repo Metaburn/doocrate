@@ -7,7 +7,7 @@ import Button from 'src/views/components/button';
 import Icon from 'src/views/components/icon';
 import { NavLink } from 'react-router-dom';
 import { I18n } from 'react-i18next';
-import { createCookie } from 'src/utils/browser-utils';
+import { setCookie, getCookie } from 'src/utils/browser-utils';
 
 import './sign-in-page.css';
 
@@ -28,7 +28,15 @@ class SignInPage extends Component {
     const query = new URLSearchParams(this.props.location.search);
     const project = query.get('project');
     if(project) {
-      createCookie('project', project);
+      setCookie('project', project);
+    }else {
+      // We might already have the cookie set in the past
+      const project = getCookie('project');
+      if(project) {
+        this.props.history.push({
+          search: '?project=' + project
+        })
+      }
     }
   }
 

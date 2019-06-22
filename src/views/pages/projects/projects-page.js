@@ -7,7 +7,8 @@ import { projectActions } from 'src/projects';
 
 import './projects-page.css';
 import {I18n} from 'react-i18next';
-import { getCookie, createCookie} from 'src/utils/browser-utils';
+import { getCookie } from 'src/utils/browser-utils';
+import {getUrlSearchParams} from "../../../utils/browser-utils";
 
 export class ProjectsPage extends Component {
   constructor() {
@@ -32,11 +33,20 @@ export class ProjectsPage extends Component {
 
   // A user may have receive a link with a redirect request - We do that only once
   checkIfRedirectByProjectCookie() {
+    const params = getUrlSearchParams();
+    const isShowAllProjects = params['show'];
+    // Dont redirect when a user presses on the show all projects
+    if(isShowAllProjects) {
+      return;
+    }
     const project = getCookie('project');
-    const isRedirected = getCookie('is_redirected');
-    if (project && !isRedirected) {
-      createCookie('is_redirected', 'true');
+    if (project) {
       this.props.history.push('/'+ project +'/task/1');
+    }
+
+    // Redirect user to default project
+    if(this.props.auth.defaultProject) {
+      this.props.history.push('/'+ this.props.auth.defaultProject +'/task/1');
     }
   }
 
