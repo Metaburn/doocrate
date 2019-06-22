@@ -53,8 +53,10 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
-            /* The hierarchy here is important - /:projectUrl/task/:id should come before /:projectUrl
+            {
+              /* The hierarchy here is important - /:projectUrl/task/:id should come before /:projectUrl
              * Otherwise React router doesn't parse task id properly */
+            }
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
