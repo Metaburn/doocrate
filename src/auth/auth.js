@@ -77,9 +77,12 @@ export function updateUserData(authUser) {
           name: authUser.displayName,
           email: authUser.email,
           photoURL: authUser.photoURL,
-          defaultProject: authUser.defaultProject,
           created: new Date()
         };
+
+        if (authUser.defaultProject) {
+          userSeed.defaultProject = authUser.defaultProject;
+        }
 
         // Set if new users can assign / create task (client side only)
         if (appConfig.canNewUsersCreateAssignTask) {
