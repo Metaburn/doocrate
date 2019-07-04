@@ -22,6 +22,18 @@ function authenticate(provider) {
 }
 
 
+// Since we are having some issues with auth - that might some users
+function authenticatePopup(provider) {
+  firebaseAuth.useDeviceLanguage();
+  return dispatch => {
+    firebaseAuth.signInWithPopup(provider)
+      .then(result => { dispatch(signInSuccess(result, dispatch)) })
+      .catch(error => dispatch(signInError(error)));
+  };
+}
+
+
+
 export function initAuth(user) {
   return {
     type: INIT_AUTH,
@@ -48,13 +60,21 @@ export function signInSuccess(result) {
 }
 
 
-export function signInWithFacebook() {
-  return authenticate(new firebase.auth.FacebookAuthProvider());
+export function signInWithFacebook(isIssues) {
+  if(!isIssues) {
+    return authenticate(new firebase.auth.FacebookAuthProvider());
+  }else {
+    return authenticatePopup(new firebase.auth.FacebookAuthProvider());
+  }
 }
 
 
-export function signInWithGoogle() {
-  return authenticate(new firebase.auth.GoogleAuthProvider());
+export function signInWithGoogle(isIssues) {
+  if(!isIssues) {
+    return authenticate(new firebase.auth.GoogleAuthProvider());
+  }else {
+    return authenticatePopup(new firebase.auth.GoogleAuthProvider());
+  }
 }
 
 

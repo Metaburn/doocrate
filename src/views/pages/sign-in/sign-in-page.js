@@ -92,6 +92,14 @@ class SignInPage extends Component {
                             onClick={this.props.signInWithGoogle}>{t('welcome.google-login')}</Button>
                     <Button className="sign-in__button"
                             onClick={this.props.signInWithFacebook}>{t('welcome.facebook-login')}</Button>
+                    <br />
+                    <hr />
+                    <br/>
+                    {t('welcome.cant-login')}
+                    <Button className="sign-in__button"
+                            onClick={() => {this.props.signInWithGoogle(true) }}>{t('welcome.google-login2')}</Button>
+                    <Button className="sign-in__button"
+                            onClick={() => {this.props.signInWithFacebook(true) }}>{t('welcome.facebook-login2')}</Button>
                   </div>
                   <br/>
                   <br/>

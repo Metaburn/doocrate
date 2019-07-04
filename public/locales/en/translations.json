@@ -141,7 +141,10 @@
     "instruction5": "Everything else, that we won't do - Won't happen :)",
     "instruction6": "Take part in the experiment",
     "google-login": "Log in with Google",
-    "facebook-login": "Log in with Facebook"
+    "facebook-login": "Log in with Facebook",
+    "google-login2": "Log in with Google (2nd option)",
+    "facebook-login2": "Log in with Facebook (2nd option)",
+    "cant-login": "Cant Login? Try one of those buttons"
   },
   "footer": {
     "about": "This system was written as",
