@@ -7,7 +7,9 @@ export const Project = new Record({
   creator: null,
   taskTypes: null,
   popularTags: null,
-  extraFields: null
+  extraFields: null,
+  canCreateTask: null,
+  canAssignTask: null
 });
 
 

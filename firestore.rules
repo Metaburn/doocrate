@@ -44,8 +44,9 @@ service cloud.firestore {
       match /tasks/{anyTask} {
         allow read: if request.auth != null;
         // Allow create: if authenticated
-        // Uncomment the following to allow create for all
-        allow create: if request.auth != null;
+        // DONT EXPORT THE NEXT SENTENCE TO A FUNCTION - FIREBASE HAS A BUG THAT DOESNT ALLOW THAT TO WORK -
+        // KEEP IT LIKE SO
+        allow create: if request.auth != null && (get(/databases/$(database)/documents/projects/$(anyProject)).data.canAssignTask == true);
         // Uncomment the following to allow unassigned task to be assigned by all
         allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isSuperAdmin());
         allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator() || isSuperAdmin());

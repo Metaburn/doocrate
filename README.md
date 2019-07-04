@@ -238,7 +238,7 @@ Only when there is at least one task it would stop running - Press on add task
 Yes - under `src->config->app-config` set the parameter `isSystemClosed` to true
 
 #### Is there a way to open / close new users from openning / assigning tasks
-Yes - under `src->config->app-config` set the parameter `canNewUsersCreateAssignTask` to false
+Yes - Each project now has ability to set it under edit project page
 
 #### Comments are not working
 Check you console. You need to follow the error using the link and create an index for comments

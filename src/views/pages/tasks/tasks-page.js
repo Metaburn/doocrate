@@ -225,7 +225,7 @@ export class TasksPage extends Component {
     //  return;
     //}
 
-    if (!this.props.auth || !(this.props.auth.canCreateTask)) {
+    if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       const project_url = this.props.match.params.projectUrl;
       this.props.history.push('/'+project_url+'/task/1');
@@ -285,7 +285,7 @@ export class TasksPage extends Component {
     //  return;
     //}
 
-    if (!this.props.auth.canAssignTask) {
+    if (!this.props.selectedProject.canAssignTask) {
       this.props.showError(i18n.t('task.user-cannot-assign'));
       return;
     }
@@ -441,7 +441,7 @@ export class TasksPage extends Component {
   }
 
   createTask() {
-    if (!this.props.auth || !(this.props.auth.canCreateTask)) {
+    if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       return;
     }

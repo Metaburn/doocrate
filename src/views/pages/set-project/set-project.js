@@ -28,6 +28,8 @@ class SetProject extends Component {
       type4: '',
       popularTags: [],
       extraFields: [],
+      canCreateTask: true,
+      canAssignTask: true
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -56,7 +58,7 @@ class SetProject extends Component {
         return;
       }
 
-      let { name, taskTypes, creator, isPublic, popularTags, extraFields } = existingProject;
+      let { name, taskTypes, creator, isPublic, popularTags, extraFields, canCreateTask, canAssignTask } = existingProject;
       popularTags = this.fromTagObject(popularTags);
 
       let type0,type1,type2,type3,type4;
@@ -83,6 +85,8 @@ class SetProject extends Component {
         popularTags: popularTags || [],
         extraFields: extraFields || [],
         name: name || '',
+        canCreateTask: canCreateTask,
+        canAssignTask: canAssignTask,
         isPublic: isPublic,
         type0: type0 || '',
         type1: type1 || '',
@@ -149,6 +153,10 @@ class SetProject extends Component {
                   <span>{t('create-project.visibility-explain')}</span>
                   <br/>
                   { this.renderCheckbox('isPublic', t('create-project.visibility'), t, true)}
+                  <br/>
+                  { this.renderCheckbox('canCreateTask', t('create-project.can-create-task'), t, true)}
+                  <br/>
+                  { this.renderCheckbox('canAssignTask', t('create-project.can-assign-task'), t, true)}
                 </div>
 
                 <br/>
@@ -337,6 +345,8 @@ class SetProject extends Component {
       creator: creator,
       taskTypes: taskTypes,
       isPublic: this.state.isPublic,
+      canCreateTask: this.state.canCreateTask,
+      canAssignTask: this.state.canAssignTask,
       popularTags: popularTagsAsMap,
       extraFields: this.state.extraFields,
       created: new Date()

@@ -1,6 +1,5 @@
 import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
-import { appConfig } from 'src/config/app-config'
 import {getCookie} from "../utils/browser-utils";
 
 export function initAuth(dispatch) {
@@ -38,8 +37,6 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
     if (userInfo && userInfo.exists) {
       const userInfoData = userInfo.data();
       authUser.isEmailConfigured = userInfoData.isEmailConfigured;
-      authUser.canAssignTask = userInfoData.canAssignTask; // Can a person assign a task to himself
-      authUser.canCreateTask = userInfoData.canCreateTask; // Can a person create a new task
       authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
       authUser.updatedEmail = userInfoData.email;
       authUser.defaultProject = userInfoData.defaultProject;
@@ -82,12 +79,6 @@ export function updateUserData(authUser) {
 
         if (authUser.defaultProject) {
           userSeed.defaultProject = authUser.defaultProject;
-        }
-
-        // Set if new users can assign / create task (client side only)
-        if (appConfig.canNewUsersCreateAssignTask) {
-          userSeed.canAssignTask = authUser.canAssignTask = true;
-          userSeed.canCreateTask = authUser.canCreateTask = true;
         }
 
         userDoc.set(userSeed);
