@@ -6,5 +6,5 @@ export const firebaseConfig = {
   projectId: 'doocrate2',
   // This loads the Event planning page - Set to 2,3 to change it
   // Or leave it empty to show all the tasks as the default page
-  defaultPageToLoad: '' //'?filter=taskType&text=3'
+  defaultPageToLoad: '?complete=false' //'?filter=taskType&text=3'
 };

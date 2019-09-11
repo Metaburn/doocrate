@@ -80,7 +80,7 @@ export class TasksPage extends Component {
     // TODO - Instead should redirect to all project in the world
     if (!project_url) {
       project_url = 'project_test';
-      this.props.history.push('/project_test/task/1');
+      this.props.history.push('/project_test/task/1?complete=false');
     }
     // TODO - should be set by a filter on the user view
     this.props.loadTasks(project_url, INCOMPLETE_TASKS);
@@ -213,22 +213,10 @@ export class TasksPage extends Component {
   }
 
   createNewTask() {
-    // const myTasks = this.props.filters[filter.type](this.props.tasks, filter);
-
-    // TODO: Move to a better place
-    //if (!this.isAdmin() && myTasks.size >= 20) {
-    //  this.props.showError(i18n.t('task.maximum-reached'));
-    //  return;
-    //}
-    //if (!(this.isAdmin() || this.isGuide())) {
-    //  this.props.showError(i18n.t('task.new-tasks-closed'));
-    //  return;
-    //}
-
     if (!this.props.auth || (this.props.selectedProject && !(this.props.selectedProject.canCreateTask))) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       const project_url = this.props.match.params.projectUrl;
-      this.props.history.push('/'+project_url+'/task/1');
+      this.props.history.push('/'+project_url+'/task/1?complete=false');
 
       return;
     }

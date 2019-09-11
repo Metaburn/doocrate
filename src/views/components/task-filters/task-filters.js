@@ -87,6 +87,8 @@ class TaskFilters extends Component {
       downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
     }
 
+    const defaultTask = '/' + this.props.projectUrl + '/task/1';
+
     return(
       <I18n ns='translations'>
       {
@@ -98,13 +100,13 @@ class TaskFilters extends Component {
             return(
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '1')
-          }} to={{ pathname: '/' + this.props.projectUrl + '/task/1',
+          }} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return (TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '2')
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          }} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
@@ -112,7 +114,7 @@ class TaskFilters extends Component {
               TaskFilters.getFilterQuery(location) === 'taskType' &&
             TaskFilters.getFilterText(location) === '3'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          }} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
@@ -120,7 +122,7 @@ class TaskFilters extends Component {
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '4'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          }} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
@@ -128,20 +130,20 @@ class TaskFilters extends Component {
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '5'
             )
-          }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          }} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
 
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=mine')}}>
             {t('task.my-tasks')}
             </NavLink></li>
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
             search: TaskFilters.addQueryParam('filter=unassigned')}}>
             {t('task.free-tasks')}
             </NavLink></li>
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{ pathname: defaultTask,
             search: TaskFilters.removeQueryParam('filter')}}>{t('task.all-tasks')}</NavLink></li>
           {downloadCSV}
           <li>
