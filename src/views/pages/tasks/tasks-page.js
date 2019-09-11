@@ -225,7 +225,7 @@ export class TasksPage extends Component {
     //  return;
     //}
 
-    if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
+    if (!this.props.auth || (this.props.selectedProject && !(this.props.selectedProject.canCreateTask))) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       const project_url = this.props.match.params.projectUrl;
       this.props.history.push('/'+project_url+'/task/1');
@@ -455,7 +455,8 @@ export class TasksPage extends Component {
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
-    const isLoading = (!this.state.tasks || this.props.tasks.size <= 0);
+    const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
+    const isLoading = (!this.state.tasks || this.props.tasks.size <= 0 && !isNewTask);
     const projectUrl = this.props.match.params.projectUrl;
     return (
       <div>
