@@ -437,14 +437,14 @@ export class TasksPage extends Component {
     this.props.showSuccess(i18n.t('task.creating-new'));
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
-    this.props.history.push('/'+project_url+'/task/new-task');
+    this.props.history.push('/'+project_url+'/task/new-task?complete=false');
   }
 
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
-    const isLoading = (!this.state.tasks || this.props.tasks.size <= 0 && !isNewTask);
+    const isLoading = (!this.state.tasks || (this.props.tasks.size <= 0 && !isNewTask));
     const projectUrl = this.props.match.params.projectUrl;
     return (
       <div>
