@@ -10,15 +10,22 @@
   font-size: 18px;
 
   .instruction {
-    font-size: 16px;
     margin-top: 0.5em;
     margin-bottom: 0.4em;
-    margin-left: 1em;
+  }
+
+  .instruction-left {
+    float: left;
+    margin-right: 1em;
+  }
+
+  .instruction-right {
     float: right;
+    margin-left: 1em;
+
   }
 
   .instruction-label {
-    font-size: 16px;
     margin-top: 0.5em;
     margin-bottom: 0.4em;
   }
@@ -75,6 +82,7 @@
   input[type='checkbox'] {
     opacity: 1;
     position: relative;
+    vertical-align: middle;
   }
 
   .Select {
@@ -152,14 +160,26 @@
 }
 
 .tags-container {
+  display: flex;
 
+  .label {
+    padding: 0 0.5em;
+  }
+}
+
+.tags-container-left {
+  flex-direction: row;
+}
+
+.tags-container-right {
+  flex-direction: row;
 }
 
 .react-tagsinput-changing {
   border: 1px solid #ccc;
   overflow: hidden;
   padding: 5px 1px 1px 1px;
-  width: calc(100% - 60px);
+  width: 100%;
   display: inline-block;
 
   input {

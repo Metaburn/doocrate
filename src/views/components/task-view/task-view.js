@@ -256,10 +256,10 @@ export class TaskView extends Component {
                   <span>{task.description}</span>
                 }
               </div>
-              <div className='form-input'><div className='instruction'><span>{t('task.type')}</span></div>
+              <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
               { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
 
-              <div className='tags-container'>
+              <div className={`tags-container tags-container-${t('lang-float')}`}>
                 <Icon className='label notranslate' name='loyalty' /> {this.renderTags(canEditTask, t, '0')}
               </div>
 
