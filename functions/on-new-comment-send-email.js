@@ -10,7 +10,7 @@ const fromEmail = emailConfig? decodeURIComponent(emailConfig.from) : null;
 const emailApiKey = emailConfig? encodeURIComponent(emailConfig.apikey) : 'No env variable set';
 const emailDomain = emailConfig? encodeURIComponent(emailConfig.domain) : 'No env variable set';
 
-const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain})
+const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain});
 
 const Firestore = require('@google-cloud/firestore');
 const firestore = new Firestore();
@@ -18,9 +18,9 @@ firestore.settings({
   timestampsInSnapshots: true
 });
 /*
-  Whenever a new project is created - the user who created it becomes an admin for that project
+  Whenever a new comment is created - an email is sent
  */
-exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{projectId}/comments/{commentId}').onWrite((change, context)=> {
+exports.onNewCommentSendEmail = functions.firestore.document('/projects/{projectId}/comments/{commentId}').onWrite((change, context)=> {
 
   if(!shouldSendNotifications) {
     console.warn('send notifications turned off');

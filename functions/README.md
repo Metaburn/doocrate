@@ -1,9 +1,17 @@
+# What is this?
+Here we keep all the server side code
+We store our function as firebase functions (Similar to AWS Lambda - aka cloud functions)
+
 # Local development
-`npm install`
-`npm run start`
+```
+npm install
+npm run start
+```
 
 # Deployment
-`npm run build && firebase deploy`
+```
+npm run build && firebase deploy
+```
 
 # Cloud functions
 This part should be deployed to the firebase server
