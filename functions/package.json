@@ -1,6 +1,9 @@
 {
   "name": "limit-posts-functions",
   "description": "Limit number of posts Firebase Functions sample",
+  "engines": {
+    "node": "8"
+  },
   "dependencies": {
     "@google-cloud/firestore": "0.18.0",
     "firebase-admin": "6.1.0",
