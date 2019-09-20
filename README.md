@@ -27,7 +27,7 @@ Quick Start
 ```shell
 git clone https://github.com/metaburn/doocrate.git
 cd doocrate
-npm install
+yarn
 cd functions
 npm install
 cd ..
@@ -35,75 +35,9 @@ npm run copy-staging
 npm start
 ```
 
-## Deploying a new version
-#### Prerequisites:
-- Create a free Firebase account at https://firebase.google.com
-- Create a project from your [Firebase account console](https://console.firebase.google.com)
-- Configure the authentication providers by going to: 
-  Your firebase project->Authentication->Set up sign-in method-> Facebook -> Enable
-  (Go to http://developers.facebook.com/ and My Apps-> Create a new app. Use that app id and app secret. Add under your facebook app Add a new Facebook Login and set the Valid OAuth Redirect URIs to the one firebase gives youA)
-  Then for google perform -> Google -> Enable - set a project name
-- Configure firebase Firestore. Database->Firestore->Enable
-- Add a Webapp to your firebase by going here:
-`https://console.firebase.google.com/u/0/project/doocrate-production/settings/general/`
-And choosing `Add Firebase to your web app`
-
-## Set up firestore rules
-Rules are a way to restrict access to the database and give different users different permissions
-For example - Anyone can create a task. But only a task creator (And assignee)can edit a task
-
-copy the content of `firestore.rules` file into Rules of your project. For example - 
-`https://console.firebase.google.com/u/0/project/doocrate-production/database/firestore/rules`
-Then hit `Publish` to save it
-
-## Create new firestore database
-Go to Database->Create new Firestore database and set the default settings
-
-#### Configure this app with your project-specific details:
-edit the file .firebaserc
-```json
-// .firebaserc
-
-{
-  "projects": {
-    "default": "your-project-id"
-  }
-}
-```
-
-Edit `config.production.js` and `app-config.js` to be set to
-```javascript
-// src/firebase/config.production.js
-
-export const firebaseConfig = {
-  apiKey: 'your api key',
-  authDomain: 'your-project-id.firebaseapp.com',
-  databaseURL: 'https://your-project-id.firebaseio.com',
-  storageBucket: 'your-project-id.appspot.com'
-};
-```
-
 #### Install firebase-tools:
 ```shell
 npm install -g firebase-tools
-```
-
-## Setting up mail
-We send emails on task comments to assignee
-We've used mailgun since it allows 1000 messages free per day.
-You need to make sure you set up Blaze-pay-as-you-go plan on firestore
-Don't worry on normal use cases (800 users) you probably won't pay anything
-Register here - https://www.mailgun.com/google
-
-Run:
-```
-firebase functions:config:set email.send_notifications='true'
-firebase functions:config:set email.from='<support@doocrate.com>'
-firebase functions:config:set email.domain='doocrate.com'
-firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
-
-Then in the future if you want to deploy only function - use this command (No need right now - better run deploy staging / production)
-firebase deploy --only functions
 ```
 
 ## Deploy command
@@ -131,6 +65,24 @@ firebase use default
 npm run deploy:production
 // And if you want only to deploy without building you can run firebase deploy
 ```
+
+## Setting up your own server
+Only If you are interested in setting up your own server (That is your own doocrate.com on a different domain)- read [Setting Up your own server](./docs/setting_your_own_server.md) 
+
+## Translations
+You can find translations under `public/locales/`
+
+You can open the page with the required language. For example use
+`http://localhost:3000/sign-in/?lng=he` to open the hebrew version
+`http://localhost:3000/sign-in/?lng=en` to open the english version
+
+## Firestore rules
+Rules are a way to restrict access to the database and give different users different permissions
+For example - Anyone can create a task. But only a task creator (And assignee)can edit a task
+
+To update rules - copy the content of `firestore.rules` file into Rules of your project. For example - 
+`https://console.firebase.google.com/u/0/project/doocrate-production/database/firestore/rules`
+Then hit `Publish` to save it
 
 ## Creating index
 After the system is up:
@@ -166,13 +118,6 @@ point to the location of your export files. For example - `gcloud alpha firestor
 
 Import a specific collection by calling: `gcloud alpha firestore import --collection-ids='[COLLECTION_ID_1]','[COLLECTION_ID_2]' gs://[BUCKET_NAME]/[EXPORT_PREFIX]/`
 
-## Translations
-You can find translations under `public/locales/`
-
-You can open the page with the required language. For example use
-`http://localhost:3000/sign-in/?lng=he` to open the hebrew version
-`http://localhost:3000/sign-in/?lng=en` to open the english version
-
 # Stop the system
 You can user the `/admin-dashboard` page if you are an admin to set permissions
 You can press on the button their - This would go over all the users in the system and would set the
@@ -207,14 +152,17 @@ These are root level admins.
 They are defined manually in the collection super_admins -> UID
 
 #### Why is Mail is not being sent?
-Check that you are on the `blaze` (Pay as you go) plan. Otherwise external services such as mailgun aren't accessible. Don't worry. Firebase won't charge money unless you have > 10000 users from our calculations
+Check that you are on the `blaze` (Pay as you go) plan.
+Otherwise external services such as mailgun aren't accessible. Don't worry.
+Firebase won't charge money unless you have > 10000 users from our calculations
 
-Also, Check that all the settings are correct and you have created a mailgun username and set up the domain correctly
+Also, Check that all the settings are correct and you have created a mailgun
+username and set up the domain correctly
 
 #### Is there a reports page
 Yes `/:project-id/reports`
 
-#### Is there an admin page
+#### Is there a super admin page
 Yes. `/admin-dashboard`
 
 #### I'm getting this error:
@@ -255,4 +203,4 @@ Yes done through a cookie `is_redirected` and a url for example `?project=adacon
 
 #### I'm having issue running npm install
 Make sure you use node ~v8.11.0 by running:
-`nvm use v8.11.0`
+`nvm use`
