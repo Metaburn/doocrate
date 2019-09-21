@@ -53,6 +53,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
+            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } exact path="/admin/dashboard" component={AdminDashboard}/>
             {
               /* The hierarchy here is important - /:projectUrl/task/:id should come before /:projectUrl
              * Otherwise React router doesn't parse task id properly */
@@ -63,7 +64,6 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/" component={TasksPage} />
 
-            <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/admin-dashboard" component={AdminDashboard}/>
             <Route component={NotFound}/>
           </Switch>
         }

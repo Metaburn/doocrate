@@ -119,7 +119,7 @@ point to the location of your export files. For example - `gcloud alpha firestor
 Import a specific collection by calling: `gcloud alpha firestore import --collection-ids='[COLLECTION_ID_1]','[COLLECTION_ID_2]' gs://[BUCKET_NAME]/[EXPORT_PREFIX]/`
 
 # Stop the system
-You can user the `/admin-dashboard` page if you are an admin to set permissions
+You can user the `/admin/dashboard` page if you are an admin to set permissions
 You can press on the button their - This would go over all the users in the system and would set the
 "canCreateTask, "canAssignTask" permissions which allows to create new tasks and assign / unassign themself 
 

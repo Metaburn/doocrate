@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 import './header.css';
 import GoogleTranslate from '../google-translate/google-translate';
+import {updateUserData} from "../../../auth/auth";
 
 const menuContent =
   `<div>
@@ -36,6 +37,7 @@ class Header extends Component {
 
     this.renderLanguageButton = this.renderLanguageButton.bind(this);
     this.renderRedirectToCreateProject = this.renderRedirectToCreateProject.bind(this);
+    this.updateUserInfo = this.updateUserInfo.bind(this);
   }
 
   render() {
@@ -116,9 +118,17 @@ class Header extends Component {
     })
   };
 
-  static changeLanguage(changeLang, t, i18n, onShowSuccess) {
+  changeLanguage(changeLang, t, i18n, onShowSuccess) {
     i18n.changeLanguage(changeLang);
+    this.updateUserInfo(changeLang);
     onShowSuccess('To see translated tasks - press on "Select language" on the top left and choose English');
+  }
+
+  updateUserInfo(language) {
+    const userData = {};
+    userData.uid = this.props.auth.id;
+    userData.language = language;
+    updateUserData(userData);
   }
 
   renderLanguageButton(t, i18n, onShowSuccess) {
@@ -128,7 +138,7 @@ class Header extends Component {
       <div>
         <button
           onClick={() => {
-            Header.changeLanguage(changeLang, t, i18n, onShowSuccess)
+            this.changeLanguage(changeLang, t, i18n, onShowSuccess)
           }}>
           {t('nav.' + changeLang + '-lang')}
         </button>
