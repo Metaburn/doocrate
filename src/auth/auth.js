@@ -74,7 +74,8 @@ export function updateUserData(authUser) {
           name: authUser.displayName,
           email: authUser.email,
           photoURL: authUser.photoURL,
-          created: new Date()
+          created: new Date(),
+          language: 'he' //Hebrew is default lang
         };
 
         if (authUser.defaultProject) {
@@ -94,8 +95,21 @@ export function updateUserData(authUser) {
             name: authUser.displayName,
             email: authUser.email,
             isEmailConfigured: true,
-            updated: new Date()
+            updated: new Date(),
+            language: 'he' // Hebrew is default lang
           }, {merge: true})
+        }else {
+          // Simply update the user fields
+          // Add any fields below
+          const newUserData = { updated: new Date()};
+          if (authUser.language) {
+            newUserData.language = authUser.language
+          }
+          if (authUser.email) {
+            newUserData.email = authUser.email
+          }
+          userDoc.set(newUserData,
+            {merge: true})
         }
         resolve(authUser);
       }
