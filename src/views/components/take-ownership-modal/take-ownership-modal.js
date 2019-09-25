@@ -67,12 +67,19 @@ export class TakeOwnershipModal extends Component {
   }
 
   renderHeader(t) {
+
+    const text = this.props.textLines.map((line) => {
+        return (
+          <div>
+            <span><br/></span>
+            <span>{t(line)}</span>
+          </div>);
+      }
+    );
+
     return (
       <div className='modal-header'>
-        <span><br /></span>
-        <span>{t('task.do-you-take-ownership')}</span>
-        <br />
-        <span>{t('task.do-you-take-ownership2')}</span>
+        {text}
       </div>
     );
   }
@@ -101,7 +108,8 @@ export class TakeOwnershipModal extends Component {
 
 TakeOwnershipModal.propTypes = {
   onClosed: PropTypes.func.isRequired,
-  onYes: PropTypes.func.isRequired
+  onYes: PropTypes.func.isRequired,
+  textLines: PropTypes.array.isRequired
 };
 
 

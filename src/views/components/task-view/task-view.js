@@ -34,6 +34,7 @@ export class TaskView extends Component {
     this.state = {
       title: '',
       description: '',
+      requirements: '',
       type: '',
       defaultType: [],
       label: [],
@@ -42,7 +43,8 @@ export class TaskView extends Component {
       validations: {},
       shouldOpenTakeOwnerModal: false,
       extraFields: {},
-      didDebounce: false //TODO - not sure why it helps with debounced
+      didDebounce: false, //TODO - not sure why it helps with debounced,
+      shouldOpenAssignmentModal: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -104,7 +106,7 @@ export class TaskView extends Component {
 
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
-    let { id, title, description, type,
+    let { id, title, description, requirements, type,
       label, isCritical, dueDate, created, isDone, doneDate,
       extraFields
     } = nextSelectedTask;
@@ -123,6 +125,7 @@ export class TaskView extends Component {
           id: id || '',
           title: title || '',
           description:description || '',
+          requirements:requirements || '',
           label: labelAsArray || [],
           isCritical: isCritical || false,
           isDone: isDone || false,
@@ -231,7 +234,7 @@ export class TaskView extends Component {
           task={ this.props.selectedTask }
           canDeleteTask={ canDeleteTask }
           selectTask={ this.props.selectTask }
-          assignTask={ this.props.assignTask }
+          assignTask={ () => this.setState({shouldOpenAssignmentModal: true}) }
           unassignTask={ this.props.unassignTask }
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
@@ -251,9 +254,16 @@ export class TaskView extends Component {
               </div>
               <div className='form-input'>
                 {canEditTask ?
-                  this.renderTextArea(task, 'description', t, canEditTask, '0')
+                  this.renderTextArea(task, 'description', t, canEditTask, '0', 'task.description')
                   :
                   <span>{task.description}</span>
+                }
+              </div>
+              <div className='form-input'>
+                {canEditTask ?
+                  this.renderTextArea(task, 'requirements', t, canEditTask, '0', 'task.requirements')
+                  :
+                  <span>{task.requirements}</span>
                 }
               </div>
               <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
@@ -294,6 +304,7 @@ export class TaskView extends Component {
           { this.renderCommentsList(t, task) }
           { this.renderAddComment() }
           { this.renderTakeOwnershipModal(task) }
+          { this.renderAssignmentModal(task) }
         </div>
       )}
       </I18n>
@@ -421,7 +432,7 @@ export class TaskView extends Component {
     />)
   }
 
-  renderTextArea(task, fieldName, t, isEditable, tabIndex) {
+  renderTextArea(task, fieldName, t, isEditable, tabIndex, placeHolder) {
     const classNames = isEditable ? ' editable' : '';
     return (
         <Textarea
@@ -429,7 +440,7 @@ export class TaskView extends Component {
         name={fieldName}
         tabIndex={tabIndex}
         value={this.state[fieldName]}
-        placeholder={t('task.description')}
+        placeholder={t(placeHolder)}
         ref={e => this[fieldName+'Input'] = e}
         onChange={this.handleTextBoxChange}
         onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
@@ -492,7 +503,32 @@ export class TaskView extends Component {
             this.setState({shouldOpenTakeOwnerModal: false});
             this.props.assignTask(task);
           }
-          }/>
+          }
+          textLines={['task.do-you-take-ownership', 'task.do-you-take-ownership2']}
+        />
+      </div>
+    );
+  }
+
+  renderAssignmentModal(task) {
+    const textLines = this.state.requirements == null || this.state.requirements === "" ?
+      ['task.do-you-take-ownership'] :
+      ['task.do-you-take-ownership', 'task.pay-attention-to-the-requirements', this.state.requirements];
+
+    return (
+      <div>
+        <TakeOwnershipModal
+          isOpen={task && task.id && this.state.shouldOpenAssignmentModal}
+          onClosed={() => {
+            this.setState({shouldOpenAssignmentModal: false});
+          }}
+          onYes={() => {
+            this.setState({shouldOpenAssignmentModal: false});
+            this.props.assignTask(task);
+          }
+          }
+          textLines={textLines}
+        />
       </div>
     );
   }
@@ -560,6 +596,7 @@ export class TaskView extends Component {
     const fieldsToUpdate = {
       title: this.state.title,
       description: this.state.description,
+      requirements: this.state.requirements,
       label: labelAsObject,
       isCritical: this.state.isCritical,
       isDone: this.state.isDone,
