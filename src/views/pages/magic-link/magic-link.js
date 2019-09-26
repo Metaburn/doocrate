@@ -7,8 +7,6 @@ import { notificationActions } from 'src/notification';
 import { I18n } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 
-import i18n from "../../../i18n";
-
 class MagicLink extends Component {
   constructor() {
     super(...arguments);
