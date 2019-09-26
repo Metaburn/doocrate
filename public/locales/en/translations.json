@@ -13,8 +13,8 @@
     "select-default": "Select..."
   },
   "header": {
-    "disconnect": "Disconnect",
-    "me": "Me",
+    "disconnect": "Sign out ",
+    "me": "🧝",
     "my-space": "Personal space",
     "all-projects": "All projects",
     "update-my-profile":"Update my profile",
@@ -118,6 +118,7 @@
   "user": {
     "email": "Your email address (Will be used to notify me when someone comment on my task):",
     "set-my-email": "My email:",
+    "set-my-name": "How shall we call you",
     "submit" : "Save & Continue"
   },
   "admin": {
@@ -142,9 +143,16 @@
     "instruction6": "Take part in the experiment",
     "google-login": "Log in with Google",
     "facebook-login": "Log in with Facebook",
-    "google-login2": "Log in with Google (2nd option)",
-    "facebook-login2": "Log in with Facebook (2nd option)",
-    "cant-login": "Cant Login? Try one of those buttons"
+    "signup-email": "Sign up with email",
+    "signin-email": "Already have a user? Sign in"
+  },
+  "signin": {
+    "enter-email": "Enter your email to get a magic link",
+    "my-email": "Your email",
+    "submit": "Send me the link",
+    "check-your-email": "You got mail 📧. Open it to login",
+    "redirecting": "Redirecting...",
+    "try-again": "If this doesn't work - click here to try again"
   },
   "footer": {
     "about": "This system was written as",

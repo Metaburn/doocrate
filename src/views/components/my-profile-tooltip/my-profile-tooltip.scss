@@ -1,8 +1,9 @@
 @import 'views/styles/shared';
 
 .my-profile-tooltip-container {
+  display: inline-block;
   .avatar {
-    margin: 0 5px; 
+    margin: 0 5px;
     width: 40px;
     height: 40px;
     border-radius: 40px;
@@ -15,9 +16,8 @@
     color: $primary-color;
     text-decoration: none;
     transition: all 0.2s ease;
-    margin-top: 20px;
-    padding-bottom: 10px;
-    margin: 20px 10px 0 10px;
+    padding: 0 0 0 0;
+    margin: 0 10px 0 10px;
 
     &:hover {
       color: #666;
