@@ -1,0 +1,6 @@
+{
+  "parserOptions": {
+    // Required for certain syntax usages
+    "ecmaVersion": 8 // Version 8
+  }
+}

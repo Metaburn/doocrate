@@ -1,17 +1,15 @@
 'use strict';
 
-const functions = require('firebase-functions');
-const Firestore = require('@google-cloud/firestore');
-
 // Max number of tasks per creator
-const MAX_TASK_PER_CREATOR = 80;
-
+const functions = require('firebase-functions');
 const onNewProjectMakeAdminFunctions = require('./on-new-project-make-admin');
 const onNewCommentSendEmail = require('./on-new-comment-send-email');
 
 exports.onNewProjectMakeAdminFunctions = onNewProjectMakeAdminFunctions;
 exports.onNewCommentSendEmail = onNewCommentSendEmail;
 
+
+const MAX_TASK_PER_CREATOR = 80;
 // Limit the number of tasks by creator
 exports.limitTasksPerCreatorFirestore = functions.firestore.document('/tasks/{taskId}').onCreate((snap, context) => {
   console.log("On create");
