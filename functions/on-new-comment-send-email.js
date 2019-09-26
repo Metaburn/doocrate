@@ -79,11 +79,11 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
       return mailOptions;
     }
 
-    // Get the user language and send the email
+    // Get the users languages to send emails in the right language
     const userPromises = [];
     const creatorEmail = task.creator.email;
     userPromises.push(getUserInfo(task.creator.id));
-    if (task.assignee && task.assignee.email && task.assignee.email !== creatorEmail) {
+    if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
       userPromises.push(getUserInfo(task.assignee.id));
     }
 
@@ -91,6 +91,8 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     const creator = usersData[0].data();
     const languageCreator = creator.language || 'he'; //Defaults to hebrew;
     const mailPromises = [];
+
+    // Send the emails
     mailPromises.push(mailgun.messages().send(getEmailParams(creator.email, languageCreator)));
     if (usersData.length > 1) {
       const assignee = usersData[1].data();
@@ -99,7 +101,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     }
 
     try {
-      Promise.all(mailPromises);
+      await Promise.all(mailPromises);
       console.log('Emails sent successfully');
       return true;
     } catch (error) {
