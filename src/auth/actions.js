@@ -21,6 +21,48 @@ function authenticate(provider) {
   };
 }
 
+export function signInMagic() {
+  return dispatch => {
+    // Confirm the link is a sign-in with email link.
+    if (firebaseAuth.isSignInWithEmailLink(window.location.href)) {
+      let email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        // User opened the link on a different device. To prevent session fixation
+        // attacks, ask the user to provide the associated email again. For example:
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      // The client SDK will parse the code from the link for you.
+      firebaseAuth.signInWithEmailLink(email, window.location.href)
+        .then( result => {
+          window.location.reload();
+          dispatch(signInSuccess(result, dispatch));
+          // You can check if the user is new or existing:
+          // result.additionalUserInfo.isNewUser
+        })
+        .catch( error => {
+          dispatch(signInError(error));
+        });
+    }
+  }
+}
+
+// Upon clicking on the email this is where the user is navigating to
+export function signInWithEmailPassword(email) {
+  firebaseAuth.useDeviceLanguage();
+  const options = {
+    'url': window.location.origin +'/magic-link',
+    handleCodeInApp: true,
+  };
+
+  return dispatch => {
+    window.localStorage.setItem('emailForSignIn', email);
+    firebaseAuth.sendSignInLinkToEmail(email, options)
+      .then(result => { dispatch(signInSuccess(result, dispatch)) })
+      .catch(error => dispatch(signInError(error)));
+  };
+}
+
+
 
 // Since we are having some issues with auth - that might some users
 function authenticatePopup(provider) {
@@ -43,8 +85,9 @@ export function initAuth(user) {
 
 
 export function signInError(error) {
-  const errorMessage = error && error.message? error.message : error
-  toast.error(errorMessage)
+  const errorMessage = error && error.message? error.message : error;
+  console.log(errorMessage);
+  toast.error(errorMessage);
   return {
     type: SIGN_IN_ERROR,
     payload: error
@@ -76,7 +119,6 @@ export function signInWithGoogle(isIssues) {
     return authenticatePopup(new firebase.auth.GoogleAuthProvider());
   }
 }
-
 
 export function signOut() {
   return dispatch => {

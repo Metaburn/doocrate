@@ -42,6 +42,8 @@ if (module.hot) {
 unregister();
 
 
+// TODO - this is not being called when the user is signed in / signed up for the first time
+// TODO Only after refresh
 initAuth(store.dispatch)
   .then(() => {
       render(App);

@@ -81,7 +81,6 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
 
     // Get the users languages to send emails in the right language
     const userPromises = [];
-    const creatorEmail = task.creator.email;
     userPromises.push(getUserInfo(task.creator.id));
     if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
       userPromises.push(getUserInfo(task.assignee.id));

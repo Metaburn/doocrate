@@ -3,17 +3,28 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { authActions } from 'src/auth';
+import { notificationActions } from 'src/notification';
 import Button from 'src/views/components/button';
 import Icon from 'src/views/components/icon';
 import { NavLink } from 'react-router-dom';
 import { I18n } from 'react-i18next';
+import { SignupLogin } from 'src/views/components/signup-login'
 import { setCookie, getCookie } from 'src/utils/browser-utils';
 
 import './sign-in-page.css';
-
+import i18n from "../../../i18n";
 
 class SignInPage extends Component {
+  constructor() {
+    super(...arguments);
 
+    this.state = {
+      showSignupLogin: false,
+    };
+
+    this.showHideSignupLogin = this.showHideSignupLogin.bind(this);
+    this.sendMagicLink = this.sendMagicLink.bind(this);
+  }
   static propTypes = {
     signInWithFacebook: PropTypes.func.isRequired,
     signInWithGoogle: PropTypes.func.isRequired,
@@ -38,6 +49,30 @@ class SignInPage extends Component {
         })
       }
     }
+  }
+
+  sendMagicLink(email) {
+    this.props.signInWithEmailPassword(email);
+    this.props.showSuccess(i18n.t('signin.check-your-email'));
+  }
+
+  renderSignupLogin() {
+    return (
+      <div>
+        <SignupLogin
+          isOpen = { this.state.showSignupLogin}
+          sendMagicLink={ this.sendMagicLink }
+          onClosed = { () => {
+            this.setState({showSignupLogin: false});
+            this.setState({showSignupLogin: false})
+          }
+          } />
+      </div>
+    );
+  }
+
+  showHideSignupLogin() {
+    this.setState({ showSignupLogin: !this.state.showSignupLogin })
   }
 
   render() {
@@ -95,16 +130,16 @@ class SignInPage extends Component {
                     <br />
                     <hr />
                     <br/>
-                    {t('welcome.cant-login')}
                     <Button className="sign-in__button"
-                            onClick={() => {this.props.signInWithGoogle(true) }}>{t('welcome.google-login2')}</Button>
+                            onClick={() => { this.showHideSignupLogin() }}>{t('welcome.signup-email')}</Button>
                     <Button className="sign-in__button"
-                            onClick={() => {this.props.signInWithFacebook(true) }}>{t('welcome.facebook-login2')}</Button>
+                            onClick={() =>  {this.showHideSignupLogin() }}>{t('welcome.signin-email')}</Button>
                   </div>
                   <br/>
                   <br/>
                 </div>
               </div>
+              {this.renderSignupLogin()}
             </div>
           )}
       </I18n>
@@ -115,17 +150,20 @@ class SignInPage extends Component {
 SignInPage.propTypes = {
   signInWithFacebook: PropTypes.func.isRequired,
   signInWithGoogle: PropTypes.func.isRequired,
+  signInWithEmailPassword: PropTypes.func.isRequired,
+  showSuccess: PropTypes.func.isRequired
 };
 
 
 //=====================================
-//  CONNECT
+//  CONNECTREAD
 //-------------------------------------
 
-const mapDispatchToProps = {
-  signInWithFacebook: authActions.signInWithFacebook,
-  signInWithGoogle: authActions.signInWithGoogle,
-};
+const mapDispatchToProps = Object.assign(
+  {},
+  authActions,
+  notificationActions
+);
 
 export default withRouter(
   connect(
