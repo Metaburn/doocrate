@@ -22,6 +22,11 @@ a {
   background: rgba(200,200,255,.1);
 }
 
+button {
+  font-family: $base-font-family;
+}
+
+
 button:focus {
   outline:0;
 }
@@ -105,6 +110,10 @@ input[type='checkbox']
   appearance:checkbox !important;
 }
 
+input[type='button']
+{
+  font-family: "aktiv-grotesk-std", Helvetica Neue, Arial, sans-serif;
+}
 
 .float-dir-right {
   float: right;

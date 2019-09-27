@@ -98,7 +98,7 @@
     "new-tasks-closed": "יצירת משימות חדשות סגורה כעת",
     "user-new-tasks-closed": "הפרוייקט סגור כעת. לא ניתן ליצור משימות חדשות רק לצפות במשימות ולערוך משימות קיימות",
     "automatic-tags": "תגיות פופולריות (בחר לפחות אחת):",
-    "input-tags": "הכנס לפחות תגית אחת או בחר מההצעות (לחץ Enter לאישור)",
+    "input-tags": "הכנס לפחות תגית אחת",
     "mission-incomplete-short": "לא ניתן לשמור משימה לפני מילוי כל השדות. אנא מלאי את כל השדות. 👁",
     "mission-incomplete": "לא ניתן לשמור משימה לפני מילוי כל השדות. האם ברצונך להשאר במשימה? לחיצה על Cancel תוביל למחיקת המשימה",
     "do-you-take-ownership": "האם תרצי לקחת אחריות על משימה זו?",
