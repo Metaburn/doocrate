@@ -8,6 +8,7 @@ import {
   SIGN_IN_ERROR,
   SIGN_IN_SUCCESS,
   SIGN_OUT_SUCCESS,
+  MAGIC_LINK_SUCCESS,
   UPDATE_PROFILE
 } from './action-types';
 
@@ -57,7 +58,7 @@ export function signInWithEmailPassword(email) {
   return dispatch => {
     window.localStorage.setItem('emailForSignIn', email);
     firebaseAuth.sendSignInLinkToEmail(email, options)
-      .then(result => { dispatch(signInSuccess(result, dispatch)) })
+      .then(result => { dispatch(magicLinkSuccess(result, dispatch)) })
       .catch(error => dispatch(signInError(error)));
   };
 }
@@ -94,6 +95,12 @@ export function signInError(error) {
   };
 }
 
+export function magicLinkSuccess(result) {
+  return {
+    type: MAGIC_LINK_SUCCESS,
+    payload: result
+  }
+}
 
 export function signInSuccess(result) {
   return {
