@@ -1,0 +1,13 @@
+.googleSignIn {
+  background-image: url(./btn_google_signin.png);
+  width: 249px;
+  height: 60px;
+  background-size: cover;
+  display: inline-block;
+  overflow: hidden;
+  border: none;
+}
+
+.googleSignIn:hover {
+  background-image: url(./btn_google_signin_pressed.png);
+}

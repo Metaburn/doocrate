@@ -13,6 +13,8 @@ import { setCookie, getCookie } from 'src/utils/browser-utils';
 
 import './sign-in-page.css';
 import i18n from "../../../i18n";
+import GoogleSignIn from "../../components/google-sign-in/google-sign-in";
+import FacebookSignIn from "../../components/facebook-sign-in/facebook-sign-in";
 
 class SignInPage extends Component {
   constructor() {
@@ -123,13 +125,8 @@ class SignInPage extends Component {
                     {t('welcome.instruction6')}
                   </h3>
                   <div className='sign-in-buttons'>
-                    <Button className="sign-in__button"
-                            onClick={this.props.signInWithGoogle}>{t('welcome.google-login')}</Button>
-                    <Button className="sign-in__button"
-                            onClick={this.props.signInWithFacebook}>{t('welcome.facebook-login')}</Button>
-                    <br />
-                    <hr />
-                    <br/>
+                    <GoogleSignIn onClick={this.props.signInWithGoogle}/>
+                    <FacebookSignIn onClick={this.props.signInWithFacebook}/>
                     <Button className="sign-in__button"
                             onClick={() => { this.showHideSignupLogin() }}>{t('welcome.signup-email')}</Button>
                     <Button className="sign-in__button"
