@@ -46,7 +46,7 @@ export function authReducer(state = new AuthState(), {payload, type}) {
       return new AuthState();
 
     case UPDATE_PROFILE:
-      var shouldShow;
+      let shouldShow;
       if (payload) {
         shouldShow = true;
       }else {
