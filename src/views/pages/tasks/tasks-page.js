@@ -387,7 +387,6 @@ export class TasksPage extends Component {
   }
 
   updateUserInfo(userInfo) {
-    console.log(userInfo);
     const oldUserData = this.props.auth;
     const newUserData = {};
     newUserData.uid = oldUserData.id;

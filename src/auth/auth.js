@@ -2,14 +2,20 @@ import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
 import {getCookie} from "../utils/browser-utils";
 import getRandomImage from 'src/utils/unsplash';
+import {initProject} from "../projects/initializer";
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(
       authUser => {
-        if(authUser) {
-          authUser.role = 'user';
+        if (!authUser) {
+          return resolve();
         }
+
+        // Call init project again after sigin-in
+        initProject(dispatch);
+
+        authUser.role = 'user';
         getIsAdmin(authUser).then(adminRef => {
           // if admin
           if(authUser) {
@@ -51,6 +57,10 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
         authUser.project = project;
       }
       // Only update the fields if no user data exists
+      if(!authUser) {
+        resolve();
+        return;
+      }
       updateUserData(authUser).then(authUserResult => {
         dispatch(authActions.initAuth(authUserResult));
         unsubscribe();

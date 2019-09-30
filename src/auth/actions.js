@@ -64,7 +64,6 @@ export function signInWithEmailPassword(email) {
 }
 
 
-
 // Since we are having some issues with auth - that might some users
 function authenticatePopup(provider) {
   firebaseAuth.useDeviceLanguage();
