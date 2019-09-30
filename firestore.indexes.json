@@ -3,8 +3,27 @@
     {
       "collectionId": "tasks",
       "fields": [
-        { "fieldPath": "created", "mode": "DESCENDING" },
-        { "fieldPath": "creator", "mode": "ASCENDING" }
+        {
+          "fieldPath": "created",
+          "mode": "DESCENDING"
+        },
+        {
+          "fieldPath": "creator",
+          "mode": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionId": "projects",
+      "fields": [
+        {
+          "fieldPath": "isPublic",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "mode": "ASCENDING"
+        }
       ]
     },
     {
