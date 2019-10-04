@@ -69,6 +69,7 @@
     "critical": "Critical task",
     "name": "Task name",
     "description": "Task description",
+    "requirements": "What should the person responsible know (Optional)",
     "type": "Task type",
     "is-critical": "Is task critical for the event?",
     "creator": "Dreamer",
@@ -103,6 +104,7 @@
     "mission-incomplete": "It is not possible to save a task before filling all the fields. Do you wish to stay in this task? Pressing cancel will erase the task",
     "do-you-take-ownership": "Would you like to take ownership over this task?",
     "do-you-take-ownership2": "In case you won't. She would stay open till someone would take responsibility over her.",
+    "pay-attention-to-the-requirements": "It is really important to know that",
     "types": {
       "planning": "Event planning",
       "shifts": "Shifts",

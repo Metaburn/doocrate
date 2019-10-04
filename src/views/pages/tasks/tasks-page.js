@@ -137,10 +137,10 @@ export class TasksPage extends Component {
 
         if(!this.state.isLoadedComments ||
           (this.state.selectedTask && tid !== this.state.selectedTask.id)) {
-            this.setState({ isLoadedComments: true });
-            this.props.unloadComments();
-            let project_url = this.props.match.params.projectUrl;
-            this.props.loadComments(project_url, tid);
+          this.setState({ isLoadedComments: true });
+          this.props.unloadComments();
+          let project_url = this.props.match.params.projectUrl;
+          this.props.loadComments(project_url, tid);
         }
       }
     } else {
@@ -241,7 +241,7 @@ export class TasksPage extends Component {
     };
 
     this.props.createTask(
-      {title: task.title, creator, created: new Date(), description: task.description, type: task.type, label: task.label},
+      {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
       this.onNewTaskAdded);
 
     this.props.showSuccess(i18n.t('task.created-successfully'));
@@ -346,9 +346,9 @@ export class TasksPage extends Component {
 
 
   goToTask(task) {
-   if (this.confirmUnsavedTask()) {
-    return;
-   }
+    if (this.confirmUnsavedTask()) {
+      return;
+    }
     const project_url = this.props.match.params.projectUrl;
     let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
@@ -448,17 +448,17 @@ export class TasksPage extends Component {
     const projectUrl = this.props.match.params.projectUrl;
     return (
       <div>
-          <div className="g-col">
-            { <TaskFilters
-              filter = { this.props.filterType }
-              selectedProject = { this.props.selectedProject }
-              projectUrl = { projectUrl } //TODO - should be from state
-              labels = { this.state.labelPool }
-              onLabelChange = { this.onLabelChanged }
-              generateCSV={this.generateCSV.bind(this)}
-              isAdmin={this.isAdmin()}/>
-              }
-          </div>
+        <div className="g-col">
+          { <TaskFilters
+            filter = { this.props.filterType }
+            selectedProject = { this.props.selectedProject }
+            projectUrl = { projectUrl } //TODO - should be from state
+            labels = { this.state.labelPool }
+            onLabelChange = { this.onLabelChanged }
+            generateCSV={this.generateCSV.bind(this)}
+            isAdmin={this.isAdmin()}/>
+          }
+        </div>
 
         <div className='task-page-wrapper'>
           <LoaderUnicorn isShow={ isLoading }/>

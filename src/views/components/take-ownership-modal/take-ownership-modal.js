@@ -5,6 +5,7 @@ import './take-ownership-modal.css';
 
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
+import Icon from "../icon/icon";
 
 export class TakeOwnershipModal extends Component {
   constructor() {
@@ -52,7 +53,8 @@ export class TakeOwnershipModal extends Component {
       <I18n ns='translations'>
         {
           (t, { i18n }) => (
-            <Modal open={isOpen} onClose={this.onCloseModal} center>
+            <Modal open={isOpen} onClose={this.onCloseModal} center classNames={{
+              modal: 'take-ownership-modal-container'}}>
               <div className='take-ownership-modal' dir={t('lang-dir')}>
                 <div className='modal-content'>
                   {this.renderHeader(t)}
@@ -69,22 +71,35 @@ export class TakeOwnershipModal extends Component {
   renderHeader(t) {
     return (
       <div className='modal-header'>
-        <span><br /></span>
-        <span>{t('task.do-you-take-ownership')}</span>
-        <br />
-        <span>{t('task.do-you-take-ownership2')}</span>
+        <Icon className='question' name='help_outline'/>
+        {this.props.header ?
+          <h1>{t(this.props.header)}</h1>
+         : ''}
       </div>
     );
   }
 
   renderBody(t) {
+    let text;
+    if(this.props.textLines) {
+      text = this.props.textLines.map((line, index) => {
+          return (
+            <div key={index}>
+              <br/>
+              <span>{t(line)}</span>
+            </div>);
+        }
+      );
+    }
+
     return (
       <div className='modal-body'>
+        {text}
         <button onClick={() => {
           this.props.onYes();
           this.onCloseModal();
         }
-        } className={'yes-btn'}>{t('task.yes')}</button>
+        } className={`yes-btn yes-btn-dir-${t('lang-float')}`}>{t('task.yes')}</button>
         <button onClick={this.onCloseModal}>{t('task.no')}</button>
       </div>
     );
@@ -101,7 +116,9 @@ export class TakeOwnershipModal extends Component {
 
 TakeOwnershipModal.propTypes = {
   onClosed: PropTypes.func.isRequired,
-  onYes: PropTypes.func.isRequired
+  onYes: PropTypes.func.isRequired,
+  textLines: PropTypes.array,
+  header: PropTypes.string
 };
 
 
