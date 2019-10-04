@@ -504,16 +504,21 @@ export class TaskView extends Component {
             this.props.assignTask(task);
           }
           }
-          textLines={['task.do-you-take-ownership', 'task.do-you-take-ownership2']}
+          header={'task.do-you-take-ownership'}
+          textLines={['task.do-you-take-ownership2']}
         />
       </div>
     );
   }
 
   renderAssignmentModal(task) {
-    const textLines = this.state.requirements == null || this.state.requirements === "" ?
-      ['task.do-you-take-ownership'] :
-      ['task.do-you-take-ownership', 'task.pay-attention-to-the-requirements', this.state.requirements];
+    let header, textLines;
+    if (this.state.requirements == null || this.state.requirements === "") {
+      header = 'task.do-you-take-ownership'
+    }else {
+      header = 'task.pay-attention-to-the-requirements';
+      textLines = [this.state.requirements, 'task.do-you-take-ownership'];
+    }
 
     return (
       <div>
@@ -527,6 +532,7 @@ export class TaskView extends Component {
             this.props.assignTask(task);
           }
           }
+          header={header}
           textLines={textLines}
         />
       </div>

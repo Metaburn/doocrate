@@ -1,39 +1,58 @@
 @import 'views/styles/shared';
 
-.take-ownership-modal {
+.take-ownership-modal-container {
+  text-align: center;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
   margin-bottom: 1em;
   font-size: 0.9em;
 
-  .modal-header {
-    display: block;
+  .take-ownership-modal {
 
-    .avatar {
-      max-width: 100px;
-      max-height: 100px;
+    .modal-header {
+      display: block;
+
+      .question {
+        font-size: 6em;
+        color: $primary-color;
+      }
     }
-  }
 
-  button {
-    font-size: 1em;
-    color: white;
-    padding: 0 6em;
-    height: 3em;
-    color: #1A181B;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    margin: 0.5em 0;
-
-    &:hover {
-      font-size: 1.1em;
-      padding: 0.1em 5.4em;
+    .modal-body {
+      margin-top: 1em;
     }
-  }
 
-  .yes-btn {
-    color: #1A181B;
-    background-color: #32936F;
-    margin-left: 1em;
+    button {
+      font-size: 1em;
+      color: white;
+      padding: 0 6em;
+      height: 3em;
+      color: #1A181B;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      margin: 0.5em 0;
+
+      &:hover {
+        font-size: 1.1em;
+        padding: 0.1em 5.4em;
+      }
+    }
+
+    .yes-btn {
+      color: #1A181B;
+      background-color: #A4D4B4;
+    }
+
+    .yes-btn-dir-right {
+      margin-left: 1em;
+    }
+
+    .yes-btn-dir-left {
+      margin-right: 1em;
+    }
+
   }
 
 }
