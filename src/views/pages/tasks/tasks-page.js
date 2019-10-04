@@ -22,6 +22,7 @@ import './tasks-page.css';
 import { SetUserInfo } from "../../components/set-user-info";
 import { updateUserData } from "src/auth/auth";
 import {setCookie} from "../../../utils/browser-utils";
+import getRandomImage from 'src/utils/unsplash';
 
 export class TasksPage extends Component {
   constructor() {
@@ -368,12 +369,12 @@ export class TasksPage extends Component {
   }
 
   renderSetUserInfo() {
-
     return (
       <div>
         <SetUserInfo
           isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
           userInfo={ this.props.auth }
+          photoURL={ this.props.auth.photoURL || getRandomImage()}
           updateUserInfo={ this.updateUserInfo }
           onClosed = { () => {
             this.setState({showSetUserInfoScreen: false});
@@ -386,14 +387,13 @@ export class TasksPage extends Component {
   }
 
   updateUserInfo(userInfo) {
-    console.log(userInfo);
     const oldUserData = this.props.auth;
     const newUserData = {};
     newUserData.uid = oldUserData.id;
     newUserData.email = userInfo.email;
     newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
-    newUserData.displayName = oldUserData.name;
-    newUserData.photoURL = oldUserData.photoURL;
+    newUserData.displayName = userInfo.name;
+    newUserData.photoURL = userInfo.photoURL;
     updateUserData(newUserData);
   }
 

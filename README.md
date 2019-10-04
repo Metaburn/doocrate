@@ -31,39 +31,45 @@ yarn
 cd functions
 npm install
 cd ..
-npm run copy-staging
-npm start
+yarn run copy-staging
+yarn start
 ```
 
 #### Install firebase-tools:
 ```shell
-npm install -g firebase-tools
+yarn global add firebase-tools
 ```
 
 ## Deploy command
-`npm run deploy:staging`
+`yarn run deploy:staging`
 OR 
-`npm run deploy:production`
+`yarn run deploy:production`
 Will build - use the correct config file and deploy
 
 #### Staging
 You can also set staging env and use:
 `firebase use --add` to add your staging site
 Then run like
-`npm run build-staging`
+`yarn run build-staging`
 `firebase use staging`
-`npm run deploy:staging`
+`yarn run deploy:staging`
 
 #### Build and deploy the app:
 ```shell
 cd functions
 npm install
 cd ..
-npm run build
+yarn
 firebase login
 firebase use default
-npm run deploy:production
+yarn run deploy:production
 // And if you want only to deploy without building you can run firebase deploy
+```
+
+## Deploy only server functions
+You can use the following to deploy faster
+```
+yarn deploy:staging-only-server
 ```
 
 ## Setting up your own server
@@ -123,16 +129,16 @@ You can user the `/admin/dashboard` page if you are an admin to set permissions
 You can press on the button their - This would go over all the users in the system and would set the
 "canCreateTask, "canAssignTask" permissions which allows to create new tasks and assign / unassign themself 
 
-## NPM Commands
+## YARN Commands
 
 |Script|Description|
 |---|---|
-|`npm start`|Start webpack development server @ `localhost:3000`|
-|`npm backup`|Backup to a local database|
-|`npm run deploy:staging`|Build and deploy to staging|
-|`npm run deploy:production`|Build and deploy to production|
-|`npm run build`|Build the application to `./build` directory|
-|`npm test`|Test the application; watch for changes and retest|
+|`yarn start`|Start webpack development server @ `localhost:3000`|
+|`yarn backup`|Backup to a local database|
+|`yarn run deploy:staging`|Build and deploy to staging|
+|`yarn run deploy:production`|Build and deploy to production|
+|`yarn run build`|Build the application to `./build` directory|
+|`yarn test`|Test the application; watch for changes and retest|
 
 
 ## FAQ
@@ -177,7 +183,7 @@ Yes. `/admin-dashboard`
 
 #### How can I deploy in a fast way
 If you haven't modified the functions folder you can run the following to deploy only the app without the functions:
-`npm run build && firebase deploy --only=hosting`
+`yarn run build && firebase deploy --only=hosting`
 
 #### Why am I seeing the loader runs and runs on a new install
 Only when there is at least one task it would stop running - Press on add task
@@ -194,7 +200,7 @@ Check you console. You need to follow the error using the link and create an ind
 #### Can I deploy only the hosting without the functions?
 Yes run
 ```
-npm run build
+yarn run build
 firebase deploy --hosting
 ```
 

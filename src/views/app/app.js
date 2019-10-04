@@ -11,6 +11,7 @@ import Header from '../components/header';
 import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
+import MagicLink from '../pages/magic-link';
 import TasksPage from '../pages/tasks';
 import MePage from '../pages/me';
 import CreateProjectPage from '../pages/set-project';
@@ -50,6 +51,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
             <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/create-project" component={CreateProjectPage}/>
             <RequireUnauthRoute authenticated={auth && auth.authenticated} exact path="/sign-in/" component={SignInPage}/>
+            <RequireUnauthRoute authenticated={auth && auth.authenticated} exact path="/magic-link" component={MagicLink}/>
             <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
             <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
             <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>

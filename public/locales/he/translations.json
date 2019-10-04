@@ -14,7 +14,7 @@
   },
   "header": {
     "disconnect": "התנתקי",
-    "me": "אני",
+    "me": "🧝",
     "my-space":"האזור האישי שלי",
     "all-projects": "כל הפרוייקטים בעולם",
     "update-my-profile":"עדכון הפרופיל שלי",
@@ -99,7 +99,7 @@
     "new-tasks-closed": "יצירת משימות חדשות סגורה כעת",
     "user-new-tasks-closed": "הפרוייקט סגור כעת. לא ניתן ליצור משימות חדשות רק לצפות במשימות ולערוך משימות קיימות",
     "automatic-tags": "תגיות פופולריות (בחר לפחות אחת):",
-    "input-tags": "הכנס לפחות תגית אחת או בחר מההצעות (לחץ Enter לאישור)",
+    "input-tags": "הכנס לפחות תגית אחת",
     "mission-incomplete-short": "לא ניתן לשמור משימה לפני מילוי כל השדות. אנא מלאי את כל השדות. 👁",
     "mission-incomplete": "לא ניתן לשמור משימה לפני מילוי כל השדות. האם ברצונך להשאר במשימה? לחיצה על Cancel תוביל למחיקת המשימה",
     "do-you-take-ownership": "האם תרצי לקחת אחריות על משימה זו?",
@@ -120,6 +120,7 @@
   "user": {
     "email": "האימייל שלך (ישמש לקבלת הודעות כאשר מישהו מגיב לך למשימה):",
     "set-my-email": "האימייל שלי:",
+    "set-my-name": "איך נקרא לך:",
     "submit" : "שמור והמשך"
   },
   "admin": {
@@ -138,15 +139,20 @@
     "before-start": "כמה נקודות חשובות לפי שמתחילים:",
     "instruction1": "כל אחד מוזמן להירשם לכל משימה (כל עוד היא פנויה)",
     "instruction2": "נבקש שתרשמו למשימה אחת בלבד כדי לאפשר לכולם להשתתף ",
-    "instruction3": "כל אחד יכול להציע כל משימה (גם בלי להירשם למשימה שהציע)",
+    "instruction3": "כל אחד יכול לייצר משימה, ויכול לקחת אותה או להציע אותה לקהילה",
     "instruction4": "האירוע יתקיים רק אם נבצע את כל המשימות הקריטיות לקיומו",
     "instruction5": "כל השאר - מה שלא נעשה לא יקרה :)",
     "instruction6": "קחו חלק בניסוי",
-    "google-login": "התחברי עם גוגל",
-    "facebook-login": "התחברי עם פייסבוק",
-    "google-login2": "התחברי עם גוגל (אופצייה שנייה)",
-    "facebook-login2": "התחברי עם פייסבוק (אופצייה שנייה)",
-    "cant-login": "לא מצליחה להתחבר? נסי את אחד מהכפתורים הבאים"
+    "signup-email": "צור משתמש חדש",
+    "signin-email": "התחבר"
+  },
+  "signin": {
+    "enter-email": "הכנסי את המייל שלך לקבלת לינק התחברות",
+    "my-email": "האימייל שלך",
+    "submit": "שלח לי את הלינק",
+    "check-your-email": "יש לך מייל 📧. פתחי אותו להתחברות",
+    "redirecting": "מכניס אותך פנימה...",
+    "try-again": "אם זה לא עובד. לחץ כאן לנסות שוב"
   },
   "footer": {
     "about": "המערכת נכתבה",

@@ -2,7 +2,9 @@
 
 
 .header {
-  padding: 0;
+  padding: 0 0 3em 0;
+  border-bottom: 1px solid #cccccc54;
+  margin: 0 0.5em 0.5em 0.5em;
   height: 50px;
   overflow: hidden;
   line-height: 44px;
@@ -47,17 +49,16 @@
 
   .toastify {
     z-index: 10000;
-  }
-
-  .lang-select {
-    margin-left: 0.5em;
+    min-width: 350px;
   }
 
   .lang-right {
     float: right;
+    margin-right: 0.7em;
   }
   .lang-left {
     float: left;
+    margin-left: 0.7em;
   }
 
   .start-project {
@@ -109,6 +110,7 @@
   float: left;
   padding: 8px 0 0 0;
   line-height: 24px;
+  margin: 0 -0.5em 0 -0.5em; // This is done to contrast the padded border
 
   li {
     float: left;

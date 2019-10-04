@@ -149,6 +149,7 @@
   vertical-align: top;
   border-color: white;
   overflow: hidden;
+  border-radius: 4px;
 }
 
 .editable {
@@ -177,6 +178,9 @@
 
 .react-tagsinput-changing {
   border: 1px solid #ccc;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   overflow: hidden;
   padding: 5px 1px 1px 1px;
   width: 100%;
@@ -185,11 +189,11 @@
   input {
     font-size: 18px;
     font-family: $base-font-family;
-    width: calc( 100% - 130px);
+    width: 200px; //This allows the placeholder and a not to go much beyond line break
   }
 
   ::placeholder {
-    color:red
+    font-size: 18px;
   }
 }
 

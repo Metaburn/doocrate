@@ -3,7 +3,7 @@ import { firebaseDb } from './firebase';
 
 /*
  Represent a Firebase collection.
- If given a rootPath and rootDocId then this might be under a sub collecrion.
+ If given a rootPath and rootDocId then this might be under a sub collection.
  For example - /projects/PROJECT-ID/tasks
  rootPath = projects
  rootDocId = PROJECT-ID

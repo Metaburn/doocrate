@@ -9,6 +9,7 @@
   }
 
   .sign-in-buttons {
+    text-align: center;
     max-width: 300px;
     margin: 0 auto;
   }
@@ -31,6 +32,10 @@
   }
 }
 
+.facebookSignIn {
+  margin: 1em 0 1em 0;
+}
+
 .sign-in__heading {
   margin-bottom: 10px;
   font-size: 30px;
@@ -45,11 +50,11 @@
 .sign-in__button {
   margin-bottom: 10px;
   border: 1px solid rgb(132, 143, 155);
-  width: 100%;
-  height: 48px;
+  width: 240px;
+  height: 38px;
   font-family: inherit;
   font-size: rem(18px);
-  line-height: 48px;
+  line-height: 38px;
   color: #999;
 
   &:hover {

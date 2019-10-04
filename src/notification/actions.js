@@ -9,6 +9,7 @@ export function dismissNotification() {
 }
 
 export function showError(message) {
+  console.log(message);
   toast.error(message);
   return {
     type: SHOW_ERROR,

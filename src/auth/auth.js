@@ -1,14 +1,21 @@
 import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
 import {getCookie} from "../utils/browser-utils";
+import getRandomImage from 'src/utils/unsplash';
+import {initProject} from "../projects/initializer";
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(
       authUser => {
-        if(authUser) {
-          authUser.role = 'user';
+        if (!authUser) {
+          return resolve();
         }
+
+        // Call init project again after sigin-in
+        initProject(dispatch);
+
+        authUser.role = 'user';
         getIsAdmin(authUser).then(adminRef => {
           // if admin
           if(authUser) {
@@ -50,6 +57,10 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
         authUser.project = project;
       }
       // Only update the fields if no user data exists
+      if(!authUser) {
+        resolve();
+        return;
+      }
       updateUserData(authUser).then(authUserResult => {
         dispatch(authActions.initAuth(authUserResult));
         unsubscribe();
@@ -73,7 +84,7 @@ export function updateUserData(authUser) {
         let userSeed = {
           name: authUser.displayName,
           email: authUser.email,
-          photoURL: authUser.photoURL,
+          photoURL: authUser.photoURL || getRandomImage(),
           created: new Date(),
           language: 'he' //Hebrew is default lang
         };
@@ -97,24 +108,49 @@ export function updateUserData(authUser) {
             isEmailConfigured: true,
             updated: new Date(),
             language: 'he' // Hebrew is default lang
-          }, {merge: true})
+          }, {merge: true});
+
+          updateAuthFields(authUser);
         }else {
           // Simply update the user fields
           // Add any fields below
-          const newUserData = { updated: new Date()};
+          const newUserData = {updated: new Date()};
           if (authUser.language) {
             newUserData.language = authUser.language
           }
           if (authUser.email) {
             newUserData.email = authUser.email
           }
+          if (authUser.name) {
+            newUserData.name = authUser.name
+          }
           userDoc.set(newUserData,
-            {merge: true})
+            {merge: true});
+
+          updateAuthFields(authUser);
         }
         resolve(authUser);
       }
     })
   })
+}
+
+function updateAuthFields(authUser) {
+  // Update the name on the firebase auth
+  const newUserAuthFields = {};
+  if (authUser.displayName) {
+    newUserAuthFields.displayName = authUser.displayName;
+  }
+  if (authUser.photoURL) {
+    newUserAuthFields.photoURL = authUser.photoURL;
+  }
+  if (newUserAuthFields.displayName || newUserAuthFields.photoURL) {
+    firebaseAuth.currentUser.updateProfile(newUserAuthFields);
+  }
+
+  if(authUser.email !== firebaseAuth.currentUser.email) {
+    firebaseAuth.currentUser.updateEmail(authUser.email);
+  }
 }
 
 // TODO - instead of await that waits for all users

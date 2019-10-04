@@ -66,3 +66,7 @@ firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
 Then in the future if you want to deploy only function - use this command (No need right now - better run deploy staging / production)
 firebase deploy --only functions
 ```
+
+
+## Firebase plans
+To allow `cloud functions` to go over the 50 queries per limit you might want to upgrade to blaze plan - it's a pay as you go so at most cases it won't cost anything

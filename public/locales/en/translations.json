@@ -13,8 +13,8 @@
     "select-default": "Select..."
   },
   "header": {
-    "disconnect": "Disconnect",
-    "me": "Me",
+    "disconnect": "Sign out ",
+    "me": "🧝",
     "my-space": "Personal space",
     "all-projects": "All projects",
     "update-my-profile":"Update my profile",
@@ -99,7 +99,7 @@
     "user-new-tasks-closed": "The project is closed now. You cannot create new tasks, just view and edit existing tasks.",
 
     "automatic-tags": "Popular tags (Choose at least one):",
-    "input-tags": "Input At least one Tag, or select from suggested tags (Press Enter to accept)",
+    "input-tags": "Input one Tag minimum",
     "mission-incomplete-short": "Can't save task before all fields are complete. Please fill missing fields 👁",
     "mission-incomplete": "It is not possible to save a task before filling all the fields. Do you wish to stay in this task? Pressing cancel will erase the task",
     "do-you-take-ownership": "Would you like to take ownership over this task?",
@@ -120,6 +120,7 @@
   "user": {
     "email": "Your email address (Will be used to notify me when someone comment on my task):",
     "set-my-email": "My email:",
+    "set-my-name": "How shall we call you",
     "submit" : "Save & Continue"
   },
   "admin": {
@@ -133,20 +134,25 @@
   "welcome": {
     "heading": "Welcome to the doocrate",
     "heading2": "A co-creational events task management system",
-    "registration": "Upon registering you will be transferred to the task system",
+    "registration": "Upon registering, you will be transferred to the task system",
     "about": "About the system",
-    "before-start": "A few important notes before we begin:",
+    "before-start": "A few important notes:",
     "instruction1": "Anyone can take ownership of a task (As long as it's unassigned)",
-    "instruction2": "Please only take ownership of one task to allow everyone to participate",
-    "instruction3": "Anyone can offer any task, even without registering to the system",
+    "instruction2": "Please try to take ownership of one task to allow everyone to participate",
+    "instruction3": "Anyone can create a task, and offer it to the community or take responsibility",
     "instruction4": "The event will only happen if all critical tasks are met",
     "instruction5": "Everything else, that we won't do - Won't happen :)",
     "instruction6": "Take part in the experiment",
-    "google-login": "Log in with Google",
-    "facebook-login": "Log in with Facebook",
-    "google-login2": "Log in with Google (2nd option)",
-    "facebook-login2": "Log in with Facebook (2nd option)",
-    "cant-login": "Cant Login? Try one of those buttons"
+    "signup-email": "Sign up with email",
+    "signin-email": "Log in"
+  },
+  "signin": {
+    "enter-email": "Enter your email to get a magic link",
+    "my-email": "Your email",
+    "submit": "Send me the link",
+    "check-your-email": "You got mail 📧. Open it to login",
+    "redirecting": "Redirecting...",
+    "try-again": "If this doesn't work - click here to try again"
   },
   "footer": {
     "about": "This system was written as",

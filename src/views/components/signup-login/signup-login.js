@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './set-user-info.css';
-import Img from 'react-image';
+import './signup-login.css';
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
-import getRandomImage from 'src/utils/unsplash';
 
-export class SetUserInfo extends Component {
+export class SignupLogin extends Component {
   constructor() {
     super(...arguments);
     this.state = {
       isOpen: true,
       email: '',
-      name: '',
-      photoURL: '',
-      originalEmail: '',
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleImageClick = this.handleImageClick.bind(this);
   }
 
   onOpenModal = () => {
@@ -45,28 +39,13 @@ export class SetUserInfo extends Component {
       return;
     }
 
-    if(this.state.originalEmail !== props.userInfo.updatedEmail &&
-        this.state.originalEmail !== props.userInfo.email) {
-
-      this.setState({
-        originalEmail: props.userInfo.updatedEmail || props.userInfo.email,
-        // First try to see if there is an updated mail.
-        // Otherwise revert to original mail
-        email: props.userInfo.updatedEmail || props.userInfo.email || '',
-        name: props.userInfo.name || '',
-        isOpen: props.isOpen || false,
-        photoURL: props.photoURL || ''
-      });
-      return
-    }
-
     this.setState({
       isOpen: props.isOpen || false,
     })
   }
 
   render() {
-    const { userInfo, isOpen:isOpenProps } = this.props;
+    const { isOpen:isOpenProps } = this.props;
     const { isOpen:isOpenState } = this.state;
 
     const isOpen = isOpenProps && isOpenState;
@@ -76,9 +55,9 @@ export class SetUserInfo extends Component {
         {
           (t, { i18n }) => (
             <Modal open={isOpen} onClose={this.onCloseModal} center>
-              <div className='set-user-info' dir={t('lang-dir')}>
+              <div className='signup-login' dir={t('lang-dir')}>
                 <div className='modal-content'>
-                  {this.renderHeader(t, userInfo)}
+                  {this.renderHeader(t)}
                   {this.renderBody(t)}
                 </div>
               </div>
@@ -89,15 +68,11 @@ export class SetUserInfo extends Component {
     );
   }
 
-  renderHeader(t, userInfo) {
-    const { name } = userInfo;
-    const photoURL = this.state.photoURL;
-    const avatar = photoURL ? <Img className='avatar' src={photoURL} alt={name} onClick={this.handleImageClick}/> : '';
+  renderHeader(t) {
     return (
       <div className='modal-header'>
-        <span className={'avatar-wrapper'}>{ avatar }</span>
-        <div> { name }</div>
-      </div>
+        <div>{t('signin.enter-email')}</div>
+    </div>
     );
   }
 
@@ -105,9 +80,7 @@ export class SetUserInfo extends Component {
     return (
       <div className='modal-body'>
         <form onSubmit={this.handleSubmit}>
-          <span>{t('user.email')}</span>
-          {this.renderInput('email', t('user.set-my-email'), true, 'email')}
-          {this.renderInput('name', t('user.set-my-name'), true, 'name')}
+          {this.renderInput('email', t('signin.my-email'), true, 'email')}
           {this.renderSubmit(t)}
         </form>
       </div>
@@ -118,7 +91,7 @@ export class SetUserInfo extends Component {
     return (
       <div className={'submit-wrapper'}>
         <input className={`button button-small` }
-               type="submit" value={t('user.submit')}/>
+               type="submit" value={t('signin.submit')}/>
       </div>
     );
   }
@@ -139,13 +112,6 @@ export class SetUserInfo extends Component {
     );
   }
 
-  handleImageClick(event) {
-    // Roll a random image - 250 to 300 (Resolution)
-    this.setState({
-      photoURL: getRandomImage()
-    });
-  }
-
   handleChange(e) {
     let fieldName = e.target.name;
     this.setState({
@@ -157,25 +123,18 @@ export class SetUserInfo extends Component {
     if(event) {
       event.preventDefault();
     }
-    const fieldsToUpdate = {
-      email: this.state.email,
-      name: this.state.name,
-      photoURL: this.state.photoURL
-    };
 
-    this.props.updateUserInfo(fieldsToUpdate);
+    this.props.sendMagicLink(this.state.email);
     this.onCloseModal();
   }
 
 }
 
-SetUserInfo.propTypes = {
+SignupLogin.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  userInfo: PropTypes.object.isRequired,
-  photoURL: PropTypes.string.isRequired,
-  updateUserInfo: PropTypes.func.isRequired,
+  sendMagicLink: PropTypes.func.isRequired,
   onClosed: PropTypes.func.isRequired
 };
 
 
-export default SetUserInfo;
+export default SignupLogin;

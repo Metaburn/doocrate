@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import ToolTip from 'react-portal-tooltip';
 import Button from '../button';
+import Icon from '../icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 
@@ -37,6 +38,7 @@ class MyProfileTooltip extends Component {
           <div className='my-profile-tooltip-container'
           onMouseEnter={this.showTooltip}
           onMouseLeave={this.hideTooltip}>
+            <Icon name='keyboard_arrow_down'/>
             { auth.photoURL ?
               <Img
               className='avatar grow'

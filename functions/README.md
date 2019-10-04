@@ -5,7 +5,7 @@ We store our function as firebase functions (Similar to AWS Lambda - aka cloud f
 # Local development
 ```
 npm install
-npm run start
+firebase functions:shell 
 ```
 
 # Deployment
@@ -21,4 +21,4 @@ To deploy this functions use
 
 # Deploy
 ## Firebase plans
-To allow `cloud functions` to go over the 50 queries per limit you might want to upgrade to blaze plan - it's a pay as you go so at most cases it won't cost anything
+To allow `cloud functions` to go over the 50 queries per limit you might want to upgrade to **Blaze plan** - it's a pay as you go so at most cases it won't cost anything
