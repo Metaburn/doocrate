@@ -9,35 +9,33 @@
   overflow: hidden;
   line-height: 44px;
 
-  a {
-    &:hover {
-      color: #eb1478;
+  .header-side {
+    a {
+      &:hover {
+        color: #eb1478;
+      }
+    }
+    h4 {
+      display: inline-block;
+    }
+
+    button {
+      font-size:0.8em;
+      padding: 0.3em;
+
+      transition-duration: .2s;
+      transition: all 0.2s ease;
+
+      background: none;
+      border: solid 1px #ccc;
+      border-radius: 4px;
+
+      &:hover {
+        color: #eb1478;
+      }
     }
   }
 
-  h4 {
-    display: inline-block;
-  }
-  .create-project-header {
-    display: inline-block;
-    margin: 0 0.5em;
-  }
-
-  button {
-    font-size:0.8em;
-    padding: 0.3em;
-
-    transition-duration: .2s;
-    transition: all 0.2s ease;
-
-    background: none;
-    border: solid 1px #ccc;
-    border-radius: 4px;
-
-    &:hover {
-      color: #eb1478;
-    }
-  }
 
   @media only screen and (max-width: 480px) {
     .toastify--top-center {
@@ -68,11 +66,11 @@
 }
 
 .header-title {
-  margin: 0 0 0 0.5em;
+  margin: 0 0 0 0;
   display: flex;
   align-items: center;
 
-  float: right;
+  float: left;
   font-size: rem(14px);
   font-weight: 400;
   line-height: 40px;
@@ -107,24 +105,13 @@
 
 .header-actions {
   @include clearfix;
-  float: left;
-  padding: 8px 0 0 0;
+  float: right;
+  padding: 8px 1em 0 0;
   line-height: 24px;
-  margin: 0 -0.5em 0 -0.5em; // This is done to contrast the padded border
+  margin: 0 1em 0 1em;
 
   li {
-    float: left;
     list-style: none;
-
-    &:last-child {
-      margin-left: 12px;
-      padding-left: 12px;
-      border-left: 1px solid #333;
-    }
-
-    &:first-child {
-      border: none;
-    }
   }
 
   .button {

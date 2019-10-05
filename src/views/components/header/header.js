@@ -5,7 +5,6 @@ import MyProfileTooltip from '../my-profile-tooltip';
 import { ToastContainer } from 'react-toastify';
 import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
-import { Redirect, Switch} from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -32,11 +31,10 @@ class Header extends Component {
     super(...arguments);
 
     this.state = {
-      redirectTo: null
+
     };
 
     this.renderLanguageButton = this.renderLanguageButton.bind(this);
-    this.renderRedirectToCreateProject = this.renderRedirectToCreateProject.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
   }
 
@@ -46,8 +44,8 @@ class Header extends Component {
         {
           (t, {i18n}) => (
             <header className='header'>
-              <div className='g-row'>
-                <div className='g-col'>
+              <div>
+                <div>
                   <ToastContainer
                     position='top-center'
                     autoClose={appConfig.notificationShowTime}
@@ -55,6 +53,7 @@ class Header extends Component {
                     newestOnTop={true}
                     pauseOnHover
                   />
+                  <h1 className='header-title'><a href='/'>Doocrate</a></h1>
                   <ul className='header-actions'>
                     {this.props.auth ?
                       <div>
@@ -77,22 +76,17 @@ class Header extends Component {
                       : null
                     }
                   </ul>
-                  <h1 className='header-title'><a href='/'>Doocrate</a></h1>
-                  <h4>{this.props.selectedProject?
-                    <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
-                    ''
-                  }</h4>
-                  <div className={`lang-select lang-${t('lang-float-reverse')}`}>
-                    {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
+                  <div className='header-side'>
+                    <h4>{this.props.selectedProject?
+                      <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
+                      ''
+                    }</h4>
+                    <div className={`lang-select lang-${t('lang-float-reverse')}`}>
+                      {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
+                    </div>
+                    <GoogleTranslate
+                    shouldClose={ this.props.shouldClose }/>
                   </div>
-                  <GoogleTranslate
-                  shouldClose={ this.props.shouldClose }/>
-                  {this.props.auth && this.props.auth.authenticated ?
-                    <div className={'create-project-header'}>
-                      <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
-                      {this.renderRedirectToCreateProject()}
-                    </div> : ''
-                  }
                 </div>
               </div>
             </header>
@@ -100,23 +94,6 @@ class Header extends Component {
       </I18n>
     );
   }
-
-  renderRedirectToCreateProject = () => {
-    if (this.state.redirectTo) {
-      this.setState({redirectTo : null});
-      return (
-        <Switch>
-          <Redirect to={this.state.redirectTo} />
-        </Switch>
-      )
-    }
-  };
-
-  redirectTo = (url) => {
-    this.setState({
-      redirectTo: url
-    })
-  };
 
   changeLanguage(changeLang, t, i18n, onShowSuccess) {
     i18n.changeLanguage(changeLang);

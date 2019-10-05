@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
-import ToolTip from 'react-portal-tooltip';
+import { Switch, Redirect, NavLink } from 'react-router-dom';
+import ReactTooltip from 'react-tooltip';
 import Button from '../button';
 import Icon from '../icon';
 import Img from 'react-image';
@@ -12,21 +12,28 @@ import './my-profile-tooltip.css';
 class MyProfileTooltip extends Component {
   constructor() {
     super(...arguments);
-    this.showTooltip = this.showTooltip.bind(this);
-    this.hideTooltip = this.hideTooltip.bind(this);
+
+    this.state = {
+      redirectTo: null
+    };
   }
 
-  state = {
-    isTooltipActive: false
+  redirectTo = (url) => {
+    this.setState({
+      redirectTo: url
+    })
   };
 
-  showTooltip() {
-    this.setState({isTooltipActive: true})
-  }
-
-  hideTooltip() {
-    this.setState({isTooltipActive: false})
-  }
+  renderRedirectTo = () => {
+    if (this.state.redirectTo) {
+      this.setState({redirectTo: null}); //TODO - Probably should not render and set state
+      return (
+        <Switch>
+          <Redirect to={this.state.redirectTo}/>
+        </Switch>
+      )
+    }
+  };
 
   render() {
     const { auth } = this.props;
@@ -35,9 +42,9 @@ class MyProfileTooltip extends Component {
         <I18n ns='translations'>
         {
          (t) => (
-          <div className='my-profile-tooltip-container'
-          onMouseEnter={this.showTooltip}
-          onMouseLeave={this.hideTooltip}>
+           <div className='my-profile-tooltip-container'
+                data-tip='  '>
+
             <Icon name='keyboard_arrow_down'/>
             { auth.photoURL ?
               <Img
@@ -47,15 +54,22 @@ class MyProfileTooltip extends Component {
               <span>{t('header.me')}</span>
             }
 
-            <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left' parent='.my-profile-tooltip-container'>
-              <span className='tooltip-container'>
-                <NavLink to={{ pathname: this.props.projectUrl + '/task/1', search: 'filter=mine'}}>{t('task.my-tasks')}</NavLink><br/>
-                <NavLink to='/me'>{t('header.my-space')}</NavLink><br/>
-                <NavLink to={{ pathname: '/projects/', search: 'show=true'}}>{t('header.all-projects')}</NavLink><br/>
-                <div><Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button></div>
-                <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>
+             <ReactTooltip place={'bottom'}
+                           type='light'
+                           data-html={true}
+                           effect='solid'
+                           delayHide={500}>
+
+               <span className='tooltip-container'>
+                 <Button onClick={() => this.redirectTo(this.props.projectUrl + '/task/1?filter=mine')}>{t('task.my-tasks')}</Button>
+                 <Button onClick={() => this.redirectTo('/me')}>{t('header.my-space')}</Button>
+                 <Button onClick={() => this.redirectTo('/projects?show=true')}>{t('header.all-projects')}</Button>
+                 <Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button>
+                 <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
+                 <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>
               </span>
-            </ToolTip>
+             </ReactTooltip>
+             { this.renderRedirectTo() }
           </div>
         )}
         </I18n>
