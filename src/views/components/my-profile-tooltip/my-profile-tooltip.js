@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Switch, Redirect, NavLink } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Button from '../button';
 import Icon from '../icon';

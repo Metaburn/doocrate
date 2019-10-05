@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../button';
-import MyProfileTooltip from '../my-profile-tooltip';
 import { ToastContainer } from 'react-toastify';
 import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
@@ -12,12 +10,7 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import './header.css';
 import GoogleTranslate from '../google-translate/google-translate';
 import {updateUserData} from "../../../auth/auth";
-
-const menuContent =
-  `<div>
-    <Img className='avatar' src={auth.photoURL} alt={auth.name}/>
-     <Button onClick={signOut}>{t('header.disconnect')}</Button>
-  </div>`;
+import HeaderActions from "../header-actions/header-actions";
 
 class Header extends Component {
   static propTypes = {
@@ -53,35 +46,19 @@ class Header extends Component {
                     newestOnTop={true}
                     pauseOnHover
                   />
-                  <h1 className='header-title'><a href='/'>Doocrate</a></h1>
-                  <ul className='header-actions'>
-                    {this.props.auth ?
-                      <div>
-                        <MyProfileTooltip
-                          auth={this.props.auth}
-                          signOut={this.props.signOut}
-                          isShowUpdateProfile={this.props.isShowUpdateProfile}
-                        />
-                        {this.props.auth.photoURL ?
-                          <div className='task-item-assignee' data-html={true} data-tip={menuContent}/>
-                          : <div data-html={true} data-tip={
-                            <div>
-                              {t('header.me')}
-                              <Button onClick={this.props.signOut}>{t('header.disconnect')}</Button>
-                            </div>
-                          }/>
-                        }
+                  <a href='/'>{this.props.auth? '': 'Doocrate' }<h1 className='header-title'>&nbsp;</h1></a>
 
-                      </div>
-                      : null
-                    }
-                  </ul>
+                  <HeaderActions
+                    auth={this.props.auth}
+                    signOut={this.props.signOut}
+                    isShowUpdateProfile={this.props.isShowUpdateProfile}/>
+
                   <div className='header-side'>
-                    <h4>{this.props.selectedProject?
+                    <h4 className='project-title'>{this.props.selectedProject?
                       <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
                       ''
                     }</h4>
-                    <div className={`lang-select lang-${t('lang-float-reverse')}`}>
+                    <div className={`lang-select lang-left`}>
                       {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
                     </div>
                     <GoogleTranslate
