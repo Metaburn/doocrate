@@ -43,7 +43,7 @@ class MyProfileTooltip extends Component {
         {
          (t) => (
            <div className='my-profile-tooltip-container'
-                data-tip='  '>
+                data-tip="&nbsp">
 
             <Icon name='keyboard_arrow_down'/>
             { auth.photoURL ?
