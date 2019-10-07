@@ -128,6 +128,7 @@ export function signInWithGoogle(isIssues) {
 
 export function signOut() {
   return dispatch => {
+    window.location.href = '/';
     firebaseAuth.signOut()
       .then(() => dispatch(signOutSuccess()));
   };
