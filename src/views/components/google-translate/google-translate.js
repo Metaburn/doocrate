@@ -94,7 +94,6 @@ class GoogleTranslate extends Component {
 }
 
 GoogleTranslate.propTypes = {
-  lastShouldTranslateToEnglishState: PropTypes.bool.isRequired,
   shouldGoogleTranslateToEnglish: PropTypes.bool.isRequired
 };
 
