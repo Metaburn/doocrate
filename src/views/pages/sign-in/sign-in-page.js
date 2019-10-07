@@ -33,11 +33,11 @@ class SignInPage extends Component {
   };
 
   componentWillMount() {
-    this.setProjectCookie();
+    this.setProjectCookieOrRedirectIfExists();
   }
 
   // Save the project cookie for redirection - after the user sign in we know to redirect him there
-  setProjectCookie() {
+  setProjectCookieOrRedirectIfExists() {
     const query = new URLSearchParams(this.props.location.search);
     const project = query.get('project');
     if(project) {

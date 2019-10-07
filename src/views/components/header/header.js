@@ -32,6 +32,9 @@ class Header extends Component {
   }
 
   render() {
+    const projectToUse = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined')?
+      this.props.selectedProject.url : this.props.auth.defaultProject;
+
     return (
       <I18n ns='translations'>
         {
@@ -51,6 +54,7 @@ class Header extends Component {
                   <HeaderActions
                     auth={this.props.auth}
                     signOut={this.props.signOut}
+                    projectUrl={projectToUse}
                     isShowUpdateProfile={this.props.isShowUpdateProfile}/>
 
                   <div className='header-side'>

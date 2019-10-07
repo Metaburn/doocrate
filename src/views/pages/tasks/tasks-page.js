@@ -21,7 +21,7 @@ import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { SetUserInfo } from "../../components/set-user-info";
 import { updateUserData } from "src/auth/auth";
-import {setCookie} from "../../../utils/browser-utils";
+import {getCookie, setCookie} from "../../../utils/browser-utils";
 import getRandomImage from 'src/utils/unsplash';
 
 export class TasksPage extends Component {
@@ -99,7 +99,8 @@ export class TasksPage extends Component {
   }
 
   setProjectCookie(projectUrl) {
-    if(projectUrl) {
+    // Since we are parsing the url we might get undefined as a string
+    if(projectUrl && projectUrl !== 'undefined') {
       setCookie('project', projectUrl);
     }
   }
@@ -387,6 +388,8 @@ export class TasksPage extends Component {
   }
 
   updateUserInfo(userInfo) {
+    const projectCookie = getCookie('project');
+
     const oldUserData = this.props.auth;
     const newUserData = {};
     newUserData.uid = oldUserData.id;
@@ -394,6 +397,8 @@ export class TasksPage extends Component {
     newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
     newUserData.displayName = userInfo.name;
     newUserData.photoURL = userInfo.photoURL;
+    // Update the default project on first time setting user info
+    newUserData.defaultProject = projectCookie || this.props.selectedProject;
     updateUserData(newUserData);
   }
 
@@ -446,6 +451,7 @@ export class TasksPage extends Component {
     const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
     const isLoading = (!this.state.tasks || (this.props.tasks.size <= 0 && !isNewTask));
     const projectUrl = this.props.match.params.projectUrl;
+    
     return (
       <div>
         <div className="g-col">
@@ -456,6 +462,7 @@ export class TasksPage extends Component {
             labels = { this.state.labelPool }
             onLabelChange = { this.onLabelChanged }
             generateCSV={this.generateCSV.bind(this)}
+            userDefaultProject={ this.props.auth.defaultProject }
             isAdmin={this.isAdmin()}/>
           }
         </div>

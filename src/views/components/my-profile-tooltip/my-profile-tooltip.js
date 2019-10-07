@@ -37,6 +37,7 @@ class MyProfileTooltip extends Component {
 
   render() {
     const { auth } = this.props;
+
     if(auth && auth.authenticated) {
       return (
         <I18n ns='translations'>
@@ -61,7 +62,7 @@ class MyProfileTooltip extends Component {
                            delayHide={500}>
 
                <span className='tooltip-container'>
-                 <Button onClick={() => this.redirectTo(this.props.projectUrl + '/task/1?filter=mine')}>{t('task.my-tasks')}</Button>
+                 <Button onClick={() => this.redirectTo('/'+ this.props.projectUrl + '/task/1?filter=mine')}>{t('task.my-tasks')}</Button>
                  <Button onClick={() => this.redirectTo('/me')}>{t('header.my-space')}</Button>
                  <Button onClick={() => this.redirectTo('/projects?show=true')}>{t('header.all-projects')}</Button>
                  <Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button>
@@ -83,6 +84,7 @@ class MyProfileTooltip extends Component {
 MyProfileTooltip.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
+  projectUrl: PropTypes.string,
   isShowUpdateProfile: PropTypes.func.isRequired
 };
 
