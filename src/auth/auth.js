@@ -103,13 +103,19 @@ export function updateUserData(authUser) {
         // Only if the given object state we should update the email then we do so
         if (authUser.isEmailConfigured) {
           // Update user details
-          userDoc.set({
+          const fieldsToUpdate = {
             name: authUser.displayName,
             email: authUser.email,
             isEmailConfigured: true,
             updated: new Date(),
             language: authUser.language || 'he' // Hebrew is default lang
-          }, {merge: true});
+          };
+
+          if(authUser.defaultProject){
+            fieldsToUpdate.defaultProject = authUser.defaultProject;
+          }
+
+          userDoc.set(fieldsToUpdate, {merge: true});
 
           updateAuthFields(authUser);
         }else {

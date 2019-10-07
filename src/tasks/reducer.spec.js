@@ -96,4 +96,6 @@ describe('Tasks reducer', () => {
       expect(nextState.previous).toBe(null);
     });
   });
+
+
 });

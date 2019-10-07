@@ -33,6 +33,7 @@ class HeaderActions extends Component {
              <MyProfileTooltip
                auth={this.props.auth}
                signOut={this.props.signOut}
+               projectUrl={ this.props.projectUrl}
                isShowUpdateProfile={this.props.isShowUpdateProfile}
              />
              {this.props.auth.photoURL ?
@@ -58,6 +59,7 @@ class HeaderActions extends Component {
 HeaderActions.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
+  projectUrl: PropTypes.string,
   isShowUpdateProfile: PropTypes.func.isRequired
 };
 
