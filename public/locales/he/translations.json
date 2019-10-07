@@ -5,7 +5,9 @@
   "lang-float-reverse": "left",
   "nav": {
     "en-lang": "English",
-    "he-lang": "עברית"
+    "en-lang-short": "EN",
+    "he-lang": "עברית",
+    "he-lang-short": "עב"
   },
   "general": {
     "loading": "טוען ...",
@@ -34,6 +36,7 @@
     "err-incomplete": "לא ניתן לפתוח פרוייקט לפני מילוי כל השדות בצורה תקינה. אנא וודא שהשדות תקינים 👁",
     "can-create-task": "🔐 האם הפרוייקט פתוח ליצירת משימות חדשות",
     "can-assign-task": "🔏 האם הפרוייקט פתוח ללקיחת אחריות על משימות",
+    "select-language": "בחר את שפת הפרוייקט",
     "submit-btn": "צור פרוייקט חדש!",
     "submit-btn-edit": "שמור שינויים!",
     "success": "הפרוייקט נוצר בהצלחה! כעת הוסף את המשימה הראשונה. 🙌",

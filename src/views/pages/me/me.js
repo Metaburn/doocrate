@@ -11,7 +11,7 @@ const Me = ({authenticated, auth, selectedProject}) => (
   <I18n ns='translations'>
       {
       (t, { i18n }) => (
-      <div className='g-row me'>
+      <div className='g-row me notranslate'>
         <br/>
         <h1>{t('header.my-space')}</h1>
           { authenticated && authenticated.photoURL ?

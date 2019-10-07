@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 const Icon = ({className, name}) => {
-  const cssClasses = classNames('material-icons', className);
+  const cssClasses = classNames('material-icons','notranslate', className);
   return <span className={cssClasses}>{name}</span>;
 };
 

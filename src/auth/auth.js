@@ -47,6 +47,7 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
       authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
       authUser.updatedEmail = userInfoData.email;
       authUser.defaultProject = userInfoData.defaultProject;
+      authUser.language = userInfoData.language;
 
       dispatch(authActions.initAuth(authUser));
       unsubscribe();
@@ -107,7 +108,7 @@ export function updateUserData(authUser) {
             email: authUser.email,
             isEmailConfigured: true,
             updated: new Date(),
-            language: 'he' // Hebrew is default lang
+            language: authUser.language || 'he' // Hebrew is default lang
           }, {merge: true});
 
           updateAuthFields(authUser);
@@ -136,7 +137,7 @@ export function updateUserData(authUser) {
 }
 
 function updateAuthFields(authUser) {
-  // Update the name on the firebase auth
+  // Update given fields on the firebase auth user
   const newUserAuthFields = {};
   if (authUser.displayName) {
     newUserAuthFields.displayName = authUser.displayName;
@@ -148,7 +149,7 @@ function updateAuthFields(authUser) {
     firebaseAuth.currentUser.updateProfile(newUserAuthFields);
   }
 
-  if(authUser.email !== firebaseAuth.currentUser.email) {
+  if(authUser.email && (authUser.email !== firebaseAuth.currentUser.email)) {
     firebaseAuth.currentUser.updateEmail(authUser.email);
   }
 }
