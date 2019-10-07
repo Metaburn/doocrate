@@ -131,6 +131,11 @@ input[type='button']
   direction: rtl;
 }
 
+.button-as-link {
+  text-decoration: underline;
+  border: none !important;
+  color:#eb1478;
+}
 
 // Hide google translate on safari browsers
 .goog-te-banner-frame.skiptranslate {display: none !important;}

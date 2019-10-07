@@ -17,13 +17,13 @@ class Header extends Component {
     auth: PropTypes.object.isRequired,
     signOut: PropTypes.func.isRequired,
     isShowUpdateProfile: PropTypes.func.isRequired,
-    onShowSuccess: PropTypes.func.isRequired,
   };
 
   constructor() {
     super(...arguments);
 
     this.state = {
+      shouldGoogleTranslateToEnglish: false,
 
     };
 
@@ -36,7 +36,7 @@ class Header extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <header className='header'>
+            <header className='header notranslate'>
               <div>
                 <div>
                   <ToastContainer
@@ -62,7 +62,8 @@ class Header extends Component {
                       {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
                     </div>
                     <GoogleTranslate
-                    shouldClose={ this.props.shouldClose }/>
+                    shouldClose={ this.props.shouldClose }
+                    shouldGoogleTranslateToEnglish= {this.state.shouldGoogleTranslateToEnglish}/>
                   </div>
                 </div>
               </div>
@@ -72,10 +73,9 @@ class Header extends Component {
     );
   }
 
-  changeLanguage(changeLang, t, i18n, onShowSuccess) {
+  changeLanguage(changeLang, t, i18n) {
     i18n.changeLanguage(changeLang);
     this.updateUserInfo(changeLang);
-    onShowSuccess('To see translated tasks - press on "Select language" on the top left and choose English');
   }
 
   updateUserInfo(language) {
@@ -85,16 +85,32 @@ class Header extends Component {
     updateUserData(userData);
   }
 
-  renderLanguageButton(t, i18n, onShowSuccess) {
-    const changeLang = (i18n.language === 'en') ? 'he' : 'en';
+  setGoogleTranslateToEnglishIfNeeded(shouldTranslate){
+    // If the project is in hebrew we also translate the tasks auto-magically using google translate
+    if(this.props.selectedProject &&
+      this.props.selectedProject.language &&
+      // Only for project who are not english by default
+      this.props.selectedProject.language.value !== 'en') {
 
+      this.setState({shouldGoogleTranslateToEnglish: shouldTranslate});
+    }
+  }
+
+  renderLanguageButton(t, i18n) {
     return (
       <div>
-        <button
-          onClick={() => {
-            this.changeLanguage(changeLang, t, i18n, onShowSuccess)
+        <button className={'notranslate button-as-link'} onClick={() => {
+            this.changeLanguage('en', t, i18n);
+            this.setGoogleTranslateToEnglishIfNeeded(true);
           }}>
-          {t('nav.' + changeLang + '-lang')}
+          {t('nav.en-lang-short')}
+        </button>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <button className={'notranslate button-as-link'} onClick={() => {
+          this.changeLanguage('he', t, i18n);
+          this.setGoogleTranslateToEnglishIfNeeded(false);
+        }}>
+          {t('nav.he-lang-short')}
         </button>
       </div>
     )

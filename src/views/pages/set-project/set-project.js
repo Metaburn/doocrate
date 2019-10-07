@@ -9,9 +9,9 @@ import TagsInput from 'react-tagsinput';
 import i18n from '../../../i18n.js';
 import './set-project.css';
 import { appConfig } from '../../../config/app-config';
+import Select from 'react-select';
 
 class SetProject extends Component {
-
   constructor() {
     super(...arguments);
 
@@ -28,6 +28,8 @@ class SetProject extends Component {
       type4: '',
       popularTags: [],
       extraFields: [],
+      defaultLanguages: [],
+      language: '',
       canCreateTask: true,
       canAssignTask: true
     };
@@ -36,6 +38,7 @@ class SetProject extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleTagsChange = this.handleTagsChange.bind(this);
     this.handleExtraFieldsChange = this.handleExtraFieldsChange.bind(this);
+    this.handleChangeSelect = this.handleChangeSelect.bind(this);
 
     this.isValid = this.isValid.bind(this);
   }
@@ -50,6 +53,13 @@ class SetProject extends Component {
   }
 
   updateStateByProps(props) {
+
+    //TODO - this should be set in a more global place
+    const defaultLanguages = [
+      {value:'en', label: i18n.t('nav.en-lang')},
+      {value:'he', label: i18n.t('nav.he-lang')}
+    ];
+
     if (props.match != null && props.match.params.projectUrl &&
       props.selectedProject) {
       const projectUrl = props.match.params.projectUrl;
@@ -58,7 +68,7 @@ class SetProject extends Component {
         return;
       }
 
-      let { name, taskTypes, creator, isPublic, popularTags, extraFields, canCreateTask, canAssignTask } = existingProject;
+      let { name, taskTypes, creator, isPublic, popularTags, extraFields, language, canCreateTask, canAssignTask } = existingProject;
       popularTags = this.fromTagObject(popularTags);
 
       let type0,type1,type2,type3,type4;
@@ -79,6 +89,7 @@ class SetProject extends Component {
         isPublic = true
       }
 
+
       this.setState({
         isExisting: true,
         projectUrl: projectUrl,
@@ -87,7 +98,9 @@ class SetProject extends Component {
         name: name || '',
         canCreateTask: canCreateTask,
         canAssignTask: canAssignTask,
+        defaultLanguages: defaultLanguages,
         isPublic: isPublic,
+        language: language,
         type0: type0 || '',
         type1: type1 || '',
         type2: type2 || '',
@@ -147,6 +160,9 @@ class SetProject extends Component {
                 </span>
                 { this.renderExtraFields(t)}
 
+                <div>
+                  {this.renderSelect('language', t('create-project.select-language'), this.state.defaultLanguages, t,'0')}
+                </div>
                 <div className='form-input'>
                   <span>{t('create-project.visibility-placeholder')}</span>
                   <br/>
@@ -206,6 +222,22 @@ class SetProject extends Component {
     );
   }
 
+  renderSelect(fieldName, placeholder, options, translation, tabIndex) {
+    return (
+      <Select
+        type='text'
+        name={fieldName}
+        value={this.state[fieldName]}
+        tabIndex = { tabIndex }
+        onChange={(e) => { this.handleChangeSelect(e, fieldName)}}
+        options={options}
+        isSearchable={false}
+        placeholder= {placeholder}
+        noResultsText={translation('general.no-results-found')}
+        searchable={ false }/>
+    );
+  }
+
   renderPopularTags(translation) {
     const showPlaceholder = this.state.popularTags.length === 0;
     return (
@@ -243,6 +275,11 @@ class SetProject extends Component {
   :
       <input className={'button button-small'}
              type='submit' value={t('create-project.submit-btn')}/>
+  }
+
+  handleChangeSelect(selected, fieldName) {
+    let val=null; if (selected) { val = selected}
+    this.setState({ [fieldName]: val})
   }
 
   handleChange(n, e) {
@@ -300,7 +337,8 @@ class SetProject extends Component {
     res = res || this.state.type2.length === 0;
     res = res || this.state.type3.length === 0;
     res = res || this.state.type4.length === 0;
-    // TODO add more validations here
+    res = res || this.state.type4.length === 0;
+    res = res || !this.state.language || this.state.language.value.length === 0;
 
     return !res;
   }
@@ -344,6 +382,7 @@ class SetProject extends Component {
       name: this.state.name,
       creator: creator,
       taskTypes: taskTypes,
+      language: this.state.language,
       isPublic: this.state.isPublic,
       canCreateTask: this.state.canCreateTask,
       canAssignTask: this.state.canAssignTask,

@@ -17,7 +17,8 @@ export const AuthState = new Record({
   didntBuy: false,
   shouldShowUpdateProfile: false,
   adminProjects: [],
-  defaultProject: null
+  defaultProject: null,
+  language: null
 });
 
 
@@ -40,6 +41,7 @@ export function authReducer(state = new AuthState(), {payload, type}) {
         didntBuy: payload? payload.didntBuy: null,
         adminProjects: payload? payload.adminProjects: [],
         defaultProject: payload? payload.defaultProject: null,
+        language: payload? payload.language: null,
       });
 
     case SIGN_OUT_SUCCESS:

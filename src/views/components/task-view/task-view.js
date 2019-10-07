@@ -248,27 +248,27 @@ export class TaskView extends Component {
             <form noValidate>
               <div className='form-input'>
                 {canEditTask ?
-                  this.renderInput(task, 'title', t('task.name'), t, canEditTask, '0', true, true) :
+                  this.renderInput('title', t('task.name'), t, canEditTask, '0', true, true) :
                   <span>{task.title}</span>
                 }
               </div>
               <div className='form-input'>
                 {canEditTask ?
-                  this.renderTextArea(task, 'description', t, canEditTask, '0', 'task.description')
+                  this.renderTextArea('description', t, canEditTask, '0', 'task.description')
                   :
                   <span>{task.description}</span>
                 }
               </div>
               <div className='form-input'>
                 {canEditTask ?
-                  this.renderTextArea(task, 'requirements', t, canEditTask, '0', 'task.requirements')
+                  this.renderTextArea('requirements', t, canEditTask, '0', 'task.requirements')
                   :
                   <span>{task.requirements}</span>
                 }
               </div>
               <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
                 {canEditTask ?
-                  this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')
+                  this.renderSelect('type', t('general.select-default'), this.state.defaultType, t,'0')
                   :
                   <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
                   }
@@ -354,7 +354,7 @@ export class TaskView extends Component {
       key='addComment' />)
   }
 
-  renderSelect(task, fieldName, placeholder, options, isEditable, translation, tabIndex) {
+  renderSelect(fieldName, placeholder, options, translation, tabIndex) {
     return (
       <Select
       type='text'
@@ -366,14 +366,13 @@ export class TaskView extends Component {
       options={options}
       // onBlur={this.handleSubmit}
       isSearchable={false}
-      placeholder= {translation('general.select-default')}
+      placeholder= {placeholder }
       noResultsText={translation('general.no-results-found')}
-      searchable={ false }
-      disabled = { !isEditable }/>
+      searchable={ false }/>
   );
   }
 
-  renderInput(task, fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
+  renderInput(fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
     const classNames = isEditable ? ' editable' : '';
     return( <Textbox
       classNameInput={`changing-input${classNames}`}
@@ -416,7 +415,7 @@ export class TaskView extends Component {
     />)
   }
 
-  renderTextArea(task, fieldName, t, isEditable, tabIndex, placeHolder) {
+  renderTextArea(fieldName, t, isEditable, tabIndex, placeHolder) {
     const classNames = isEditable ? ' editable' : '';
     return (
         <Textarea
