@@ -20,12 +20,12 @@
       // Finding the middle of the image and setting it to mouse position
       var _onMouseMove = function(e) {
         let unicorn = document.getElementsByClassName('loader-unicorn');
-        if(unicorn && unicorn.length > 0 && unicorn[0].style.opacity != 0) {
+        if(unicorn && unicorn.length > 0 && unicorn[0].style.opacity !== 0) {
           unicorn[0].style.top = (e.screenY.toString() - parseInt(unicorn[0].style.height, 10)).toString() +'px';
           unicorn[0].style.left = (e.screenX.toString() - parseInt(unicorn[0].style.width, 10) / 2).toString() + 'px';
         }
         // unset mouse listen when unicorn is hidden
-        if (unicorn && unicorn.length && unicorn[0].style.opacity == 0) {
+        if (unicorn && unicorn.length && unicorn[0].style.opacity === 0) {
           document.removeEventListener('mousemove', _onMouseMove, false);
         }
       }

@@ -22,26 +22,11 @@
   .instruction-right {
     float: right;
     margin-left: 1em;
-
   }
 
   .instruction-label {
     margin-top: 0.5em;
     margin-bottom: 0.4em;
-  }
-
-
-  .avatar {
-    margin: 8px 5px;
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
-  }
-
-  .avatar-creator {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 }
 
@@ -136,6 +121,18 @@
     margin-bottom: 10px;
   }
 
+  .task-type {
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+
+  .task-type-left {
+    float:left;
+  }
+
+  .task-type-right {
+    float:right;
+  }
 }
 
 .changing-input {
@@ -162,6 +159,7 @@
 
 .tags-container {
   display: flex;
+  clear: both;
 
   .label {
     padding: 0 0.5em;

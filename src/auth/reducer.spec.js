@@ -1,4 +1,4 @@
-import { INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS } from './action-types';
+import {INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, UPDATE_PROFILE} from './action-types';
 import { authReducer } from './reducer';
 
 
@@ -49,4 +49,40 @@ describe('Auth reducer', () => {
       expect(state.id).toBe(null);
     });
   });
+
+  describe('Update Profile Show', () => {
+    it('should set shouldShowUpdateProfile to true', () => {
+      let state = authReducer(undefined, {
+        type: UPDATE_PROFILE,
+        payload: true
+      });
+
+      expect(state.shouldShowUpdateProfile).toBe(true);
+    });
+  });
+
+  describe('Update Profile Hide', () => {
+    it('should set shouldShowUpdateProfile to true', () => {
+      let state = authReducer(undefined, {
+        type: UPDATE_PROFILE,
+        payload: false
+      });
+
+      expect(state.shouldShowUpdateProfile).toBe(false);
+    });
+  });
+
+  describe('Update Profile Hide', () => {
+    it('should set shouldShowUpdateProfile to true when no payload', () => {
+      let state = authReducer(undefined, {
+        type: UPDATE_PROFILE,
+        payload: null
+      });
+
+      expect(state.shouldShowUpdateProfile).toBe(false);
+    });
+  });
+
+
+
 });

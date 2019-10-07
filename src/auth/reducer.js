@@ -46,15 +46,8 @@ export function authReducer(state = new AuthState(), {payload, type}) {
       return new AuthState();
 
     case UPDATE_PROFILE:
-      let shouldShow;
-      if (payload) {
-        shouldShow = true;
-      }else {
-        shouldShow = false;
-      }
-
       return state.merge({
-        shouldShowUpdateProfile: shouldShow
+        shouldShowUpdateProfile: (!!payload)
   });
 
     default:

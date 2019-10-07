@@ -3,19 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { getAuth } from 'src/auth';
-import ReactTooltip from 'react-tooltip'
-
 import {debounce} from 'lodash';
-
-import { getCommentList } from 'src/comments';
-import { Textbox } from 'react-inputs-validation';
-
-import './task-view.css';
 import Icon from '../icon';
 import Textarea from 'react-textarea-autosize';
-
-import Img from 'react-image'
+import { Textbox } from 'react-inputs-validation';
 import TagsInput from 'react-tagsinput';
+
+import { getCommentList } from 'src/comments';
+
 import 'react-tagsinput/react-tagsinput.css';
 import Select from 'react-select';
 import CommentList from '../comment-list';
@@ -26,6 +21,9 @@ import { I18n } from 'react-i18next';
 import i18n from '../../../i18n.js';
 import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
+import TaskCreator from "../task-creator/task-creator";
+
+import './task-view.css';
 
 export class TaskView extends Component {
   constructor() {
@@ -207,6 +205,7 @@ export class TaskView extends Component {
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
     const canDeleteTask = isUserCreator || this.props.isAdmin;
     const showUnassignButton = isUserAssignee || isUserCreator || this.props.isAdmin;
+    const showMarkAsDoneButton = !this.props.isDraft&& canEditTask;
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
@@ -240,6 +239,7 @@ export class TaskView extends Component {
           showUnassignButton = { showUnassignButton }
           showSaveButton = { showSaveButton }
           showDeleteButton = { showDeleteButton }
+          showMarkAsDoneButton = { showMarkAsDoneButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
           markAsDoneUndone = {this.handleMarkAsDoneUndone}
@@ -267,7 +267,12 @@ export class TaskView extends Component {
                 }
               </div>
               <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
+                {canEditTask ?
+                  this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')
+                  :
+                  <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
+                  }
+              </div>
 
               <div className={`tags-container tags-container-${t('lang-float')}`}>
                 <Icon className='label notranslate' name='loyalty' /> {this.renderTags(canEditTask, t, '0')}
@@ -298,30 +303,20 @@ export class TaskView extends Component {
                   className='is-critical'>{this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask)}</div>
                 : ''
               }
-              {this.renderTaskCreator(t, task) }
+              <TaskCreator creator={task.creator}/>
             </form>
           </div>
-          { this.renderCommentsList(t, task) }
+          <CommentList
+            task={task}
+            comments={this.props.comments}
+            auth={this.props.auth}/>
+
           { this.renderAddComment() }
           { this.renderTakeOwnershipModal(task) }
           { this.renderAssignmentModal(task) }
         </div>
       )}
       </I18n>
-    );
-  }
-
-  renderTaskCreator(t, task) {
-    if (!task.creator) return;
-    const avatar = task.creator.photoURL ? <Img className='avatar' src={task.creator.photoURL} alt={task.creator.name}/> : '';
-    return (
-      <div>
-        <span>{t('task.creator')}</span>
-        <span className='avatar-creator' data-tip={task.creator.name}>
-                      <ReactTooltip type='light' effect='solid'/>
-          { avatar }
-                    </span>
-      </div>
     );
   }
 
@@ -357,17 +352,6 @@ export class TaskView extends Component {
       createComment={this.props.createComment }
       auth={this.props.auth}
       key='addComment' />)
-  }
-
-  renderCommentsList(translation, task) {
-    if(this.props.comments) {
-      return (
-        <CommentList
-          task={task}
-          comments={this.props.comments}
-          auth={this.props.auth}/>
-      )
-    }
   }
 
   renderSelect(task, fieldName, placeholder, options, isEditable, translation, tabIndex) {

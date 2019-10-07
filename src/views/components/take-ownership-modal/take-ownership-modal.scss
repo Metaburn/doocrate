@@ -25,18 +25,24 @@
 
     button {
       font-size: 1em;
-      color: white;
-      padding: 0 6em;
+      padding: 0 2em;
       height: 3em;
       color: #1A181B;
       -webkit-border-radius: 4px;
       -moz-border-radius: 4px;
       border-radius: 4px;
       margin: 0.5em 0;
+      border: none;
+      background: #dadada;
+      -webkit-transition: all 0.2s linear;
+      -moz-transition: all 0.2s linear;
+      -ms-transition: all 0.2s linear;
+      -o-transition: all 0.2s linear;
+      transition: all 0.2s linear;
 
       &:hover {
         font-size: 1.1em;
-        padding: 0.1em 5.4em;
+        padding: 0.05em 2.1em;
       }
     }
 
