@@ -365,7 +365,10 @@ export class TaskView extends Component {
         <CommentList
           task={task}
           comments={this.props.comments}
-          auth={this.props.auth}/>
+          auth={this.props.auth}
+          updateComment={this.props.updateComment}
+          removeComment={this.props.removeComment}
+        />
       )
     }
   }

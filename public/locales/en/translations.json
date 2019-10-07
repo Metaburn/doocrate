@@ -129,6 +129,10 @@
   "comments": {
     "title": "Comments",
     "add-comment": "Add Comment",
+    "edit-comment": "Edit Comment",
+    "delete-comment": "Delete Comment",
+    "update-comment": "Update Comment",
+    "cancel-edit-comment": "Cancel",
     "placeholder": "This is the place to comment. Is there someone you think the task owner should talk to? Is there anything they should know?"
   },
   "welcome": {

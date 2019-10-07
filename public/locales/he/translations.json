@@ -129,6 +129,10 @@
   "comments": {
     "title": "תגובות",
     "add-comment": "הוסף הערה",
+    "edit-comment": "ערוך הערה",
+    "delete-comment": "מחק הערה",
+    "update-comment": "עדכן הערה",
+    "cancel-edit-comment": "ביטול",
     "placeholder": "זה המקום לכתוב משהו. האם יש מישהו שאתה חושב שממלא המשימה צריך לדבר איתו? האם יש משהו שכדאי שממלא המשימה יידע?"
   },
   "welcome": {

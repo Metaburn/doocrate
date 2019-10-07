@@ -422,6 +422,8 @@ export class TasksPage extends Component {
         unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}
+        updateComment={this.props.updateComment}
+        removeComment={this.props.removeComment}
         isValidCallback={this.setCurrentTaskValid}
         isDraft={this.state.newTask != null}
         submitNewTask={this.submitNewTask}
