@@ -11,6 +11,9 @@ import './header.css';
 import GoogleTranslate from '../google-translate/google-translate';
 import {updateUserData} from "../../../auth/auth";
 import HeaderActions from "../header-actions/header-actions";
+import getRandomImage from "../../../utils/unsplash";
+import {SetUserInfo} from "../set-user-info";
+import {getCookie} from "../../../utils/browser-utils";
 
 class Header extends Component {
   static propTypes = {
@@ -24,11 +27,12 @@ class Header extends Component {
 
     this.state = {
       shouldGoogleTranslateToEnglish: false,
-
+      showSetUserInfoScreen: false
     };
 
     this.renderLanguageButton = this.renderLanguageButton.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
+    this.updateUserLanguage = this.updateUserLanguage.bind(this);
   }
 
   render() {
@@ -51,6 +55,18 @@ class Header extends Component {
                   />
                   <a href='/'>{this.props.auth? '': 'Doocrate' }<h1 className='header-title'>&nbsp;</h1></a>
 
+                  <SetUserInfo
+                    isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
+                    userInfo={ this.props.auth }
+                    photoURL={ this.props.auth.photoURL || getRandomImage()}
+                    updateUserInfo={ this.updateUserInfo }
+                    onClosed = { () => {
+                      this.setState({showSetUserInfoScreen: false});
+                      this.props.isShowUpdateProfile(false);
+                      this.setState({showSetUserInfoScreen: false})
+                    }
+                    } />
+
                   <HeaderActions
                     auth={this.props.auth}
                     signOut={this.props.signOut}
@@ -63,7 +79,7 @@ class Header extends Component {
                       ''
                     }</h4>
                     <div className={`lang-select lang-left`}>
-                      {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
+                      {this.renderLanguageButton(t, i18n)}
                     </div>
                     <GoogleTranslate
                     shouldClose={ this.props.shouldClose }
@@ -77,12 +93,36 @@ class Header extends Component {
     );
   }
 
-  changeLanguage(changeLang, t, i18n) {
-    i18n.changeLanguage(changeLang);
-    this.updateUserInfo(changeLang);
+  componentWillMount() {
+    this.showSetUserInfo();
   }
 
-  updateUserInfo(language) {
+
+  showSetUserInfo() {
+    this.setState({showSetUserInfoScreen: (this.props.auth.id && !this.props.auth.isEmailConfigured)})
+  }
+
+  changeLanguage(changeLang, t, i18n) {
+    i18n.changeLanguage(changeLang);
+    this.updateUserLanguage(changeLang);
+  }
+
+  updateUserInfo(userInfo) {
+    const projectCookie = getCookie('project');
+
+    const oldUserData = this.props.auth;
+    const newUserData = {};
+    newUserData.uid = oldUserData.id;
+    newUserData.email = userInfo.email;
+    newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
+    newUserData.displayName = userInfo.name;
+    newUserData.photoURL = userInfo.photoURL;
+    // Update the default project on first time setting user info
+    newUserData.defaultProject = projectCookie || this.props.selectedProject;
+    updateUserData(newUserData);
+  }
+
+  updateUserLanguage(language) {
     const userData = {};
     userData.uid = this.props.auth.id;
     userData.language = language;
