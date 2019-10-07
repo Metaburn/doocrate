@@ -62,6 +62,7 @@ class SetProject extends Component {
 
     if (props.match != null && props.match.params.projectUrl &&
       props.selectedProject) {
+      // Existing project
       const projectUrl = props.match.params.projectUrl;
       let existingProject = props.selectedProject;
       if(!existingProject) {
@@ -106,6 +107,11 @@ class SetProject extends Component {
         type2: type2 || '',
         type3: type3 || '',
         type4: type4 || '',
+      });
+    }else {
+      // Setting default language for both existing and new projects
+      this.setState({
+        defaultLanguages: defaultLanguages,
       });
     }
   }
