@@ -205,6 +205,7 @@ export class TaskView extends Component {
     const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
     const canDeleteTask = isUserCreator || this.props.isAdmin;
     const showUnassignButton = isUserAssignee || isUserCreator || this.props.isAdmin;
+    const showMarkAsDoneButton = !this.props.isDraft&& canEditTask;
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
@@ -238,6 +239,7 @@ export class TaskView extends Component {
           showUnassignButton = { showUnassignButton }
           showSaveButton = { showSaveButton }
           showDeleteButton = { showDeleteButton }
+          showMarkAsDoneButton = { showMarkAsDoneButton }
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
           markAsDoneUndone = {this.handleMarkAsDoneUndone}
@@ -265,7 +267,12 @@ export class TaskView extends Component {
                 }
               </div>
               <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
-              { this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')}</div>
+                {canEditTask ?
+                  this.renderSelect(task, 'type', t('task.type'), this.state.defaultType, canEditTask, t,'0')
+                  :
+                  <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
+                  }
+              </div>
 
               <div className={`tags-container tags-container-${t('lang-float')}`}>
                 <Icon className='label notranslate' name='loyalty' /> {this.renderTags(canEditTask, t, '0')}

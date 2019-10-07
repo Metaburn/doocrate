@@ -30,7 +30,6 @@ class TaskCreator extends Component {
 }
 
 TaskCreator.propTypes = {
-  auth: PropTypes.object.isRequired,
   creator: PropTypes.object,
 };
 

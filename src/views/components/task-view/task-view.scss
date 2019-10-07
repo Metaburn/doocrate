@@ -22,7 +22,6 @@
   .instruction-right {
     float: right;
     margin-left: 1em;
-
   }
 
   .instruction-label {
@@ -122,6 +121,18 @@
     margin-bottom: 10px;
   }
 
+  .task-type {
+    margin-top: 0.5em;
+    margin-bottom: 0.4em;
+  }
+
+  .task-type-left {
+    float:left;
+  }
+
+  .task-type-right {
+    float:right;
+  }
 }
 
 .changing-input {
@@ -148,6 +159,7 @@
 
 .tags-container {
   display: flex;
+  clear: both;
 
   .label {
     padding: 0 0.5em;
