@@ -306,10 +306,14 @@ export class TaskView extends Component {
               <TaskCreator creator={task.creator}/>
             </form>
           </div>
+
           <CommentList
             task={task}
             comments={this.props.comments}
-            auth={this.props.auth}/>
+            auth={this.props.auth}
+            updateComment={this.props.updateComment}
+            removeComment={this.props.removeComment}
+          />
 
           { this.renderAddComment() }
           { this.renderTakeOwnershipModal(task) }

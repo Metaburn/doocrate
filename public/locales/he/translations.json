@@ -131,8 +131,13 @@
   },
   "comments": {
     "title": "תגובות",
-    "add-comment": "הוסף הערה",
-    "placeholder": "זה המקום לכתוב משהו. האם יש מישהו שאתה חושב שממלא המשימה צריך לדבר איתו? האם יש משהו שכדאי שממלא המשימה יידע?"
+    "add-comment": "הוסף תגובה",
+    "edit-comment": "ערוך תגובה",
+    "delete-comment": "מחק תגובה",
+    "update-comment": "עדכן תגובה",
+    "cancel-edit-comment": "ביטול",
+    "placeholder": "זה המקום לכתוב משהו. האם יש מישהו שאתה חושב שממלא המשימה צריך לדבר איתו? האם יש משהו שכדאי שממלא המשימה יידע?",
+    "comment-deleted": "🛸 נמחקה. נעלמה. איזה תגובה? לא ראיתי פה שום תגובה 🛸"
   },
   "welcome": {
     "heading": "ברוכים הבאות לדואוקרט",

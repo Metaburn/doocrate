@@ -20,6 +20,9 @@ class CommentList extends Component {
           key={index}
           commentNumber={index}
           comment={comment}
+          updateComment={this.props.updateComment}
+          removeComment={this.props.removeComment}
+          auth={this.props.auth}
         />
       )
     });

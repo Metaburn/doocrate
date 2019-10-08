@@ -1,15 +1,71 @@
 @import 'views/styles/shared';
 
 .comment-item {
-  margin-bottom: 1em;
+  margin-bottom: 2em;
   font-size: 0.9em;
+
+  .comment-item-tooltip {
+    display: inline-block;
+    width: 24px;
+
+    .avatar {
+      margin: 0 5px;
+      width: 40px;
+      height: 40px;
+      border-radius: 40px;
+    }
+  }
+
+  .tooltip-container {
+    a, button {
+      font-size: 14px !important;
+      color: $primary-color;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      padding: 0 0 0 0;
+      margin: 0 10px 0 10px;
+
+      &:hover {
+        color: #666;
+        padding-bottom: 1px;
+        border-bottom: 1px solid #666;
+      }
+    }
+
+    a {
+      margin-bottom: 40px;
+    }
+    button {
+      border-radius: 0;
+    }
+  }
 
   .comment-item-creator {
     display: inline-block;
   }
 
   .comment-body {
-    padding: 0 3em;
+    padding: 0 4.85em;
+
+    .textarea-body {
+      width: 100%;
+      transition: border-color 100ms;
+      font-size: $base-font-size;
+      font-family: $base-font-family;
+      line-height: 1.2em;
+      text-rendering: optimizeSpeed;
+      vertical-align: top;
+      border-color: white;
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid #d5dce0;
+      resize: none;
+      transition: all 1s ease;
+
+      &:hover {
+        border-color: $primary-color;
+      }
+    }
 
     a {
       color: $primary-color;
@@ -21,9 +77,15 @@
   }
 
   .avatar {
-    margin: 0 5px; 
+    margin: 0 5px;
     width: 40px;
     height: 40px;
     border-radius: 40px;
+  }
+
+  .button-update-comment {
+    margin-top: 1.5em;
+    margin-left: 1.5em;
+    transition: all 1s ease;
   }
 }

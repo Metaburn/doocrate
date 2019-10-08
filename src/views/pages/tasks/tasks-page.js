@@ -34,6 +34,7 @@ export class TasksPage extends Component {
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
     this.createTask = this.createTask.bind(this);
+    this.removeComment = this.removeComment.bind(this);
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
 
@@ -238,6 +239,7 @@ export class TasksPage extends Component {
       {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
       this.onNewTaskAdded);
 
+    // Probably should only show on real success
     this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
@@ -291,6 +293,11 @@ export class TasksPage extends Component {
       return;
     }
   }
+
+  removeComment(comment) {
+    this.props.removeComment(comment);
+    this.props.showSuccess(i18n.t('comments.comment-deleted'));
+  };
 
   generateCSV() {
     console.log("Generating csv...");
@@ -383,6 +390,8 @@ export class TasksPage extends Component {
         unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}
+        updateComment={this.props.updateComment}
+        removeComment={this.removeComment}
         isValidCallback={this.setCurrentTaskValid}
         isDraft={this.state.newTask != null}
         submitNewTask={this.submitNewTask}

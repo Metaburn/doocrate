@@ -133,7 +133,12 @@
   "comments": {
     "title": "Comments",
     "add-comment": "Add Comment",
-    "placeholder": "This is the place to comment. Is there someone you think the task owner should talk to? Is there anything they should know?"
+    "edit-comment": "Edit Comment",
+    "delete-comment": "Delete Comment",
+    "update-comment": "Update Comment",
+    "cancel-edit-comment": "Cancel",
+    "placeholder": "This is the place to comment. Is there someone you think the task owner should talk to? Is there anything they should know?",
+    "comment-deleted": "🛸 Deleted. Gone. What Comment? I didn't saw no comment 🛸"
   },
   "welcome": {
     "heading": "Welcome to the doocrate",
