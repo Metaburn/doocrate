@@ -20,15 +20,28 @@ export class CommentItem extends Component {
       body: this.props.comment.body,
       isInEditMode: false
     };
+
+  }
+
+  componentWillMount() {
+    this.updateStateByProps(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({body: this.props.comment.body});
+    this.updateStateByProps(nextProps);
   }
+
+  updateStateByProps(props) {
+    this.setState({body: props.comment.body});
+  }
+
+  isValid = () => {
+    return (this.state.body && this.state.body.length > 1)
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    if (!this.state.body || this.state.body.length <= 1) {
+    if (!this.isValid()) {
       return;
     }
 
@@ -92,66 +105,72 @@ export class CommentItem extends Component {
   }
 
   renderTooltip(t) {
-    if (this.shouldDisplayTooltip()) {
-      return (
-        <div id={`comment-${this.props.commentNumber}`} className='comment-item-tooltip-container'
-             onMouseEnter={() => this.setState({isTooltipActive: true})}
-             onMouseLeave={() => this.setState({isTooltipActive: false})}>
-          <Icon name='keyboard_arrow_down'/>
-          <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left'
-                   parent={`#comment-${this.props.commentNumber}`}>
-                  <span className='tooltip-container'>
-                    <div><Button className='button-no-border'
-                                 onClick={() => this.setState({isInEditMode: true})}>{t('comments.edit-comment')}</Button></div>
-                    <div><Button className='button-no-border'
-                                 onClick={this.onRemoveComment}>{t('comments.delete-comment')}</Button></div>
-                  </span>
-          </ToolTip>
-        </div>
-      );
-    }
-  }
-
-  renderBody(t) {
-
-    const {body, isInEditMode} = this.state;
-    if (isInEditMode) {
-      return (
-        <div className='comment-body'>
-          <Textarea
-            className='textarea-body'
-            name='comment-body'
-            value={body}
-            placeholder={t('comments.placeholder')}
-            ref={e => this['bodyInput'] = e}
-            onChange={(e) => this.setState({body: e.target.value})}
-          />
-        </div>
-      );
+    if (!this.shouldDisplayTooltip()){
+      return(<span className='comment-item-tooltip'/>);
     }
 
     return (
-      <div className='comment-body'>
-        <Linkify>
-          {body}
-        </Linkify>
+      <div id={`comment-${this.props.commentNumber}`} className='comment-item-tooltip'
+           onMouseEnter={() => this.setState({isTooltipActive: true})}
+           onMouseLeave={() => this.setState({isTooltipActive: false})}>
+        <Icon name='keyboard_arrow_down'/>
+        <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left'
+                 parent={`#comment-${this.props.commentNumber}`}>
+          <span className='tooltip-container'>
+            <div>
+              <Button className='button-no-border'
+                      onClick={() => this.setState({isInEditMode: true})}>{t('comments.edit-comment')}</Button></div>
+            <div>
+              <Button className='button-no-border'
+                      onClick={this.onRemoveComment}>{t('comments.delete-comment')}</Button>
+            </div>
+                </span>
+        </ToolTip>
       </div>
     );
   }
 
+  renderBody(t) {
+    const {body, isInEditMode} = this.state;
+    return (
+      <div className='comment-body'>
+        {isInEditMode ?
+          this.renderBodyEditMode(t, body)
+          :
+          <Linkify>
+            {body}
+          </Linkify>
+        }
+      </div>
+    )
+  }
+
+  renderBodyEditMode(t, body) {
+    return (
+      <Textarea
+        className='textarea-body'
+        name='comment-body'
+        value={body}
+        placeholder={t('comments.placeholder')}
+        ref={e => this['bodyInput'] = e}
+        onChange={(e) => this.setState({body: e.target.value})}
+      />
+    );
+  }
+
   renderSubmit(t) {
-    if (this.state.isInEditMode) {
-      return (
-        <div className='button-update-comment'>
-          <input className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
-                 type="submit" value={t('comments.update-comment')}/>
-          <Button className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
-                  onClick={this.cancelEditComment}>
-            {t('comments.cancel-edit-comment')}
-          </Button>
-        </div>
-      );
-    }
+    if (!this.state.isInEditMode) return;
+
+    return (
+      <div className='button-update-comment'>
+        <input className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
+               type="submit" value={t('comments.update-comment')}/>
+        <Button className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
+                onClick={this.cancelEditComment}>
+          {t('comments.cancel-edit-comment')}
+        </Button>
+      </div>
+    );
   }
 }
 

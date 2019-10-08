@@ -4,8 +4,10 @@
   margin-bottom: 2em;
   font-size: 0.9em;
 
-  .comment-item-tooltip-container {
+  .comment-item-tooltip {
     display: inline-block;
+    width: 24px;
+
     .avatar {
       margin: 0 5px;
       width: 40px;
@@ -43,7 +45,7 @@
   }
 
   .comment-body {
-    padding: 0 2.5em;
+    padding: 0 4.85em;
 
     .textarea-body {
       width: 100%;
