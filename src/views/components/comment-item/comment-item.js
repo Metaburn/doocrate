@@ -116,7 +116,7 @@ export class CommentItem extends Component {
         <Icon name='keyboard_arrow_down'/>
         <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left'
                  parent={`#comment-${this.props.commentNumber}`}>
-          <span className='tooltip-container'>
+          <span className={`tooltip-container dir-${t('lang-float')}`}>
             <div>
               <Button className='button-no-border'
                       onClick={() => this.setState({isInEditMode: true})}>{t('comments.edit-comment')}</Button></div>
