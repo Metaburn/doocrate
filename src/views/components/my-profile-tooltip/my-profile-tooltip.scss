@@ -1,16 +1,32 @@
 @import 'views/styles/shared';
 
 .my-profile-tooltip-container {
-  display: inline-block;
+
   .avatar {
     margin: 0 5px;
     width: 40px;
     height: 40px;
     border-radius: 40px;
   }
+
+  .button {
+    width: 100%;
+    border: none !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    color: $primary-color !important;
+
+    &:hover {
+      background-color: $primary-color;
+      color: white !important;
+    }
+  }
+
 }
 
 .tooltip-container {
+  pointer-events: all !important;
   a, button {
     font-size: 14px !important;
     color: $primary-color;

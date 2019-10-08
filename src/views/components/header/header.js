@@ -1,11 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Button from '../button';
-import MyProfileTooltip from '../my-profile-tooltip';
 import { ToastContainer } from 'react-toastify';
 import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
-import { Redirect, Switch} from 'react-router-dom'
 import { NavLink } from 'react-router-dom';
 
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -13,41 +10,42 @@ import 'react-toastify/dist/ReactToastify.min.css'
 import './header.css';
 import GoogleTranslate from '../google-translate/google-translate';
 import {updateUserData} from "../../../auth/auth";
-
-const menuContent =
-  `<div>
-    <Img className='avatar' src={auth.photoURL} alt={auth.name}/>
-     <Button onClick={signOut}>{t('header.disconnect')}</Button>
-  </div>`;
+import HeaderActions from "../header-actions/header-actions";
+import getRandomImage from "../../../utils/unsplash";
+import {SetUserInfo} from "../set-user-info";
+import {getCookie} from "../../../utils/browser-utils";
 
 class Header extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
     signOut: PropTypes.func.isRequired,
     isShowUpdateProfile: PropTypes.func.isRequired,
-    onShowSuccess: PropTypes.func.isRequired,
   };
 
   constructor() {
     super(...arguments);
 
     this.state = {
-      redirectTo: null
+      shouldGoogleTranslateToEnglish: false,
+      showSetUserInfoScreen: false
     };
 
     this.renderLanguageButton = this.renderLanguageButton.bind(this);
-    this.renderRedirectToCreateProject = this.renderRedirectToCreateProject.bind(this);
     this.updateUserInfo = this.updateUserInfo.bind(this);
+    this.updateUserLanguage = this.updateUserLanguage.bind(this);
   }
 
   render() {
+    const projectToUse = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined')?
+      this.props.selectedProject.url : this.props.auth.defaultProject;
+
     return (
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <header className='header'>
-              <div className='g-row'>
-                <div className='g-col'>
+            <header className='header notranslate'>
+              <div>
+                <div>
                   <ToastContainer
                     position='top-center'
                     autoClose={appConfig.notificationShowTime}
@@ -55,44 +53,38 @@ class Header extends Component {
                     newestOnTop={true}
                     pauseOnHover
                   />
-                  <ul className='header-actions'>
-                    {this.props.auth ?
-                      <div>
-                        <MyProfileTooltip
-                          auth={this.props.auth}
-                          signOut={this.props.signOut}
-                          isShowUpdateProfile={this.props.isShowUpdateProfile}
-                        />
-                        {this.props.auth.photoURL ?
-                          <div className='task-item-assignee' data-html={true} data-tip={menuContent}/>
-                          : <div data-html={true} data-tip={
-                            <div>
-                              {t('header.me')}
-                              <Button onClick={this.props.signOut}>{t('header.disconnect')}</Button>
-                            </div>
-                          }/>
-                        }
+                  <a href='/'>{this.props.auth? '': 'Doocrate' }<h1 className='header-title'>&nbsp;</h1></a>
 
-                      </div>
-                      : null
+                  <SetUserInfo
+                    isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
+                    userInfo={ this.props.auth }
+                    photoURL={ this.props.auth.photoURL || getRandomImage()}
+                    updateUserInfo={ this.updateUserInfo }
+                    onClosed = { () => {
+                      this.setState({showSetUserInfoScreen: false});
+                      this.props.isShowUpdateProfile(false);
+                      this.setState({showSetUserInfoScreen: false})
                     }
-                  </ul>
-                  <h1 className='header-title'><a href='/'>Doocrate</a></h1>
-                  <h4>{this.props.selectedProject?
-                    <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
-                    ''
-                  }</h4>
-                  <div className={`lang-select lang-${t('lang-float-reverse')}`}>
-                    {this.renderLanguageButton(t, i18n, this.props.onShowSuccess)}
+                    } />
+
+                  <HeaderActions
+                    auth={this.props.auth}
+                    signOut={this.props.signOut}
+                    projectUrl={projectToUse}
+                    isShowUpdateProfile={this.props.isShowUpdateProfile}/>
+
+                  <div className='header-side'>
+                    <h4 className='project-title'>{this.props.selectedProject?
+                      <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
+                      ''
+                    }</h4>
+                    <div className={`lang-select lang-left`}>
+                      {this.renderLanguageButton(t, i18n)}
+                    </div>
+                    <GoogleTranslate
+                    shouldClose={ this.props.shouldClose }
+                    shouldGoogleTranslateToEnglish= {this.state.shouldGoogleTranslateToEnglish}/>
                   </div>
-                  <GoogleTranslate
-                  shouldClose={ this.props.shouldClose }/>
-                  {this.props.auth && this.props.auth.authenticated ?
-                    <div className={'create-project-header'}>
-                      <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
-                      {this.renderRedirectToCreateProject()}
-                    </div> : ''
-                  }
                 </div>
               </div>
             </header>
@@ -101,46 +93,68 @@ class Header extends Component {
     );
   }
 
-  renderRedirectToCreateProject = () => {
-    if (this.state.redirectTo) {
-      this.setState({redirectTo : null});
-      return (
-        <Switch>
-          <Redirect to={this.state.redirectTo} />
-        </Switch>
-      )
-    }
-  };
-
-  redirectTo = (url) => {
-    this.setState({
-      redirectTo: url
-    })
-  };
-
-  changeLanguage(changeLang, t, i18n, onShowSuccess) {
-    i18n.changeLanguage(changeLang);
-    this.updateUserInfo(changeLang);
-    onShowSuccess('To see translated tasks - press on "Select language" on the top left and choose English');
+  componentWillMount() {
+    this.showSetUserInfo();
   }
 
-  updateUserInfo(language) {
+
+  showSetUserInfo() {
+    this.setState({showSetUserInfoScreen: (this.props.auth.id && !this.props.auth.isEmailConfigured)})
+  }
+
+  changeLanguage(changeLang, t, i18n) {
+    i18n.changeLanguage(changeLang);
+    this.updateUserLanguage(changeLang);
+  }
+
+  updateUserInfo(userInfo) {
+    const projectCookie = getCookie('project');
+
+    const oldUserData = this.props.auth;
+    const newUserData = {};
+    newUserData.uid = oldUserData.id;
+    newUserData.email = userInfo.email;
+    newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
+    newUserData.displayName = userInfo.name;
+    newUserData.photoURL = userInfo.photoURL;
+    // Update the default project on first time setting user info
+    newUserData.defaultProject = projectCookie || this.props.selectedProject;
+    updateUserData(newUserData);
+  }
+
+  updateUserLanguage(language) {
     const userData = {};
     userData.uid = this.props.auth.id;
     userData.language = language;
     updateUserData(userData);
   }
 
-  renderLanguageButton(t, i18n, onShowSuccess) {
-    const changeLang = (i18n.language === 'en') ? 'he' : 'en';
+  setGoogleTranslateToEnglishIfNeeded(shouldTranslate){
+    // If the project is in hebrew we also translate the tasks auto-magically using google translate
+    if(this.props.selectedProject &&
+      this.props.selectedProject.language &&
+      // Only for project who are not english by default
+      this.props.selectedProject.language.value !== 'en') {
 
+      this.setState({shouldGoogleTranslateToEnglish: shouldTranslate});
+    }
+  }
+
+  renderLanguageButton(t, i18n) {
     return (
       <div>
-        <button
-          onClick={() => {
-            this.changeLanguage(changeLang, t, i18n, onShowSuccess)
+        <button className={'notranslate button-as-link'} onClick={() => {
+            this.changeLanguage('en', t, i18n);
+            this.setGoogleTranslateToEnglishIfNeeded(true);
           }}>
-          {t('nav.' + changeLang + '-lang')}
+          {t('nav.en-lang-short')}
+        </button>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <button className={'notranslate button-as-link'} onClick={() => {
+          this.changeLanguage('he', t, i18n);
+          this.setGoogleTranslateToEnglishIfNeeded(false);
+        }}>
+          {t('nav.he-lang-short')}
         </button>
       </div>
     )

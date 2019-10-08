@@ -1,11 +1,14 @@
 {
   "lang": "en",
   "lang-dir": "ltr",
+  "lang-short": "EN",
   "lang-float": "left",
   "lang-float-reverse": "right",
   "nav": {
     "en-lang": "English",
-    "he-lang": "Hebrew"
+    "he-lang": "Hebrew",
+    "en-lang-short": "EN",
+    "he-lang-short": "עב"
   },
   "general": {
     "loading": "Loading ...",
@@ -34,6 +37,7 @@
     "err-incomplete": "Can't create project before all fields are complete and valid. Please fill missing fields 👁",
     "can-create-task": "Is the project open for creating new tasks 🔐",
     "can-assign-task": "Is the project open for assigning existing tasks 🔏",
+    "select-language": "Select the project language",
     "submit-btn": "Create project!",
     "submit-btn-edit": "Save changes!",
     "success": "Project created successfully! Next - create your first task. 🙌",

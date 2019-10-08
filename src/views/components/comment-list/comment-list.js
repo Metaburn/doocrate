@@ -7,12 +7,13 @@ import { I18n } from 'react-i18next';
 
 class CommentList extends Component {
   static propTypes = {
-    comments: PropTypes.instanceOf(List).isRequired,
+    comments: PropTypes.instanceOf(List),
     task: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
   };
 
   render() {
+    if(!this.props.comments) { return};
     let commentItems = this.props.comments.map((comment, index) => {
       return (
         <CommentItem

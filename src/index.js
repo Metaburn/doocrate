@@ -11,7 +11,6 @@ import history from './history';
 import configureStore from './store';
 import /*registerServiceWorker, */{ unregister } from './utils/register-service-worker';
 import App from './views/app';
-import './i18n.js';
 
 const store = configureStore();
 const rootElement = document.getElementById('root');

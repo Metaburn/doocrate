@@ -6,7 +6,6 @@ import {Route, withRouter, Switch } from 'react-router-dom';
 import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
 import { getProject } from 'src/projects';
-import { notificationActions } from 'src/notification';
 import Header from '../components/header';
 import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
@@ -24,7 +23,7 @@ import ProjectsPage from '../pages/projects';
 import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import { appConfig } from 'src/config/app-config'
-const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile, showSuccess}) => (
+const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -34,7 +33,6 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
         signOut={signOut}
         createProject={createProjectRedirect}
         isShowUpdateProfile={isShowUpdateProfile}
-        onShowSuccess={showSuccess}
         selectedProject={selectedProject}
       />
 
@@ -79,7 +77,6 @@ App.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
   isShowUpdateProfile: PropTypes.func.isRequired,
-  showSuccess: PropTypes.func.isRequired
 };
 
 
@@ -100,7 +97,6 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = {
   signOut: authActions.signOut,
   isShowUpdateProfile: authActions.isShowUpdateProfile,
-  showSuccess: notificationActions.showSuccess
 };
 
 export default withRouter(

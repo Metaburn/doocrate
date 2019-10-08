@@ -21,10 +21,12 @@ class TaskFilters extends Component {
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
     projectUrl: PropTypes.string.isRequired,
-    selectedProject: PropTypes.object.isRequired,
+    selectedProject: PropTypes.object,
     labels: PropTypes.object.isRequired,
     generateCSV:  PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
+    userDefaultProject: PropTypes.string,
+    filter: PropTypes.object
   };
 
   // Since react router doesn't support query we read it manually from the url
@@ -86,8 +88,10 @@ class TaskFilters extends Component {
     if (this.props.isAdmin) {
       downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
     }
+    const project = (this.props.projectUrl && this.props.projectUrl !== 'undefined')?
+      this.props.projectUrl : this.props.userDefaultProject;
 
-    const defaultTask = '/' + this.props.projectUrl + '/task/1';
+    const defaultTask = '/' + project + '/task/1';
 
     return(
       <I18n ns='translations'>
@@ -168,8 +172,5 @@ class TaskFilters extends Component {
   }
 }
 
-TaskFilters.propTypes = {
-  filter: PropTypes.object
-};
 
 export default TaskFilters;

@@ -34,26 +34,26 @@ export class CommentItem extends Component {
 
     this.props.updateComment(this.props.comment, {body: this.state.body});
     this.setState({isInEditMode: false});
-  }
+  };
 
   onRemoveComment = () => {
     this.props.removeComment(this.props.comment);
-  }
+  };
 
   cancelEditComment = () => {
     this.setState({body: this.props.comment.body, isInEditMode: false});
-  }
+  };
 
   shouldDisplayTooltip = () => {
     return this.props.comment.creator.id === this.getCurrentUserId();
-  }
+  };
 
-  getCurrentUserId() {
+  getCurrentUserId = () => {
     if (!this.props.auth) {
       return null;
     }
     return this.props.auth.id;
-  }
+  };
 
   render() {
     const {comment} = this.props;
