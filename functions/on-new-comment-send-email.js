@@ -63,7 +63,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
         fromEmail: comment.creator.email,
         fromPhotoUrl: comment.creator.photoURL,
         body: comment.body,
-        link: `https://doocrate.com/${projectId}/task/${comment.taskId}}`
+        link: `https://doocrate.com/${projectId}/task/${comment.taskId}`
       };
 
       const shortTitle = task.title.substr(0, 20);
