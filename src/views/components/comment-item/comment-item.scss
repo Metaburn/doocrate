@@ -4,9 +4,14 @@
   margin-bottom: 2em;
   font-size: 0.9em;
 
+  .comment-header {
+    display: flex;
+  }
+
   .comment-item-tooltip {
     display: inline-block;
     width: 24px;
+    align-self: center;
 
     .avatar {
       margin: 0 5px;
@@ -17,6 +22,7 @@
   }
 
   .tooltip-container {
+
     a, button {
       font-size: 14px !important;
       color: $primary-color;
