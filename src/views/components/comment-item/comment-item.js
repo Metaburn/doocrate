@@ -76,13 +76,11 @@ export class CommentItem extends Component {
         {
           (t, {i18n}) => (
             <div className='comment-item'>
-              <div>
-                <form onSubmit={this.handleSubmit} noValidate>
-                  {this.renderHeader(t, comment)}
-                  {this.renderBody(t)}
-                  {this.renderSubmit(t)}
-                </form>
-              </div>
+              <form className='comment-form' onSubmit={this.handleSubmit} noValidate>
+                {this.renderHeader(t, comment)}
+                {this.renderBody(t)}
+                {this.renderSubmit(t)}
+              </form>
             </div>
           )
         }
@@ -95,7 +93,7 @@ export class CommentItem extends Component {
     const {creator} = comment;
     const avatar = creator.photoURL ? <Img className='avatar' src={creator.photoURL} alt={comment.creator.name}/> : '';
     return (
-      <div>
+      <div className='comment-header'>
         {this.renderTooltip(t)}
         <div className='comment-item-creator'>
           <span>{avatar} {creator.name} <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
@@ -113,16 +111,16 @@ export class CommentItem extends Component {
       <div id={`comment-${this.props.commentNumber}`} className='comment-item-tooltip'
            onMouseEnter={() => this.setState({isTooltipActive: true})}
            onMouseLeave={() => this.setState({isTooltipActive: false})}>
-        <Icon name='keyboard_arrow_down'/>
+        <Icon name='more_horiz'/>
         <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left'
                  parent={`#comment-${this.props.commentNumber}`}>
           <span className={`tooltip-container dir-${t('lang-float')}`}>
             <div>
               <Button className='button-no-border'
-                      onClick={() => this.setState({isInEditMode: true})}>{t('comments.edit-comment')}</Button></div>
+                      onClick={() => this.setState({isInEditMode: true})}><Icon id='edit-icon' name='edit'/> {t('comments.edit-comment')}</Button></div>
             <div>
               <Button className='button-no-border'
-                      onClick={this.onRemoveComment}>{t('comments.delete-comment')}</Button>
+                      onClick={this.onRemoveComment}><Icon className={'tooltip-icons'} name='delete'/>  {t('comments.delete-comment')}</Button>
             </div>
                 </span>
         </ToolTip>
