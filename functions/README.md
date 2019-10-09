@@ -13,6 +13,17 @@ firebase functions:shell
 npm run build && firebase deploy
 ```
 
+# Deploy only the functions
+```
+firebase deploy --only functions
+```
+
+# Testing Locally
+```
+firebase functions:shell
+onNewCommentSendEmail.onNewCommentSendEmail({before: {}, after: {taskId: 'taskid', creator:{name:'tester'}} })
+```
+
 # Cloud functions
 This part should be deployed to the firebase server
 
