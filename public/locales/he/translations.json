@@ -52,6 +52,7 @@
     "name": "שם"
   },
   "my-space": {
+    "updated-successfully": "הצלחה 🎉",
     "role": "תפקידך",
     "projects": "הפרוייקטים שלי",
     "edit-project": "ערוך פרוייקט",
@@ -121,9 +122,11 @@
     }
   },
   "user": {
-    "email": "האימייל שלך (ישמש לקבלת הודעות כאשר מישהו מגיב לך למשימה):",
+    "email": "האם זה האימייל שלך?",
     "set-my-email": "האימייל שלי:",
+    "set-my-name-description": "השם שלי:",
     "set-my-name": "איך נקרא לך:",
+    "bio-description": "מי אתה? שתף את כוחות העל שלך עם הקהילה",
     "submit" : "שמור והמשך"
   },
   "admin": {

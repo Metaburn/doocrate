@@ -117,6 +117,7 @@ class Header extends Component {
     newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
     newUserData.displayName = userInfo.name;
     newUserData.photoURL = userInfo.photoURL;
+    newUserData.bio = userInfo.bio;
     // Update the default project on first time setting user info
     newUserData.defaultProject = projectCookie || this.props.selectedProject;
     updateUserData(newUserData);

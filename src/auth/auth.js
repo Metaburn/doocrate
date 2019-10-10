@@ -46,6 +46,7 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
       authUser.isEmailConfigured = userInfoData.isEmailConfigured;
       authUser.didntBuy = userInfoData.didntBuy; // Did a person forgot / didnt buy his ticket
       authUser.updatedEmail = userInfoData.email;
+      authUser.bio = userInfoData.bio;
       authUser.defaultProject = userInfoData.defaultProject;
       authUser.language = userInfoData.language;
 
@@ -115,6 +116,10 @@ export function updateUserData(authUser) {
             fieldsToUpdate.defaultProject = authUser.defaultProject;
           }
 
+          if(authUser.bio){
+            fieldsToUpdate.bio = authUser.bio
+          }
+
           userDoc.set(fieldsToUpdate, {merge: true});
 
           updateAuthFields(authUser);
@@ -130,6 +135,9 @@ export function updateUserData(authUser) {
           }
           if (authUser.name) {
             newUserData.name = authUser.name
+          }
+          if (authUser.bio) {
+            newUserData.bio = authUser.bio
           }
           userDoc.set(newUserData,
             {merge: true});

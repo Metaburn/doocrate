@@ -148,3 +148,9 @@ body { top: 0px !important; }
 //.Select-value {
 //  border: 1px solid #ccc;
 //}
+
+
+// Rich text editor - limit height
+.ck-editor__editable_inline {
+  max-height: 200px;
+}

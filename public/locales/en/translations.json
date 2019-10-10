@@ -53,6 +53,7 @@
     "name": "Name"
   },
   "my-space": {
+    "updated-successfully": "Success 🎉",
     "role": "Role",
     "projects": "My projects",
     "edit-project": "Edit project",
@@ -122,9 +123,11 @@
     }
   },
   "user": {
-    "email": "Your email address (Will be used to notify me when someone comment on my task):",
-    "set-my-email": "My email:",
+    "email": "Is this your email address?",
+    "set-my-email": "Is this your email",
+    "set-my-name-description": "My name",
     "set-my-name": "How shall we call you",
+    "bio-description": "Who are you? Share with the community what are your super powers",
     "submit" : "Save & Continue"
   },
   "admin": {
@@ -159,7 +162,7 @@
     "enter-email": "Enter your email to get a magic link",
     "my-email": "Your email",
     "submit": "Send me the link",
-    "check-your-email": "You got mail 📧. Open it to login",
+    "check-your-email": "You got mail 📧. Open your email link to proceed and login",
     "redirecting": "Redirecting...",
     "try-again": "If this doesn't work - click here to try again"
   },
