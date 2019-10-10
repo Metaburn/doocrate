@@ -21,8 +21,7 @@ i18n
 
     react: {
       wait: true
-    },
-    lng: 'he'
+    }
   });
 
 
