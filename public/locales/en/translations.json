@@ -116,7 +116,8 @@
     }
   },
   "user": {
-    "email": "Your email address (Will be used to notify me when someone comment on my task):",
+    "email": "Your email address:",
+    "will-be-used": "(Will be used to notify me when someone comment on my task)",
     "set-my-email": "My email:",
     "submit" : "Save & Continue"
   },

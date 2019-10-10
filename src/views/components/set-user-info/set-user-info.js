@@ -7,10 +7,11 @@ import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 
 export class SetUserInfo extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
+
     this.state = {
-      isOpen: true,
+      isOpen: props.isOpen,
       email: '',
       originalEmail: '',
     };
@@ -37,26 +38,101 @@ export class SetUserInfo extends Component {
   }
 
   updateStateByProps(props) {
-    if (!props) {
+    if (!props) { return; }
+
+    const { originalEmail } = this.state;
+    const { userInfo } = this.props;
+
+    if(originalEmail !== userInfo.updatedEmail &&
+        originalEmail !== userInfo.email) {
+
+      this.setState({
+        originalEmail: userInfo.updatedEmail || userInfo.email,
+        // First try to see if there is an updated mail.
+        // Otherwise revert to original mail
+        email: userInfo.updatedEmail || userInfo.email || ''
+      });
+
       return;
     }
 
-    if(this.state.originalEmail !== props.userInfo.updatedEmail &&
-        this.state.originalEmail !== props.userInfo.email) {
+    this.setState({
+      isOpen: props.isOpen || false
+    });
+  }
 
-      this.setState({
-        originalEmail: props.userInfo.updatedEmail || props.userInfo.email,
-        // First try to see if there is an updated mail.
-        // Otherwise revert to original mail
-        email: props.userInfo.updatedEmail || props.userInfo.email || '',
-        isOpen: props.isOpen || false,
-      });
-      return
-    }
+  renderHeader(t, userInfo) {
+    const { name, photoURL } = userInfo;
+
+    return (
+      <div className="modal-header">
+        {photoURL &&
+          <Img className="avatar" src={photoURL} alt={name}/>}
+        <span>{name}</span>
+      </div>
+    );
+  }
+
+  renderBody(t, userInfo) {
+    return (
+      <div className='modal-body'>
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput(t, 'email', t('user.set-my-email'), true, 'email')}
+          {t('user.will-be-used')}
+          {this.renderSubmit(t)}
+        </form>
+      </div>
+    );
+  }
+
+  renderSubmit(t) {
+    return (
+      <div className={'submit-wrapper'}>
+        <input className={`button button-small` }
+          type="submit" value={t('user.submit')}/>
+      </div>
+    );
+  }
+
+  renderInput(t, fieldName, placeholder, isEditable, fieldType) {
+    const classNames = isEditable ? ' editable' : '';
+
+    return (
+      <label>
+        {t('user.email')}
+        <input
+          className={`changing-input user-info-input ${classNames}`}
+          type={fieldType}
+          name={fieldName}
+          value={this.state[fieldName]}
+          placeholder={placeholder}
+          ref={e => this.inputElm = e}
+          onChange={this.handleChange}
+          disabled={!isEditable}
+          required />
+      </label>
+    );
+  }
+
+  handleChange(e) {
+    let fieldName = e.target.name;
 
     this.setState({
-      isOpen: props.isOpen || false,
-    })
+      [fieldName]: e.target.value
+    });
+  }
+
+  handleSubmit(event) {
+    if (event) {
+      event.preventDefault();
+    }
+
+    const fieldsToUpdate = {
+      email: this.state.email,
+    };
+
+    this.props.updateUserInfo(fieldsToUpdate);
+    this.onCloseModal();
   }
 
   render() {
@@ -82,75 +158,6 @@ export class SetUserInfo extends Component {
       </I18n>
     );
   }
-
-  renderHeader(t, userInfo) {
-    const { name, photoURL } = userInfo;
-    const avatar = photoURL ? <Img className='avatar' src={photoURL} alt={name}/> : '';
-    return (
-      <div className='modal-header'>
-        <span>{ avatar } { name }</span>
-      </div>
-    );
-  }
-
-  renderBody(t, userInfo) {
-    return (
-      <div className='modal-body'>
-        <form onSubmit={this.handleSubmit}>
-          <span>{t('user.email')}</span>
-          {this.renderInput('email', t('user.set-my-email'), true, 'email')}
-          {this.renderSubmit(t)}
-        </form>
-      </div>
-    );
-  }
-
-  renderSubmit(t) {
-    return (
-      <div className={'submit-wrapper'}>
-        <input className={`button button-small` }
-               type="submit" value={t('user.submit')}/>
-      </div>
-    );
-  }
-
-  renderInput(fieldName, placeholder, isEditable, fieldType) {
-    const classNames = isEditable ? ' editable' : '';
-    return (
-      <input
-        className={`changing-input user-info-input ${classNames}`}
-        type = { fieldType }
-        name = { fieldName }
-        value = { this.state[fieldName] }
-        placeholder = { placeholder }
-        ref = { e => this[fieldName+'Input'] = e }
-        onChange = { this.handleChange }
-        disabled = { !isEditable }
-        required />
-    );
-  }
-
-  handleChange(e) {
-    let fieldName = e.target.name;
-    this.setState({
-      [fieldName]: e.target.value
-    });
-  }
-
-  handleSubmit(event) {
-    if(event) {
-      event.preventDefault();
-    }
-    const fieldsToUpdate = {
-      email: this.state.email,
-    };
-
-    if(this.state.email)
-
-    this.props.updateUserInfo(fieldsToUpdate);
-    this.onCloseModal();
-  }
-
 }
 
 SetUserInfo.propTypes = {
