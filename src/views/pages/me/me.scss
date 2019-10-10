@@ -5,6 +5,43 @@
     color: $primary-color;
   }
 
+  .user-form {
+    margin: 1em 0;
+  }
+
+  .avatar-wrapper {
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .avatar {
+    -webkit-border-radius: 120px;
+    -moz-border-radius: 120px;
+    border-radius: 120px;
+  }
+
+  .bio-description {
+    display: block;
+    margin: 1em 0;
+  }
+
+  .submit-wrapper {
+    margin-top: 2em;
+    text-align: center;
+
+    .button {
+      font-size: 1em;
+      background-color: #eb1478;
+      color: white;
+      padding: 0 6em;
+      height: 3em;
+
+      &:hover {
+        font-size: 1.1em;
+      }
+    }
+  }
+
   .projects {
     display: flex;
     flex-direction: column;

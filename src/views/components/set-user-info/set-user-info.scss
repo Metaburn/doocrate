@@ -4,23 +4,55 @@
   margin-bottom: 1em;
   font-size: 0.9em;
 
+  .flex-rows-break {
+    padding: 0.5em 0;
+  }
   .modal-header {
     display: block;
-    padding: 1.5em 1.5em 0 1.5em;
-
-    .avatar-wrapper {
-      display: inline-block;
-      min-width: 100px;
-      min-height: 100px;
-    }
-
-    .avatar {
-      max-width: 100px;
-      max-height: 100px;
-    }
+    padding: 1em 1em 0 1em;
   }
 
   .modal-body {
+
+    .modal-form {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .ck-editor {
+      flex-basis: 100%;
+      max-width: 100%;
+    }
+
+    .avatar-wrapper {
+      display: flex;
+      min-width: 115px;
+      min-height: 115px;
+    }
+
+    .avatar {
+      -webkit-border-radius: 140px;
+      -moz-border-radius: 140px;
+      border-radius: 140px;
+      margin: 0;
+      max-width: 115px;
+      max-height: 115px;
+    }
+
+    .avatar-left {
+      margin-right: 10px;
+    }
+
+    .avatar-right {
+      margin-left: 10px;
+    }
+
+    .avatar-parallel {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     padding: 1.5em;
   }
 

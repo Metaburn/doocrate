@@ -7,6 +7,7 @@ export const AuthState = new Record({
   id: null,
   name: null,
   email: null,
+  bio: null,
   updatedEmail: null, //The email that the user input as updated
   photoURL: null,
   phoneNumber: null,
@@ -31,6 +32,7 @@ export function authReducer(state = new AuthState(), {payload, type}) {
         id: payload ? payload.uid : null,
         name: payload? payload.displayName : null,
         email: payload? payload.email : null,
+        bio: payload? payload.bio : null,
         updatedEmail: payload? payload.updatedEmail : null,
         photoURL: payload? payload.photoURL : null,
         phoneNumber: payload? payload.phoneNumber : null,
