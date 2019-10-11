@@ -44,7 +44,7 @@ class MyProfileTooltip extends Component {
         {
          (t) => (
            <div className='my-profile-tooltip-container'
-                data-tip="">
+                data-tip="" data-for='my-profile'>
 
             <Icon name='keyboard_arrow_down'/>
             { auth.photoURL ?
@@ -55,7 +55,8 @@ class MyProfileTooltip extends Component {
               <span>{t('header.me')}</span>
             }
 
-             <ReactTooltip place={'bottom'}
+             <ReactTooltip id={'my-profile'}
+                           place={'bottom'}
                            type='light'
                            data-html={true}
                            effect='solid'

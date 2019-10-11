@@ -1,23 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import EmbedContainer from 'react-oembed-container';
 
-
-class EditorPreview extends Component {
-  render() {
-    return (
-      <div className="editor-preview">
-        <EmbedContainer markup={this.props.data}>
-          <div dangerouslySetInnerHTML={{__html: this.props.data}}/>
-        </EmbedContainer>
-      </div>
-    );
-  }
-}
-
-EditorPreview.defaultProps = {
-  data: ''
-};
+const EditorPreview = ({ data }) => (<div dangerouslySetInnerHTML={{__html: data}}/>);
 
 EditorPreview.propTypes = {
   data: PropTypes.string

@@ -1,0 +1,35 @@
+@import 'views/styles/shared';
+
+.user-info-tooltip-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+
+  .edit-icon-container {
+    display: flex;
+    justify-content: space-between;
+
+    .username {
+      flex: auto;
+    }
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .username {
+    margin-bottom: 10px;
+  }
+
+  .tooltip-avatar {
+    align-self: center;
+    
+    max-width: 140px;
+    max-height: 140px;
+    -webkit-border-radius: 140px;
+    -moz-border-radius: 140px;
+    border-radius: 140px;
+  }
+}

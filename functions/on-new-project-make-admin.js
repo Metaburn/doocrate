@@ -25,7 +25,7 @@ exports.onNewProjectMakeAdmin = functions.firestore.document('/projects/{project
       return;
     }
 
-    // Set admins->User Id->Projects->Project Id
+    // Set admins->User Id->Projects->User Id
     let docRef = firestore.collection('admins').doc(project.creator.id);
     return docRef.set({
       name: project.creator.name,

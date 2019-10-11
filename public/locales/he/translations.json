@@ -12,7 +12,8 @@
   "general": {
     "loading": "טוען ...",
     "no-results-found": "לא נמצאו תוצאות",
-    "select-default": "בחר מהרשימה"
+    "select-default": "בחר מהרשימה",
+    "click-to-edit": "לחץ לערוך"
   },
   "header": {
     "disconnect": "התנתקי",
@@ -122,6 +123,7 @@
     }
   },
   "user": {
+    "title": "בואי נעזור לך להתמקם",
     "email": "האם זה האימייל שלך?",
     "set-my-email": "האימייל שלי:",
     "set-my-name-description": "השם שלי:",

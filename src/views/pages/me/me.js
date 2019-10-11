@@ -11,13 +11,17 @@ import {connect} from "react-redux";
 import { updateUserData } from "src/auth/auth";
 import i18n from "../../../i18n";
 import { notificationActions } from "../../../notification";
+import EditorPreview from "../../components/editor-preview/editor-preview";
+import {createSelector} from "reselect";
+import {getAuth} from "../../../auth";
 
 export class Me extends Component {
   constructor() {
     super(...arguments);
 
     this.state = {
-      bio: ''
+      bio: '',
+      user: null
     };
   }
 
@@ -34,7 +38,7 @@ export class Me extends Component {
       return;
     }
 
-    this.setState({bio: props.auth.bio});
+    this.setState({bio: props.auth.bio, user: props.user});
   }
 
   render() {
@@ -46,6 +50,7 @@ export class Me extends Component {
           (t, {i18n}) => (
             <div className='g-row me notranslate'>
               <br/>
+              {this.props.user? this.props.user.name: ''}
               <h1>{t('header.my-space')}</h1>
               {auth && auth.email ?
                 <div>{t('my-space.email')}: {auth.updatedEmail}</div>
@@ -83,8 +88,8 @@ export class Me extends Component {
 
   renderBio(t) {
     // TODO - add an edit icon and default to this component
-    /*if (false) {
-      return <EditorPreview data={auth.bio}/>
+    /*if (true) {
+      return <EditorPreview data={this.state.bio}/>
     }*/
 
     return (
@@ -128,6 +133,7 @@ export class Me extends Component {
 
     updateUserData(fieldsToUpdate);
     this.props.showSuccess(i18n.t('my-space.updated-successfully'));
+    this.props.history.goBack();
   };
 
   renderAdminProjects = (t) => {
@@ -155,19 +161,20 @@ export class Me extends Component {
 
 Me.propTypes = {
   auth: PropTypes.object.isRequired,
-  userInfo: PropTypes.object.isRequired,
-  showSuccess: PropTypes.func.isRequired
+  showSuccess: PropTypes.func.isRequired,
 };
 
 
 //=====================================
 //  CONNECT
 //-------------------------------------
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-  }
-};
+const mapStateToProps = createSelector(
+  getAuth,
+  (auth) => ({
+    auth
+  })
+);
+
 
 const mapDispatchToProps = Object.assign(
   {},

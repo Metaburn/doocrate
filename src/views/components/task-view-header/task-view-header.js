@@ -4,6 +4,7 @@ import Button from '../button';
 import Icon from '../icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
+import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
 
 import './task-view-header.css';
 
@@ -28,7 +29,13 @@ export class TaskViewHeader extends Component {
 
 
             <div className='avatar-container'>
-              <Img className='avatar' src={task.assignee.photoURL}/>
+
+              <UserInfoAvatar
+                uniqueId={'task-header-assignee'}
+                photoURL={task.assignee.photoURL}
+                userId={task.assignee.id}
+                alt={task.assignee.name}/>
+
               <span>{task.assignee.name}</span>
             </div>}
 
