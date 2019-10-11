@@ -117,8 +117,9 @@
   },
   "user": {
     "email": "Your email address:",
+    "enter_valid_email": "Please enter a valid email address.",
     "will-be-used": "(Will be used to notify me when someone comment on my task)",
-    "set-my-email": "My email:",
+    "set-my-email": "My email",
     "submit" : "Save & Continue"
   },
   "admin": {

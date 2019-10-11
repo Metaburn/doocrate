@@ -1,8 +1,13 @@
 @import 'views/styles/shared';
 
+.user-info-modal {
+  width: 100%;
+  max-width: 550px;
+}
+
 .set-user-info {
-  margin-bottom: 1em;
   font-size: 0.9em;
+  padding-bottom: 8px;
 
   .modal-header {
     display: block;
@@ -16,15 +21,15 @@
       border-radius: 50%;
       margin-right: 20px;
     }
+
+    & > span {
+      font-size: 18px;
+      font-weight: 600;
+    }
   }
 
   .modal-content {
-    padding: 18px 18px 10px;
-    box-sizing: border-box;
-  }
-
-  .modal-body {
-    padding: 0 10px;
+    padding: 18px 24px 10px;
   }
 
   .submit-wrapper {
@@ -37,27 +42,28 @@
       color: white;
       padding: 0 6em;
       height: 3em;
-
-      &:hover {
-        font-size: 1.1em;
-      }
+      transition: 300ms ease-in-out;
     }
   }
 
   .user-info-input {
+    display: block;
+    margin: 10px 0;
+    padding-left: 10px;
+    direction: ltr;
     text-align: left;
     border: 1px solid #d5dce0;
     border-radius: 3px;
-    margin: 10px 0;
 
-    &:hover {
-      padding: 5px;
-      border-color: rgba(235, 20, 120, 0.66);
-    }
-
+    &:hover,
     &:focus {
-      padding: 5px;
       border-color: #eb1478;
     }
+  }
+
+  .input-invalid {
+    display: block;
+    color: red;
+    font-size: 12px;
   }
 }

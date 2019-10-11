@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-import './set-user-info.css';
+import classnames from 'classnames';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
+import { EMAIL_REGEX } from '../../../utils/validations';
+import './set-user-info.css';
 
 export class SetUserInfo extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export class SetUserInfo extends Component {
       isOpen: props.isOpen,
       email: '',
       originalEmail: '',
+      isInvalid: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -95,27 +97,30 @@ export class SetUserInfo extends Component {
   }
 
   renderInput(t, fieldName, placeholder, isEditable, fieldType) {
-    const classNames = isEditable ? ' editable' : '';
+    const { isInvalid } = this.state;
+    const classNames = classnames('changing-input user-info-input', { 'editable': isEditable });
 
     return (
       <label>
         {t('user.email')}
         <input
-          className={`changing-input user-info-input ${classNames}`}
+          className={classNames}
           type={fieldType}
           name={fieldName}
           value={this.state[fieldName]}
           placeholder={placeholder}
-          ref={e => this.inputElm = e}
           onChange={this.handleChange}
           disabled={!isEditable}
-          required />
+          required/>
+        {isInvalid && <span className="input-invalid">{t('user.enter_valid_email')}</span>}
       </label>
     );
   }
 
   handleChange(e) {
-    let fieldName = e.target.name;
+    this.setState({ isInvalid: false });
+
+    const fieldName = e.target.name;
 
     this.setState({
       [fieldName]: e.target.value
@@ -123,38 +128,35 @@ export class SetUserInfo extends Component {
   }
 
   handleSubmit(event) {
-    if (event) {
-      event.preventDefault();
+    event.preventDefault();
+
+    const { email } = this.state;
+
+    if (!EMAIL_REGEX.test(email)) {
+      return this.setState({ isInvalid: true });
     }
 
-    const fieldsToUpdate = {
-      email: this.state.email,
-    };
-
-    this.props.updateUserInfo(fieldsToUpdate);
+    this.props.updateUserInfo({ email });
     this.onCloseModal();
   }
 
   render() {
     const { userInfo, isOpen:isOpenProps } = this.props;
     const { isOpen:isOpenState } = this.state;
-
     const isOpen = isOpenProps && isOpenState;
 
     return (
       <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
-            <Modal open={isOpen} onClose={this.onCloseModal} center>
-              <div className='set-user-info' dir={t('lang-dir')}>
-                <div className='modal-content'>
+        {(t, { i18n }) => (
+            <Modal classNames={{ modal: 'user-info-modal'}} open={isOpen} onClose={this.onCloseModal} center>
+              <div className="set-user-info" dir={t('lang-dir')}>
+                <div className="modal-content">
                   {this.renderHeader(t, userInfo)}
                   {this.renderBody(t, userInfo)}
                 </div>
               </div>
             </Modal>
-          )
-        }
+          )}
       </I18n>
     );
   }
@@ -166,6 +168,5 @@ SetUserInfo.propTypes = {
   updateUserInfo: PropTypes.func.isRequired,
   onClosed: PropTypes.func.isRequired
 };
-
 
 export default SetUserInfo;

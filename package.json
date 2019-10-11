@@ -38,7 +38,7 @@
     "copy-locals": "cp -R public/locales build/locales"
   },
   "dependencies": {
-    "classnames": "2.2.6",
+    "classnames": "^2.2.6",
     "firebase": "5.5.7",
     "history": "4.7.2",
     "i18next": "10.2.1",
