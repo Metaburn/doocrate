@@ -1,15 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-
-class EditorPreview extends Component {
-
-  render() {
-    return (
-      <div dangerouslySetInnerHTML={{__html: this.props.data}}/>
-    );
-  }
-}
+const EditorPreview = ({ data }) => (<div dangerouslySetInnerHTML={{__html: data}}/>);
 
 EditorPreview.propTypes = {
   data: PropTypes.string
