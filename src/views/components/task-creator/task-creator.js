@@ -18,8 +18,8 @@ class TaskCreator extends Component {
           (t) => (
             <div className='task-creator'>
               <span>{t('task.creator')}</span>
-              <span className='avatar-creator' data-tip={creator.name}>
-                <ReactTooltip type='light' effect='solid'/>
+              <span className='avatar-creator' data-tip={creator.name} data-for='task-creator-tooltip'>
+                <ReactTooltip id='task-creator-tooltip' type='light' effect='solid'/>
                 {avatar}
                 </span>
             </div>

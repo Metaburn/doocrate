@@ -1,6 +1,6 @@
 @import 'views/styles/shared';
 
-.task-item {
+.task-item-row {
   display: flex;
   outline: none;
   border-bottom: 1px solid #e0e6e9;
@@ -37,7 +37,7 @@
     color: white;
   }
 }
-.task-item.is-active{
+.task-item-row.is-active{
   background-color: #eb1478;
   color: white;
 

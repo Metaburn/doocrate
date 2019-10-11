@@ -308,7 +308,7 @@ export class AdminDashboard extends Component {
   //             isDone: false
   //           }).then(res => {
   //             counter++;
-  //             console.log("Project " + projectCounter + ": Counter " + counter);
+  //             console.log("User " + projectCounter + ": Counter " + counter);
   //           }).catch(err => {
   //             console.error(err);
   //           });

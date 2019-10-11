@@ -1,7 +1,7 @@
 import React, { Component }  from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
-import TaskItem from '../task-item/task-item';
+import TaskItem from '../task-item-row/task-item-row';
 
 import { NavLink } from 'react-router-dom';
 

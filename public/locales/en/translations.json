@@ -13,7 +13,8 @@
   "general": {
     "loading": "Loading ...",
     "no-results-found": "No results found",
-    "select-default": "Select..."
+    "select-default": "Select...",
+    "click-to-edit": "Click to edit"
   },
   "header": {
     "disconnect": "Sign out ",
@@ -123,6 +124,7 @@
     }
   },
   "user": {
+    "title": "Let's get you set up",
     "email": "Is this your email address?",
     "set-my-email": "Is this your email",
     "set-my-name-description": "My name",

@@ -1,0 +1,29 @@
+@import 'views/styles/shared';
+
+.user-info-tooltip-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  edit-icon {
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  .edit-icon-right {
+    text-align:left;
+  }
+
+  .edit-icon-left {
+    text-align:right;
+  }
+
+  .tooltip-avatar {
+    max-width: 140px;
+    max-height: 140px;
+    -webkit-border-radius: 140px;
+    -moz-border-radius: 140px;
+    border-radius: 140px;
+  }
+}
