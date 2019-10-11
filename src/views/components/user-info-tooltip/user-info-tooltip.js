@@ -28,7 +28,7 @@ class UserInfoTooltip extends Component {
                placement="bottom"
                id={`user-info-tooltip-${uniqueId}`}>
         <div className="user-info-tooltip-container">
-          {(isSelfView && <Link className={`edit-icon-container align-self-${i18n.t('lang-float')}`} to="/me">
+          {(isSelfView && <Link className={`edit-icon-container`} to="/me">
             { userComponent }
             <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
           </Link>)}
