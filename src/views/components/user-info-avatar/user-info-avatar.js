@@ -22,25 +22,25 @@ class UserInfoAvatar extends Component {
 
   toggleTooltip = (e) => {
     this.loadUserInfo();
-  }
+  };
 
   handleClose = (e) => {
     this.setState({ isVisible: false });
-  }
+  };
 
   loadUserInfo = () => {
     const { userId } = this.props;
 
     loadUser(userId)
       .then(snapshot => {
-        if (snapshot.exists) {
-          const user = snapshot.data();
+        if (!snapshot.exists) return;
 
-          this.setState({
-            user,
-            isVisible: true
-          });
-        }
+        const user = snapshot.data();
+
+        this.setState({
+          user,
+          isVisible: true
+        });
     });
   };
 

@@ -115,6 +115,7 @@ input[type='button']
   font-family: "aktiv-grotesk-std", Helvetica Neue, Arial, sans-serif;
 }
 
+// Languages alignment
 .float-dir-right {
   float: right;
 }
@@ -129,6 +130,14 @@ input[type='button']
 
 .dir-right {
   direction: rtl;
+}
+
+.align-self-right {
+  align-self: start;
+}
+
+.align-self-left {
+  align-self: end;
 }
 
 .button-as-link {
@@ -162,4 +171,5 @@ body { top: 0px !important; }
 .__react_component_tooltip {
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
-  border-radius: 10px;}
+  border-radius: 10px;
+}

@@ -12,37 +12,34 @@ import i18n from '../../../i18n.js';
 import './user-info-tooltip.css';
 
 class UserInfoTooltip extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  editMyInfo = () => {
-    this.props.history.push('/me');
-  };
 
   render() {
     const uniqueId = this.props.uniqueId || '';
-    const { auth, userId, isVisible, target, handleClose, user } = this.props;
+    const {auth, userId, isVisible, target, handleClose, user} = this.props;
 
     const isSelfView = (auth && auth.id === userId);
 
+    const userComponent = (user? <span className="username">{user.name}</span>: '');
+
     return (
       <Popover show={isVisible}
-        target={target.current}
-        onHide={handleClose}
-        placement="bottom"
-        id={`user-info-tooltip-${uniqueId}`}>
+               target={target.current}
+               onHide={handleClose}
+               placement="bottom"
+               id={`user-info-tooltip-${uniqueId}`}>
         <div className="user-info-tooltip-container">
-          {isSelfView && <Link to="/me">
-            <Icon name={'edit'} alt={i18n.t('general.click-to-edit')}/>
-          </Link>}
+          {(isSelfView && <Link className={`edit-icon-container align-self-${i18n.t('lang-float')}`} to="/me">
+            { userComponent }
+            <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
+          </Link>)}
+
+          {(!isSelfView) && userComponent }
 
           {user &&
-              <Fragment>
-                <span className="username">{user.name}</span>
-                <Img className='tooltip-avatar' src={user.photoURL}/>
-                <EditorPreview data={user.bio}/>
-            </Fragment>}
+          <Fragment>
+            <Img className='tooltip-avatar' src={user.photoURL}/>
+            <EditorPreview data={user.bio}/>
+          </Fragment>}
         </div>
       </Popover>
     );

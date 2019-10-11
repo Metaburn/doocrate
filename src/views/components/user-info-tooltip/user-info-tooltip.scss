@@ -3,10 +3,17 @@
 .user-info-tooltip-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   text-align: center;
 
-  edit-icon {
+  .edit-icon-container {
+    display: flex;
+    justify-content: space-between;
+
+    .username {
+      flex: auto;
+    }
+
     &:hover {
       color: $primary-color;
     }
@@ -16,15 +23,9 @@
     margin-bottom: 10px;
   }
 
-  .edit-icon-right {
-    text-align:left;
-  }
-
-  .edit-icon-left {
-    text-align:right;
-  }
-
   .tooltip-avatar {
+    align-self: center;
+    
     max-width: 140px;
     max-height: 140px;
     -webkit-border-radius: 140px;
