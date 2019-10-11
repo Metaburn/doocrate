@@ -59,7 +59,10 @@
     "projects": "My projects",
     "edit-project": "Edit project",
     "project-report": "Project Report",
-    "email": "Email"
+    "email": "Email",
+    "bio-empty": "You haven't wrote anything.",
+    "bio-empty-action": "Click here to edit your Bio",
+    "bio-empty-encourage": "so other members can learn more about you"
   },
   "task": {
     "add-task": "Add a new task",

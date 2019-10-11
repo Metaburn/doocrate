@@ -58,7 +58,10 @@
     "projects": "הפרוייקטים שלי",
     "edit-project": "ערוך פרוייקט",
     "project-report": "דוח פרוייקט",
-    "email": "אימייל"
+    "email": "אימייל",
+    "bio-empty": "לא כתבת כלום על עצמך",
+    "bio-empty-action": "לחץ כאן לערוך את הפרופיל שלך",
+    "bio-empty-encourage": "כדי שהקהילה תוכל ללמוד עליך יותר"
   },
   "task": {
     "add-task": "הוסף משימה",

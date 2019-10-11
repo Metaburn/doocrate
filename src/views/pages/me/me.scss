@@ -20,6 +20,13 @@
     border-radius: 120px;
   }
 
+  .editor-preview {
+    &:hover {
+      border: 1px dotted;
+      cursor: pointer;
+    }
+  }
+
   .bio-description {
     display: block;
     margin: 1em 0;

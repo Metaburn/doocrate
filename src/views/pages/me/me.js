@@ -14,6 +14,8 @@ import { notificationActions } from "../../../notification";
 import EditorPreview from "../../components/editor-preview/editor-preview";
 import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
+import Icon from 'src/views/components/icon';
+import Button from "../../components/button/button";
 
 export class Me extends Component {
   constructor() {
@@ -21,7 +23,8 @@ export class Me extends Component {
 
     this.state = {
       bio: '',
-      user: null
+      user: null,
+      isEditing: false
     };
   }
 
@@ -40,6 +43,10 @@ export class Me extends Component {
 
     this.setState({bio: props.auth.bio, user: props.user});
   }
+
+  toggleEditing = () => {
+    this.setState({isEditing:!this.state.isEditing});
+  };
 
   render() {
     const auth = this.props.auth;
@@ -65,7 +72,15 @@ export class Me extends Component {
                 ''
               }
 
-              {this.renderBio(t)}
+              <Button onClick={ this.toggleEditing}>
+                <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
+              </Button>
+
+              <form className='user-form' onSubmit={this.handleSubmit}>
+                <span className={'bio-description'}>{t('user.bio-description')}</span>
+                {this.renderBio(t)}
+                {this.renderSubmit(t)}
+              </form>
 
               {auth && auth.role !== 'user' ?
                 <div>{t('my-space.role')}: {auth.role}</div>
@@ -87,27 +102,35 @@ export class Me extends Component {
   };
 
   renderBio(t) {
-    // TODO - add an edit icon and default to this component
-    /*if (true) {
-      return <EditorPreview data={this.state.bio}/>
-    }*/
+    if(!this.state.bio && !this.state.isEditing) {
+      return (<span>
+        {t('my-space.bio-empty')}
+        <Button className={'button-as-link'} onClick={ this.toggleEditing }>{t('my-space.bio-empty-action')}</Button>
+        {t('my-space.bio-empty-encourage')}
+      </span>);
+    }
 
+    if (!this.state.isEditing) {
+      return <EditorPreview
+        className={'editor-preview'}
+        data={this.state.bio}
+      onClick={this.toggleEditing}/>
+    }
+
+    // We modify the alignment to rtl language if the user set language to hebrew by setting 'content'
     return (
       <Fragment>
-        <form className='user-form' onSubmit={this.handleSubmit}>
-          <span className={'bio-description'}>{t('user.bio-description')}</span>
-          <CKEditor
-            editor={ClassicEditor}
-            data={this.state.bio}
-            config={{
-              "toolbar": ["heading", "|", "bold", "italic", "link", "bulletedList",
-                "numberedList", "blockQuote", "mediaEmbed",
-                "undo", "redo"]
-            }}
-            onChange={this.onEditorChange}
-          />
-          {this.renderSubmit(t)}
-        </form>
+        <CKEditor
+          editor={ClassicEditor}
+          data={this.state.bio}
+          config={{
+            toolbar: ["heading", "|", "bold", "italic", "link", "bulletedList",
+              "numberedList", "blockQuote", "mediaEmbed",
+              "undo", "redo"],
+            language: {ui: 'en',content: i18n.language}
+          }}
+          onChange={this.onEditorChange}
+        />
       </Fragment>
     );
   }
