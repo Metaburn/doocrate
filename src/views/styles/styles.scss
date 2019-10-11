@@ -141,8 +141,10 @@ input[type='button']
 }
 
 .button-as-link {
+  font-size: $base-font-size !important;
   text-decoration: underline;
   border: none !important;
+  background: none !important;
   color:#eb1478;
 }
 
