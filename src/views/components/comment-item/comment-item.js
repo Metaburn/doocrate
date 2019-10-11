@@ -96,7 +96,6 @@ export class CommentItem extends Component {
       <div className='comment-header'>
         {this.renderTooltip(t)}
         <div className='comment-item-creator'>
-
           <span>
             <UserInfoAvatar
               uniqueId={comment.id}
@@ -128,7 +127,7 @@ export class CommentItem extends Component {
               <Button className='button-no-border'
                       onClick={this.onRemoveComment}><Icon className={'tooltip-icons'} name='delete'/>  {t('comments.delete-comment')}</Button>
             </div>
-                </span>
+          </span>
         </ToolTip>
       </div>
     );
