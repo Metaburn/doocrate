@@ -2,11 +2,10 @@ import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Popover from "react-simple-popover";
 import Img from 'react-image';
-// import { loadUser } from 'src/users/actions';
 import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import EditorPreview from "../editor-preview/editor-preview";
 import Icon from "../icon/icon";
 import i18n from '../../../i18n.js';
@@ -23,9 +22,9 @@ class UserInfoTooltip extends Component {
 
   render() {
     const uniqueId = this.props.uniqueId || '';
-    const { isVisible, target, handleClose, user } = this.props;
+    const { auth, userId, isVisible, target, handleClose, user } = this.props;
 
-    const isSelfView = (this.props.auth && this.props.auth.id === this.props.userId);
+    const isSelfView = (auth && auth.id === userId);
 
     return (
       <Popover show={isVisible}
@@ -34,10 +33,9 @@ class UserInfoTooltip extends Component {
         placement="bottom"
         id={`user-info-tooltip-${uniqueId}`}>
         <div className="user-info-tooltip-container">
-          {isSelfView &&
-            <span onClick={this.editMyInfo} className={`edit-icon edit-icon-${i18n.t('lang-float')}`}>
-              <Icon name={'edit'} alt={i18n.t('general.click-to-edit')}/>
-            </span>}
+          {isSelfView && <Link to="/me">
+            <Icon name={'edit'} alt={i18n.t('general.click-to-edit')}/>
+          </Link>}
 
           {user &&
               <Fragment>
@@ -52,24 +50,15 @@ class UserInfoTooltip extends Component {
 }
 
 UserInfoTooltip.propTypes = {
+  auth: PropTypes.object,
+  isVisible: PropTypes.bool,
+  target: PropTypes.object,
+  user: PropTypes.object,
   uniqueId: PropTypes.string,
-  userId: PropTypes.string.isRequired
+  userId: PropTypes.string.isRequired,
+  handleClose: PropTypes.func,
 };
 
-const mapStateToProps = createSelector(
-  getAuth,
-  (auth) => ({
-    auth,
-  })
-);
+const mapStateToProps = createSelector(getAuth, (auth) => ({ auth }));
 
-const mapDispatchToProps = Object.assign(
-  {},
-);
-
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(UserInfoTooltip)
-);
+export default withRouter(connect(mapStateToProps)(UserInfoTooltip));
