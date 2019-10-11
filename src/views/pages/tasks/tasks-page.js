@@ -14,12 +14,15 @@ import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
-import {debounce} from 'lodash';
+import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
-import {setCookie} from "../../../utils/browser-utils";
+import { SetUserInfo } from "../../components/set-user-info";
+import { updateUserData } from "src/auth/auth";
+import { setCookie } from "../../../utils/browser-utils";
+import getRandomImage from 'src/utils/unsplash';
 
 export class TasksPage extends Component {
   constructor() {
@@ -46,6 +49,7 @@ export class TasksPage extends Component {
       labelPool: {},
       isLoadedComments: false,
       isCurrentTaskValid: false,
+      query: ""
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -173,6 +177,7 @@ export class TasksPage extends Component {
     });
 
     currentTasks = this.filterTaskFromLabel(currentTasks);
+    currentTasks = this.filterTaskFromQuery(currentTasks);
 
     this.setState({tasks: currentTasks, labelPool});
   }
@@ -187,9 +192,22 @@ export class TasksPage extends Component {
     return currentTasks;
   }
 
+  filterTaskFromQuery = (tasks) => {
+    let currentTasks = tasks;
+    const filter = this.props.buildFilter(this.props.auth, "query", this.state.query);
+    currentTasks = this.props.filters["query"](currentTasks, filter, this.state.query);
+    return currentTasks;
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    let {tasks} = this.props;
     if (prevState.labels !== this.state.labels) {
-      this.setState({tasks: this.filterTaskFromLabel(this.props.tasks)});
+      tasks = this.filterTaskFromLabel(tasks);
+      this.setState({tasks});
+    }
+    if (prevState.query !== this.state.query) {
+      tasks = this.filterTaskFromQuery(tasks);
+      this.setState({tasks});
     }
   }
 
@@ -365,6 +383,23 @@ export class TasksPage extends Component {
     this.setState({labels});
   }
 
+  onQueryChange = (query) => {
+    console.log("on query change", query);
+    this.setState({query});
+  }
+
+
+  updateUserInfo(userInfo) {
+    const oldUserData = this.props.auth;
+    const newUserData = {};
+    newUserData.uid = oldUserData.id;
+    newUserData.email = userInfo.email;
+    newUserData.isEmailConfigured = true; //This is the flag that specify that this module should not show anymore
+    newUserData.displayName = userInfo.name;
+    newUserData.photoURL = userInfo.photoURL;
+    updateUserData(newUserData);
+  }
+
   renderTaskView() {
     if (this.state.selectedTask == null && this.state.newTask == null) {
       return (<div className='task-view-loader'>&nbsp;</div>);
@@ -420,12 +455,14 @@ export class TasksPage extends Component {
     return (
       <div>
         <div className="g-col">
-          { <TaskFilters
-            filter = { this.props.filterType }
-            selectedProject = { this.props.selectedProject }
-            projectUrl = { projectUrl } //TODO - should be from state
-            labels = { this.state.labelPool }
-            onLabelChange = { this.onLabelChanged }
+          {<TaskFilters
+            filter={this.props.filterType}
+            selectedProject={this.props.selectedProject}
+            projectUrl={projectUrl} //TODO - should be from state
+            labels={this.state.labelPool}
+            onLabelChange={this.onLabelChanged}
+            onQueryChange={this.onQueryChange}
+            query={this.state.query}
             generateCSV={this.generateCSV.bind(this)}
             userDefaultProject={ this.props.auth.defaultProject }
             isAdmin={this.isAdmin()}/>

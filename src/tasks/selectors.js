@@ -5,7 +5,8 @@ const filters = {
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
-  mine: (auth, value) => ({type: "user", uid: auth.id})
+  mine: (auth, value) => ({type: "user", uid: auth.id}),
+  query: (auth, value) => ({type: "query", text: value}),
 };
 
 export function buildFilter(auth, type, value) {
@@ -62,5 +63,16 @@ export const taskFilters = {
         return ((task.assignee && (task.assignee.id === auth)) ||
           (task.creator && task.creator.id === auth));
       });
-  }
+  },
+
+  query: (tasks, filter) => {
+    if(!filter.text){
+      return tasks;
+    }
+    return tasks.filter(task =>
+    {
+      return (task.title && task.title.includes(filter.text)) || (task.description && task.description.includes(filter.text))
+    });
+  },
+
 };

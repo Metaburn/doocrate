@@ -42,6 +42,25 @@
     }
   }
 
+  .search-input {
+    font-family: $base-font-family;
+    background: none;
+    border: 1px solid #d5dce0;
+    padding: 5px;
+
+    &:hover{
+      padding: 5px;
+      border-color: rgba(235, 20, 120, 0.66);
+    }
+
+    &:focus {
+      padding: 5px;
+      border-color: #eb1478;
+    }
+  }
+
+
+
   .main-filters > li {
     float: right;
     height: 3em;

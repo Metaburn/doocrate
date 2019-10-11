@@ -23,10 +23,12 @@ class TaskFilters extends Component {
     projectUrl: PropTypes.string.isRequired,
     selectedProject: PropTypes.object,
     labels: PropTypes.object.isRequired,
-    generateCSV:  PropTypes.func.isRequired,
+    generateCSV: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     userDefaultProject: PropTypes.string,
-    filter: PropTypes.object
+    filter: PropTypes.object,
+    onQueryChange: PropTypes.func.isRequired,
+    query: PropTypes.string.isRequired
   };
 
   // Since react router doesn't support query we read it manually from the url
@@ -147,17 +149,32 @@ class TaskFilters extends Component {
             {t('task.free-tasks')}
             </NavLink></li>
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{ pathname: defaultTask,
-            search: TaskFilters.removeQueryParam('filter')}}>{t('task.all-tasks')}</NavLink></li>
-          {downloadCSV}
-          <li>
+                <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+                  pathname: defaultTask,
+                  search: TaskFilters.removeQueryParam('filter')
+                }}>{t('task.all-tasks')}</NavLink></li>
+                {downloadCSV}
 
-          <AutoSuggestedTags
-            value = {this.state.label}
-            labels = { this.props.labels}
-            placeholder = {t('task.search-by-tags')}
-            onChange = {this.handleLabelChange} />
-        </li>
+                <li>
+                  <input
+                    className={"search-input"}
+                    placeholder={t('task.search-by-query')}
+                    type={"text"}
+                    value={this.props.query}
+                    onChange={(e) => {
+                      this.props.onQueryChange(e.target.value)
+                    }}/>
+                </li>
+
+                <li>
+                  <AutoSuggestedTags
+                    value={this.state.label}
+                    labels={this.props.labels}
+                    placeholder={t('task.search-by-tags')}
+                    onChange={this.handleLabelChange}/>
+
+
+                </li>
 
         </ul>
         </div>
