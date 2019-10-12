@@ -10,8 +10,7 @@ import Button from '../button';
 import InfiniteScroll from 'react-infinite-scroller';
 import { I18n } from 'react-i18next';
 import CompleteFilter from '../complete-filter';
-import { getUrlSearchParams } from 'src/utils/browser-utils.js';
-import TaskFilters from "../task-filters/task-filters";
+import { getUrlSearchParams, removeQueryParam } from 'src/utils/browser-utils.js';
 
 class TaskList extends Component {
   constructor() {
@@ -93,7 +92,7 @@ class TaskList extends Component {
                 <span>{t('task.no-tasks-placeholder')}
                   <br/>
                   <NavLink
-                  to={{search: TaskFilters.removeQueryParam('complete')}}>
+                  to={{search: removeQueryParam(['complete'])}}>
                   {t('task.click-here')}
                   </NavLink>&nbsp;
                   {t('task.no-tasks-placeholder2')}

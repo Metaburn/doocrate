@@ -16,7 +16,7 @@ import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
-import { getUrlSearchParams } from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, addQueryParam } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { SetUserInfo } from "../../components/set-user-info";
@@ -220,10 +220,9 @@ export class TasksPage extends Component {
   }
 
   onNewTaskAdded(task) {
-    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ))
-    this.goToTask(taskObj);
-
-    setTimeout(()=>{this.setState({newTask: null})}, 100);
+    //const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ))
+    //this.goToTask(taskObj); //TODO - This keeps the user on the same page - allowing to create another new task
+    //setTimeout(()=>{this.setState({newTask: null})}, 100);
   }
 
   createNewTask() {
@@ -384,9 +383,11 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
-    console.log("on query change", query);
     this.setState({query});
-  }
+    this.props.history.push({
+      search: addQueryParam('query=' + query)
+    });
+  };
 
 
   updateUserInfo(userInfo) {

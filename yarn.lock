@@ -2818,14 +2818,6 @@ cjson@^0.3.1:
   dependencies:
     json-parse-helpfulerror "^1.0.3"
 
-ckeditor4-react@1.0.0-beta.2:
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/ckeditor4-react/-/ckeditor4-react-1.0.0-beta.2.tgz#460c6246e737627ee383a1e3dc7920dc5e5aeaaa"
-  integrity sha512-Efl9CRsi55dssvTAcMuyxlQGOKi1xGN/5U2+JRBQPT1d1KR/wAavUjKgQu28tZp37l0MFPYjGvAy8cEakm0/Qw==
-  dependencies:
-    load-script "^1.0.0"
-    prop-types "^15.6.2"
-
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"
@@ -7255,11 +7247,6 @@ load-json-file@^4.0.0:
     parse-json "^4.0.0"
     pify "^3.0.0"
     strip-bom "^3.0.0"
-
-load-script@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/load-script/-/load-script-1.0.0.tgz#0491939e0bee5643ee494a7e3da3d2bac70c6ca4"
-  integrity sha1-BJGTngvuVkPuSUp+PaPSuscMbKQ=
 
 loader-fs-cache@^1.0.2:
   version "1.0.2"
