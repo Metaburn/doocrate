@@ -19,10 +19,8 @@ import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, addQueryParam } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
-import { SetUserInfo } from "../../components/set-user-info";
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
-import getRandomImage from 'src/utils/unsplash';
 
 export class TasksPage extends Component {
   constructor() {

@@ -71,7 +71,12 @@ export const taskFilters = {
     }
     return tasks.filter(task =>
     {
-      return (task.title && task.title.includes(filter.text)) || (task.description && task.description.includes(filter.text))
+      return (
+        ( task.title && task.title.includes(filter.text)) ||
+        (task.description && task.description.includes(filter.text)) ||
+        (task.requirements && task.requirements.includes(filter.text)) ||
+        (task.creator && task.creator.name && task.creator.name.includes(filter.text))
+        )
     });
   },
 
