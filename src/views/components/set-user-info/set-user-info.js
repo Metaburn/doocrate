@@ -79,7 +79,9 @@ export class SetUserInfo extends Component {
             <Modal open={isOpen} onClose={this.onCloseModal} center>
               <div className='set-user-info' dir={t('lang-dir')}>
                 <div className='modal-content'>
-                  <div className='modal-header'/>
+                  <div className='modal-header'>
+                    <h1>{t('user.title')}</h1>
+                  </div>
                   {this.renderBody(t)}
                 </div>
               </div>
@@ -97,7 +99,6 @@ export class SetUserInfo extends Component {
 
     return (
       <div className='modal-body'>
-        <h1>Let's get you set up</h1>
         <form className='modal-form' onSubmit={this.handleSubmit}>
           <div className={'avatar-wrapper'}>
             { avatar }

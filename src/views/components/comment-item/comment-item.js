@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import './comment-item.css';
-import Img from 'react-image';
 import Moment from 'react-moment';
 import 'moment/locale/he';
 import 'moment-timezone';
@@ -12,6 +11,7 @@ import Icon from "../icon";
 import ToolTip from "react-portal-tooltip";
 import Button from "../button";
 import Textarea from "react-textarea-autosize";
+import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
 
 export class CommentItem extends Component {
   constructor() {
@@ -91,12 +91,17 @@ export class CommentItem extends Component {
   renderHeader(t, comment) {
     if (!comment.creator) return;
     const {creator} = comment;
-    const avatar = creator.photoURL ? <Img className='avatar' src={creator.photoURL} alt={comment.creator.name}/> : '';
+
     return (
       <div className='comment-header'>
         {this.renderTooltip(t)}
         <div className='comment-item-creator'>
-          <span>{avatar} {creator.name} <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
+          <span>
+            <UserInfoAvatar
+              uniqueId={comment.id}
+              photoURL={creator.photoURL}
+              userId={creator.id}
+              alt={creator.name}/> {creator.name} <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
         </div>
       </div>
     );
@@ -122,7 +127,7 @@ export class CommentItem extends Component {
               <Button className='button-no-border'
                       onClick={this.onRemoveComment}><Icon className={'tooltip-icons'} name='delete'/>  {t('comments.delete-comment')}</Button>
             </div>
-                </span>
+          </span>
         </ToolTip>
       </div>
     );

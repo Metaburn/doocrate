@@ -115,6 +115,7 @@ input[type='button']
   font-family: "aktiv-grotesk-std", Helvetica Neue, Arial, sans-serif;
 }
 
+// Languages alignment
 .float-dir-right {
   float: right;
 }
@@ -131,9 +132,19 @@ input[type='button']
   direction: rtl;
 }
 
+.align-self-right {
+  align-self: start;
+}
+
+.align-self-left {
+  align-self: end;
+}
+
 .button-as-link {
+  font-size: $base-font-size !important;
   text-decoration: underline;
   border: none !important;
+  background: none !important;
   color:#eb1478;
 }
 
@@ -153,4 +164,14 @@ body { top: 0px !important; }
 // Rich text editor - limit height
 .ck-editor__editable_inline {
   max-height: 200px;
+}
+
+// Fixes react tooltip not clickable
+.__react_component_tooltip { pointer-events: auto !important; }
+
+// Adds border radius to react tooltip
+.__react_component_tooltip {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }

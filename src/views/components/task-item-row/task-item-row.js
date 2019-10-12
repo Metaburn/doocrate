@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-import './task-item.css';
+import './task-item-row.css';
 import Img from 'react-image';
 import ReactTooltip from 'react-tooltip'
 import Icon from '../icon';
 import { connect } from 'react-redux';
 import { I18n } from 'react-i18next';
 
-export class TaskItem extends Component {
+export class TaskItemRow extends Component {
   constructor() {
     super(...arguments);
 
@@ -26,7 +26,7 @@ export class TaskItem extends Component {
   render() {
     const { task } = this.props;
 
-    let containerClasses = classNames('task-item', {
+    let containerClasses = classNames('task-item-row', {
       'task-item--completed': task.completed,
     }, {'is-active': this.props.isActive});
 
@@ -82,8 +82,8 @@ export class TaskItem extends Component {
     if (!task.assignee) return;
     const avatar = task.assignee.photoURL ? <Img className='avatar' src={task.assignee.photoURL} alt={task.assignee.name}/> : '';
     return (
-      <div className='task-item-assignee' data-tip={task.assignee.name}>
-        <ReactTooltip type='light' effect='solid'/>
+      <div className='task-item-assignee' data-tip={task.assignee.name} data-for='task-assignee-tooltip'>
+        <ReactTooltip id='task-assignee-tooltip' type='light' effect='solid'/>
         { avatar }
       </div>
     );
@@ -106,7 +106,7 @@ export class TaskItem extends Component {
   }
 }
 
-TaskItem.propTypes = {
+TaskItemRow.propTypes = {
   task: PropTypes.object.isRequired,
   selectTask: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
@@ -120,4 +120,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   {}
-)(TaskItem);
+)(TaskItemRow);

@@ -12,7 +12,8 @@
   "general": {
     "loading": "טוען ...",
     "no-results-found": "לא נמצאו תוצאות",
-    "select-default": "בחר מהרשימה"
+    "select-default": "בחר מהרשימה",
+    "click-to-edit": "לחץ לערוך"
   },
   "header": {
     "disconnect": "התנתקי",
@@ -57,7 +58,10 @@
     "projects": "הפרוייקטים שלי",
     "edit-project": "ערוך פרוייקט",
     "project-report": "דוח פרוייקט",
-    "email": "אימייל"
+    "email": "אימייל",
+    "bio-empty": "לא כתבת כלום על עצמך",
+    "bio-empty-action": "לחץ כאן לערוך את הפרופיל שלך",
+    "bio-empty-encourage": "כדי שהקהילה תוכל ללמוד עליך יותר"
   },
   "task": {
     "add-task": "הוסף משימה",
@@ -123,6 +127,7 @@
     }
   },
   "user": {
+    "title": "בואי נעזור לך להתמקם",
     "email": "האם זה האימייל שלך?",
     "set-my-email": "האימייל שלי:",
     "set-my-name-description": "השם שלי:",

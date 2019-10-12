@@ -13,7 +13,8 @@
   "general": {
     "loading": "Loading ...",
     "no-results-found": "No results found",
-    "select-default": "Select..."
+    "select-default": "Select...",
+    "click-to-edit": "Click to edit"
   },
   "header": {
     "disconnect": "Sign out ",
@@ -58,7 +59,10 @@
     "projects": "My projects",
     "edit-project": "Edit project",
     "project-report": "Project Report",
-    "email": "Email"
+    "email": "Email",
+    "bio-empty": "You haven't wrote anything.",
+    "bio-empty-action": "Click here to edit your Bio",
+    "bio-empty-encourage": "so other members can learn more about you"
   },
   "task": {
     "add-task": "Add a new task",
@@ -124,6 +128,7 @@
     }
   },
   "user": {
+    "title": "Let's get you set up",
     "email": "Is this your email address?",
     "set-my-email": "Is this your email",
     "set-my-name-description": "My name",

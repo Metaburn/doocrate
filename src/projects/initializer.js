@@ -7,7 +7,7 @@ import {selectProject} from "./actions";
 export function initProject(dispatch) {
   return new Promise((resolve, reject) => {
     const projectUrl = projectsActions.getProjectFromUrl();
-    // Project url might be /sign-in in the case of sign in (Before user auth)
+    // User url might be /sign-in in the case of sign in (Before user auth)
     if (!projectUrl || projectUrl === 'sign-in' || projectUrl === 'me') {
       return resolve();
     }

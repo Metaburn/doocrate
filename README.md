@@ -144,7 +144,7 @@ You can press on the button their - This would go over all the users in the syst
 ## FAQ
 
 #### What are projects
-Project is the root for a task. Each task exists within a project
+User is the root for a task. Each task exists within a project
 
 #### What are Admins
 Admins can edit any task under a project.
@@ -204,7 +204,7 @@ yarn run build
 firebase deploy --hosting
 ```
 
-#### Project redirection
+#### User redirection
 Yes done through a cookie `is_redirected` and a url for example `?project=adacontra-2019`
 
 #### I'm having issue running npm install
