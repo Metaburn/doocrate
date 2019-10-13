@@ -205,11 +205,20 @@ export class TasksPage extends Component {
     }
 
     // Sync url toolbar and the query parameter
-    const urlFilterQuery = getUrlSearchParams()['query'];
-
-    if (this.state.query !== urlFilterQuery) {
-      this.setState({query: urlFilterQuery});
-    }
+    try {
+      // To support unicode we need to decodeURIComponent
+      const query = getUrlSearchParams()['query'];
+      const isQueryValid = query && typeof query !== 'undefined';
+      const urlFilterQuery = isQueryValid? (decodeURIComponent(query)): null;
+      if (urlFilterQuery && (this.state.query !== urlFilterQuery)) {
+        // TODO - unset the following line prevent users from entering special chars
+        // Such as 🙏 or a simple space -> ' ' char
+        //this.setState({query: decodeURIComponent(urlFilterQuery)});
+      }
+      }catch(error) {
+      // We might encounter Malformed strings - this prevents entering a loop
+      // instead we silently ignore that
+      }
 
     if (prevState.query !== this.state.query) {
       tasks = this.filterTaskFromQuery(tasks);
