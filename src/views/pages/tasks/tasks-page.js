@@ -235,9 +235,10 @@ export class TasksPage extends Component {
   }
 
   onNewTaskAdded(task) {
-    //const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ))
-    //this.goToTask(taskObj); //TODO - This keeps the user on the same page - allowing to create another new task
-    //setTimeout(()=>{this.setState({newTask: null})}, 100);
+    //Remove this to keeps the user on the same page - allowing to create another new task
+    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ));
+    this.goToTask(taskObj);
+    setTimeout(()=>{this.setState({newTask: null})}, 100);
   }
 
   createNewTask() {
