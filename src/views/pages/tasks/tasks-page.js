@@ -491,7 +491,7 @@ export class TasksPage extends Component {
             { this.renderTaskView() }
           </div>
           <div className='task-list-wrapper'>
-            <TaskList
+            <TaskList history={this.props.history}
               tasks={this.state.tasks}
               selectTask={this.goToTask}
               createTask={this.createTask}
