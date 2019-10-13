@@ -66,17 +66,24 @@ export const taskFilters = {
   },
 
   query: (tasks, filter) => {
-    if(!filter.text){
+    if (!filter.text) {
       return tasks;
     }
     return tasks.filter(task =>
     {
+      const filterText = filter.text.toLowerCase();
+      const taskTitle = task.title.toLowerCase();
+      const taskDescription = task.description.toLowerCase();
+      const creatorName = (task.creator && task.creator.name)? task.creator.name.toLowerCase() : null;
+      const assigneeName = task.assignee? task.assignee.name : null;
+
       return (
-        ( task.title && task.title.includes(filter.text)) ||
-        (task.description && task.description.includes(filter.text)) ||
-        (task.requirements && task.requirements.includes(filter.text)) ||
-        (task.creator && task.creator.name && task.creator.name.includes(filter.text))
-        )
+        taskTitle.includes(filterText) ||
+        taskDescription.includes(filterText) ||
+        creatorName.includes(filterText) ||
+        (creatorName && creatorName.includes(filterText)) ||
+        (assigneeName && assigneeName.includes(filterText))
+      )
     });
   },
 

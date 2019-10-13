@@ -92,7 +92,7 @@ class TaskList extends Component {
                 <span>{t('task.no-tasks-placeholder')}
                   <br/>
                   <NavLink
-                  to={{search: removeQueryParam(['complete'])}}>
+                  to={{search: removeQueryParam(['complete','query'])}}>
                   {t('task.click-here')}
                   </NavLink>&nbsp;
                   {t('task.no-tasks-placeholder2')}

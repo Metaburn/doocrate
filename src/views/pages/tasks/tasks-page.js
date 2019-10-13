@@ -195,7 +195,7 @@ export class TasksPage extends Component {
     const filter = this.props.buildFilter(this.props.auth, "query", this.state.query);
     currentTasks = this.props.filters["query"](currentTasks, filter, this.state.query);
     return currentTasks;
-  }
+  };
 
   componentDidUpdate(prevProps, prevState) {
     let {tasks} = this.props;
@@ -203,6 +203,14 @@ export class TasksPage extends Component {
       tasks = this.filterTaskFromLabel(tasks);
       this.setState({tasks});
     }
+
+    // Sync url toolbar and the query parameter
+    const urlFilterQuery = getUrlSearchParams()['query'];
+
+    if (this.state.query !== urlFilterQuery) {
+      this.setState({query: urlFilterQuery});
+    }
+
     if (prevState.query !== this.state.query) {
       tasks = this.filterTaskFromQuery(tasks);
       this.setState({tasks});
