@@ -74,9 +74,13 @@ class TaskList extends Component {
             {!isAnyTasks &&
               (getUrlSearchParams()['complete'] !== undefined) ?
                 <div className="no-tasks-placeholder">
-                  <h3>{t('task.no-tasks-found')}</h3>
-                  <button onClick={this.clearSearchQuery}>{t('task.click-here')}</button>
-                  {t('task.no-tasks-placeholder2')}
+                  <h3>
+                    {t('task.no-tasks-found')}
+                    <div>
+                      <button onClick={this.clearSearchQuery}>{t('task.click-here')}</button>
+                      {t('task.no-tasks-placeholder2')}
+                    </div>
+                  </h3>
                 </div>
             : ''}
 
