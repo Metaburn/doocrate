@@ -77,7 +77,7 @@ class TaskList extends Component {
                   <h3>
                     {t('task.no-tasks-found')}
                     <div>
-                      <button onClick={this.clearSearchQuery}>{t('task.click-here')}</button>
+                      <button className={`click-here-${t('lang-float')}`} onClick={this.clearSearchQuery}>{t('task.click-here')}</button>
                       {t('task.no-tasks-placeholder2')}
                     </div>
                   </h3>
