@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import ToolTip from 'react-portal-tooltip';
 import Icon from '../icon';
+import { addQueryParam, removeQueryParam} from 'src/utils/browser-utils.js';
 
 import { I18n } from 'react-i18next';
 
@@ -47,7 +48,7 @@ class CompleteFilter extends Component {
                         TaskFilters.getCompleteQuery(location) === 'false'
                       )
                     }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
-                      search: TaskFilters.addQueryParam('complete=false')}}>{t('task.incomplete-tasks')}</NavLink>
+                      search: addQueryParam('complete=false')}}>{t('task.incomplete-tasks')}</NavLink>
                   </span>
 
                   <span>
@@ -56,7 +57,7 @@ class CompleteFilter extends Component {
                         TaskFilters.getCompleteQuery(location) === 'true'
                       )
                     }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
-                      search: TaskFilters.addQueryParam('complete=true')}}>{t('task.complete-tasks')}</NavLink>
+                      search: addQueryParam('complete=true')}}>{t('task.complete-tasks')}</NavLink>
                   </span>
 
                   <span>
@@ -65,7 +66,7 @@ class CompleteFilter extends Component {
                         TaskFilters.getCompleteQuery(location) === undefined
                       )
                     }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
-                      search: TaskFilters.removeQueryParam('complete')}}>{t('task.all-the-tasks')}</NavLink>
+                      search: removeQueryParam(['complete'])}}>{t('task.all-the-tasks')}</NavLink>
                   </span>
 
                 </span>

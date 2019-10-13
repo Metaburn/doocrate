@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-import { getUrlSearchParams, urlSearchParamsToString} from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, addQueryParam, removeQueryParam} from 'src/utils/browser-utils.js';
 import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
 import { I18n } from 'react-i18next';
@@ -23,10 +23,12 @@ class TaskFilters extends Component {
     projectUrl: PropTypes.string.isRequired,
     selectedProject: PropTypes.object,
     labels: PropTypes.object.isRequired,
-    generateCSV:  PropTypes.func.isRequired,
+    generateCSV: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     userDefaultProject: PropTypes.string,
-    filter: PropTypes.object
+    filter: PropTypes.object,
+    onQueryChange: PropTypes.func.isRequired,
+    query: PropTypes.string.isRequired
   };
 
   // Since react router doesn't support query we read it manually from the url
@@ -43,26 +45,6 @@ class TaskFilters extends Component {
   static getFilterText() {
     const params = getUrlSearchParams();
     return params['text'];
-  }
-
-  // This function handles replacing / concatting params to location
-  // Can receive complete=true for example
-  static addQueryParam(newQueryParams) {
-    let currentSearchParams = getUrlSearchParams();
-    const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
-    Object.keys(newQueryParamsObj).forEach(param => {
-      if (param == null || param === '') return;
-      currentSearchParams[param] = newQueryParamsObj[param];
-    });
-    return urlSearchParamsToString(currentSearchParams);
-  }
-
-  // This function handles replacing / concatting params to location
-  // Can receive complete for example will remove complete
-  static removeQueryParam(paramToRemove) {
-    let currentSearchParams = getUrlSearchParams();
-    delete currentSearchParams[paramToRemove];
-    return urlSearchParamsToString(currentSearchParams);
   }
 
   onCSVLink() {
@@ -105,13 +87,13 @@ class TaskFilters extends Component {
               TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '1')
           }} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
+            search: addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return (TaskFilters.getFilterQuery(location) === 'taskType' &&
               TaskFilters.getFilterText(location) === '2')
           }} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
+            search: addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
@@ -119,7 +101,7 @@ class TaskFilters extends Component {
             TaskFilters.getFilterText(location) === '3'
             )
           }} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
+            search: addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
@@ -127,7 +109,7 @@ class TaskFilters extends Component {
               TaskFilters.getFilterText(location) === '4'
             )
           }} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
+            search: addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
           <li><NavLink isActive={(match, location) => {
             return(
@@ -135,29 +117,42 @@ class TaskFilters extends Component {
               TaskFilters.getFilterText(location) === '5'
             )
           }} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
+            search: addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
 
 
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=mine')}}>
+            search: addQueryParam('filter=mine')}}>
             {t('task.my-tasks')}
             </NavLink></li>
           <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
-            search: TaskFilters.addQueryParam('filter=unassigned')}}>
+            search: addQueryParam('filter=unassigned')}}>
             {t('task.free-tasks')}
             </NavLink></li>
 
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{ pathname: defaultTask,
-            search: TaskFilters.removeQueryParam('filter')}}>{t('task.all-tasks')}</NavLink></li>
-          {downloadCSV}
-          <li>
+                <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+                  pathname: defaultTask,
+                  search: removeQueryParam(['filter'])
+                }}>{t('task.all-tasks')}</NavLink></li>
+                {downloadCSV}
 
-          <AutoSuggestedTags
-            value = {this.state.label}
-            labels = { this.props.labels}
-            placeholder = {t('task.search-by-tags')}
-            onChange = {this.handleLabelChange} />
-        </li>
+                <li>
+                  <input
+                    className={"search-input"}
+                    placeholder={t('task.search-by-query')}
+                    type={"text"}
+                    value={this.props.query}
+                    onChange={(e) => {
+                      this.handleQueryChange(e.target.value)
+                    }}/>
+                </li>
+
+                <li>
+                  <AutoSuggestedTags
+                    value={this.state.label}
+                    labels={this.props.labels}
+                    placeholder={t('task.search-by-tags')}
+                    onChange={this.handleLabelChange}/>
+                </li>
 
         </ul>
         </div>
@@ -167,9 +162,13 @@ class TaskFilters extends Component {
   }
 
   handleLabelChange(label) {
-    this.setState({label, redirect: true});
+    this.setState({label});
     this.props.onLabelChange(label);
   }
+
+  handleQueryChange = (query) => {
+    this.props.onQueryChange(query);
+  };
 }
 
 

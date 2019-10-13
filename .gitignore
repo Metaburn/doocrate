@@ -39,3 +39,9 @@ __MACOSX/
 Thumbs.db
 
 .firebase
+
+#======================================
+# npm | yarn generated
+#--------------------------------------
+functions/package-lock.json
+yarn.lock

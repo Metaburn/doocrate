@@ -1,13 +1,12 @@
 
 // Since not all browser support URLSearchParams we implement it here
 export function getUrlSearchParams(locationSearch = window.location.search) {
-    var queryParams = locationSearch.substr(1).split('&').reduce(function (q, query) {
-    var chunks = query.split('=');
-    var key = chunks[0];
-    var value = chunks[1];
+  return locationSearch.substr(1).split('&').reduce(function (q, query) {
+    const chunks = query.split('=');
+    const key = chunks[0];
+    const value = chunks[1];
     return (q[key] = value, q);
   }, {});
-  return queryParams;
 }
 
 // TODO: This should be filled with some transpiler to support older browsers
@@ -27,6 +26,31 @@ export function urlSearchParamsToString(paramObject) {
   return result
 }
 
+/*
+ Handles replacing / concatting params to location
+ Can receive complete=true for example
+*/
+export function addQueryParam(newQueryParams) {
+  let currentSearchParams = getUrlSearchParams();
+  const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
+  Object.keys(newQueryParamsObj).forEach(param => {
+    if (param == null || param === '') return;
+    currentSearchParams[param] = newQueryParamsObj[param];
+  });
+  return urlSearchParamsToString(currentSearchParams);
+}
+
+/*
+ This function handles replacing / concatting params to location
+ Can receive complete for example will remove complete
+*/
+export function removeQueryParam(paramsToRemove) {
+  let currentSearchParams = getUrlSearchParams();
+  paramsToRemove.forEach( param => {
+    delete currentSearchParams[param];
+  });
+  return urlSearchParamsToString(currentSearchParams);
+}
 
 // Get a given cookie from document.cookie
 export function getCookie(cookieName) {
