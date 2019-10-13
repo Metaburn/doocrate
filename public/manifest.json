@@ -1,10 +1,10 @@
 {
   "short_name": "Doocrate",
-  "name": "Doocrate - The evolution of human consciousness",
+  "name": "Doocrate - Co-create, Collaborate",
   "icons": [
     {
-      "src": "favicon.ico",
-      "sizes": "64x64",
+      "src": "favicon.png",
+      "sizes": "32x32",
       "type": "image/png"
     }
   ],
