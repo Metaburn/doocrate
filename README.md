@@ -4,7 +4,7 @@
 # Doocrate
 You can read more about it in https://website.doocrate.com/
 
-Try the demo at https://doocrate2.firebaseapp.com.
+Try the demo at https://staging.doocrate.com
 A task management system which allows user to self assign themself
 So normally you don't have permission unless you create a task or
 assign yourself to a task.

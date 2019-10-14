@@ -49,6 +49,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
       return firestore.collection('users').doc(userId).get();
     }
 
+    // TODO move to Email Service
     function getEmailParams(toEmail, language) {
       console.log(`To: ${toEmail}`);
       const mailOptions = {

@@ -1,11 +1,11 @@
 const functions = require('firebase-functions');
 
-const emailService = new require('./emailService')();
+const EmailService = require('./emailService');
 
 const removedFromTaskEn = require('./templates/removed-from-task-en');
 const removedFromTaskHe = require('./templates/removed-from-task-he');
-const taskDeletedAssgineeEn = require('./templates/task-deleted-assignee-en');
-const taskDeletedAssgineeHe = require('./templates/task-deleted-assignee-he');
+const taskDeletedAssigneeEn = require('./templates/task-deleted-assignee-en');
+const taskDeletedAssigneeHe = require('./templates/task-deleted-assignee-he');
 
 const admin = require('firebase-admin');
 try {
@@ -17,41 +17,56 @@ try {
 const firestore = admin.firestore();
 
 /*
-  Whenever a task is unassigned - an email is sent to the assignee on removal
+  Whenever a task is unassigned / removed - an email is sent to the assignee
+    TODO There is a race condition where a task was unassigned then deleted. 2 events would be fired.
+  //TODO  Both of them current data would be unassigned and deleted leading to a 2 task was deleted messages
  */
 exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
   async (change, context) => {
 
-    const { projectId } = context.params;
+    const emailService = new EmailService();
+    const { projectId, taskId } = context.params;
     const taskBefore = change.before.data();
+    console.log('Before');
+    console.log(taskBefore);
 
-    if (!taskBefore || !taskBefore.id) {
+    if (!taskBefore) {
       console.log('Created for the first time');
-      // Created for the first time - no email is needed
       return;
     }
 
-    if (taskBefore.creator.id === taskBefore.assignee.id) {
+    const beforeAssignee = taskBefore.assignee;
+
+    if (!beforeAssignee) {
+      console.log('There was no assignee before this change');
+      return;
+    }
+
+    if (taskBefore.creator.id === beforeAssignee.id) {
       // Creator is same as Assignee - no need to email him his own actions
       console.log('Creator is same as assignee');
       return;
     }
 
-    const oldAssignee = taskBefore.assignee;
-
     const task = change.after.data();
-    // Handle deleted task
+    // Handle deleted task where there was assignee
     if (!task || !task.id) {
-      emailService.sendMessage(getMessageToSend(taskBefore, taskDeletedAssgineeEn, taskDeletedAssgineeHe));
-      return;
+      emailService.sendMessage(
+        getMessageToSend(taskBefore,
+          taskDeletedAssigneeEn.taskDeletedAssigneeEn,
+          taskDeletedAssigneeHe.taskDeletedAssigneeHe));
     }
     // If before it was with assignee and now there is NO assignee
     // Then assignee was just removed from a task
-    else if (oldAssignee && !task.assignee) {
-      emailService.sendMessage(getMessageToSend(taskBefore, removedFromTaskEn, removedFromTaskHe));
+    else if (!task.assignee) {
+      emailService.sendMessage(
+        getMessageToSend(taskBefore,
+          removedFromTaskEn.removedFromTaskEn,
+          removedFromTaskHe.removedFromTaskHe));
     }
 
     try {
+      // Wait for all messages to be sent
       await emailService.getAllMessagesPromise();
       console.log('Emails sent successfully');
       return true;
@@ -60,16 +75,25 @@ exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId
       return error;
     }
 
+    function getUserInfo(userId) {
+      return firestore.collection('users').doc(userId).get();
+    }
 
-    function getMessageToSend(toEmail, taskBefore, templateEn, templateHe) {
+    async function getMessageToSend(taskBefore, templateEn, templateHe) {
       const creator = taskBefore.creator;
-      const language = taskBefore.assignee.language || 'he'; //Defaults to hebrew;
+      const assigneeBefore = taskBefore.assignee;
+
+      const userInfo = await getUserInfo(assigneeBefore.id);
+      const assigneeBeforeInfo = userInfo.data();
+
+      const language = assigneeBeforeInfo.language || 'he'; //Defaults to hebrew;
 
       const mailOptions = {};
 
       const templateData = {
         fromName: creator.name,
-        link: `https://doocrate.com/${projectId}/task/${taskBefore.id}` //TODO: handle burnerot domain
+        taskTitle: taskBefore.title,
+        link: `https://doocrate.com/${projectId}/task/${taskId}` //TODO: handle burnerot domain
       };
 
       const shortTitle = taskBefore.title.substr(0, 20);
@@ -84,7 +108,7 @@ exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId
 
       mailOptions.fromName = creator.name;
       mailOptions.from = creator.email;
-      mailOptions.to = toEmail;
+      mailOptions.to = assigneeBeforeInfo.email;
 
       emailService.sendMessage(mailOptions);
     }
