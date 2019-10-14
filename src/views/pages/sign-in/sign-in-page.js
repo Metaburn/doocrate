@@ -97,11 +97,13 @@ class SignInPage extends Component {
                   {t('welcome.heading')}
                 </h2>
                 <div className='sign-in-content'>
-                  <h3>
-                    {t('welcome.already-have')}
-                  </h3>
-                  <Button className={'button-as-link login-btn'}
-                          onClick={this.showHideSignupLogin}>{t('welcome.login-here')}</Button>
+                  <div className={'already-have-wrapper'}>
+                    <h3>
+                      {t('welcome.already-have')}
+                    </h3>
+                    <Button className={'button-as-link login-btn'}
+                            onClick={this.showHideSignupLogin}>{t('welcome.login-here')}</Button>
+                  </div>
 
                   <div className={'field-wrapper'}>
                     <label className="login-label">{t('welcome.email')}</label>

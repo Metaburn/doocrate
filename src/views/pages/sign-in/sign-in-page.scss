@@ -26,6 +26,10 @@
 
   }
 
+  .already-have-wrapper {
+    display: flex;
+  }
+
   h3 {
     font-weight: normal;
     display: inline-block;
@@ -156,8 +160,18 @@
 }
 
 @media (max-width: 767px) {
-  .sign-in-image-container {
-    display: none;
+  .sign-in {
+    margin: 0;
+    padding: 20px;
+
+    .sign-in-content-container {
+      width: auto;
+      padding: 0;
+      width: auto;
+    }
+    .sign-in-image-container {
+      display: none;
+    }
   }
 }
 
