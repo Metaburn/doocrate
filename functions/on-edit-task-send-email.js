@@ -49,12 +49,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     // TODO if creator is not task.assignee then return
 
 
-    //If before it was with assignee and now there is NO assignee
-    // Then send the taskBefore.assignee an email saying
-    // "You were removed from this task" with a link to the actual task
-
-
-    function getUserInfo(userId) {
+        function getUserInfo(userId) {
       return firestore.collection('users').doc(userId).get();
     }
 
@@ -75,37 +70,46 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
       };*/
 
       const shortTitle = task.title.substr(0, 20);
+      const taskLink = task.id;
       if (language === 'he') {
-        mailOptions.subject = `תגובה חדשה - [${shortTitle}]`;
-        emailTemplate = <body><p>הסירו אותך</p></body>
+        mailOptions.subject = `הוסרת ממשימה - [${shortTitle}]`;
+        emailTemplate = <body><p>הסירו אותך מהמשימה - {'/projects/{projectId}/tasks/{taskId}'}</p></body>
       } else { //English
-        mailOptions.subject = `New Comment - [${shortTitle}]`;
-        emailTemplate = <body><p>You were removed</p></body>
+        mailOptions.subject = `You were removed from - [${shortTitle}]`;
+        emailTemplate = <body><p>You were removed from {'/projects/{projectId}/tasks/{taskId}'}</p></body>
       }
 
       mailOptions.html = emailTemplate;
       return mailOptions;
     }
 
-    // Get the users languages to send emails in the right language
-    const userPromises = [];
-    userPromises.push(getUserInfo(task.creator.id));
-    if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
-      userPromises.push(getUserInfo(task.assignee.id));
+    //If before it was with assignee and now there is NO assignee
+    // Then send the taskBefore.assignee an email saying
+    // "You were removed from this task" with a link to the actual task
+    if (taskBefore.assignee && !task.assignee) {
+      const languageAssignee = taskBefore.assignee.language || 'he'; //Defaults to hebrew;
+      mailPromises.push(mailgun.messages().send(getEmailParams(taskBefore.assignee.email, languageAssignee)));
     }
 
-    const usersData = await Promise.all(userPromises);
-    const creator = usersData[0].data();
-    const languageCreator = creator.language || 'he'; //Defaults to hebrew;
-    const mailPromises = [];
+    // Get the users languages to send emails in the right language
+    // const userPromises = [];
+    // userPromises.push(getUserInfo(task.creator.id));
+    // if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
+    //   userPromises.push(getUserInfo(task.assignee.id));
+    // }
+
+    // const usersData = await Promise.all(userPromises);
+    // const creator = usersData[0].data();
+    // const languageCreator = creator.language || 'he'; //Defaults to hebrew;
+    // const mailPromises = [];
 
     // Send the emails
-    mailPromises.push(mailgun.messages().send(getEmailParams(creator.email, languageCreator)));
-    if (usersData.length > 1) {
-      const assignee = usersData[1].data();
-      const languageAssignee = assignee.language || 'he'; //Defaults to hebrew;
-      mailPromises.push(mailgun.messages().send(getEmailParams(assignee.email, languageAssignee)));
-    }
+    // mailPromises.push(mailgun.messages().send(getEmailParams(task.assignee.email, languageCreator)));
+    // if (usersData.length > 1) {
+    //   const assignee = usersData[1].data();
+    //   const languageAssignee = assignee.language || 'he'; //Defaults to hebrew;
+    //   mailPromises.push(mailgun.messages().send(getEmailParams(assignee.email, languageAssignee)));
+    // }
 
     try {
       await Promise.all(mailPromises);
