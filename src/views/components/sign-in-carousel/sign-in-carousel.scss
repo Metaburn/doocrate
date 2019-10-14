@@ -1,0 +1,34 @@
+@import 'views/styles/shared';
+
+.react-slideshow-container {
+  align-items: center;
+  justify-items: center;
+}
+
+.react-slideshow-fade-images-wrap {
+  align-items: center;
+  justify-items: center;
+}
+
+.each-fade {
+  display: flex;
+}
+
+.each-fade .image-container {
+  width: 100%;
+  overflow: hidden;
+  align-self: center;
+}
+
+.each-fade .image-container img {
+  width: 100%;
+}
+
+.each-fade h2 {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  background: #adceed;
+}

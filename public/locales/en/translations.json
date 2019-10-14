@@ -150,25 +150,20 @@
     "comment-deleted": "🛸 Deleted. Gone. What Comment? I didn't saw no comment 🛸"
   },
   "welcome": {
-    "heading": "Welcome to the doocrate",
-    "heading2": "A co-creational events task management system",
-    "registration": "Upon registering, you will be transferred to the task system",
-    "about": "About the system",
-    "before-start": "A few important notes:",
-    "instruction1": "Anyone can take ownership of a task (As long as it's unassigned)",
-    "instruction2": "Please try to take ownership of one task to allow everyone to participate",
-    "instruction3": "Anyone can create a task, and offer it to the community or take responsibility",
-    "instruction4": "The event will only happen if all critical tasks are met",
-    "instruction5": "Everything else, that we won't do - Won't happen :)",
-    "instruction6": "Take part in the experiment",
-    "signup-email": "Sign up with email",
+    "doocrate": "Doocrate",
+    "heading": "Start using Doocrate by entering the information below",
+    "already-have": "Already have an account?",
+    "email": "Email",
+    "login-here": "Login Here",
+    "signup-email": "Complete sign up",
     "signin-email": "Log in"
   },
   "signin": {
+    "welcome": "Welcome back",
     "enter-email": "Enter your email to get a magic link",
     "my-email": "Your email",
     "submit": "Send me the link",
-    "check-your-email": "You got mail 📧. Open your email link to proceed and login",
+    "check-your-email": "Check your inbox 📧 . We just emailed a confirmation link. Click the link and you'll be signed in.",
     "redirecting": "Redirecting...",
     "try-again": "If this doesn't work - click here to try again"
   },
