@@ -34,12 +34,15 @@
       }
     ],
     "rewrites": [
+      // Rewrites order is important as first rule followed first
+
+      // Excludes specified pathways from rewrites
+      {
+        "source": "!**/*.@(js|css)",
+        "destination": "/index.html"
+      },
       {
         "source": "**",
-        "destination": "/index.html"
-      }, // Excludes specified pathways from rewrites
-      {
-        "source": "!/@(js|css)/**",
         "destination": "/index.html"
       }
     ]
