@@ -181,6 +181,9 @@ Yes. `/admin-dashboard`
 2.Make sure that your config doesnt have a wrong char such as \n in the end:
 `projectId: 'doocrate-production\n',
 
+#### Where is the backend?
+Located under the `functions` folder (This is firebase standard)
+
 #### How can I deploy in a fast way
 If you haven't modified the functions folder you can run the following to deploy only the app without the functions:
 `yarn run build && firebase deploy --only=hosting`

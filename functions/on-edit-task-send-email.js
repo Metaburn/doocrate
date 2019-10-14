@@ -1,13 +1,11 @@
 const functions = require('firebase-functions');
-const newCommentEn = require('./templates/new-comment-en');
-const newCommentHe = require('./templates/new-comment-he');
-const emailConfig = functions.config().email;
-const shouldSendNotifications = emailConfig? encodeURIComponent(emailConfig.send_notifications) : false;
-const fromEmail = emailConfig? decodeURIComponent(emailConfig.from) : null;
-const emailApiKey = emailConfig? encodeURIComponent(emailConfig.apikey) : 'No env variable set';
-const emailDomain = emailConfig? encodeURIComponent(emailConfig.domain) : 'No env variable set';
 
-const mailgun = require('mailgun-js')({apiKey:emailApiKey, domain:emailDomain});
+const emailService = new require('./emailService')();
+
+const removedFromTaskEn = require('./templates/removed-from-task-en');
+const removedFromTaskHe = require('./templates/removed-from-task-he');
+const taskDeletedAssgineeEn = require('./templates/task-deleted-assignee-en');
+const taskDeletedAssgineeHe = require('./templates/task-deleted-assignee-he');
 
 const admin = require('firebase-admin');
 try {
@@ -21,102 +19,77 @@ const firestore = admin.firestore();
 /*
   Whenever a task is unassigned - an email is sent to the assignee on removal
  */
-exports.onNewCommentSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
+exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
   async (change, context) => {
 
-    if (!shouldSendNotifications) {
-      console.warn('Send notifications turned off');
-      return false;
-    }
+    //TODO:
+    console.log('TODO');
+    return true;
 
-    const projectId = context.params.projectId;
-    console.log('From:' + fromEmail);
-    const task = change.after.data();
-
-    // Check for deleted task - TODO - maybe relevant
-    if (!task || !task.id) {
-      return;
-    }
-
-    if (!task.assignee || !task.assignee.email) {
-      console.log('No email found');
-      return;
-    }
-
+    const { projectId } = context.params;
     const taskBefore = change.before.data();
 
-
-    // TODO if creator is not task.assignee then return
-
-
-        function getUserInfo(userId) {
-      return firestore.collection('users').doc(userId).get();
+    if (!taskBefore || !taskBefore.id) {
+      console.log('Created for the first time');
+      // Created for the first time - no email is needed
+      return;
     }
 
-    function getEmailParams(toEmail, language) {
-      console.log(`To: ${toEmail}`);
-      const mailOptions = {
-        from: task.creator.name + ' ' + fromEmail, // For example Gal Bracha <support@doocrate.com>
-        to: toEmail,
-        'h:Reply-To': task.creator.email
-      };
-      let emailTemplate;
-
-      /*const templateData = {
-        fromName: task.creator.name,
-        fromEmail: task.creator.email,
-        fromPhotoUrl: task.creator.photoURL,
-        link: `https://doocrate.com/${projectId}/task/${task.id}`
-      };*/
-
-      const shortTitle = task.title.substr(0, 20);
-      const taskLink = task.id;
-      if (language === 'he') {
-        mailOptions.subject = `הוסרת ממשימה - [${shortTitle}]`;
-        emailTemplate = <body><p>הסירו אותך מהמשימה - {'/projects/{projectId}/tasks/{taskId}'}</p></body>
-      } else { //English
-        mailOptions.subject = `You were removed from - [${shortTitle}]`;
-        emailTemplate = <body><p>You were removed from {'/projects/{projectId}/tasks/{taskId}'}</p></body>
-      }
-
-      mailOptions.html = emailTemplate;
-      return mailOptions;
+    if (taskBefore.creator.id === taskBefore.assignee.id) {
+      // Creator is same as Assignee - no need to email him his own actions
+      console.log('Creator is same as assignee');
+      return;
     }
 
-    //If before it was with assignee and now there is NO assignee
-    // Then send the taskBefore.assignee an email saying
-    // "You were removed from this task" with a link to the actual task
-    if (taskBefore.assignee && !task.assignee) {
-      const languageAssignee = taskBefore.assignee.language || 'he'; //Defaults to hebrew;
-      mailPromises.push(mailgun.messages().send(getEmailParams(taskBefore.assignee.email, languageAssignee)));
+    const oldAssignee = taskBefore.assignee;
+
+    const task = change.after.data();
+    // Handle deleted task
+    if (!task || !task.id) {
+      emailService.sendMessage(getMessageToSend(taskBefore, taskDeletedAssgineeEn, taskDeletedAssgineeHe));
+      return;
     }
-
-    // Get the users languages to send emails in the right language
-    // const userPromises = [];
-    // userPromises.push(getUserInfo(task.creator.id));
-    // if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
-    //   userPromises.push(getUserInfo(task.assignee.id));
-    // }
-
-    // const usersData = await Promise.all(userPromises);
-    // const creator = usersData[0].data();
-    // const languageCreator = creator.language || 'he'; //Defaults to hebrew;
-    // const mailPromises = [];
-
-    // Send the emails
-    // mailPromises.push(mailgun.messages().send(getEmailParams(task.assignee.email, languageCreator)));
-    // if (usersData.length > 1) {
-    //   const assignee = usersData[1].data();
-    //   const languageAssignee = assignee.language || 'he'; //Defaults to hebrew;
-    //   mailPromises.push(mailgun.messages().send(getEmailParams(assignee.email, languageAssignee)));
-    // }
+    // If before it was with assignee and now there is NO assignee
+    // Then assignee was just removed from a task
+    else if (oldAssignee && !task.assignee) {
+      emailService.sendMessage(getMessageToSend(taskBefore, removedFromTaskEn, removedFromTaskHe));
+    }
 
     try {
-      await Promise.all(mailPromises);
+      await emailService.getAllMessagesPromise();
       console.log('Emails sent successfully');
       return true;
     } catch (error) {
       console.error('Error sending mail:', error);
       return error;
+    }
+
+
+    function getMessageToSend(toEmail, taskBefore, templateEn, templateHe) {
+      const creator = taskBefore.creator;
+      const language = taskBefore.assignee.language || 'he'; //Defaults to hebrew;
+
+      const mailOptions = {};
+
+      const templateData = {
+        fromName: creator.name,
+        link: `https://doocrate.com/${projectId}/task/${taskBefore.id}` //TODO: handle burnerot domain
+      };
+
+      const shortTitle = taskBefore.title.substr(0, 20);
+      if (language === 'he') {
+        mailOptions.subject = `הוסרת ממשימה - [${shortTitle}]`;
+        mailOptions.html = templateHe(templateData);
+
+      } else { //English
+        mailOptions.subject = `You were removed from - [${shortTitle}]`;
+        mailOptions.html = templateEn(templateData);
+      }
+
+      mailOptions.fromName = creator.name;
+      mailOptions.from = creator.email;
+      mailOptions.to = toEmail;
+
+      emailService.sendMessage(mailOptions);
     }
   });
