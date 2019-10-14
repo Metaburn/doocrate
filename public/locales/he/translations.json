@@ -149,25 +149,20 @@
     "comment-deleted": "🛸 נמחקה. נעלמה. איזה תגובה? לא ראיתי פה שום תגובה 🛸"
   },
   "welcome": {
-    "heading": "ברוכים הבאות לדואוקרט",
-    "heading2": "מערכת לניהול ארועי יצירה משותפת",
-    "registration": "בהרשמה כאן תכנסו למערכת ניהול המשימות השיתופי של הדואוקרט",
-    "about": "קצת על המערכת",
-    "before-start": "כמה נקודות חשובות לפי שמתחילים:",
-    "instruction1": "כל אחד מוזמן להירשם לכל משימה (כל עוד היא פנויה)",
-    "instruction2": "נבקש שתרשמו למשימה אחת בלבד כדי לאפשר לכולם להשתתף ",
-    "instruction3": "כל אחד יכול לייצר משימה, ויכול לקחת אותה או להציע אותה לקהילה",
-    "instruction4": "האירוע יתקיים רק אם נבצע את כל המשימות הקריטיות לקיומו",
-    "instruction5": "כל השאר - מה שלא נעשה לא יקרה :)",
-    "instruction6": "קחו חלק בניסוי",
+    "doocrate": "דואוקרט",
+    "heading": "ברוכים הבאות לדואוקרט - בוא נכיר אותך",
+    "already-have": "יש לך כבר חשבון?",
+    "email": "אימייל",
+    "login-here": "התחברי כאן",
     "signup-email": "צור משתמש חדש",
     "signin-email": "התחבר"
   },
   "signin": {
+    "welcome": "הו שלום לך. ברוכה החוזרת",
     "enter-email": "הכנסי את המייל שלך לקבלת לינק התחברות",
     "my-email": "האימייל שלך",
     "submit": "שלח לי את הלינק",
-    "check-your-email": "יש לך מייל 📧. פתחי אותו להתחברות",
+    "check-your-email": "תבדקי את האינבוקס שלך 📧. שלחנו הרגע לינק התחברות לאימייל שלך. תלחצי עליו כדי להתחבר",
     "redirecting": "מכניס אותך פנימה...",
     "try-again": "אם זה לא עובד. לחץ כאן לנסות שוב"
   },

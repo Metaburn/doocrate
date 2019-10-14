@@ -6,6 +6,7 @@
   display: inline-block;
   overflow: hidden;
   border: none;
+  margin-left: -4px; //This to overcome the border shadow this button have
 }
 
 .googleSignIn:hover {
