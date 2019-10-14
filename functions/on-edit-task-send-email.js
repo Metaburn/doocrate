@@ -22,10 +22,6 @@ const firestore = admin.firestore();
 exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
   async (change, context) => {
 
-    //TODO:
-    console.log('TODO');
-    return true;
-
     const { projectId } = context.params;
     const taskBefore = change.before.data();
 
