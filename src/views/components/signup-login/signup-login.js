@@ -71,6 +71,7 @@ export class SignupLogin extends Component {
   renderHeader(t) {
     return (
       <div className='modal-header'>
+        <h2>{t('signin.welcome')}</h2>
         <div>{t('signin.enter-email')}</div>
     </div>
     );
