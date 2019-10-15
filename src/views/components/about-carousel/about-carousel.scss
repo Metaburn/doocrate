@@ -1,12 +1,52 @@
 @import 'views/styles/shared';
 
 .about-carousel {
-  .slick-slider {
-    direction:ltr !important;
+
+  direction: ltr;
+  // This helps center vertically before the images are loading
+  min-height: 665px;
+
+  .slide-container {
+    max-width: 600px;
   }
 
   .person-name {
     text-align: center;
     color: $primary-color;
   }
+
+
+  .react-slideshow-container {
+    align-items: center;
+    justify-items: center;
+  }
+
+  .react-slideshow-fade-images-wrap {
+    align-items: center;
+    justify-items: center;
+  }
+
+  .each-fade {
+    display: flex;
+  }
+
+  .each-fade .image-container {
+    width: 100%;
+    overflow: hidden;
+    align-self: center;
+  }
+
+  .each-fade .image-container img {
+    width: 100%;
+  }
+
+  .each-fade h2 {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background: #adceed;
+  }
+
 }
