@@ -10,6 +10,7 @@ firebase functions:shell
 
 # Deployment
 ```
+## From the root directory run ../
 npm run build && firebase deploy
 ```
 
@@ -19,9 +20,17 @@ firebase deploy --only functions
 ```
 
 # Testing Locally
+Start the shell
 ```
 firebase functions:shell
+```
+Then you can try
+```
 onNewCommentSendEmail.onNewCommentSendEmail({before: {}, after: {taskId: 'taskid', creator:{name:'tester'}} })
+```
+Or this (Actually this doesnt work but keeping here if future me wants to fix this)
+```
+onEditTaskSendEmail.onEditTaskSendEmail({before: {id:"test", creator:{id:"1",name:"tester"}, assignee:{id:"2"}},after: {id: "test", creator:{id: "3",name:"tester"}} })
 ```
 
 # Cloud functions

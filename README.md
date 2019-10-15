@@ -4,7 +4,7 @@
 # Doocrate
 You can read more about it in https://website.doocrate.com/
 
-Try the demo at https://doocrate2.firebaseapp.com.
+Try the demo at https://staging.doocrate.com
 A task management system which allows user to self assign themself
 So normally you don't have permission unless you create a task or
 assign yourself to a task.
@@ -180,6 +180,9 @@ Yes. `/admin-dashboard`
 
 2.Make sure that your config doesnt have a wrong char such as \n in the end:
 `projectId: 'doocrate-production\n',
+
+#### Where is the backend?
+Located under the `functions` folder (This is firebase standard)
 
 #### How can I deploy in a fast way
 If you haven't modified the functions folder you can run the following to deploy only the app without the functions:
