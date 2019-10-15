@@ -7,6 +7,7 @@ import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
 import { getProject } from 'src/projects';
 import Header from '../components/header';
+import BottomNavBar from "../components/bottom-nav-bar";
 import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
@@ -68,6 +69,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           </Switch>
         }
       </main>
+      <BottomNavBar auth={auth}/>
     </div>
       )}
   </I18n>
