@@ -4,8 +4,6 @@ const EmailService = require('./emailService');
 
 const removedFromTaskEn = require('./templates/removed-from-task-en');
 const removedFromTaskHe = require('./templates/removed-from-task-he');
-const taskDeletedAssigneeEn = require('./templates/task-deleted-assignee-en');
-const taskDeletedAssigneeHe = require('./templates/task-deleted-assignee-he');
 
 const admin = require('firebase-admin');
 try {
@@ -53,11 +51,12 @@ exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId
     if (!task || !task.id) {
       emailService.sendMessage(
         getMessageToSend(taskBefore,
-          taskDeletedAssigneeEn.taskDeletedAssigneeEn,
-          taskDeletedAssigneeHe.taskDeletedAssigneeHe));
+          removedFromTaskEn.removedFromTaskEn,
+          removedFromTaskHe.removedFromTaskHe));
     }
     // If before it was with assignee and now there is NO assignee
     // Then assignee was just removed from a task
+      // We do the seperation to support in the future distinguish between delete and simple unassigned
     else if (!task.assignee) {
       emailService.sendMessage(
         getMessageToSend(taskBefore,
