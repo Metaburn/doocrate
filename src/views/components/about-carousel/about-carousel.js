@@ -1,20 +1,27 @@
-import React from 'react';
-import Slider from 'react-slick';
+import React, {Fragment} from 'react';
+
+import Img from 'react-image';
+import { Fade } from 'react-slideshow-image';
 
 import './about-carousel.css';
-import Img from 'react-image';
 
 class AboutCarousel extends React.Component {
   render() {
-    const humans = [{
+    const properties = {
+      autoplay: true,
+      duration: 3000,
+      transitionDuration: 1500,
+      infinite: true,
+      indicators: false,
+      arrows: false,
+    };
+
+    let humans = [{
       name:'גל ברכה',
       img:'http://placekitten.com/550/350?image=4'
     },{
       name:'מתן זוהר',
       img:'http://placekitten.com/550/350?image=8'
-    },{
-      name:'יונתן רוסאק',
-      img:'http://placekitten.com/550/350?image=9'
     },{
       name:'דניאל ברוקס',
       img:'http://placekitten.com/550/350?image=10'
@@ -25,54 +32,59 @@ class AboutCarousel extends React.Component {
       name:'רקפת בר סלע',
       img:'http://placekitten.com/550/350?image=11'
     },{
+      name:'הילה היילו',
+      img:'http://placekitten.com/550/350?image=2'
+    },{
       name:'יערה מסיקה',
       img:'http://placekitten.com/550/350?image=12'
     },{
       name:'הילה זני',
       img:'http://placekitten.com/550/350?image=13'
     },{
+      name:'יונתן רוסאק',
+      img:'http://placekitten.com/550/350?image=9'
+    },{
       name:'רותם בונדר',
       img:'http://placekitten.com/550/350?image=14'
     },{
       name:'טל לותן',
-      img:'http://placekitten.com/550/350?image=15'
+      img:'http://placekitten.com/550/350?image=3'
     },{
       name:'הילה ברזילי',
       img:'http://placekitten.com/550/350?image=16'
     },{
       name:'Nate',
-      img:'http://placekitten.com/550/350?image=17'
+      img:'http://placekitten.com/550/350?image=5'
     },{
       name:'אורי קדוש',
       img:'http://placekitten.com/550/350?image=18'
     },{
       name:'ניר בניטה',
-      img:'http://placekitten.com/550/350?image=19'
+      img:'http://placekitten.com/550/350?image=8'
     }
     ];
 
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      autoplay: true,
-      centerMode: false,
-      pauseOnHover: true,
-      rtl: true //TODO: On english revert
-    };
+    const shuffle = (array) => array.sort(() => Math.random() - 0.5);
+    humans = shuffle(humans);
+
     return (
       <div className='about-carousel'>
-        <Slider {...settings}>
-        {
-          humans.map(person => {
-            return (
-            <div key={person.name}><h3 className='person-name'>{person.name}</h3>
-            <Img src={person.img} /></div>)
-          })
-          }
-        </Slider>
+          <div className='slide-container'>
+            <Fade {...properties}>
+              {
+                humans.map(person => {
+                  return (
+                    <Fragment key={person.name} className='each-fade'>
+                      <h3 className='person-name'>{person.name}</h3>
+                      <div className='image-container'>
+                        <Img src={person.img}/>
+                      </div>
+                    </Fragment>
+                  )
+                })
+              }
+            </Fade>
+          </div>
       </div>
     );
   }

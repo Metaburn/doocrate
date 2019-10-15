@@ -1,50 +1,70 @@
 import React from 'react';
 import Button from 'src/views/components/button';
-import AboutCarosel from 'src/views/components/about-carousel';
 
 import './about-page.css';
+import { I18n } from 'react-i18next';
+import AboutCarousel from 'src/views/components/about-carousel';
 
 const AboutPage = () => {
   return (
-    <div className="g-row sign-in">
-      <div className="g-col">
-        <h1>מה זה דואוקרט?</h1>
-        <span>מערכת הדואוקרט מאפשרת לנו להתארגן תחת ארוע/פרוייקט מסויים ולנהל את המשימות לעצמנו.
-        </span>
-        <span>
-          הדואוקרט בנוי על בסיסה של גישה שטוחה (לא היררכית) תחת מודל ה-Teal.
-          <br/>
-        </span>
-        <span>
-        במקום מבנה היררכי של קהילה/חברה המערכת מאפשרת ארגון וניהול עצמי על ידי צוותים קטנים שאחראים על התנהלותם הפנימית ודרכי התקשורת שלהם עם צוותים אחרים בארגון.
-        </span>
-        <br /><br />
-        <h1>למה בנינו את זה?</h1>
-        <span>חיפשנו דרך פשוטה ונוחה שנוכל ליישם את מודל ה-Teal בצורה שלא תאתגר אותנו טכנולוגית.
-          <br />האלטרנטיבות לא היו קלות מספיק ולא סיפקו את יכולת ההרשאות שרצינו
-          <br />
-        </span>
-        <br /><br />
-        <h1>אני לא מצליח לעשות משהו. תמיכה טכנית?</h1>
-        <span>כמובן. שלח מייל ל support@doocrate.com</span>
-        <br /><br />
-        <h1>זה מדהים. אני רוצה מערכת כזאת אצלי</h1>
-        <span>מוזמנים לפנות ל - galbra@gmail.com</span>
-        <br /><br />
-        <h1>איך אני יכול/ה לעזור?</h1>
-        <span>שמח לשמוע פידבק על שימוש במוצר ועל שימושים אחרים שאתם חושבים לעשות איתו ובאופן כללי לשמוע את דעתכם, לכן פתחנו קבוצת מיקוד שנשמור איתה על קשר רצוף על מנת להבין איך המוצר צריך להראות. דברו איתנו!</span>
-        <span>feedback.doocrate@gmail.com בנוסף, אם יש לכם יכולות פיתוח תוכנה ותרצו לתרום מזמנכם - אנחנו מחפשים עוד חברים לדרך!</span>
-        <h1>מי אתם אנשים מופלאים שמשקיעים את הזמן שלהם בזה?</h1>
-        <span>אנחנו חלק מקולקטיב בשם מטהברן ששם לו למטרה לייצר כלים פשוטים לניהול קהילות יצירה משותפת
-          <br/>
-          פיתחנו את <a href='http://dreams.burnerot.com/'>מערכת החלומות</a> עבור ברנרות ועבור ברנים אחרים
-          <br/>
-          פרצופים של האנשים שגרמו לזה לקרות:
-          <AboutCarosel />
-        </span>
-        <Button className='button-small'><a href='/'>חזור למערכת</a></Button>
-      </div>
-    </div>
+    <I18n ns='translations'>
+      {
+        (t, { i18n }) => (
+        <div className="g-row about-page">
+          <div className="g-col">
+
+            <h1>{t('about.q1')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a1', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q2')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a2', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q3')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a3', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q4')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a4', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q5')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a5', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q6')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a6', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q7')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a7', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            {t('about.faces')}
+            <div className={'carousel-container'}>
+              <AboutCarousel />
+            </div>
+
+            <Button className='button-small'><a href='/'>{t('about.return')}</a></Button>
+          </div>
+        </div>
+        )}
+    </I18n>
   );
 };
 
