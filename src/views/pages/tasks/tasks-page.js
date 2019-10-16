@@ -312,6 +312,11 @@ export class TasksPage extends Component {
     this.props.showSuccess(i18n.t('task.task-is-yours'));
   }
 
+  followTaskToSignedUser = (task) => {
+    this.props.followTask(task, this.props.auth);
+    this.props.showSuccess(i18n.t('task.task-is-yours'));
+  }
+
   unassignTask(task) {
     const isCreator = task.creator && task.creator.id === this.props.auth.id;
     const isAssignee = task.assignee && task.assignee.id === this.props.auth.id;
@@ -439,6 +444,7 @@ export class TasksPage extends Component {
         isAdmin={this.isAdmin()}
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
+        followTask={this.followTaskToSignedUser}
         unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}

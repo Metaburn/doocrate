@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import Icon from '../icon';
+import Img from 'react-image';
+
 import { I18n } from 'react-i18next';
 import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
+import follow from './follow.png';
 
 import './task-view-header.css';
 
@@ -16,6 +19,13 @@ export class TaskViewHeader extends Component {
       {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
+
+          {// TODO - UNFOLLOW
+          }
+          <Button className='button button-small action-button' onClick={ () => this.props.followTask(task) }>
+            <span>Follow</span>
+            <Img className='follow-icon'src={follow} />
+          </Button>
 
           <Button className='button-no-border close-button' onClick={ () => this.props.selectTask() }>
             <Icon name='close' className='close-icon grow' />
@@ -92,6 +102,7 @@ export class TaskViewHeader extends Component {
 TaskViewHeader.propTypes = {
   selectTask: PropTypes.func.isRequired,
   assignTask: PropTypes.func.isRequired,
+  followTask: PropTypes.func.isRequired,
   unassignTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,

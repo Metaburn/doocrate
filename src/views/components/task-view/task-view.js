@@ -36,6 +36,7 @@ export class TaskView extends Component {
       type: '',
       defaultType: [],
       label: [],
+      listeners: [],
       isCritical: false,
       isDone: false,
       validations: {},
@@ -64,6 +65,7 @@ export class TaskView extends Component {
     updateTask: PropTypes.func.isRequired,
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
+    followTask: PropTypes.func.isRequired,
     unassignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
     selectedProject: PropTypes.object,
@@ -105,7 +107,7 @@ export class TaskView extends Component {
   updateStateByProps(props) {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, requirements, type,
-      label, isCritical, dueDate, created, isDone, doneDate,
+      label, isCritical, listeners, dueDate, created, isDone, doneDate,
       extraFields
     } = nextSelectedTask;
 
@@ -125,6 +127,7 @@ export class TaskView extends Component {
           description:description || '',
           requirements:requirements || '',
           label: labelAsArray || [],
+          listeners: listeners || [],
           isCritical: isCritical || false,
           isDone: isDone || false,
           created: created || null,
@@ -234,6 +237,7 @@ export class TaskView extends Component {
           canDeleteTask={ canDeleteTask }
           selectTask={ this.props.selectTask }
           assignTask={ () => this.setState({shouldOpenAssignmentModal: true}) }
+          followTask={ this.props.followTask }
           unassignTask={ this.props.unassignTask }
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }

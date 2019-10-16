@@ -8,6 +8,7 @@ export const Task = new Record({
   type: null,
   projectName: null,
   label: { },
+  listeners: [],
   created: null,
   dueDate: null,
   creator: null,
