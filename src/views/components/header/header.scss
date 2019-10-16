@@ -2,12 +2,14 @@
 
 
 .header {
-  padding: 0 0 3em 0;
-  border-bottom: 1px solid #cccccc54;
-  margin: 0 0.5em 0.5em 0.5em;
-  height: 50px;
-  overflow: hidden;
-  line-height: 44px;
+  .header-wrapper {
+    padding: 0 0 3em 0;
+    border-bottom: 1px solid #cccccc54;
+    margin: 0 0.5em 0.5em 0.5em;
+    height: 50px;
+    overflow: hidden;
+    line-height: 44px;
+  }
 
   .header-side {
     float: left;

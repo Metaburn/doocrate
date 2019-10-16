@@ -127,6 +127,9 @@
       "min-3": "This field must have at least 3 characters"
     }
   },
+  "filter": {
+    "filter": "FILTER"
+  },
   "user": {
     "title": "Let's get you set up",
     "email": "Is this your email address?",

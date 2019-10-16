@@ -1,0 +1,34 @@
+@import 'views/styles/shared';
+
+.filter-icon-wrapper {
+  border: none;
+  display: flex;
+  align-items: center;
+  background: $primary-btn-color;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  padding: 5px 8px;
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  .filter-icon {
+    background-image: url(./filter_icon.png);
+    width: 22px;
+    height: 25px;
+    background-size: cover;
+    display: inline-block;
+    overflow: hidden;
+    border: none;
+
+    &:hover {
+      background-image: url(./filter-icon-selected.png);
+    }
+  }
+
+  .filter-text {
+    font-size: 14px;
+  }
+}

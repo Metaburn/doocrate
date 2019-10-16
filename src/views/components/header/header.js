@@ -14,6 +14,7 @@ import HeaderActions from "../header-actions/header-actions";
 import getRandomImage from "../../../utils/unsplash";
 import {SetUserInfo} from "../set-user-info";
 import {getCookie} from "../../../utils/browser-utils";
+import SideMenu from "../side-menu/side-menu";
 
 class Header extends Component {
   static propTypes = {
@@ -44,7 +45,8 @@ class Header extends Component {
         {
           (t, {i18n}) => (
             <header className='header notranslate'>
-              <div>
+              <SideMenu auth={this.props.auth}/>
+              <div className={'header-wrapper'}>
                 <div>
                   <ToastContainer
                     position='top-center'
@@ -53,6 +55,7 @@ class Header extends Component {
                     newestOnTop={true}
                     pauseOnHover
                   />
+
                   <a href='/'>{this.props.auth? '': 'Doocrate' }<h1 className='header-title'>&nbsp;</h1></a>
 
                   <SetUserInfo

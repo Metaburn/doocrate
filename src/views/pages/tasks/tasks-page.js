@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
-import { notificationActions } from 'src/notification';
 import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
+import { userInterfaceActions } from 'src/user-interface';
+import { notificationActions } from 'src/notification';
 import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
@@ -21,6 +22,7 @@ import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
+import FilterIcon from "src/views/atoms/filter-icon";
 
 export class TasksPage extends Component {
   constructor() {
@@ -70,6 +72,7 @@ export class TasksPage extends Component {
     unloadTasks: PropTypes.func.isRequired,
     unloadComments: PropTypes.func.isRequired,
     updateTask: PropTypes.func.isRequired,
+    setMenuOpen: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
   };
 
@@ -472,6 +475,7 @@ export class TasksPage extends Component {
     return (
       <div>
         <div className="g-col">
+          <FilterIcon onClick={ () => {this.props.setMenuOpen(true)}} />
           {<TaskFilters
             filter={this.props.filterType}
             selectedProject={this.props.selectedProject}
@@ -533,6 +537,7 @@ const mapDispatchToProps = Object.assign(
   notificationActions,
   labelActions,
   authActions,
+  userInterfaceActions
 );
 
 export default connect(
