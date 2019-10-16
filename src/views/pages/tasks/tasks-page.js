@@ -314,7 +314,12 @@ export class TasksPage extends Component {
 
   followTaskToSignedUser = (task) => {
     this.props.followTask(task, this.props.auth);
-    this.props.showSuccess(i18n.t('task.task-is-yours'));
+    this.props.showSuccess(i18n.t('task.follow-task-completed'));
+  }
+
+  unfollowTaskToSignedUser = (task) => {
+    this.props.unfollowTask(task, this.props.auth);
+    this.props.showSuccess(i18n.t('task.unfollow-task-completed'));
   }
 
   unassignTask(task) {
@@ -445,6 +450,7 @@ export class TasksPage extends Component {
         isGuide={this.isGuide()}
         assignTask={this.assignTaskToSignedUser}
         followTask={this.followTaskToSignedUser}
+        unfollowTask={this.unfollowTaskToSignedUser}
         unassignTask={this.unassignTask}
         unloadComments={this.props.unloadComments}
         createComment={this.props.createComment}

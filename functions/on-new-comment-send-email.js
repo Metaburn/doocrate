@@ -86,19 +86,30 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     if (task.assignee && task.assignee.id && task.assignee.id !== task.creator.id) {
       userPromises.push(getUserInfo(task.assignee.id));
     }
+    task.listeners.forEach((listener)=> userPromises.push(getUserInfo(listener)) );
 
     const usersData = await Promise.all(userPromises);
-    const creator = usersData[0].data();
+   /* const creator = usersData[0].data();
     const languageCreator = creator.language || 'he'; //Defaults to hebrew;
     const mailPromises = [];
 
     // Send the emails
     mailPromises.push(mailgun.messages().send(getEmailParams(creator.email, languageCreator)));
-    if (usersData.length > 1) {
+*/
+    const mailPromises = [];
+    let recipientNum = 0;
+    while (recipientNum < usersData.length){
+      const recipient = usersData[recipientNum].data();
+      const languageRecipient = recipient.language || 'he'; //Defaults to hebrew;
+      mailPromises.push(mailgun.messages().send(getEmailParams(recipient.email, languageRecipient)));
+      recipientNum++;
+    }
+   /* if (usersData.length > 1) {
+
       const assignee = usersData[1].data();
       const languageAssignee = assignee.language || 'he'; //Defaults to hebrew;
       mailPromises.push(mailgun.messages().send(getEmailParams(assignee.email, languageAssignee)));
-    }
+    }*/
 
     try {
       await Promise.all(mailPromises);

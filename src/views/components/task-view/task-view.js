@@ -66,6 +66,7 @@ export class TaskView extends Component {
     removeTask: PropTypes.func.isRequired,
     assignTask: PropTypes.func.isRequired,
     followTask: PropTypes.func.isRequired,
+    unfollowTask: PropTypes.func.isRequired,
     unassignTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object,
     selectedProject: PropTypes.object,
@@ -238,6 +239,7 @@ export class TaskView extends Component {
           selectTask={ this.props.selectTask }
           assignTask={ () => this.setState({shouldOpenAssignmentModal: true}) }
           followTask={ this.props.followTask }
+          unfollowTask={ this.props.unfollowTask }
           unassignTask={ this.props.unassignTask }
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
@@ -247,6 +249,7 @@ export class TaskView extends Component {
           isDraft = { this.props.isDraft }
           saveTask = {this.handleSave}
           markAsDoneUndone = {this.handleMarkAsDoneUndone}
+          auth= {this.props.auth}
           />
           <div className='task-view'>
             <form noValidate>

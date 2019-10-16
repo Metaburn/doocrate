@@ -11,6 +11,14 @@ import follow from './follow.png';
 import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
+
+  isUserFollowingTask(task) {
+    const { auth } = this.props;
+    const currentUserId  = auth.id;
+    console.log(task.listeners.includes(currentUserId));
+    return task.listeners.includes(currentUserId);
+  }
+
   render() {
     const { task } = this.props;
 
@@ -20,12 +28,16 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          {// TODO - UNFOLLOW
+          { this.isUserFollowingTask(task) ?
+            <Button className='button button-small action-button' onClick={ () => this.props.unfollowTask(task) }>
+              <span>{t('task.unfollow-task')}</span>
+              <Img className='follow-icon'src={follow} />
+            </Button> :
+            <Button className='button button-small action-button' onClick={ () => this.props.followTask(task) }>
+              <span>{t('task.follow-task')}</span>
+              <Img className='follow-icon'src={follow} />
+            </Button>
           }
-          <Button className='button button-small action-button' onClick={ () => this.props.followTask(task) }>
-            <span>Follow</span>
-            <Img className='follow-icon'src={follow} />
-          </Button>
 
           <Button className='button-no-border close-button' onClick={ () => this.props.selectTask() }>
             <Icon name='close' className='close-icon grow' />
@@ -103,6 +115,7 @@ TaskViewHeader.propTypes = {
   selectTask: PropTypes.func.isRequired,
   assignTask: PropTypes.func.isRequired,
   followTask: PropTypes.func.isRequired,
+  unfollowTask: PropTypes.func.isRequired,
   unassignTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
@@ -113,7 +126,8 @@ TaskViewHeader.propTypes = {
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
   saveTask: PropTypes.func.isRequired,
-  markAsDoneUndone: PropTypes.func.isRequired
+  markAsDoneUndone: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
 

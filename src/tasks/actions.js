@@ -38,20 +38,38 @@ export function createTaskSuccess(task) {
   };
 }
 
-export function followTask(task, assignee) {
+export function  followTask(task, user) {
   const listeners = task.listeners;
 
   // Already exists
-  if(listeners.includes(assignee.id)) {
+  if(listeners.includes(user.id)) {
     return dispatch => { (dispatch(updateTaskError('One cannot listen more then once'))) }
   }
 
-  listeners.push(assignee.id);
+  listeners.push(user.id);
 
   // TODO perhaps we need to set it back to task.listeners
   return dispatch => {
     taskList.update(task.id, {
       listeners: listeners
+    })
+      .catch(error => dispatch(updateTaskError(error)));
+  };
+}
+
+export function  unfollowTask(task, user) {
+  const listeners = task.listeners;
+
+  // Does not exists
+  if(!listeners.includes(user.id)) {
+    return dispatch => { (dispatch(updateTaskError('User already not following the task'))) }
+  }
+
+  const filteredListeners = listeners.filter(listenerId => listenerId !== user.id)
+
+  return dispatch => {
+    taskList.update(task.id, {
+      listeners: filteredListeners
     })
       .catch(error => dispatch(updateTaskError(error)));
   };
