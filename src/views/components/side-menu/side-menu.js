@@ -14,32 +14,25 @@ import {getMenuIsOpen} from "../../../user-interface/selectors";
 
 class SideMenu extends Component {
 
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      menuIsOpen: false
+    }
+  }
+
   static propTypes = {
     auth: PropTypes.object.isRequired,
     setMenuOpen: PropTypes.func.isRequired,
     menuIsOpen: PropTypes.func.isRequired,
   };
 
-  componentWillMount() {
-    this.updateStateByProps(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.updateStateByProps(nextProps);
-  }
-
-  updateStateByProps(props) {
-    if (!props) {
-      return;
-    }
-
-    //if(this.state.menuIsOpen)
-    this.setState({menuIsOpen: props.menuIsOpen});
+  static getDerivedStateFromProps(props, state) {
+     return { menuIsOpen: props.menuIsOpen };
   }
 
   render() {
     return (
-      // TODO add onStateChange={ isMenuOpen } and make sure doesn't infinite loop
       <Menu right isOpen={this.state.menuIsOpen} onStateChange={ (state) => this.props.setMenuOpen(state.isOpen) }>
         <FilterMenu/>
         <Button onClick={() => this.props.setMenuOpen(false)}>CLICK ME</Button>
