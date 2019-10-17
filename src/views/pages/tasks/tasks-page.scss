@@ -1,3 +1,18 @@
+@import 'views/styles/shared';
+
+.task-page-root-wrapper {
+  padding-top: 10px;
+
+  .search-bar {
+    padding-left: 10px;
+    padding-bottom: 15px;
+
+    .search-input {
+      width: 500px;
+    }
+  }
+}
+
 .add-task-button {
   margin: 0.43em;
   display: inline-block;
@@ -45,12 +60,21 @@
   .task-view-wrapper {
     min-width: 50%
   }
+
+  .search-bar {
+    .search-input {
+      width: 100%;
+      min-width: 80px;
+    }
+  }
 }
 
 @media (max-width: 1120px) {
   .task-view-wrapper {
     min-width: 50%;
   }
+
+
 }
 
 @media (max-width: 795px) {

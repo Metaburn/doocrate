@@ -11,6 +11,7 @@ import {buildFilter, taskFilters, tasksActions} from "../../../tasks";
 import {labelActions} from "../../../labels";
 import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";
+import { I18n } from 'react-i18next';
 import i18n from "../../../i18n";
 
 class FilterMenu extends Component {
@@ -21,26 +22,33 @@ class FilterMenu extends Component {
       menuIsOpen: false
     }
   }
+
   render() {
     return (
-      <Fragment>
-        <hr/>
-        <h1>FILTERS</h1>
-        <hr/>
-        {<TaskFilters
-          selectedProject={this.props.selectedProject} //TODO does this work with this.state.selectedProject
+      <I18n ns='translations'>
+        {
+          (t) => (
+            <div className={'filter-menu'}>
+              <hr/>
+              <h1 className={`title title-${t('lang-float')}`}>FILTERS</h1>
+              <hr/>
+              {<TaskFilters
+                selectedProject={this.props.selectedProject} //TODO does this work with this.state.selectedProject
 
-          labels={['Label1','Label2']} //{this.state.labelPool} //TODO - this should be collected on some task selector
+                labels={['Label1', 'Label2']} //{this.state.labelPool} //TODO - this should be collected on some task selector
 
-          onLabelChange={this.onLabelChanged}
-          onQueryChange={this.onQueryChange}
-          query={this.state.query}
-          generateCSV={this.generateCSV.bind(this)}
-          userDefaultProject={this.props.auth.defaultProject}
-          isAdmin={this.isAdmin()}/>
+                onLabelChange={this.onLabelChanged}
+                onQueryChange={this.onQueryChange}
+                query={this.state.query}
+                generateCSV={this.generateCSV.bind(this)}
+                userDefaultProject={this.props.auth.defaultProject}
+                isAdmin={this.isAdmin()}/>
+              }
+            </div>
+          )
         }
-      </Fragment>
-    );
+      </I18n>
+    )
   }
 
   // Check if admin of that project

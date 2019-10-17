@@ -93,7 +93,7 @@
     "click-here": "Click here",
     "no-tasks-placeholder2": "to clean the filters and see all tasks",
     "search-by-tags": "Search task by tags",
-    "search-by-query": "Search by name, description or person's name",
+    "search-by-query": "Search by a task or a person",
     "unnamed-task": "Unnamed Task",
     "creating-new": "Almost there... Please enter all the tasks fields and press Save to finish",
     "created-successfully": "Task created successfully",

@@ -1,0 +1,39 @@
+@import 'views/styles/shared';
+
+.search-bar {
+  display: flex;
+
+  .search-icon {
+    font-size: 2em;
+    padding: 0 5px;
+  }
+
+  .search-input {
+    font-family: $base-font-family;
+    font-size: 16px;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    padding: 20px 5px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    &:hover{
+      border-color: rgba(235, 20, 120, 0.66);
+    }
+
+    &:focus {
+      border-color: #eb1478;
+    }
+  }
+
+  .filter-icon-wrapper {
+    margin: 0 20px;
+  }
+
+  &:hover {
+    color: $primary-color;
+  }
+}

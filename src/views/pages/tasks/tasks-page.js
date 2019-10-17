@@ -21,7 +21,8 @@ import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
-import FilterIcon from "src/views/atoms/filter-icon";
+import { I18n } from 'react-i18next';
+import SearchBar from "../../molecules/search-bar/search-bar";
 
 export class TasksPage extends Component {
   constructor() {
@@ -449,33 +450,43 @@ export class TasksPage extends Component {
     const projectUrl = this.props.match.params.projectUrl;
 
     return (
-      <div>
-        <div className="g-col">
-          <FilterIcon onClick={ () => {this.props.setMenuOpen(true)}} />
-        </div>
+      <I18n ns='translations'>
+        {
+          (t, { i18n }) => (
+          <div className={'task-page-root-wrapper'}>
+            <div className="g-col">
+              <SearchBar
+                query={this.state.query}
+                onQueryChange={this.onQueryChange}
+                setMenuOpen={this.props.setMenuOpen}
+              />
+            </div>
 
-        <div className='task-page-wrapper'>
-          <LoaderUnicorn isShow={ isLoading }/>
-          <div className='task-view-wrapper'>
-            { this.renderTaskView() }
-          </div>
-          <div className='task-list-wrapper'>
-            <TaskList history={this.props.history}
-              tasks={this.state.tasks}
-              selectTask={this.goToTask}
-              createTask={this.createTask}
-              selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
-              selectedProject = { this.props.selectedProject }
-              projectUrl = { projectUrl } //TODO - should be from state
-            />
-          </div>
+            <div className='task-page-wrapper'>
+              <LoaderUnicorn isShow={ isLoading }/>
+              <div className='task-view-wrapper'>
+                { this.renderTaskView() }
+              </div>
+              <div className='task-list-wrapper'>
+                <TaskList history={this.props.history}
+                  tasks={this.state.tasks}
+                  selectTask={this.goToTask}
+                  createTask={this.createTask}
+                  selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
+                  selectedProject = { this.props.selectedProject }
+                  projectUrl = { projectUrl } //TODO - should be from state
+                />
+              </div>
 
-          { (this.state.selectedTask == null) ?
-            <div className='task-view-bottom-loader'>&nbsp;</div>: ''
-          }
-        </div>
-      </div>
-    );
+              { (this.state.selectedTask == null) ?
+                <div className='task-view-bottom-loader'>&nbsp;</div>: ''
+              }
+            </div>
+          </div>
+          )
+        }
+      </I18n>
+    )
   }
 }
 

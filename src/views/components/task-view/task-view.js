@@ -280,7 +280,7 @@ export class TaskView extends Component {
                 {canEditTask ?
                   this.renderSelect('type', t('general.select-default'), this.state.defaultType, t,'0')
                   :
-                  <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
+                  <span className={`task-type task-type-${t('lang-floatlang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
                   }
               </div>
 

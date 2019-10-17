@@ -80,7 +80,7 @@ class TaskFilters extends Component {
         <div className="task-filters">
         <ul className='main-filters'>
           <div className={'categories'}>
-            <h1>Category</h1>
+            <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>Category</h1>
 
             <li><NavLink isActive={(match, location) => {
               return(
@@ -120,7 +120,7 @@ class TaskFilters extends Component {
               search: addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
             </div>
 
-          <h1>Task Type</h1>
+          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>Task Type</h1>
           <div className={'task-type'}>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
               search: addQueryParam('filter=mine')}}>
@@ -131,31 +131,20 @@ class TaskFilters extends Component {
               {t('task.free-tasks')}
               </NavLink></li>
           </div>
+          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+            pathname: defaultTask,
+            search: removeQueryParam(['filter'])
+          }}>{t('task.all-tasks')}</NavLink></li>
 
-                <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
-                  pathname: defaultTask,
-                  search: removeQueryParam(['filter'])
-                }}>{t('task.all-tasks')}</NavLink></li>
-                {downloadCSV}
+          {downloadCSV}
 
-                <li>
-                  <input
-                    className={"search-input"}
-                    placeholder={t('task.search-by-query')}
-                    type={"text"}
-                    value={this.props.query}
-                    onChange={(e) => {
-                      this.handleQueryChange(e.target.value)
-                    }}/>
-                </li>
-
-                <li>
-                  <AutoSuggestedTags
-                    value={this.state.label}
-                    labels={this.props.labels}
-                    placeholder={t('task.search-by-tags')}
-                    onChange={this.handleLabelChange}/>
-                </li>
+          <li>
+            <AutoSuggestedTags
+              value={this.state.label}
+              labels={this.props.labels}
+              placeholder={t('task.search-by-tags')}
+              onChange={this.handleLabelChange}/>
+          </li>
 
         </ul>
         </div>
@@ -168,10 +157,6 @@ class TaskFilters extends Component {
     this.setState({label});
     this.props.onLabelChange(label);
   }
-
-  handleQueryChange = (query) => {
-    this.props.onQueryChange(query);
-  };
 }
 
 
