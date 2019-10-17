@@ -33,6 +33,18 @@ service cloud.firestore {
       && !resource.data.keys().hasAll(['assignee']));
     }
 
+    // Check that user is sending ONLY listeners as an Array and nothing more
+    // This allows an auth user to update only the listeners field
+    function isUserOnlySendingListeners() {
+      return request.resource.data.keys().hasAll(['listeners']) && request.resource.size() == resource.size()
+    }
+
+    // Check that user is sending ONLY listeners as an Array and nothing more
+    // This allows an auth user to update only the listeners field
+    function isUserSendingOnlyListeners() {
+      return request.resource.data.keys().hasAll(['listeners']) && request.resource.size() == resource.size()
+    }
+
     // Allow create for anyone who is auth
     // Allow to update it the user is the project creator
     match /projects/{anyProject} {
@@ -48,7 +60,7 @@ service cloud.firestore {
         // KEEP IT LIKE SO
         allow create: if request.auth != null && (get(/databases/$(database)/documents/projects/$(anyProject)).data.canCreateTask == true);
         // Uncomment the following to allow unassigned task to be assigned by all
-        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners() || isSuperAdmin());
         allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator() || isSuperAdmin());
       }
 
