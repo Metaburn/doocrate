@@ -11,8 +11,6 @@
 
   ul {
     list-style-type: none;
-    display: flex;
-    flex-wrap: wrap;
   }
 
   .react-tagsinput-custom {
@@ -73,32 +71,17 @@
     }
   }
 
-  .main-filters > li {
-    float: right;
-    height: 3em;
+  .categories {
+    display: flex;
+    flex-direction: column;
+  }
 
-    &:not(:first-child) {
-      margin-right: 7px;
-    }
+  .task-type {
+    display: flex;
+    flex-direction: column;
+  }
 
-    &:not(:first-child):before {
-      padding-right: 7px;
-      padding-left: 7px;
-      content: ' ';
-    }
-
-    @media (min-width: 768px)  {
-      &:not(:first-child):before {
-        content: '|';
-        font-weight: 300;
-        padding-right: 14px;
-        padding-left: 14px;
-      }
-
-      &:last-child:before {
-        content: '';
-      }
-    }
+  .main-filters li {
 
     a {
       color: #999;

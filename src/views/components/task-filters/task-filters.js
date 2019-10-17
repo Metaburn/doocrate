@@ -20,13 +20,11 @@ class TaskFilters extends Component {
   }
   static propTypes = {
     onLabelChange: PropTypes.func.isRequired,
-    projectUrl: PropTypes.string.isRequired,
     selectedProject: PropTypes.object,
     labels: PropTypes.object.isRequired,
     generateCSV: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     userDefaultProject: PropTypes.string,
-    filter: PropTypes.object,
     onQueryChange: PropTypes.func.isRequired,
     query: PropTypes.string.isRequired
   };
@@ -70,8 +68,8 @@ class TaskFilters extends Component {
     if (this.props.isAdmin) {
       downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
     }
-    const project = (this.props.projectUrl && this.props.projectUrl !== 'undefined')?
-      this.props.projectUrl : this.props.userDefaultProject;
+    const project = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined')?
+      this.props.selectedProject.url : this.props.userDefaultProject;
 
     const defaultTask = '/' + project + '/task/1';
 
@@ -81,53 +79,58 @@ class TaskFilters extends Component {
       (t) => (
         <div className="task-filters">
         <ul className='main-filters'>
+          <div className={'categories'}>
+            <h1>Category</h1>
 
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '1')
-          }} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
+            <li><NavLink isActive={(match, location) => {
+              return(
+                TaskFilters.getFilterQuery(location) === 'taskType' &&
+                TaskFilters.getFilterText(location) === '1')
+            }} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=taskType&text=1')}}>{this.getTaskTypeFromProject(0)}</NavLink></li>
 
-          <li><NavLink isActive={(match, location) => {
-            return (TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '2')
-          }} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
+            <li><NavLink isActive={(match, location) => {
+              return (TaskFilters.getFilterQuery(location) === 'taskType' &&
+                TaskFilters.getFilterText(location) === '2')
+            }} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=taskType&text=2')}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'taskType' &&
-            TaskFilters.getFilterText(location) === '3'
-            )
-          }} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
+            <li><NavLink isActive={(match, location) => {
+              return(
+                TaskFilters.getFilterQuery(location) === 'taskType' &&
+              TaskFilters.getFilterText(location) === '3'
+              )
+            }} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=taskType&text=3')}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '4'
-            )
-          }} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
+            <li><NavLink isActive={(match, location) => {
+              return(
+                TaskFilters.getFilterQuery(location) === 'taskType' &&
+                TaskFilters.getFilterText(location) === '4'
+              )
+            }} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=taskType&text=4')}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
-          <li><NavLink isActive={(match, location) => {
-            return(
-              TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '5'
-            )
-          }} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
+            <li><NavLink isActive={(match, location) => {
+              return(
+                TaskFilters.getFilterQuery(location) === 'taskType' &&
+                TaskFilters.getFilterText(location) === '5'
+              )
+            }} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
+            </div>
 
-
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=mine')}}>
-            {t('task.my-tasks')}
-            </NavLink></li>
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
-            search: addQueryParam('filter=unassigned')}}>
-            {t('task.free-tasks')}
-            </NavLink></li>
+          <h1>Task Type</h1>
+          <div className={'task-type'}>
+            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=mine')}}>
+              {t('task.my-tasks')}
+              </NavLink></li>
+            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
+              search: addQueryParam('filter=unassigned')}}>
+              {t('task.free-tasks')}
+              </NavLink></li>
+          </div>
 
                 <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
                   pathname: defaultTask,

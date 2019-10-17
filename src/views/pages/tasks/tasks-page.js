@@ -11,7 +11,6 @@ import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
-import TaskFilters from '../../components/task-filters';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
@@ -345,41 +344,6 @@ export class TasksPage extends Component {
     this.props.showSuccess(i18n.t('comments.comment-deleted'));
   };
 
-  generateCSV() {
-    console.log("Generating csv...");
-    if (!this.isAdmin()) return;
-
-    const csv = [["TaskId", "Task Name", "Type", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
-
-    this.state.tasks.forEach((t) => {
-
-      const defaultTypes = [
-        i18n.t('task.types.planning'),
-        i18n.t('task.types.shifts'),
-        i18n.t('task.types.camps'),
-        i18n.t('task.types.art'),
-        i18n.t('task.types.other')
-      ];
-
-      const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
-      let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
-
-      let labels = [];
-      Object.keys(t.label).forEach((label) => {
-        labels.push(label);
-      });
-
-
-      if (t.assignee != null) {
-        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
-      }
-      csv.push(tcsv);
-
-    });
-
-    return csv;
-  }
-
   confirmUnsavedTask() {
     // If task exists and it's invalid
     if (this.state.selectedTask && !this.state.isCurrentTaskValid) {
@@ -488,18 +452,6 @@ export class TasksPage extends Component {
       <div>
         <div className="g-col">
           <FilterIcon onClick={ () => {this.props.setMenuOpen(true)}} />
-          {<TaskFilters
-            filter={this.props.filterType}
-            selectedProject={this.props.selectedProject}
-            projectUrl={projectUrl} //TODO - should be from state
-            labels={this.state.labelPool}
-            onLabelChange={this.onLabelChanged}
-            onQueryChange={this.onQueryChange}
-            query={this.state.query}
-            generateCSV={this.generateCSV.bind(this)}
-            userDefaultProject={ this.props.auth.defaultProject }
-            isAdmin={this.isAdmin()}/>
-          }
         </div>
 
         <div className='task-page-wrapper'>
