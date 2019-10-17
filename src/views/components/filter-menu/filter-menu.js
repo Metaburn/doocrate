@@ -1,10 +1,9 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import TaskFilters from '../../components/task-filters';
 
 import './filter-menu.css';
 import PropTypes from "prop-types";
-import {createSelector} from "reselect";
-import {authActions, getAuth} from "../../../auth";
+import {authActions} from "../../../auth";
 import {connect} from "react-redux";
 import {userInterfaceActions} from "../../../user-interface";
 import {buildFilter, taskFilters, tasksActions} from "../../../tasks";

@@ -9,7 +9,6 @@ import {userInterfaceActions} from "../../../user-interface";
 import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
-import Button from "../button/button";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
 import throttle from 'lodash.throttle';
 
