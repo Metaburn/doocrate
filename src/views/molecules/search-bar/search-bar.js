@@ -19,7 +19,7 @@ class SearchBar extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className={'search-bar'}>
+            <div className={`search-bar flex-${t('lang-float')}`}>
               <Icon className={'search-icon'} name={'search'}/>
 
               <input
@@ -31,7 +31,7 @@ class SearchBar extends Component {
                   this.props.onQueryChange(e.target.value)
                 }}/>
 
-              <FilterIcon onClick={() => {
+              <FilterIcon isActive={this.props.isFilterActive} onClick={() => {
                 this.props.setMenuOpen(true)
               }}/>
             </div>
@@ -44,7 +44,8 @@ class SearchBar extends Component {
 SearchBar.propTypes = {
   query: PropTypes.string,
   onQueryChange: PropTypes.func,
-  setMenuOpen: PropTypes.func
+  setMenuOpen: PropTypes.func,
+  isFilterActive: PropTypes.bool
 };
 
 export default SearchBar;

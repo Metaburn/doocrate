@@ -1,0 +1,14 @@
+@import 'views/styles/shared';
+
+.selected-filters-labels-wrapper {
+  display: flex;
+  margin-bottom: 15px;
+
+  .flex-left {
+    padding-left: 10px;
+  }
+
+  .flex-right {
+    padding-right: 10px;
+  }
+}

@@ -23,6 +23,9 @@ import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { I18n } from 'react-i18next';
 import SearchBar from "../../molecules/search-bar/search-bar";
+import SelectedFiltersLabels from "../../molecules/selected-filters-labels/selected-filters-labels";
+import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
+
 
 export class TasksPage extends Component {
   constructor() {
@@ -208,21 +211,6 @@ export class TasksPage extends Component {
     }
 
     // Sync url toolbar and the query parameter
-    try {
-      // To support unicode we need to decodeURIComponent
-      const query = getUrlSearchParams()['query'];
-      const isQueryValid = query && typeof query !== 'undefined';
-      const urlFilterQuery = isQueryValid? (decodeURIComponent(query)): null;
-      if (urlFilterQuery && (this.state.query !== urlFilterQuery)) {
-        // TODO - unset the following line prevent users from entering special chars
-        // Such as 🙏 or a simple space -> ' ' char
-        //this.setState({query: decodeURIComponent(urlFilterQuery)});
-      }
-      }catch(error) {
-      // We might encounter Malformed strings - this prevents entering a loop
-      // instead we silently ignore that
-      }
-
     if (prevState.query !== this.state.query) {
       tasks = this.filterTaskFromQuery(tasks);
       this.setState({tasks});
@@ -231,10 +219,6 @@ export class TasksPage extends Component {
 
   componentWillUnmount() {
     this.props.unloadTasks();
-  }
-
-  filterTasks() {
-
   }
 
   onNewTaskAdded(task) {
@@ -291,21 +275,6 @@ export class TasksPage extends Component {
   }
 
   assignTaskToSignedUser(task) {
-    //const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id === this.props.auth.id});
-
-    // TODO: Move to a better place
-    // if(myAssignedTasks.size >= 5) {
-    //   this.props.showError(i18n.t('task.cant-take-messages-limit'));
-    //   return;
-    // }
-
-    // Uncomment to restrict task assign on the client side only
-
-    //if(!this.isAdmin() && !this.isGuide()) {
-    //  this.props.showError(i18n.t('task.cant-take-messages'));
-    //  return;
-    //}
-
     if (!this.props.selectedProject.canAssignTask) {
       this.props.showError(i18n.t('task.user-cannot-assign'));
       return;
@@ -318,12 +287,12 @@ export class TasksPage extends Component {
   followTaskToSignedUser = (task) => {
     this.props.followTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.follow-task-completed'));
-  }
+  };
 
   unfollowTaskToSignedUser = (task) => {
     this.props.unfollowTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.unfollow-task-completed'));
-  }
+  };
 
   unassignTask(task) {
     const isCreator = task.creator && task.creator.id === this.props.auth.id;
@@ -442,12 +411,48 @@ export class TasksPage extends Component {
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');
   }
 
+  getTaskTypesFromProject = (index) => {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return '';
+    }else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  };
+
+  getSelectedFilters = () => {
+    const params = getUrlSearchParams();
+    const filter = params['filter'];
+    const taskType = params['text'];
+
+    const results = [];
+    if(filter === 'taskType' && taskType) {
+      results.push(this.getTaskTypesFromProject(taskType - 1));
+    }
+    if(filter === 'mine') {
+      results.push(i18n.t('task.my-tasks'));
+    }
+    if(filter === 'unassigned') {
+      results.push(i18n.t('task.free-tasks'));
+    }
+    return results;
+  };
+
+  removeQueryByLabel = () => {
+    removeQueryParamAndGo(this.props.history, ['filter','text']);
+  };
+
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
     const isLoading = (!this.state.tasks || (this.props.tasks.size <= 0 && !isNewTask));
     const projectUrl = this.props.match.params.projectUrl;
+
+    const selectedFilters = this.getSelectedFilters();
 
     return (
       <I18n ns='translations'>
@@ -459,7 +464,11 @@ export class TasksPage extends Component {
                 query={this.state.query}
                 onQueryChange={this.onQueryChange}
                 setMenuOpen={this.props.setMenuOpen}
+                isFilterActive={ selectedFilters.length > 0}
               />
+              <SelectedFiltersLabels
+                selectedFilters={ selectedFilters }
+                onClearFilter={this.removeQueryByLabel} />
             </div>
 
             <div className='task-page-wrapper'>

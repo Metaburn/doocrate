@@ -140,6 +140,14 @@ input[type='button']
   align-self: end;
 }
 
+.flex-left{
+  flex-direction: row;
+}
+
+.flex-right{
+  flex-direction: row-reverse;
+}
+
 .button-as-link {
   font-size: $base-font-size !important;
   text-decoration: underline;

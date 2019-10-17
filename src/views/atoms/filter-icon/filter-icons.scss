@@ -28,7 +28,15 @@
     }
   }
 
+  .filter-icon.active {
+    background-image: url(./filter-icon-selected.png);
+  }
+
   .filter-text {
     font-size: 14px;
+  }
+
+  .filter-text.active {
+    color: $primary-color;
   }
 }

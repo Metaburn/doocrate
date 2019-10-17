@@ -53,7 +53,7 @@ class FilterMenu extends Component {
 
   // Check if admin of that project
   isAdmin = () => {
-    const projectUrl = this.props.selectedProject.projectUrl;
+    const projectUrl = (this.props.selectedProject? this.props.selectedProject.projectUrl : null);
     return this.props.auth.role === 'admin' &&
       this.props.auth.adminProjects.includes(projectUrl);
   };
