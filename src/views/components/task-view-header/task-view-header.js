@@ -12,13 +12,6 @@ import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
 
-  isUserFollowingTask(task) {
-    const { auth } = this.props;
-    const currentUserId  = auth.id;
-    console.log(task.listeners.includes(currentUserId));
-    return task.listeners.includes(currentUserId);
-  }
-
   render() {
     const { task } = this.props;
 
@@ -28,14 +21,19 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          { this.isUserFollowingTask(task) ?
-            <Button className='button button-small action-button' onClick={ () => this.props.unfollowTask(task) }>
-              <span>{t('task.unfollow-task')}</span>
-              <Img className='follow-icon'src={follow} />
-            </Button> :
-            <Button className='button button-small action-button' onClick={ () => this.props.followTask(task) }>
+          { this.props.showButtonAsFollow ?
+            <Button className='button button-small action-button'
+                    onClick={ () => this.props.followTask(task) }
+                    alt={t('follow-task-alt')}>
               <span>{t('task.follow-task')}</span>
-              <Img className='follow-icon'src={follow} />
+              <Img className='follow-icon' src={follow} />
+            </Button>
+            :
+            <Button className='button button-small action-button'
+                    onClick={ () => this.props.unfollowTask(task) }
+                    alt={t('follow-task-alt')}>
+              <span>{t('task.unfollow-task')}</span>
+              <Img className='follow-icon' src={follow} />
             </Button>
           }
 
@@ -48,44 +46,40 @@ export class TaskViewHeader extends Component {
             onClick={()=>this.props.assignTask(task)}
             type='button'>{t('task.take-responsibility')}</Button> :
 
-
             <div className='avatar-container'>
-
               <UserInfoAvatar
                 uniqueId={'task-header-assignee'}
                 photoURL={task.assignee.photoURL}
                 userId={task.assignee.id}
                 alt={task.assignee.name}/>
-
               <span>{task.assignee.name}</span>
             </div>}
 
-          { this.props.showUnassignButton && task.assignee ?
+          { this.props.showUnassignButton && task.assignee &&
             <Button
             className='action-button button-grey'
             onClick={()=> { this.props.unassignTask(task)}}
-            type='button'>{t('task.remove-responsibility')}</Button> : ''
+            type='button'>{t('task.remove-responsibility')}</Button>
           }
 
-          { this.props.showSaveButton ?
+          { this.props.showSaveButton &&
           <Button
             className='button button-small action-button assign_task'
             onClick={()=> { this.props.saveTask() }}
-            type='button'>{t('task.save')}</Button> : ''
+            type='button'>{t('task.save')}</Button>
           }
 
-          { this.props.showMarkAsDoneButton ?
+          { this.props.showMarkAsDoneButton &&
             <Button
               className='button button-small action-button'
               onClick={()=> { this.props.markAsDoneUndone() }}
-              type='button'>{ task.isDone? t('task.mark-uncomplete') : t('task.mark-complete')}</Button> : ''
+              type='button'>{ task.isDone? t('task.mark-uncomplete') : t('task.mark-complete')}</Button>
           }
 
-          { this.props.showDeleteButton ?
-
+          { this.props.showDeleteButton &&
             <Button
               className='button button-small action-button'
-              onClick={()=> {
+              onClick={() => {
                 if (!window.confirm(t('task.sure-delete'))) {
                   return;
                 }
@@ -93,15 +87,15 @@ export class TaskViewHeader extends Component {
                 this.props.selectTask();
               }}
               type='button'>
-              <Icon name='delete' className='header-icon grow delete' />
-            </Button> : '' }
+              <Icon name='delete' className='header-icon grow delete'/>
+            </Button>
+          }
 
-          { task && task.isCritical ?
+          { task && task.isCritical &&
             <span>
               <Icon name='warning' className='header-icon grow' />
               {t('task.critical')}
             </span>
-          : ''
           }
 
         </div>
@@ -123,6 +117,7 @@ TaskViewHeader.propTypes = {
   showUnassignButton: PropTypes.bool.isRequired,
   showSaveButton: PropTypes.bool.isRequired,
   showMarkAsDoneButton: PropTypes.bool.isRequired,
+  showButtonAsFollow: PropTypes.bool.isRequired,
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
   saveTask: PropTypes.func.isRequired,

@@ -228,6 +228,8 @@ export class TaskView extends Component {
       (isTaskEmpty || isTaskCreatedInTheLastDay) &&
       canDeleteTask) || (this.props.isAdmin && !this.props.isDraft);
 
+    const showButtonAsFollow = !task.listeners.includes(this.props.auth.id);
+
     return (
       <I18n ns='translations'>
       {
@@ -244,6 +246,7 @@ export class TaskView extends Component {
           removeTask={ this.props.removeTask }
           showUnassignButton = { showUnassignButton }
           showSaveButton = { showSaveButton }
+          showButtonAsFollow = { showButtonAsFollow }
           showDeleteButton = { showDeleteButton }
           showMarkAsDoneButton = { showMarkAsDoneButton }
           isDraft = { this.props.isDraft }
