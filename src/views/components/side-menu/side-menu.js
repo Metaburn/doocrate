@@ -75,7 +75,6 @@ class SideMenu extends Component {
             onStateChange={ (state) => this.handleChange(state) }
       width={ this.state.isMobile? '80%': '300px'}>
         <FilterMenu/>
-        <Button onClick={() => this.props.setMenuOpen(false)}>CLICK ME</Button>
       </Menu>
     );
   }
