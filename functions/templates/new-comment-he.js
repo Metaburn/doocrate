@@ -360,6 +360,7 @@ exports.newCommentHe = (args) => {
             <tr>
               <td align="center">
                 <p>
+                  <a href="${ link }">לחץ כאן למעבר למשימה! &raquo;</a>	להסרת התראות על משימה זו - הכנס למשימה ולחץ על הסר מעקב</p>
                   <a href="emailto:support@doocrate.com"><unsubscribe>הסרה מהתראות - שלח לנו אימייל support@doocrate.com</unsubscribe></a>
                 </p>
               </td>

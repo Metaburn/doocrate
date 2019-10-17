@@ -38,24 +38,80 @@ export function createTaskSuccess(task) {
   };
 }
 
+export function followTask(task, user) {
+  let listeners = task.listeners;
+
+  // Already exists
+  if(listeners.includes(user.id)) {
+    return dispatch => { (dispatch(updateTaskError('One cannot listen more then once'))) }
+  }
+
+  listeners = addUserToListeners(task, user);
+
+  // TODO perhaps we need to set it back to task.listeners
+  return dispatch => {
+    taskList.update(task.id, {
+      listeners: listeners
+    })
+      .catch(error => dispatch(updateTaskError(error)));
+  };
+}
+
+function addUserToListeners(task, user) {
+  const listeners = task.listeners;
+
+  if(!listeners.includes(user.id)) {
+    listeners.push(user.id);
+  }
+  return listeners
+}
+
+function removeUserFromListeners(task, user) {
+  return task.listeners.filter(listenerId => listenerId !== user.id);
+}
+
+export function unfollowTask(task, user) {
+  const listeners = task.listeners;
+
+  // Does not exists
+  if(!listeners.includes(user.id)) {
+    return dispatch => { (dispatch(updateTaskError('User already not following the task'))) }
+  }
+
+  const filteredListeners = removeUserFromListeners(task, user);
+
+  return dispatch => {
+    taskList.update(task.id, {
+      listeners: filteredListeners
+    })
+      .catch(error => dispatch(updateTaskError(error)));
+  };
+}
+
 export function assignTask(task, assignee) {
   return dispatch => {
+    // On assign we also add assignee to listeners
+    const listeners = addUserToListeners(task, assignee);
     taskList.update(task.id, {
       assignee: {
         email: assignee.email,
         id: assignee.id,
         name: assignee.name,
         photoURL: assignee.photoURL
-      }
+      },
+      listeners: listeners
     })
     .catch(error => dispatch(updateTaskError(error)));
   };
 }
 
 export function unassignTask(task) {
+  // On unassign we also remove listening
+  const filteredListeners = removeUserFromListeners(task, task.assignee);
   return dispatch => {
     taskList.update(task.id, {
-      assignee: firebase.firestore.FieldValue.delete()
+      assignee: firebase.firestore.FieldValue.delete(),
+      listeners: filteredListeners
     })
     .catch(error => dispatch(updateTaskError(error)));
   };
