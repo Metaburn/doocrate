@@ -430,28 +430,28 @@ export class TasksPage extends Component {
 
     const results = [];
     if(filter === 'taskType' && taskType) {
-      results.push(this.getTaskTypesFromProject(taskType - 1));
+      results.push({type:'filter', value: this.getTaskTypesFromProject(taskType - 1)});
     }
     if(filter === 'mine') {
-      results.push(i18n.t('task.my-tasks'));
+      results.push({type:'filter', value: i18n.t('task.my-tasks')});
     }
     if(filter === 'unassigned') {
-      results.push(i18n.t('task.free-tasks'));
+      results.push({type:'filter', value: i18n.t('task.free-tasks')});
     }
     if(labels) {
       if(typeof(labels) === 'string') {
-        results.push(labels);
+        results.push({type:'labels', value: labels});
       }else {
         labels.forEach((label) => {
-          results.push(label);
+          results.push({type:'labels', value: label});
         });
       }
     }
     return results;
   };
 
-  removeQueryByLabel = (value) => {
-    removeQueryParamAndGo(this.props.history, ['filter','text','labels'], value);
+  removeQueryByLabel = (type, value) => {
+    removeQueryParamAndGo(this.props.history, [type], value);
   };
 
   render() {

@@ -4,6 +4,9 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
   return locationSearch.substr(1).split('&').reduce(function (q, query) {
     const chunks = query.split('=');
     const key = chunks[0];
+    if(!chunks[1]) {
+      return {};
+    }
     const values = chunks[1].split(','); //We want to support value=123,555
     const value = (values.length > 1 ) ? values : values[0];
     return (q[key] = value, q);
@@ -14,6 +17,9 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
 // Takes the { param=value, param2=value} and export it as a string to be used as a query param
 export function urlSearchParamsToString(paramObject) {
   let result = '';
+  if(!paramObject) {
+    return '';
+  }
   Object.keys(paramObject).forEach(e => {
     if (e == null || e === '') return;
     result+=`${e}=${paramObject[e]}&`;
@@ -35,7 +41,7 @@ export function addQueryParam(newQueryParams) {
   let currentSearchParams = getUrlSearchParams();
   const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
   Object.keys(newQueryParamsObj).forEach(param => {
-    if (param == null || param === '') return;
+    if (param == null || param === '' || !currentSearchParams) return;
     currentSearchParams[param] = newQueryParamsObj[param];
   });
   return urlSearchParamsToString(currentSearchParams);
@@ -48,6 +54,7 @@ export function addQueryParam(newQueryParams) {
 */
 export function removeQueryParam(paramsToRemove, value) {
   let currentQueryParams = getUrlSearchParams();
+  if(!currentQueryParams) { return {}}
   paramsToRemove.forEach( param => {
     // Handle case of label=['label1','label2']
     if(Array.isArray(currentQueryParams[param]) && value) {

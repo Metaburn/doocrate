@@ -26,8 +26,8 @@ class TaskList extends Component {
   }
 
   clearSearchQuery = () => {
-    this.props.history.push('');
-  }
+    this.props.history.push({search: ''});
+  };
 
   render() {
     const { tasks, selectedTaskId, selectTask, selectedProject, labels, createTask, projectUrl } = this.props;

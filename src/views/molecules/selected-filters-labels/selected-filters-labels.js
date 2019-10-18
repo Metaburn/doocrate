@@ -18,12 +18,13 @@ class SelectedFiltersLabels extends Component {
         {
           (t, {i18n}) => (
             <div className={'selected-filters-labels-wrapper'}>
-              <div className={`flex-${t('lang-float')}`}>
+              <div className={`selected-filters-labels flex-${t('lang-float')}`}>
                 {
                   this.props.selectedFilters.map(filter => {
                     return (
-                      <Label key={filter}
-                             label={filter}
+                      <Label key={filter.value}
+                             label={filter.value}
+                             extra={filter.type}
                              backgroundColor={'#eb1478'}
                              onClear={this.props.onClearFilter}/>
                     )

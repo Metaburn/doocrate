@@ -25,7 +25,7 @@ class Label extends React.Component {
 
   renderCloseBtn = () => {
     return (
-      <button className={'close-button'} onClick={()=> { this.props.onClear(this.props.label)}}>
+      <button className={'close-button'} onClick={()=> { this.props.onClear(this.props.extra, this.props.label)}}>
         <Icon name={'close'} alt={'Clear'}/>
       </button>
     )
@@ -36,6 +36,7 @@ Label.propTypes = {
   onClear: PropTypes.func,
   label: PropTypes.string,
   backgroundColor: PropTypes.string,
+  extra: PropTypes.string,
 };
 
 export default Label;
