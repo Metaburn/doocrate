@@ -16,7 +16,8 @@ import {
 } from './action-types';
 
 
-export function createTask(task, cb = (t)=>{}) {
+export function createTask(task, user, cb = (t)=>{}) {
+  task.listeners = addUserToListeners(task, user);
   return dispatch => {
     return taskList.push(task).then(cb)
       .catch(error => dispatch(createTaskError(error)));
@@ -31,6 +32,8 @@ export function createTaskError(error) {
   };
 }
 
+// Actually the load task is called empty
+// Then for each task this function is called
 export function createTaskSuccess(task) {
   return {
     type: CREATE_TASK_SUCCESS,
@@ -58,7 +61,7 @@ export function followTask(task, user) {
 }
 
 function addUserToListeners(task, user) {
-  const listeners = task.listeners;
+  const listeners = task.listeners || [];
 
   if(!listeners.includes(user.id)) {
     listeners.push(user.id);
