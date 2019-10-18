@@ -4,7 +4,8 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
   return locationSearch.substr(1).split('&').reduce(function (q, query) {
     const chunks = query.split('=');
     const key = chunks[0];
-    const value = chunks[1];
+    const values = chunks[1].split(','); //We want to support value=123,555
+    const value = (values.length > 1 ) ? values : values[0];
     return (q[key] = value, q);
   }, {});
 }
@@ -43,13 +44,19 @@ export function addQueryParam(newQueryParams) {
 /*
  This function handles replacing / concatting params to location
  Can receive complete for example will remove complete
+ value - Optional value if it's a multi value like labels=label1,label2 then value=label2 can remove that label
 */
-export function removeQueryParam(paramsToRemove) {
-  let currentSearchParams = getUrlSearchParams();
+export function removeQueryParam(paramsToRemove, value) {
+  let currentQueryParams = getUrlSearchParams();
   paramsToRemove.forEach( param => {
-    delete currentSearchParams[param];
+    // Handle case of label=['label1','label2']
+    if(Array.isArray(currentQueryParams[param]) && value) {
+      currentQueryParams[param] = currentQueryParams[param].filter((val) => { return val !== value });
+    }else {
+      delete currentQueryParams[param];
+    }
   });
-  return urlSearchParamsToString(currentSearchParams);
+  return urlSearchParamsToString(currentQueryParams);
 }
 
 // Get a given cookie from document.cookie

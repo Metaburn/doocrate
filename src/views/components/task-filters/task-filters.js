@@ -18,16 +18,6 @@ class TaskFilters extends Component {
     this.handleLabelChange = this.handleLabelChange.bind(this);
     this.getTaskTypeFromProject = this.getTaskTypeFromProject.bind(this);
   }
-  static propTypes = {
-    onLabelChange: PropTypes.func.isRequired,
-    selectedProject: PropTypes.object,
-    labels: PropTypes.object.isRequired,
-    generateCSV: PropTypes.func.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    userDefaultProject: PropTypes.string,
-    onQueryChange: PropTypes.func.isRequired,
-    query: PropTypes.string.isRequired
-  };
 
   // Since react router doesn't support query we read it manually from the url
   static getFilterQuery() {
@@ -159,6 +149,16 @@ class TaskFilters extends Component {
     this.props.onLabelChange(label);
   }
 }
+
+TaskFilters.propTypes = {
+  onLabelChange: PropTypes.func.isRequired,
+  selectedProject: PropTypes.object,
+  labels: PropTypes.object.isRequired,
+  generateCSV: PropTypes.func.isRequired,
+  isAdmin: PropTypes.bool.isRequired,
+  userDefaultProject: PropTypes.string,
+  query: PropTypes.string.isRequired
+};
 
 
 export default TaskFilters;

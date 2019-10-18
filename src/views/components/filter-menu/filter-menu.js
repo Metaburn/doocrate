@@ -3,6 +3,7 @@ import TaskFilters from '../../components/task-filters';
 
 import './filter-menu.css';
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 import {authActions} from "../../../auth";
 import {connect} from "react-redux";
 import {userInterfaceActions} from "../../../user-interface";
@@ -12,6 +13,7 @@ import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";
 import { I18n } from 'react-i18next';
 import i18n from "../../../i18n";
+import {addQueryParam} from "../../../utils/browser-utils";
 
 class FilterMenu extends Component {
 
@@ -37,7 +39,6 @@ class FilterMenu extends Component {
                 labels={['Label1', 'Label2']} //{this.state.labelPool} //TODO - this should be collected on some task selector
 
                 onLabelChange={this.onLabelChanged}
-                onQueryChange={this.onQueryChange}
                 query={this.state.query}
                 generateCSV={this.generateCSV.bind(this)}
                 userDefaultProject={this.props.auth.defaultProject}
@@ -74,6 +75,7 @@ class FilterMenu extends Component {
         i18n.t('task.types.other')
       ];
 
+
       const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
       let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
 
@@ -92,6 +94,12 @@ class FilterMenu extends Component {
 
     return csv;
   };
+
+  onLabelChanged = (label) => {
+    this.props.history.push({
+      search: addQueryParam('labels=' + label)
+    });
+  }
 }
 
 FilterMenu.propTypes = {
@@ -123,7 +131,4 @@ const mapDispatchToProps = Object.assign(
   userInterfaceActions
 );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FilterMenu);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FilterMenu));

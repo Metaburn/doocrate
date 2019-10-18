@@ -25,8 +25,8 @@ class Label extends React.Component {
 
   renderCloseBtn = () => {
     return (
-      <button className={'close-button'} onClick={this.props.onClear}>
-        <Icon name={'close'} alt={'Clear'} onClick={this.props.onClear}/>
+      <button className={'close-button'} onClick={()=> { this.props.onClear(this.props.label)}}>
+        <Icon name={'close'} alt={'Clear'}/>
       </button>
     )
   };

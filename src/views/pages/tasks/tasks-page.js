@@ -36,7 +36,6 @@ export class TasksPage extends Component {
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
     this.unassignTask = this.unassignTask.bind(this);
     this.goToTask = this.goToTask.bind(this);
-    this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
     this.createTask = this.createTask.bind(this);
@@ -159,6 +158,7 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
     const filterTextType = params['text'];
+    const filterByLabels = params['labels'];
 
     const completeFilterValue = params['complete'];
     const labelPool = {};
@@ -174,23 +174,24 @@ export class TasksPage extends Component {
       currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
     }
 
+    // TODO - is this needed here? seems too costly to iterate all tasks
     nextProps.tasks.forEach( (t)=> {
       Object.keys(t.label).forEach((l) => {
         labelPool[l] = true;
       })
     });
 
-    currentTasks = this.filterTaskFromLabel(currentTasks);
+    currentTasks = this.filterTaskFromLabel(currentTasks, filterByLabels);
     currentTasks = this.filterTaskFromQuery(currentTasks);
 
     this.setState({tasks: currentTasks, labelPool});
   }
 
-  filterTaskFromLabel(tasks) {
+  filterTaskFromLabel(tasks, labels) {
     let currentTasks = tasks;
-    if ( this.state.labels != null && this.state.labels.length > 0) {
+    if ( labels != null && labels.length > 0) {
       const filter = this.props.buildFilter(this.props.auth, "label", this.state.labels);
-      currentTasks = this.props.filters["label"](currentTasks, filter, this.state.lables);
+      currentTasks = this.props.filters["label"](currentTasks, filter, labels);
     }
 
     return currentTasks;
@@ -205,10 +206,12 @@ export class TasksPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let {tasks} = this.props;
-    if (prevState.labels !== this.state.labels) {
+    // TODO - check that
+    /*const params = getUrlSearchParams(this.props.location.search);
+    if (prevState.labels !== params['labels']) {
       tasks = this.filterTaskFromLabel(tasks);
       this.setState({tasks});
-    }
+    }*/
 
     // Sync url toolbar and the query parameter
     if (prevState.query !== this.state.query) {
@@ -341,10 +344,6 @@ export class TasksPage extends Component {
     this.props.history.push(taskParameter);
   }
 
-  onLabelChanged(labels) {
-    this.setState({labels});
-  }
-
   onQueryChange = (query) => {
     this.setState({query});
     this.props.history.push({
@@ -427,6 +426,7 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams();
     const filter = params['filter'];
     const taskType = params['text'];
+    const labels = params['labels'];
 
     const results = [];
     if(filter === 'taskType' && taskType) {
@@ -438,11 +438,20 @@ export class TasksPage extends Component {
     if(filter === 'unassigned') {
       results.push(i18n.t('task.free-tasks'));
     }
+    if(labels) {
+      if(typeof(labels) === 'string') {
+        results.push(labels);
+      }else {
+        labels.forEach((label) => {
+          results.push(label);
+        });
+      }
+    }
     return results;
   };
 
-  removeQueryByLabel = () => {
-    removeQueryParamAndGo(this.props.history, ['filter','text']);
+  removeQueryByLabel = (value) => {
+    removeQueryParamAndGo(this.props.history, ['filter','text','labels'], value);
   };
 
   render() {
