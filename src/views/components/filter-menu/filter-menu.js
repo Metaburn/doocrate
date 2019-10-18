@@ -29,7 +29,7 @@ class FilterMenu extends Component {
           (t) => (
             <div className={'filter-menu'}>
               <hr/>
-              <h1 className={`title title-${t('lang-float')}`}>FILTERS</h1>
+              <h1 className={`title title-${t('lang-float')}`}>{t('filter.header')}</h1>
               <hr/>
               {<TaskFilters
                 selectedProject={this.props.selectedProject} //TODO does this work with this.state.selectedProject

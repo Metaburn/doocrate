@@ -133,6 +133,10 @@
     }
   },
   "filter": {
+    "header": "FILTERS",
+    "category": "Category",
+    "task-type": "Task Type",
+    "by-tag": "Filter by label",
     "filter": "FILTER"
   },
   "user": {

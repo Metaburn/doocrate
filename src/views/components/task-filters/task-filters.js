@@ -80,7 +80,7 @@ class TaskFilters extends Component {
         <div className="task-filters">
         <ul className='main-filters'>
           <div className={'categories'}>
-            <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>Category</h1>
+            <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.category')}</h1>
 
             <li><NavLink isActive={(match, location) => {
               return(
@@ -120,7 +120,7 @@ class TaskFilters extends Component {
               search: addQueryParam('filter=taskType&text=5')}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
             </div>
 
-          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>Task Type</h1>
+          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.task-type')}</h1>
           <div className={'task-type'}>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
               search: addQueryParam('filter=mine')}}>
@@ -130,14 +130,15 @@ class TaskFilters extends Component {
               search: addQueryParam('filter=unassigned')}}>
               {t('task.free-tasks')}
               </NavLink></li>
+            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+              pathname: defaultTask,
+              search: removeQueryParam(['filter'])
+            }}>{t('task.all-tasks')}</NavLink></li>
           </div>
-          <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
-            pathname: defaultTask,
-            search: removeQueryParam(['filter'])
-          }}>{t('task.all-tasks')}</NavLink></li>
 
           {downloadCSV}
 
+          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.by-tag')}</h1>
           <li>
             <AutoSuggestedTags
               value={this.state.label}
