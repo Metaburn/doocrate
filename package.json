@@ -52,7 +52,6 @@
     "i18next-xhr-backend": "1.5.0",
     "immutable": "3.8.2",
     "lodash": "4.17.15",
-    "lodash.throttle": "4.1.1",
     "moment-timezone": "0.5.13",
     "prop-types": "15.6.2",
     "react": "16",
