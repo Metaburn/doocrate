@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import {authActions} from "../../../auth";
 import {connect} from "react-redux";
 import {userInterfaceActions} from "../../../user-interface";
-import {buildFilter, taskFilters, tasksActions} from "../../../tasks";
+import {buildFilter, getLabelsPool, taskFilters, tasksActions} from "../../../tasks";
 import {labelActions} from "../../../labels";
 import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";
@@ -20,7 +20,7 @@ class FilterMenu extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      menuIsOpen: false
+      menuIsOpen: false,
     }
   }
 
@@ -33,9 +33,7 @@ class FilterMenu extends Component {
               <h1 className={`title title-${t('lang-float')}`}>{t('filter.header')}</h1>
               {<TaskFilters
                 selectedProject={this.props.selectedProject} //TODO does this work with this.state.selectedProject
-
-                labels={['Label1', 'Label2']} //{this.state.labelPool} //TODO - this should be collected on some task selector
-
+                labelsPool={this.props.labelsPool || []}
                 onLabelChange={this.onLabelChanged}
                 query={this.state.query}
                 generateCSV={this.generateCSV.bind(this)}
@@ -105,6 +103,7 @@ FilterMenu.propTypes = {
   unloadComments: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   setMenuOpen: PropTypes.func.isRequired,
+  labelsPool: PropTypes.object,
   auth: PropTypes.object.isRequired
 };
 
@@ -113,6 +112,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
+    labelsPool: state.tasks.labelsPool,
     labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     buildFilter: buildFilter

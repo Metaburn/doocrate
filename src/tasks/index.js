@@ -5,5 +5,5 @@ export { tasksActions };
 export * from './action-types';
 export * from './filter-types';
 export { tasksReducer } from './reducer';
-export { buildFilter, taskFilters } from './selectors';
+export { buildFilter, taskFilters, getLabelsPool } from './selectors';
 export { Task } from './task';

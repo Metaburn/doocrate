@@ -3,7 +3,7 @@
 
 .task-filters {
   @include clearfix;
-  padding: 0 60px;
+  padding: 0 30px;
   font-size: rem(16px);
   line-height: 24px;
   display: inline-block;
@@ -13,9 +13,8 @@
     list-style-type: none;
   }
 
-
   .react-tagsinput-custom {
-    position:absolute;
+    position: absolute;
     z-index: 2;
     border-radius: 3px;
     overflow: hidden;
@@ -40,7 +39,6 @@
       border: 1px solid $primary-color;
     }
   }
-
 
   .main-filters {
     .react-tagsinput-custom {
@@ -99,9 +97,18 @@
     }
 
   }
+}
 
-  @media (max-width: 480px)  {
+@media (max-width: 768px) {
+  .task-filters {
     padding: 0 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .task-filters {
+    padding: 0 1em;
+
     .filter-heading-left {
       padding-left: 4px;
     }
@@ -110,6 +117,5 @@
       padding-right: 4px;
     }
   }
-
 
 }

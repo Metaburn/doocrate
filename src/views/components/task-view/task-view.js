@@ -228,7 +228,7 @@ export class TaskView extends Component {
       (isTaskEmpty || isTaskCreatedInTheLastDay) &&
       canDeleteTask) || (this.props.isAdmin && !this.props.isDraft);
 
-    const showButtonAsFollow = !task.listeners.includes(this.props.auth.id);
+    const showButtonAsFollow = task.listeners && !task.listeners.includes(this.props.auth.id);
 
     return (
       <I18n ns='translations'>

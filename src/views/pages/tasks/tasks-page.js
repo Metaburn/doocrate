@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
-import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
+import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 
 import { commentsActions } from 'src/comments';
@@ -48,7 +48,6 @@ export class TasksPage extends Component {
       selectedTask: null,
       newTask: null,
       labels: null,
-      labelPool: {},
       isLoadedComments: false,
       isCurrentTaskValid: false,
       query: ""
@@ -59,24 +58,6 @@ export class TasksPage extends Component {
     // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
   }
-
-  static propTypes = {
-    createTask: PropTypes.func.isRequired,
-    dismissNotification: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired,
-    buildFilter: PropTypes.func.isRequired,
-    loadTasks: PropTypes.func.isRequired,
-    loadLabels: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    removeTask: PropTypes.func.isRequired,
-    assignTask: PropTypes.func.isRequired,
-    tasks: PropTypes.instanceOf(List).isRequired,
-    unloadTasks: PropTypes.func.isRequired,
-    unloadComments: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    setMenuOpen: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-  };
 
   componentWillMount() {
     let project_url = this.props.match.params.projectUrl;
@@ -161,7 +142,6 @@ export class TasksPage extends Component {
     const filterByLabels = params['labels'];
 
     const completeFilterValue = params['complete'];
-    const labelPool = {};
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
@@ -174,17 +154,11 @@ export class TasksPage extends Component {
       currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
     }
 
-    // TODO - is this needed here? seems too costly to iterate all tasks
-    nextProps.tasks.forEach( (t)=> {
-      Object.keys(t.label).forEach((l) => {
-        labelPool[l] = true;
-      })
-    });
-
     currentTasks = this.filterTaskFromLabel(currentTasks, filterByLabels);
     currentTasks = this.filterTaskFromQuery(currentTasks);
 
-    this.setState({tasks: currentTasks, labelPool});
+    // TODO should not be here
+    this.setState({tasks: currentTasks});
   }
 
   filterTaskFromLabel(tasks, labels) {
@@ -260,6 +234,7 @@ export class TasksPage extends Component {
 
     this.props.createTask(
       {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
+      this.props.auth,
       this.onNewTaskAdded);
 
     // Probably should only show on real success
@@ -508,6 +483,24 @@ export class TasksPage extends Component {
   }
 }
 
+TasksPage.propTypes = {
+  createTask: PropTypes.func.isRequired,
+  dismissNotification: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired,
+  buildFilter: PropTypes.func.isRequired,
+  loadTasks: PropTypes.func.isRequired,
+  loadLabels: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  removeTask: PropTypes.func.isRequired,
+  assignTask: PropTypes.func.isRequired,
+  tasks: PropTypes.instanceOf(List).isRequired,
+  unloadTasks: PropTypes.func.isRequired,
+  unloadComments: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+  setMenuOpen: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
 
 //=====================================
 //  CONNECT
@@ -522,6 +515,8 @@ const mapStateToProps = (state) => {
     buildFilter: buildFilter
   }
 };
+
+
 
 const mapDispatchToProps = Object.assign(
   {},

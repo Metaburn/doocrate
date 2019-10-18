@@ -53,6 +53,16 @@ class TaskFilters extends Component {
     }
   }
 
+  // Labels is an array of ['label1','label2']
+  // Tags is an object of {'label1':true,'label2':true}
+  labelsPoolToTags = () => {
+    const result = {};
+    for (const label of this.props.labelsPool) {
+      result[label] = true;
+    }
+    return result;
+  };
+
   render() {
     let downloadCSV = null;
     if (this.props.isAdmin) {
@@ -127,12 +137,11 @@ class TaskFilters extends Component {
           </div>
 
           {downloadCSV}
-
           <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.by-tag')}</h1>
           <li>
             <AutoSuggestedTags
               value={this.state.label}
-              labels={this.props.labels}
+              labels={this.labelsPoolToTags()}
               placeholder={t('task.search-by-tags')}
               onChange={this.handleLabelChange}/>
           </li>
@@ -153,7 +162,7 @@ class TaskFilters extends Component {
 TaskFilters.propTypes = {
   onLabelChange: PropTypes.func.isRequired,
   selectedProject: PropTypes.object,
-  labels: PropTypes.object.isRequired,
+  labelsPool: PropTypes.object.isRequired,
   generateCSV: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
   userDefaultProject: PropTypes.string,

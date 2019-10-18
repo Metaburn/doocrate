@@ -19,7 +19,8 @@ class SideMenu extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      isMobile: this.isMobile()
+      isMobile: this.isMobile(),
+      isTablet: this.isTablet()
     };
 
     this.throttled = null;
@@ -37,7 +38,9 @@ class SideMenu extends Component {
     if(!this.throttled) {
       // initialize the throttled function
       this.throttled = throttle(() => {
-        this.setState({ isMobile: this.isMobile() });
+        this.setState({
+          isMobile: this.isMobile(),
+        isTablet: this.isTablet()});
       }, 200, {leading: true});
 
     }else {
@@ -48,7 +51,12 @@ class SideMenu extends Component {
   };
 
   isMobile = () => {
-    return window.innerWidth < 767 ;
+    return window.innerWidth < 480 ;
+  };
+
+  isTablet = () => {
+    return window.innerWidth < 768  &&
+      window.innerWidth > 480;
   };
 
   componentDidMount() {
@@ -65,6 +73,10 @@ class SideMenu extends Component {
   };
 
   render() {
+    const width = this.state.isMobile? '80%':
+      this.state.isTablet ? '50%' :
+      '300px';
+
     return (
       <I18n ns='translations'>
         {
@@ -74,7 +86,7 @@ class SideMenu extends Component {
                   className={`side-menu ${i18n.language === 'he' ? 'right-menu' : 'left-menu'}`}
                   disableOverlayClick={false}
                   onStateChange={(state) => this.handleChange(state)}
-                  width={this.state.isMobile ? '80%' : '300px'}>
+                  width={ width }>
               <FilterMenu/>
             </Menu>
           )
