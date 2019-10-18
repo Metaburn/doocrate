@@ -7,7 +7,7 @@ import { withRouter } from "react-router-dom";
 import {authActions} from "../../../auth";
 import {connect} from "react-redux";
 import {userInterfaceActions} from "../../../user-interface";
-import {buildFilter, getLabelsPool, taskFilters, tasksActions} from "../../../tasks";
+import {buildFilter, taskFilters, tasksActions} from "../../../tasks";
 import {labelActions} from "../../../labels";
 import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";

@@ -11,8 +11,7 @@ import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
-import throttle from 'lodash.throttle';
-import i18n from "../../../i18n";
+import { throttle } from 'lodash';
 
 class SideMenu extends Component {
 
