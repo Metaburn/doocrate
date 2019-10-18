@@ -15,7 +15,7 @@ class BottomNavBar extends Component {
 
   activeRoute = (routeName)  =>{
     return this.props.location.pathname === routeName;
-  }
+  };
 
   render() {
     const {auth} = this.props;

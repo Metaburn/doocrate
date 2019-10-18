@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
 import { slide as Menu } from 'react-burger-menu'
+import { I18n } from 'react-i18next';
 
 import './side-menu.css';
 import FilterMenu from "../filter-menu/filter-menu";
@@ -11,13 +12,13 @@ import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
 import throttle from 'lodash.throttle';
+import i18n from "../../../i18n";
 
 class SideMenu extends Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      menuIsOpen: false,
       isMobile: this.isMobile()
     };
 
@@ -59,22 +60,26 @@ class SideMenu extends Component {
     window.removeEventListener('resize', this.throttledHandleWindowResize);
   }
 
-  static getDerivedStateFromProps(props, state) {
-     return { menuIsOpen: props.menuIsOpen };
-  }
-
   handleChange = (state) => {
     this.props.setMenuOpen(state.isOpen);
   };
 
   render() {
     return (
-      <Menu right isOpen={this.state.menuIsOpen}
-            disableOverlayClick = {false}
-            onStateChange={ (state) => this.handleChange(state) }
-      width={ this.state.isMobile? '80%': '300px'}>
-        <FilterMenu/>
-      </Menu>
+      <I18n ns='translations'>
+        {
+          (t, { i18n }) => (
+            <Menu right={i18n.language !== 'he'}
+                  isOpen={this.props.menuIsOpen}
+                  className={`side-menu ${i18n.language === 'he' ? 'right-menu' : 'left-menu'}`}
+                  disableOverlayClick={false}
+                  onStateChange={(state) => this.handleChange(state)}
+                  width={this.state.isMobile ? '80%' : '300px'}>
+              <FilterMenu/>
+            </Menu>
+          )
+        }
+      </I18n>
     );
   }
 }

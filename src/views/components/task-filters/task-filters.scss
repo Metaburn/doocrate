@@ -13,6 +13,7 @@
     list-style-type: none;
   }
 
+
   .react-tagsinput-custom {
     position:absolute;
     z-index: 2;
@@ -53,14 +54,15 @@
   }
 
   .categories {
-    padding-top: 1em;
+    padding-top: 0.2em;
     padding-bottom: 1em;
     display: flex;
     flex-direction: column;
   }
 
   .filter-heading {
-    padding-bottom: 10px;
+    font-size: 20px;
+    padding-bottom: 4px;
   }
 
   .filter-heading-left {
@@ -98,20 +100,16 @@
 
   }
 
-  @media only screen and (min-width: 320px)  {
-    padding: 0em 1em 0.3em 1em;
-
-    .task-filters {
-
-      li:last-child {
-        width:100%;
-      }
-    }
-  }
-
   @media (max-width: 480px)  {
-    li:last-child {
-      width:100%;
+    padding: 0 1em;
+    .filter-heading-left {
+      padding-left: 4px;
+    }
+
+    .filter-heading-right {
+      padding-right: 4px;
     }
   }
+
+
 }
