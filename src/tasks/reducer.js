@@ -1,4 +1,4 @@
-import { List, Record } from 'immutable';
+import { List, Record, Set } from 'immutable';
 import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 
 import {
@@ -26,7 +26,9 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         deleted: null,
         created: payload,
         list: state.list.unshift(payload),
-        labelsPool: state.labelsPool.add(Object.keys(payload.label)[0]),
+        // Adds all the labels from the task into the labels pool
+
+        labelsPool: state.labelsPool.union(Object.keys(payload.label)),
       });
 
     case REMOVE_TASK_SUCCESS:

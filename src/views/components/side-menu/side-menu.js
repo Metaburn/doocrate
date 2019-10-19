@@ -45,7 +45,6 @@ class SideMenu extends Component {
     }else {
       // call the throttled function
       this.throttled();
-      return;
     }
   };
 

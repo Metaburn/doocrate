@@ -18,8 +18,10 @@ import {
 
 export function createTask(task, user, cb = (t)=>{}) {
   task.listeners = addUserToListeners(task, user);
+
   return dispatch => {
-    return taskList.push(task).then(cb)
+    taskList.push(task)
+      .then(cb)
       .catch(error => dispatch(createTaskError(error)));
   };
 }
