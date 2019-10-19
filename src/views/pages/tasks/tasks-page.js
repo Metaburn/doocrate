@@ -16,7 +16,7 @@ import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
-import { getUrlSearchParams, addQueryParam } from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, setQueryParam } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
@@ -322,7 +322,7 @@ export class TasksPage extends Component {
   onQueryChange = (query) => {
     this.setState({query});
     this.props.history.push({
-      search: addQueryParam('query=' + query)
+      search: setQueryParam('query', query)
     });
   };
 

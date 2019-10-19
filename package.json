@@ -83,7 +83,8 @@
     "redux": "^3.7.1",
     "redux-thunk": "2.3.0",
     "reselect": "^3.0.1",
-    "slick-carousel": "1.8.1"
+    "slick-carousel": "1.8.1",
+    "url-search-params-polyfill": "7.0.0"
   },
   "devDependencies": {
     "@babel/runtime": "7.6.3",

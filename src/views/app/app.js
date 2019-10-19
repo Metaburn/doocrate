@@ -23,6 +23,7 @@ import ReportsPage from '../pages/reports';
 import ProjectsPage from '../pages/projects';
 import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
+import 'url-search-params-polyfill';
 import { appConfig } from 'src/config/app-config';
 
 const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile}) => (

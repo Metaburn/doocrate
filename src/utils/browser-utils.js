@@ -13,7 +13,6 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
   }, {});
 }
 
-// TODO: This should be filled with some transpiler to support older browsers
 // Takes the { param=value, param2=value} and export it as a string to be used as a query param
 export function urlSearchParamsToString(paramObject) {
   let result = '';
@@ -33,30 +32,36 @@ export function urlSearchParamsToString(paramObject) {
   return result
 }
 
-/*
- Handles replacing / concatting params to location
- Can receive complete=true for example
-*/
-export function addQueryParam(newQueryParams) {
-  let currentSearchParams = getUrlSearchParams();
-  const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
-  Object.keys(newQueryParamsObj).forEach(param => {
-    if (param == null || param === '' || !currentSearchParams) return;
-    currentSearchParams[param] = newQueryParamsObj[param];
-  });
-  return urlSearchParamsToString(currentSearchParams);
+// Array of params [{name:name,value:value}] to set in query url
+export function setQueryParams(params) {
+  const result = new URLSearchParams(window.location.search);
+  for (const param of params){
+    result.set(param.name, param.value);
+  }
+
+  return result.toString();
+}
+
+// Set a given name and value in query url
+export function setQueryParam(name, value) {
+  const result = new URLSearchParams(window.location.search);
+  result.set(name, value);
+  return result.toString();
 }
 
 /*
  This function handles replacing / concatting params to location
  Can receive complete for example will remove complete
  value - Optional value if it's a multi value like labels=label1,label2 then value=label2 can remove that label
+ Apparently URLSearchParams doesn't handle delete for a single value
 */
 export function removeQueryParam(paramsToRemove, value) {
   let currentQueryParams = getUrlSearchParams();
+
   if(!currentQueryParams) { return {}}
   paramsToRemove.forEach( param => {
     // Handle case of label=['label1','label2']
+
     if(Array.isArray(currentQueryParams[param]) && value) {
       currentQueryParams[param] = currentQueryParams[param].filter((val) => { return val !== value });
     }else {
