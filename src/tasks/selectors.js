@@ -15,16 +15,9 @@ export function buildFilter(auth, type, value) {
   return filters[type](auth, value);
 }
 
-export function _labelsPool(state) {
-  return state.tasks.labelsPool;
-}
+export const labelsPoolSelector = ({ tasks }) => tasks.labelsPool;
 
-export const getLabelsPool = createSelector(
-  _labelsPool,
-  (labelsPool) => {
-    return labelsPool;
-  }
-);
+export const getLabelsPool = createSelector(labelsPoolSelector, (labelsPool) => labelsPool);
 
 
 //=====================================
