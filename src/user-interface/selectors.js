@@ -1,13 +1,6 @@
 import { createSelector } from 'reselect';
 
 
-export function getMenuIsOpenState(state) {
-  return state.userInterface.isMenuOpen;
-}
+export const getMenuIsOpenState = ({ userInterface }) => userInterface.isMenuOpen;
 
-export const getMenuIsOpen = createSelector(
-  getMenuIsOpenState,
-  (menuIsOpen) => {
-    return menuIsOpen;
-  }
-);
+export const getMenuIsOpen = createSelector(getMenuIsOpenState, (menuIsOpen) => menuIsOpen);
