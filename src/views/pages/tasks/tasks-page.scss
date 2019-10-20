@@ -1,14 +1,14 @@
 @import 'views/styles/shared';
 
 .task-page-root-wrapper {
-  padding-top: 10px;
+  padding-top: 16px;
 
   .search-bar {
     padding-left: 10px;
     padding-bottom: 15px;
 
-    .search-input {
-      width: 500px;
+    .search-container {
+      width: 440px;
     }
   }
 }
@@ -72,6 +72,17 @@
 @media (max-width: 1120px) {
   .task-view-wrapper {
     min-width: 50%;
+  }
+
+  .task-page-root-wrapper {
+
+    .search-bar {
+
+      .search-container {
+        width: auto;
+        flex: auto;
+      }
+    }
   }
 
 

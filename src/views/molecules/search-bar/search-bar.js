@@ -20,16 +20,17 @@ class SearchBar extends Component {
         {
           (t, {i18n}) => (
             <div className={`search-bar flex-${t('lang-float')}`}>
-              <Icon className={'search-icon'} name={'search'}/>
-
-              <input
-                className={"search-input"}
-                placeholder={t('task.search-by-query')}
-                type={"text"}
-                value={this.props.query}
-                onChange={(e) => {
-                  this.props.onQueryChange(e.target.value)
-                }}/>
+              <div className={'search-container'}>
+                <input
+                  className={"search-input"}
+                  placeholder={t('task.search-by-query')}
+                  type={"text"}
+                  value={this.props.query}
+                  onChange={(e) => {
+                    this.props.onQueryChange(e.target.value)
+                  }}/>
+                <Icon className={'search-icon'} name={'search'}/>
+              </div>
 
               <FilterIcon isActive={this.props.isFilterActive} onClick={() => {
                 this.props.setMenuOpen(true)
