@@ -34,7 +34,7 @@ class CompleteFilter extends Component {
       <I18n ns='translations'>
         {
           (t) => (
-            <div className={`complete-filter float-dir-${t('lang-float-reverse')}`}
+            <div className={`complete-filter complete-filter-${t('lang-float-reverse')} float-dir-${t('lang-float-reverse')}`}
                  onMouseEnter={this.showTooltip}
                  onMouseLeave={this.hideTooltip}>
               <Icon className='label notranslate' name='filter_list' />
