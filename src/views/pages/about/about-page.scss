@@ -4,6 +4,11 @@
 
 .about-page {
   padding: 2em;
+  background: white;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+  max-width: 700px;
 
   a {
     text-decoration: underline;
@@ -11,7 +16,8 @@
   }
 
   .carousel-container {
+    display: flex;
+    justify-content: center;
     width: 50%;
-    height: 400px;
   }
 }

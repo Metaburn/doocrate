@@ -13,7 +13,7 @@ const AboutPage = () => {
         <div className="g-row about-page">
           <div className="g-col">
 
-            <h1>{t('about.q1')}</h1>
+            <h3>{t('about.q1')}</h3>
             <div dangerouslySetInnerHTML={
               {__html: t('about.a1', {interpolation: {escapeValue: false}})}
             } />
