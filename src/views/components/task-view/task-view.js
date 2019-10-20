@@ -8,10 +8,7 @@ import Icon from '../icon';
 import Textarea from 'react-textarea-autosize';
 import { Textbox } from 'react-inputs-validation';
 import TagsInput from 'react-tagsinput';
-
 import { getCommentList } from 'src/comments';
-
-import 'react-tagsinput/react-tagsinput.css';
 import Select from 'react-select';
 import CommentList from '../comment-list';
 import TagsSuggestions from '../tags-suggestions';
@@ -22,12 +19,13 @@ import i18n from '../../../i18n.js';
 import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
 import TaskCreator from "../task-creator/task-creator";
-
+import _ from 'lodash';
+import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
 
 export class TaskView extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
 
     this.state = {
       title: '',
@@ -78,6 +76,23 @@ export class TaskView extends Component {
     submitNewTask: PropTypes.func.isRequired
   };
 
+  componentWillReceiveProps(nextProps) {
+    // TODO - check this maybe called several times now that we use comments
+
+    this.updateStateByProps(nextProps);
+  }
+
+  componentWillMount() {
+    this.updateStateByProps(this.props);
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevState.didDebounce) {
+      this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
+      this.setState({didDebounce: true});
+    }
+  }
+
   getTaskTypeFromProject(index) {
     if (!this.props.selectedProject ||
       !this.props.selectedProject.taskTypes ||
@@ -99,10 +114,6 @@ export class TaskView extends Component {
     } else {
       return this.props.selectedProject.extraFields;
     }
-  }
-
-  componentWillMount() {
-    this.updateStateByProps(this.props);
   }
 
   updateStateByProps(props) {
@@ -140,7 +151,7 @@ export class TaskView extends Component {
           extraFields: extraFields || {},
           validation: {}
         });
-      }else {
+      } else {
         // A new task?
 
         // Set default task types
@@ -181,138 +192,125 @@ export class TaskView extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // TODO - check this maybe called several times now that we use comments
-
-    this.updateStateByProps(nextProps);
-  }
-
   selectedTaskType(selected, fieldName) {
-    let val=null; if (selected) { val = selected}
-    this.setState({ [fieldName]: val})
+    let val = null;
+
+    if (selected) { val = selected; }
+
+    this.setState({ [fieldName]: val });
   }
 
   render() {
     const task = this.props.selectedTask;
-    if(!task) {
-      return(
-        <div className='task-view g-row'>
-          <div className='g-col'>
+
+    if (!task) {
+      return (
+        <div className="task-view g-row">
+          <div className="g-col">
             <h1>&nbsp;</h1>
           </div>
         </div>
       );
     }
 
-    const isUserCreator = task.creator && task.creator.id === this.props.auth.id;
-    const isUserAssignee = task.assignee && task.assignee.id === this.props.auth.id;
-    const canEditTask = isUserCreator || isUserAssignee || this.props.isAdmin;
-    const canDeleteTask = isUserCreator || this.props.isAdmin;
-    const showUnassignButton = isUserAssignee || isUserCreator || this.props.isAdmin;
-    const showMarkAsDoneButton = !this.props.isDraft&& canEditTask;
+    const { auth, isAdmin, isDraft, selectedTask, selectTask, followTask, unfollowTask, unassignTask, removeTask } = this.props;
+    const { description, defaultType, popularTags } = this.state;
+
+    const isUserCreator = task.creator && task.creator.id === auth.id;
+    const isUserAssignee = task.assignee && task.assignee.id === auth.id;
+    const canEditTask = isUserCreator || isUserAssignee || isAdmin;
+    const canDeleteTask = isUserCreator || isAdmin;
+    const showUnassignButton = isUserAssignee || isUserCreator || isAdmin;
+    const showMarkAsDoneButton = !isDraft && canEditTask;
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
     const showSaveButton = canEditTask;
-    const isTaskEmpty = (!this.state.description || this.state.description === '');
+    const isTaskEmpty = (!description || description === '');
 
     const oneDay = 60 * 60 * 24 * 1000;
     // We allow deletion of task which created in the last 24 hours
     let isTaskCreatedInTheLastDay = false;
-    if(task && task.created) {
+
+    if (task && task.created) {
       const now = new Date();
+
       isTaskCreatedInTheLastDay = (now - task.created) <= oneDay;
     }
 
-    const showDeleteButton = (!this.props.isDraft &&
-      (isTaskEmpty || isTaskCreatedInTheLastDay) &&
-      canDeleteTask) || (this.props.isAdmin && !this.props.isDraft);
-
-    const showButtonAsFollow = !task.listeners.includes(this.props.auth.id);
+    const showDeleteButton = (!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft);
+    const showButtonAsFollow = _.includes(task.listeners, auth.id);
 
     return (
-      <I18n ns='translations'>
+      <I18n ns="translations">
       {
       (t, { i18n }) => (
-        <div className='task-view-container' dir={t('lang-dir')}>
+        <div className="task-view-container" dir={t('lang-dir')}>
           <TaskViewHeader
-          task={ this.props.selectedTask }
-          canDeleteTask={ canDeleteTask }
-          selectTask={ this.props.selectTask }
-          assignTask={ () => this.setState({shouldOpenAssignmentModal: true}) }
-          followTask={ this.props.followTask }
-          unfollowTask={ this.props.unfollowTask }
-          unassignTask={ this.props.unassignTask }
-          removeTask={ this.props.removeTask }
-          showUnassignButton = { showUnassignButton }
-          showSaveButton = { showSaveButton }
-          showButtonAsFollow = { showButtonAsFollow }
-          showDeleteButton = { showDeleteButton }
-          showMarkAsDoneButton = { showMarkAsDoneButton }
-          isDraft = { this.props.isDraft }
-          saveTask = {this.handleSave}
-          markAsDoneUndone = {this.handleMarkAsDoneUndone}
-          auth= {this.props.auth}
-          />
-          <div className='task-view'>
+            task={selectedTask}
+            canDeleteTask={canDeleteTask}
+            selectTask={selectTask}
+            assignTask={() => this.setState({ shouldOpenAssignmentModal: true })}
+            followTask={followTask}
+            unfollowTask={unfollowTask}
+            unassignTask={unassignTask}
+            removeTask={removeTask}
+            showUnassignButton={showUnassignButton}
+            showSaveButton={showSaveButton}
+            showButtonAsFollow={showButtonAsFollow}
+            showDeleteButton={showDeleteButton}
+            showMarkAsDoneButton={showMarkAsDoneButton}
+            isDraft={isDraft}
+            saveTask={this.handleSave}
+            markAsDoneUndone={this.handleMarkAsDoneUndone}
+            auth={auth}/>
+          <div className="task-view">
             <form noValidate>
-              <div className='form-input'>
+              <div className="form-input">
                 {canEditTask ?
                   this.renderInput('title', t('task.name'), t, canEditTask, '0', true, true) :
-                  <span>{task.title}</span>
-                }
+                  <span>{task.title}</span>}
               </div>
-              <div className='form-input'>
+              <div className="form-input">
                 {canEditTask ?
-                  this.renderTextArea('description', t, canEditTask, '0', 'task.description')
-                  :
-                  <span>{task.description}</span>
-                }
+                  this.renderTextArea('description', t, canEditTask, '0', 'task.description') :
+                  <span>{task.description}</span>}
               </div>
-              <div className='form-input'>
+              <div className="form-input">
                 {canEditTask ?
-                  this.renderTextArea('requirements', t, canEditTask, '0', 'task.requirements')
-                  :
-                  <span>{task.requirements}</span>
-                }
+                  this.renderTextArea('requirements', t, canEditTask, '0', 'task.requirements') :
+                  <span>{task.requirements}</span>}
               </div>
-              <div className='form-input'><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
+              <div className="form-input"><div className={`instruction instruction-${t('lang-float')}`}><span>{t('task.type')}</span></div>
                 {canEditTask ?
-                  this.renderSelect('type', t('general.select-default'), this.state.defaultType, t,'0')
-                  :
-                  <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label: ''}<br/></span>
-                  }
+                  this.renderSelect('type', t('general.select-default'), defaultType, t,'0') :
+                  <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label : ''}<br/></span>}
               </div>
 
               <div className={`tags-container tags-container-${t('lang-float')}`}>
-                <Icon className='label notranslate' name='loyalty' /> {this.renderTags(canEditTask, t, '0')}
+                <Icon className="label notranslate" name="loyalty"/> {this.renderTags(canEditTask, t, '0')}
               </div>
 
-              { canEditTask && this.state.popularTags ?
+              {(canEditTask && popularTags) &&
                 <div>
-                  <div className='instruction-label'><span>{t('task.automatic-tags')}</span></div>
-                  <div>
-                      <TagsSuggestions
-                        tags={this.state.popularTags}
-                        onTagSelected={(tag) => {
-                          this.handleAddLabel(tag);
-                        }}
-                      />
+                  <div className="instruction-label">
+                    <span>{t('task.automatic-tags')}</span>
                   </div>
-                </div>
-                  : ''
-              }
+                  <div>
+                    <TagsSuggestions
+                      tags={popularTags}
+                      onTagSelected={(tag) => {
+                        this.handleAddLabel(tag);
+                      }}/>
+                  </div>
+                </div>}
 
-              { canEditTask && this.state.extraFields?
-                this.renderExtraFields(t,task, canEditTask)
-                : ''
-              }
+              {canEditTask && this.state.extraFields && this.renderExtraFields(t,task, canEditTask)}
 
-              {canEditTask ?
-                <div
-                  className='is-critical'>{this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask)}</div>
-                : ''
-              }
+              {canEditTask &&
+                <div className="is-critical">
+                  {this.renderCheckbox(task, 'isCritical', t('task.is-critical'), canEditTask)}
+                </div>}
               <TaskCreator creator={task.creator}/>
             </form>
           </div>
@@ -322,9 +320,9 @@ export class TaskView extends Component {
             comments={this.props.comments}
             auth={this.props.auth}
             updateComment={this.props.updateComment}
-            removeComment={this.props.removeComment}
-          />
+            removeComment={this.props.removeComment}/>
 
+          { /* TODO: These functions shouldnt be called from render method. :) */}
           { this.renderAddComment() }
           { this.renderTakeOwnershipModal(task) }
           { this.renderAssignmentModal(task) }
@@ -336,116 +334,94 @@ export class TaskView extends Component {
 
   renderExtraFields(t, task, canEditTask) {
     const extraFields = this.getExtraFieldsKeysFromProject();
-    if(!extraFields) {
-      return;
-    }
 
-    let extraFieldItems = extraFields.map((extraField, index) => {
+    if (!extraFields) { return; }
+
+    const extraFieldItems = extraFields.map((extraField, index) => {
       return (
-        <div className='form-input' key={index}>
+        <div className="form-input" key={index}>
           {canEditTask ?
-            this.renderExtraFieldInput(task, 'extra-field-' + extraField, extraField, t, canEditTask, '0', true) :
+            this.renderInput('extra-field-' + extraField, extraField, t, canEditTask, '0', true, false, true) :
             <span>{ extraField }</span>
           }
         </div>
-      )
+      );
     });
 
-
-    return(
-    <div>
-      { extraFieldItems }
-    </div>
-    )
+    return (
+      <div>
+        {extraFieldItems}
+      </div>
+    );
   }
 
   renderAddComment() {
+    const { selectedTask, createComment, auth } = this.props;
+
     return (
       <AddComment
-      task={ this.props.selectedTask }
-      createComment={this.props.createComment }
-      auth={this.props.auth}
-      key='addComment' />)
+        task={selectedTask }
+        createComment={createComment }
+        auth={auth}
+        key="addComment"/>
+    );
   }
 
   renderSelect(fieldName, placeholder, options, translation, tabIndex) {
     return (
       <Select
-      type='text'
-      name={fieldName}
-      value={this.state[fieldName]}
-      tabIndex = { tabIndex }
-      //ref={e => this[fieldName+'Input'] = e}
-      onChange={(e) => { this.selectedTaskType(e, fieldName)}}
-      options={options}
-      // onBlur={this.handleSubmit}
-      isSearchable={false}
-      placeholder= {placeholder }
-      noResultsText={translation('general.no-results-found')}
-      searchable={ false }/>
-  );
+        type="text"
+        name={fieldName}
+        value={this.state[fieldName]}
+        tabIndex={tabIndex}
+        onChange={(e) => { this.selectedTaskType(e, fieldName)}}
+        options={options}
+        isSearchable={false}
+        placeholder={placeholder }
+        noResultsText={translation('general.no-results-found')}
+        searchable={false}/>
+    );
   }
 
-  renderInput(fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
+  renderInput(fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired = false, isExtra = false) {
     const classNames = isEditable ? ' editable' : '';
-    return( <Textbox
-      classNameInput={`changing-input${classNames}`}
-      type = 'text'
-      tabIndex = { tabIndex }
-      name = { fieldName }
-      value = { this.state[fieldName] }
-      placeholder = { placeholder }
-      ref = { e => this[fieldName+'Input'] = e }
-      onChange = { this.handleChange }
-      onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
-      onKeyUp={ () => {}} // here to trigger validation callback on Key up
-      disabled = { !isEditable }
-      autofocus = { isAutoFocus }
+    const value = isExtra ? this.state.extraFields[fieldName] : this.state[fieldName];
+    const onChangeHandler = isExtra ? this.handleExtraFieldChange : this.handleChange;
 
-      validationOption={{ required: isRequired, msgOnError: t('task.errors.not-empty') }}
-      validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
-    />)
-  }
-
-  renderExtraFieldInput(task, fieldName, placeholder, t, isEditable, tabIndex, isAutoFocus, isRequired=false) {
-    const classNames = isEditable ? ' editable' : '';
-    return( <Textbox
-      classNameInput={`changing-input${classNames}`}
-      type = 'text'
-      tabIndex = { tabIndex }
-      name = { fieldName }
-
-      value = { this.state.extraFields[fieldName] }
-      placeholder = { placeholder }
-      ref = { e => this[fieldName+'Input'] = e }
-      onChange = { this.handleExtraFieldChange }
-      onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
-      onKeyUp={ () => {}} // here to trigger validation callback on Key up
-      disabled = { !isEditable }
-      autofocus = { isAutoFocus }
-
-      validationOption={{ required: isRequired, msgOnError: t('task.errors.not-empty') }}
-      validationCallback = {res=>this.setState({validations: {...this.state.validations, title: res}})}
-    />)
+    return(
+      <Textbox
+        classNameInput={`changing-input${classNames}`}
+        type="text"
+        tabIndex={tabIndex}
+        name={fieldName}
+        value={value}
+        placeholder={placeholder}
+        ref={(e) => this[fieldName+'Input'] = e}
+        onChange={onChangeHandler}
+        onBlur={this.handleSubmit} // here to trigger validation callback on Blur
+        onKeyUp={() => {}} // here to trigger validation callback on Key up
+        disabled={!isEditable}
+        autofocus={isAutoFocus}
+        validationOption={{ required: isRequired, msgOnError: t('task.errors.not-empty') }}
+        validationCallback={(res) => this.setState({ validations: {...this.state.validations, title: res }})}/>
+    );
   }
 
   renderTextArea(fieldName, t, isEditable, tabIndex, placeHolder) {
     const classNames = isEditable ? ' editable' : '';
+
     return (
         <Textarea
-        className={`changing-input${classNames}`}
-        name={fieldName}
-        tabIndex={tabIndex}
-        value={this.state[fieldName]}
-        placeholder={t(placeHolder)}
-        ref={e => this[fieldName+'Input'] = e}
-        onChange={this.handleTextBoxChange}
-        onBlur = { this.handleSubmit } // here to trigger validation callback on Blur
-        onKeyUp={ () => {}} // here to trigger validation callback on Key up
-        disabled = { !isEditable }
-        //validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
-        //validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
-        />
+          className={`changing-input${classNames}`}
+          name={fieldName}
+          tabIndex={tabIndex}
+          value={this.state[fieldName]}
+          placeholder={t(placeHolder)}
+          ref={(e) => this[fieldName+'Input'] = e}
+          onChange={this.handleTextBoxChange}
+          onBlur={this.handleSubmit} // here to trigger validation callback on Blur
+          onKeyUp={() => {}} // here to trigger validation callback on Key up
+          disabled={!isEditable}/>
     );
   }
 
@@ -454,90 +430,93 @@ export class TaskView extends Component {
     const classNames = isEditable ? ' editable' : '';
 
     return (
-      <TagsInput className={`react-tagsinput-changing ${classNames}`}
-      tabIndex={tabIndex}
-      value={this.state.label}
-      onChange={this.handleLabelChange}
-      onlyUnique={true}
-      addOnBlur={true}
-      inputProps={{ placeholder: showPlaceholder ? translation('task.input-tags') : ''}}
-      onRemove= { this.handleLabelChange }
-      disabled = { !isEditable }
-      MaxTags = {6}
-      validationOption={{ required: true, msgOnError: translation('task.errors.not-empty') }}
-      validationCallback = {res=>this.setState({validations: {...this.state.validations, description: res}})}
-      />
-    )
+      <TagsInput
+        className={`react-tagsinput-changing ${classNames}`}
+        tabIndex={tabIndex}
+        value={this.state.label}
+        onChange={this.handleLabelChange}
+        onlyUnique={true}
+        addOnBlur={true}
+        inputProps={{ placeholder: showPlaceholder ? translation('task.input-tags') : ''}}
+        onRemove={this.handleLabelChange}
+        disabled={!isEditable}
+        MaxTags={6}
+        validationOption={{ required: true, msgOnError: translation('task.errors.not-empty') }}
+        validationCallback={(res) => this.setState({validations: {...this.state.validations, description: res }})}/>
+    );
   }
 
   renderCheckbox(task, fieldName, placeholder, isEditable) {
     const classNames = isEditable ? ' editable' : '';
+
     return (
       <label>
         <input
           className={ classNames }
-        type = 'checkbox'
-        checked = { this.state[fieldName] }
-        value = { placeholder }
-        onChange={e => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
-        disabled = { !isEditable }
-        />
-        { placeholder }
+          type="checkbox"
+          checked={this.state[fieldName]}
+          value={ placeholder }
+          onChange={(e) => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
+          disabled={!isEditable}/>
+        {placeholder}
       </label>
     );
   }
 
   // We are checking that task.id exist to prevent a race condition
   renderTakeOwnershipModal(task) {
+    const { assignTask } = this.props;
+    const { shouldOpenTakeOwnerModal } = this.state;
+
     return (
       <div>
         <TakeOwnershipModal
-          isOpen = { task && task.id && this.state.shouldOpenTakeOwnerModal }
-          onClosed = { () => {
-            this.setState({shouldOpenTakeOwnerModal: false});
+          isOpen={task && task.id && shouldOpenTakeOwnerModal}
+          onClosed={() => {
+            this.setState({ shouldOpenTakeOwnerModal: false });
           }}
-          onYes ={() => {
-            this.setState({shouldOpenTakeOwnerModal: false});
-            this.props.assignTask(task);
-          }
-          }
+          onYes={() => {
+            this.setState({ shouldOpenTakeOwnerModal: false });
+            assignTask(task);
+          }}
           header={'task.do-you-take-ownership'}
-          textLines={['task.do-you-take-ownership2']}
-        />
+          textLines={['task.do-you-take-ownership2']}/>
       </div>
     );
   }
 
   renderAssignmentModal(task) {
+    const { assignTask } = this.props;
+    const { requirements, shouldOpenAssignmentModal } = this.state;
     let header, textLines;
-    if (this.state.requirements == null || this.state.requirements === "") {
-      header = 'task.do-you-take-ownership'
-    }else {
+
+    if (requirements == null || requirements === "") {
+      header = 'task.do-you-take-ownership';
+    } else {
       header = 'task.pay-attention-to-the-requirements';
-      textLines = [this.state.requirements, 'task.do-you-take-ownership'];
+      textLines = [requirements, 'task.do-you-take-ownership'];
     }
 
     return (
       <div>
         <TakeOwnershipModal
-          isOpen={task && task.id && this.state.shouldOpenAssignmentModal}
+          isOpen={task && task.id && shouldOpenAssignmentModal}
           onClosed={() => {
             this.setState({shouldOpenAssignmentModal: false});
           }}
           onYes={() => {
             this.setState({shouldOpenAssignmentModal: false});
-            this.props.assignTask(task);
-          }
-          }
+            assignTask(task);
+          }}
           header={header}
-          textLines={textLines}
-        />
+          textLines={textLines}/>
       </div>
     );
   }
 
   handleChange(n, e) {
     let fieldName = e.target.name;
+
     this.setState({
       [fieldName]: e.target.value
     });
@@ -548,6 +527,7 @@ export class TaskView extends Component {
   handleExtraFieldChange(n, e) {
     let fieldName = e.target.name;
     const newObject = { [fieldName]: e.target.value };
+
     this.setState({
       'extraFields': Object.assign(this.state.extraFields, newObject)
     });
@@ -555,6 +535,7 @@ export class TaskView extends Component {
 
   handleTextBoxChange(o) {
     let fieldName = o.target.name;
+
     this.setState({
       [fieldName]: o.target.value
     });
@@ -562,21 +543,25 @@ export class TaskView extends Component {
 
   handleAddLabel(label) {
     let newLabels = this.state.label;
+
     newLabels.push(label);
     this.handleLabelChange(newLabels)
   }
 
   handleLabelChange(label) {
     // Clear leading and trailing white space
-    for(let i=0;i<label.length;i++) {
+    for (let i=0;i<label.length;i++) {
       label[i] = label[i].trim();
     }
-    this.setState({label})
+
+    this.setState({ label });
   }
 
   isValid() {
     let res = false;
+
     Object.values(this.state.validations).forEach( x => res = x || res);
+
     // also check actual values...
     res = res || this.state.label.length === 0; // check also there's at least one label
     res = res || this.state.title.length === 0;
@@ -584,73 +569,74 @@ export class TaskView extends Component {
     res = res || (this.state.type && this.state.type.length === 0);
 
     this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
+
     return !res;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if(!prevState.didDebounce) {
-      this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
-      this.setState({didDebounce: true});
-    }
-  }
-
   getFormFields() {
+    const { title, description, requirements, isCritical, isDone, type, extraFields, dueDate } = this.state;
     let labelAsObject = TaskView.arrayToObject(this.state.label);
+
     const fieldsToUpdate = {
-      title: this.state.title,
-      description: this.state.description,
-      requirements: this.state.requirements,
+      title,
+      description,
+      requirements,
       label: labelAsObject,
-      isCritical: this.state.isCritical,
-      isDone: this.state.isDone,
-      type: this.state.type,
-      extraFields: this.state.extraFields
+      isCritical,
+      isDone,
+      type,
+      extraFields
     };
 
-
-    fieldsToUpdate.dueDate = this.state.dueDate || null;
+    fieldsToUpdate.dueDate = dueDate || null;
 
     return fieldsToUpdate;
   }
 
   handleSave() {
+    const { isDraft, submitNewTask, showSuccess, showError } = this.props;
+
     if (this.isValid()) {
       // Is task a draft and first time being saved
-      if(this.props.isDraft) {
-        this.props.submitNewTask(this.getFormFields());
-        this.setState({shouldOpenTakeOwnerModal: true});
-      }else {
+      if (isDraft) {
+        submitNewTask(this.getFormFields());
+        this.setState({ shouldOpenTakeOwnerModal: true });
+      } else {
         // Not a draft but a normal save
         this.handleSubmit();
-        this.props.showSuccess(i18n.t('task.updated-successfully'));
+        showSuccess(i18n.t('task.updated-successfully'));
       }
-    }else {
-      this.props.showError(i18n.t('task.mission-incomplete-short'));
+    } else {
+      showError(i18n.t('task.mission-incomplete-short'));
     }
   }
 
   handleMarkAsDoneUndone() {
-    this.setState({isDone: !this.state.isDone});
-    this.props.updateTask(this.props.selectedTask, {isDone: !this.state.isDone});
-    this.props.showSuccess(i18n.t('task.updated-successfully'));
+    const { updateTask, selectedTask, showSuccess } = this.props;
+    const { isDone } = this.state;
+
+    this.setState({ isDone: !isDone });
+    updateTask(selectedTask, { isDone: !isDone });
+    showSuccess(i18n.t('task.updated-successfully'));
   }
 
   handleSubmit(event) {
-    if(event) {
-      event.preventDefault();
-    }
+    const { isDraft, updateTask, selectedTask } = this.props;
 
-    if (this.props.isDraft || !this.isValid()) {
-      return;
-    }
+    if (event) { event.preventDefault(); }
+    if (isDraft || !this.isValid()) { return; }
 
-    this.props.updateTask(this.props.selectedTask, this.getFormFields());
+    updateTask(selectedTask, this.getFormFields());
   }
 
+  // TODO: Move to utils or use Lodash instead
   static arrayToObject(array) {
     let result = {};
-    for (let i = 0; i < array.length; ++i)
+
+    for (let i = 0; i < array.length; ++i) {
       result[array[i]] = true;
+    }
+
     return result;
   }
 }
