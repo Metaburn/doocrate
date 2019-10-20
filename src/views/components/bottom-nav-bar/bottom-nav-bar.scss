@@ -18,21 +18,16 @@
     border: 1px solid #E0E4E9;
     box-sizing: border-box;
 
+    .active{
+      background: #d7f7ff;
+    }
+
     .bottom-nav-tile{
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       flex: 1;
-        .active{
-          background: #0C8FEE;
-          opacity: 0.1;
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          top: 0;
-        }
     }
   }
 

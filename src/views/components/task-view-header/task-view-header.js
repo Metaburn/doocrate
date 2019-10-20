@@ -53,20 +53,22 @@ export class TaskViewHeader extends Component {
             type='button'>{t('task.save')}</Button>
           }
 
-          { this.props.showButtonAsFollow ?
-            <Button className='button button-small action-button'
-                    onClick={ () => this.props.followTask(task) }
-                    alt={t('follow-task-alt')}>
-              <span>{t('task.follow-task')}</span>
-              <Img className='follow-icon' src={follow} />
-            </Button>
-            :
-            <Button className='button button-small action-button'
-                    onClick={ () => this.props.unfollowTask(task) }
-                    alt={t('follow-task-alt')}>
-              <span>{t('task.unfollow-task')}</span>
-              <Img className='follow-icon' src={follow} />
-            </Button>
+          { !this.props.isDraft ?
+            (this.props.showButtonAsFollow ?
+              <Button className='button button-small action-button'
+                      onClick={() => this.props.followTask(task)}
+                      alt={t('follow-task-alt')}>
+                <span>{t('task.follow-task')}</span>
+                <Img className='follow-icon' src={follow}/>
+              </Button>
+              :
+              <Button className='button button-small action-button'
+                      onClick={() => this.props.unfollowTask(task)}
+                      alt={t('follow-task-alt')}>
+                <span>{t('task.unfollow-task')}</span>
+                <Img className='follow-icon' src={follow}/>
+              </Button>
+            ): ''
           }
 
           { this.props.showMarkAsDoneButton &&

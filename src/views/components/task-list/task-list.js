@@ -2,7 +2,6 @@ import React, { Component }  from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import TaskItem from '../task-item-row/task-item-row';
-import Button from '../button';
 import InfiniteScroll from 'react-infinite-scroller';
 import { I18n } from 'react-i18next';
 import CompleteFilter from '../complete-filter';
@@ -26,11 +25,11 @@ class TaskList extends Component {
   }
 
   clearSearchQuery = () => {
-    this.props.history.push('');
-  }
+    this.props.history.push({search: ''});
+  };
 
   render() {
-    const { tasks, selectedTaskId, selectTask, selectedProject, labels, createTask, projectUrl } = this.props;
+    const { tasks, selectedTaskId, selectTask, selectedProject, labels, projectUrl } = this.props;
     const { pageSize, pageNumber } = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
     let taskItems = [];
@@ -60,12 +59,6 @@ class TaskList extends Component {
         {(t, { i18n }) => (
         <div className="task-list-container">
           <div className="task-list-header" name="task-list-header">
-            <Button
-              className="button button-small add-task-button"
-              onClick={createTask}>
-              {t(`task.add-task`)}
-            </Button>
-
             <CompleteFilter projectUrl={projectUrl}/>
           </div>
 
@@ -104,7 +97,6 @@ TaskList.propTypes = {
   selectTask: PropTypes.func.isRequired,
   selectedTaskId: PropTypes.string.isRequired,
   selectedProject: PropTypes.object,
-  createTask: PropTypes.func.isRequired,
   projectUrl: PropTypes.string.isRequired
 };
 

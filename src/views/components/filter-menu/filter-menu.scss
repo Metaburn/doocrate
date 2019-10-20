@@ -1,0 +1,15 @@
+@import 'views/styles/shared';
+
+.filter-menu {
+  .title {
+    padding: 0;
+    font-size: 28px;
+  }
+
+  .title-right {
+    padding-right: 45px;
+  }
+  .title-left {
+    padding-left: 45px;
+  }
+}

@@ -12,4 +12,4 @@ export const nav = (auth) => [
     icon: "person",
     show: auth && auth.authenticated
   }
-]
+];

@@ -7,7 +7,7 @@ import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
 import { getProject } from 'src/projects';
 import Header from '../components/header';
-import BottomNavBar from "../components/bottom-nav-bar";
+import BottomNavBar from '../components/bottom-nav-bar';
 import RequireAuthRoute from '../components/require-auth-route';
 import RequireUnauthRoute from '../components/require-unauth-route';
 import SignInPage from '../pages/sign-in';
@@ -23,7 +23,9 @@ import ReportsPage from '../pages/reports';
 import ProjectsPage from '../pages/projects';
 import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
-import { appConfig } from 'src/config/app-config'
+import 'url-search-params-polyfill';
+import { appConfig } from 'src/config/app-config';
+
 const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile}) => (
   <I18n ns='translations'>
     {

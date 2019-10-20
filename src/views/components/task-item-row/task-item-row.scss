@@ -36,6 +36,10 @@
     background: #eb1478;
     color: white;
   }
+
+  .label-default {
+    margin: 0 3px;
+  }
 }
 .task-item-row.is-active{
   background-color: #eb1478;
@@ -132,10 +136,6 @@ and (max-width: 1024px) {
 
 .is-done {
   text-decoration: line-through;
-}
-
-.label-default {
-  margin: 0 3px;
 }
 
 .task-item-assignee {

@@ -11,6 +11,7 @@ import {
   MAGIC_LINK_SUCCESS,
   UPDATE_PROFILE
 } from './action-types';
+import * as browserUtils from "../utils/browser-utils";
 
 
 function authenticate(provider) {
@@ -27,6 +28,8 @@ export function signInMagic() {
     // Confirm the link is a sign-in with email link.
     if (firebaseAuth.isSignInWithEmailLink(window.location.href)) {
       let email = window.localStorage.getItem('emailForSignIn');
+      let emailFromUrl = browserUtils.getUrlSearchParams(window.location.search)['email'];
+      email = email || emailFromUrl;
       if (!email) {
         // User opened the link on a different device. To prevent session fixation
         // attacks, ask the user to provide the associated email again. For example:
@@ -50,8 +53,9 @@ export function signInMagic() {
 // Upon clicking on the email this is where the user is navigating to
 export function signInWithEmailPassword(email) {
   firebaseAuth.useDeviceLanguage();
+  const project = browserUtils.getCookie('project');
   const options = {
-    'url': window.location.origin +'/magic-link',
+    'url': `${window.location.origin}/magic-link?email=${email}&project=${project}`,
     handleCodeInApp: true,
   };
 

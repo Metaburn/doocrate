@@ -1,4 +1,4 @@
-import { List, Record } from 'immutable';
+import { List, Record, Set } from 'immutable';
 import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 
 import {
@@ -13,6 +13,7 @@ export const TasksState = new Record({
   deleted: null,
   previous: null,
   list: new List(),
+  labelsPool: new Set(),
   auth: null,
   created: null
 });
@@ -24,7 +25,10 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       return state.merge({
         deleted: null,
         created: payload,
-        list: state.list.unshift(payload)
+        list: state.list.unshift(payload),
+        // Adds all the labels from the task into the labels pool
+
+        labelsPool: state.labelsPool.union(Object.keys(payload.label)),
       });
 
     case REMOVE_TASK_SUCCESS:
@@ -36,7 +40,8 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       });
 
     case LOAD_TASKS_SUCCESS:
-      return state.set('list', new List(payload.reverse()));
+      return state.set('list', new List(payload.reverse()))
+        .set('labelsPool',new Set());
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

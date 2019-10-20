@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { getAuth } from 'src/auth';
 import {debounce} from 'lodash';
+import {includes} from "lodash/collection";
 import Icon from '../icon';
 import Textarea from 'react-textarea-autosize';
 import { Textbox } from 'react-inputs-validation';
@@ -19,7 +20,6 @@ import i18n from '../../../i18n.js';
 import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
 import TaskCreator from "../task-creator/task-creator";
-import _ from 'lodash';
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
 
@@ -239,7 +239,7 @@ export class TaskView extends Component {
     }
 
     const showDeleteButton = (!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft);
-    const showButtonAsFollow = _.includes(task.listeners, auth.id);
+    const showButtonAsFollow = !includes(task.listeners, auth.id);
 
     return (
       <I18n ns="translations">
@@ -285,6 +285,7 @@ export class TaskView extends Component {
                 {canEditTask ?
                   this.renderSelect('type', t('general.select-default'), defaultType, t,'0') :
                   <span className={`task-type task-type-${t('lang-float')}`}>{(task.type) ? task.type.label : ''}<br/></span>}
+
               </div>
 
               <div className={`tags-container tags-container-${t('lang-float')}`}>

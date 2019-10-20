@@ -4,23 +4,27 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
-import { notificationActions } from 'src/notification';
-import { buildFilter, tasksActions, taskFilters } from 'src/tasks';
+import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
-import TaskFilters from '../../components/task-filters';
+import { userInterfaceActions } from 'src/user-interface';
+import { notificationActions } from 'src/notification';
 import TaskList from '../../components/task-list';
 import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
-import { getUrlSearchParams, addQueryParam } from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
+import { I18n } from 'react-i18next';
+import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
+import TopNav from "../../molecules/top-nav/top-nav";
+
 
 export class TasksPage extends Component {
   constructor() {
@@ -31,10 +35,8 @@ export class TasksPage extends Component {
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
     this.unassignTask = this.unassignTask.bind(this);
     this.goToTask = this.goToTask.bind(this);
-    this.onLabelChanged = this.onLabelChanged.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
-    this.createTask = this.createTask.bind(this);
     this.removeComment = this.removeComment.bind(this);
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
@@ -44,7 +46,6 @@ export class TasksPage extends Component {
       selectedTask: null,
       newTask: null,
       labels: null,
-      labelPool: {},
       isLoadedComments: false,
       isCurrentTaskValid: false,
       query: ""
@@ -55,23 +56,6 @@ export class TasksPage extends Component {
     // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
   }
-
-  static propTypes = {
-    createTask: PropTypes.func.isRequired,
-    dismissNotification: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired,
-    buildFilter: PropTypes.func.isRequired,
-    loadTasks: PropTypes.func.isRequired,
-    loadLabels: PropTypes.func.isRequired,
-    location: PropTypes.object.isRequired,
-    removeTask: PropTypes.func.isRequired,
-    assignTask: PropTypes.func.isRequired,
-    tasks: PropTypes.instanceOf(List).isRequired,
-    unloadTasks: PropTypes.func.isRequired,
-    unloadComments: PropTypes.func.isRequired,
-    updateTask: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired
-  };
 
   componentWillMount() {
     let project_url = this.props.match.params.projectUrl;
@@ -153,9 +137,9 @@ export class TasksPage extends Component {
     const params = getUrlSearchParams(nextProps.location.search);
     const filterType = params['filter'];
     const filterTextType = params['text'];
+    const filterByLabels = params['labels'];
 
     const completeFilterValue = params['complete'];
-    const labelPool = {};
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
@@ -168,23 +152,18 @@ export class TasksPage extends Component {
       currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
     }
 
-    nextProps.tasks.forEach( (t)=> {
-      Object.keys(t.label).forEach((l) => {
-        labelPool[l] = true;
-      })
-    });
-
-    currentTasks = this.filterTaskFromLabel(currentTasks);
+    currentTasks = this.filterTaskFromLabel(currentTasks, filterByLabels);
     currentTasks = this.filterTaskFromQuery(currentTasks);
 
-    this.setState({tasks: currentTasks, labelPool});
+    // TODO should not be here
+    this.setState({tasks: currentTasks});
   }
 
-  filterTaskFromLabel(tasks) {
+  filterTaskFromLabel(tasks, labels) {
     let currentTasks = tasks;
-    if ( this.state.labels != null && this.state.labels.length > 0) {
+    if ( labels != null && labels.length > 0) {
       const filter = this.props.buildFilter(this.props.auth, "label", this.state.labels);
-      currentTasks = this.props.filters["label"](currentTasks, filter, this.state.lables);
+      currentTasks = this.props.filters["label"](currentTasks, filter, labels);
     }
 
     return currentTasks;
@@ -199,27 +178,14 @@ export class TasksPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     let {tasks} = this.props;
-    if (prevState.labels !== this.state.labels) {
+    // TODO - check that
+    /*const params = getUrlSearchParams(this.props.location.search);
+    if (prevState.labels !== params['labels']) {
       tasks = this.filterTaskFromLabel(tasks);
       this.setState({tasks});
-    }
+    }*/
 
     // Sync url toolbar and the query parameter
-    try {
-      // To support unicode we need to decodeURIComponent
-      const query = getUrlSearchParams()['query'];
-      const isQueryValid = query && typeof query !== 'undefined';
-      const urlFilterQuery = isQueryValid? (decodeURIComponent(query)): null;
-      if (urlFilterQuery && (this.state.query !== urlFilterQuery)) {
-        // TODO - unset the following line prevent users from entering special chars
-        // Such as 🙏 or a simple space -> ' ' char
-        //this.setState({query: decodeURIComponent(urlFilterQuery)});
-      }
-      }catch(error) {
-      // We might encounter Malformed strings - this prevents entering a loop
-      // instead we silently ignore that
-      }
-
     if (prevState.query !== this.state.query) {
       tasks = this.filterTaskFromQuery(tasks);
       this.setState({tasks});
@@ -228,10 +194,6 @@ export class TasksPage extends Component {
 
   componentWillUnmount() {
     this.props.unloadTasks();
-  }
-
-  filterTasks() {
-
   }
 
   onNewTaskAdded(task) {
@@ -270,6 +232,7 @@ export class TasksPage extends Component {
 
     this.props.createTask(
       {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
+      this.props.auth,
       this.onNewTaskAdded);
 
     // Probably should only show on real success
@@ -288,21 +251,6 @@ export class TasksPage extends Component {
   }
 
   assignTaskToSignedUser(task) {
-    //const myAssignedTasks = this.props.tasks.filter((t)=>{return t.get("assignee") != null && t.get("assignee").id === this.props.auth.id});
-
-    // TODO: Move to a better place
-    // if(myAssignedTasks.size >= 5) {
-    //   this.props.showError(i18n.t('task.cant-take-messages-limit'));
-    //   return;
-    // }
-
-    // Uncomment to restrict task assign on the client side only
-
-    //if(!this.isAdmin() && !this.isGuide()) {
-    //  this.props.showError(i18n.t('task.cant-take-messages'));
-    //  return;
-    //}
-
     if (!this.props.selectedProject.canAssignTask) {
       this.props.showError(i18n.t('task.user-cannot-assign'));
       return;
@@ -315,12 +263,12 @@ export class TasksPage extends Component {
   followTaskToSignedUser = (task) => {
     this.props.followTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.follow-task-completed'));
-  }
+  };
 
   unfollowTaskToSignedUser = (task) => {
     this.props.unfollowTask(task, this.props.auth);
     this.props.showSuccess(i18n.t('task.unfollow-task-completed'));
-  }
+  };
 
   unassignTask(task) {
     const isCreator = task.creator && task.creator.id === this.props.auth.id;
@@ -341,41 +289,6 @@ export class TasksPage extends Component {
     this.props.removeComment(comment);
     this.props.showSuccess(i18n.t('comments.comment-deleted'));
   };
-
-  generateCSV() {
-    console.log("Generating csv...");
-    if (!this.isAdmin()) return;
-
-    const csv = [["TaskId", "Task Name", "Type", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
-
-    this.state.tasks.forEach((t) => {
-
-      const defaultTypes = [
-        i18n.t('task.types.planning'),
-        i18n.t('task.types.shifts'),
-        i18n.t('task.types.camps'),
-        i18n.t('task.types.art'),
-        i18n.t('task.types.other')
-      ];
-
-      const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
-      let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
-
-      let labels = [];
-      Object.keys(t.label).forEach((label) => {
-        labels.push(label);
-      });
-
-
-      if (t.assignee != null) {
-        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
-      }
-      csv.push(tcsv);
-
-    });
-
-    return csv;
-  }
 
   confirmUnsavedTask() {
     // If task exists and it's invalid
@@ -404,14 +317,10 @@ export class TasksPage extends Component {
     this.props.history.push(taskParameter);
   }
 
-  onLabelChanged(labels) {
-    this.setState({labels});
-  }
-
   onQueryChange = (query) => {
     this.setState({query});
     this.props.history.push({
-      search: addQueryParam('query=' + query)
+      search: setQueryParams(['query='+query])
     });
   };
 
@@ -462,7 +371,7 @@ export class TasksPage extends Component {
       />)
   }
 
-  createTask() {
+  createTask = () => {
     if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       return;
@@ -472,7 +381,51 @@ export class TasksPage extends Component {
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');
-  }
+  };
+
+  getTaskTypesFromProject = (index) => {
+    if (!this.props.selectedProject ||
+      !this.props.selectedProject.taskTypes ||
+      this.props.selectedProject.taskTypes.length <= 0 ||
+      this.props.selectedProject.taskTypes.length <= index
+    ) {
+      return '';
+    }else {
+      return this.props.selectedProject.taskTypes[index];
+    }
+  };
+
+  getSelectedFilters = () => {
+    const params = getUrlSearchParams();
+    const filter = params['filter'];
+    const taskType = params['text'];
+    const labels = params['labels'];
+
+    const results = [];
+    if(filter === 'taskType' && taskType) {
+      results.push({type:'filter', value: this.getTaskTypesFromProject(taskType - 1)});
+    }
+    if(filter === 'mine') {
+      results.push({type:'filter', value: i18n.t('task.my-tasks')});
+    }
+    if(filter === 'unassigned') {
+      results.push({type:'filter', value: i18n.t('task.free-tasks')});
+    }
+    if(labels) {
+      if(typeof(labels) === 'string') {
+        results.push({type:'labels', value: labels});
+      }else {
+        labels.forEach((label) => {
+          results.push({type:'labels', value: label});
+        });
+      }
+    }
+    return results;
+  };
+
+  removeQueryByLabel = (type, value) => {
+    removeQueryParamAndGo(this.props.history, [type], value);
+  };
 
   render() {
     // TODO : use state.tasks instead. It is possible that a filter would
@@ -481,47 +434,68 @@ export class TasksPage extends Component {
     const isLoading = (!this.state.tasks || (this.props.tasks.size <= 0 && !isNewTask));
     const projectUrl = this.props.match.params.projectUrl;
 
+    const selectedFilters = this.getSelectedFilters();
+    const isFiltersActive = selectedFilters.length > 0;
+
     return (
-      <div>
-        <div className="g-col">
-          {<TaskFilters
-            filter={this.props.filterType}
-            selectedProject={this.props.selectedProject}
-            projectUrl={projectUrl} //TODO - should be from state
-            labels={this.state.labelPool}
-            onLabelChange={this.onLabelChanged}
-            onQueryChange={this.onQueryChange}
-            query={this.state.query}
-            generateCSV={this.generateCSV.bind(this)}
-            userDefaultProject={ this.props.auth.defaultProject }
-            isAdmin={this.isAdmin()}/>
-          }
-        </div>
+      <I18n ns='translations'>
+        {
+          (t, { i18n }) => (
+          <div className={'task-page-root-wrapper'}>
+            <div className={'top-nav-wrapper'}>
+              <TopNav onQueryChange={this.onQueryChange}
+                      isFilterActive={isFiltersActive}
+                      query={this.state.query}
+                      setMenuOpen={this.props.setMenuOpen}
+                      selectedFilters={selectedFilters}
+                      createTask={this.createTask}
+                      removeQueryByLabel={this.removeQueryByLabel}/>
+            </div>
 
-        <div className='task-page-wrapper'>
-          <LoaderUnicorn isShow={ isLoading }/>
-          <div className='task-view-wrapper'>
-            { this.renderTaskView() }
-          </div>
-          <div className='task-list-wrapper'>
-            <TaskList history={this.props.history}
-              tasks={this.state.tasks}
-              selectTask={this.goToTask}
-              createTask={this.createTask}
-              selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
-              selectedProject = { this.props.selectedProject }
-              projectUrl = { projectUrl } //TODO - should be from state
-            />
-          </div>
+            <div className='task-page-wrapper'>
+              <LoaderUnicorn isShow={ isLoading }/>
+              <div className='task-view-wrapper'>
+                { this.renderTaskView() }
+              </div>
+              <div className='task-list-wrapper'>
+                <TaskList history={this.props.history}
+                  tasks={this.state.tasks}
+                  selectTask={this.goToTask}
+                  selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
+                  selectedProject = { this.props.selectedProject }
+                  projectUrl = { projectUrl } //TODO - should be from state
+                />
+              </div>
 
-          { (this.state.selectedTask == null) ?
-            <div className='task-view-bottom-loader'>&nbsp;</div>: ''
-          }
-        </div>
-      </div>
-    );
+              { (this.state.selectedTask == null) ?
+                <div className='task-view-bottom-loader'>&nbsp;</div>: ''
+              }
+            </div>
+          </div>
+          )
+        }
+      </I18n>
+    )
   }
 }
+
+TasksPage.propTypes = {
+  createTask: PropTypes.func.isRequired,
+  dismissNotification: PropTypes.func.isRequired,
+  filters: PropTypes.object.isRequired,
+  buildFilter: PropTypes.func.isRequired,
+  loadTasks: PropTypes.func.isRequired,
+  loadLabels: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  removeTask: PropTypes.func.isRequired,
+  assignTask: PropTypes.func.isRequired,
+  tasks: PropTypes.instanceOf(List).isRequired,
+  unloadTasks: PropTypes.func.isRequired,
+  unloadComments: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+  setMenuOpen: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
 
 
 //=====================================
@@ -538,6 +512,8 @@ const mapStateToProps = (state) => {
   }
 };
 
+
+
 const mapDispatchToProps = Object.assign(
   {},
   tasksActions,
@@ -545,6 +521,7 @@ const mapDispatchToProps = Object.assign(
   notificationActions,
   labelActions,
   authActions,
+  userInterfaceActions
 );
 
 export default connect(

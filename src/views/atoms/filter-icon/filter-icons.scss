@@ -1,0 +1,45 @@
+@import 'views/styles/shared';
+
+.filter-icon-wrapper {
+  border: none;
+  display: flex;
+  align-items: center;
+  background: $primary-btn-color;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 8px;
+  padding: 5px 8px;
+  -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+  -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+  box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+
+  &:hover {
+    color: $primary-color;
+  }
+
+  .filter-icon {
+    background-image: url(./filter_icon.png);
+    width: 22px;
+    height: 25px;
+    background-size: cover;
+    display: inline-block;
+    overflow: hidden;
+    border: none;
+
+    &:hover {
+      background-image: url(./filter-icon-selected.png);
+    }
+  }
+
+  .filter-icon.active {
+    background-image: url(./filter-icon-selected.png);
+  }
+
+  .filter-text {
+    font-size: 14px;
+  }
+
+  .filter-text.active {
+    color: $primary-color;
+  }
+}

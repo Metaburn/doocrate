@@ -4,15 +4,21 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
   return locationSearch.substr(1).split('&').reduce(function (q, query) {
     const chunks = query.split('=');
     const key = chunks[0];
-    const value = chunks[1];
+    if(!chunks[1]) {
+      return {};
+    }
+    const values = chunks[1].split(','); //We want to support value=123,555
+    const value = (values.length > 1 ) ? values : values[0];
     return (q[key] = value, q);
   }, {});
 }
 
-// TODO: This should be filled with some transpiler to support older browsers
 // Takes the { param=value, param2=value} and export it as a string to be used as a query param
 export function urlSearchParamsToString(paramObject) {
   let result = '';
+  if(!paramObject) {
+    return '';
+  }
   Object.keys(paramObject).forEach(e => {
     if (e == null || e === '') return;
     result+=`${e}=${paramObject[e]}&`;
@@ -26,30 +32,37 @@ export function urlSearchParamsToString(paramObject) {
   return result
 }
 
-/*
- Handles replacing / concatting params to location
- Can receive complete=true for example
-*/
-export function addQueryParam(newQueryParams) {
+// Array of params [{name:name,value:value}] to set in query url
+export function setQueryParams(params) {
   let currentSearchParams = getUrlSearchParams();
-  const newQueryParamsObj = getUrlSearchParams('?' + newQueryParams);
-  Object.keys(newQueryParamsObj).forEach(param => {
-    if (param == null || param === '') return;
-    currentSearchParams[param] = newQueryParamsObj[param];
-  });
+  const paramsObj = getUrlSearchParams('?' + params);
+  Object.keys(paramsObj).forEach(param => {
+      if (param == null || param === '' || !currentSearchParams) return;
+      currentSearchParams[param] = paramsObj[param];
+    });
   return urlSearchParamsToString(currentSearchParams);
 }
 
 /*
  This function handles replacing / concatting params to location
  Can receive complete for example will remove complete
+ value - Optional value if it's a multi value like labels=label1,label2 then value=label2 can remove that label
+ Apparently URLSearchParams doesn't handle delete for a single value
 */
-export function removeQueryParam(paramsToRemove) {
-  let currentSearchParams = getUrlSearchParams();
+export function removeQueryParam(paramsToRemove, value) {
+  let currentQueryParams = getUrlSearchParams();
+
+  if(!currentQueryParams) { return {}}
   paramsToRemove.forEach( param => {
-    delete currentSearchParams[param];
+    // Handle case of label=['label1','label2']
+
+    if(Array.isArray(currentQueryParams[param]) && value) {
+      currentQueryParams[param] = currentQueryParams[param].filter((val) => { return val !== value });
+    }else {
+      delete currentQueryParams[param];
+    }
   });
-  return urlSearchParamsToString(currentSearchParams);
+  return urlSearchParamsToString(currentQueryParams);
 }
 
 // Get a given cookie from document.cookie

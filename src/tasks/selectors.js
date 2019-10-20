@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
   complete: (auth, value) => ({type: "complete", text: value}),
@@ -12,6 +14,10 @@ const filters = {
 export function buildFilter(auth, type, value) {
   return filters[type](auth, value);
 }
+
+export const labelsPoolSelector = ({ tasks }) => tasks.labelsPool;
+
+export const getLabelsPool = createSelector(labelsPoolSelector, (labelsPool) => labelsPool);
 
 
 //=====================================

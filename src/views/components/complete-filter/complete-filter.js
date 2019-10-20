@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import ToolTip from 'react-portal-tooltip';
 import Icon from '../icon';
-import { addQueryParam, removeQueryParam} from 'src/utils/browser-utils.js';
+import { setQueryParams, removeQueryParam} from 'src/utils/browser-utils.js';
 
 import { I18n } from 'react-i18next';
 
@@ -34,7 +34,7 @@ class CompleteFilter extends Component {
       <I18n ns='translations'>
         {
           (t) => (
-            <div className={`complete-filter float-dir-${t('lang-float-reverse')}`}
+            <div className={`complete-filter complete-filter-${t('lang-float-reverse')} float-dir-${t('lang-float-reverse')}`}
                  onMouseEnter={this.showTooltip}
                  onMouseLeave={this.hideTooltip}>
               <Icon className='label notranslate' name='filter_list' />
@@ -48,7 +48,7 @@ class CompleteFilter extends Component {
                         TaskFilters.getCompleteQuery(location) === 'false'
                       )
                     }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
-                      search: addQueryParam('complete=false')}}>{t('task.incomplete-tasks')}</NavLink>
+                      search: setQueryParams(['complete=false'])}}>{t('task.incomplete-tasks')}</NavLink>
                   </span>
 
                   <span>
@@ -57,7 +57,7 @@ class CompleteFilter extends Component {
                         TaskFilters.getCompleteQuery(location) === 'true'
                       )
                     }} to={{ pathname: '/'+ this.props.projectUrl + '/task/1',
-                      search: addQueryParam('complete=true')}}>{t('task.complete-tasks')}</NavLink>
+                      search: setQueryParams(['complete=true'])}}>{t('task.complete-tasks')}</NavLink>
                   </span>
 
                   <span>
