@@ -3,7 +3,13 @@
 @import "~slick-carousel/slick/slick-theme.css";
 
 .about-page {
-  padding: 2em 4em;
+  padding: 2em;
+
+  a {
+    text-decoration: underline;
+    color: $primary-color;
+  }
+
   .carousel-container {
     width: 50%;
     height: 400px;

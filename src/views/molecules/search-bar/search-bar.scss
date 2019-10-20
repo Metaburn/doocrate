@@ -8,18 +8,27 @@
     position: relative;
     overflow: hidden;
     background: white;
-    border: none;
+
     align-items: center;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+    border: 1px solid transparent;
 
     &:hover {
-      border-color: rgba(235, 20, 120, 0.66);
+      border: 1px solid $primary-color;
+
+      .search-icon {
+        color: $primary-color;
+      }
     }
 
     &:focus {
-      border-color: #eb1478;
+      border: 1px solid $primary-color;
+
+      .search-icon {
+        border-color: $primary-color;
+      }
     }
 
     .search-icon {
@@ -40,9 +49,5 @@
 
   .filter-icon-wrapper {
     margin: 0 20px;
-  }
-
-  &:hover {
-    color: $primary-color;
   }
 }
