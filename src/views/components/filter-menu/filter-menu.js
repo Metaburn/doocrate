@@ -13,7 +13,7 @@ import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";
 import { I18n } from 'react-i18next';
 import i18n from "../../../i18n";
-import { setQueryParam } from "../../../utils/browser-utils";
+import { setQueryParams } from "../../../utils/browser-utils";
 
 class FilterMenu extends Component {
 
@@ -93,7 +93,7 @@ class FilterMenu extends Component {
 
   onLabelChanged = (label) => {
     this.props.history.push({
-      search: setQueryParam('labels', label)
+      search: setQueryParams(['labels=' + label])
     });
   }
 }

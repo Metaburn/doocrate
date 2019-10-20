@@ -110,7 +110,19 @@
 
 @media (max-width: 767px) {
   .header {
+    height: auto;
+    padding: 0;
+    margin: 0;
+
     .header-wrapper {
+      display: none;
+    }
+
+    .header-side {
+      display: none;
+    }
+
+    .header-actions{
       display: none;
     }
   }

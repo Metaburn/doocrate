@@ -2,14 +2,14 @@
 
 .selected-filters-labels-wrapper {
   display: flex;
-  margin-bottom: 15px;
 
   .label-wrapper {
-    margin: 0 5px;
+    margin: 5px 5px;
   }
 
   .selected-filters-labels {
     display: flex;
+    flex-flow: row wrap;
   }
 
   .flex-left {

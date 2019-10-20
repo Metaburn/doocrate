@@ -7,8 +7,11 @@
   background: $primary-btn-color;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 5px 8px;
+  -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+  -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+  box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
 
   &:hover {
     color: $primary-color;

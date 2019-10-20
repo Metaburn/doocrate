@@ -56,8 +56,6 @@ class Header extends Component {
                     pauseOnHover
                   />
 
-                  <a href='/'>{this.props.auth? '': 'Doocrate' }<h1 className='header-title'>&nbsp;</h1></a>
-
                   <SetUserInfo
                     isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
                     userInfo={ this.props.auth }

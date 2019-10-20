@@ -16,15 +16,14 @@ import TaskView from '../../components/task-view';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
-import { getUrlSearchParams, setQueryParam } from 'src/utils/browser-utils.js';
+import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
 import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { I18n } from 'react-i18next';
-import SearchBar from "../../molecules/search-bar/search-bar";
-import SelectedFiltersLabels from "../../molecules/selected-filters-labels/selected-filters-labels";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
+import TopNav from "../../molecules/top-nav/top-nav";
 
 
 export class TasksPage extends Component {
@@ -38,7 +37,6 @@ export class TasksPage extends Component {
     this.goToTask = this.goToTask.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
-    this.createTask = this.createTask.bind(this);
     this.removeComment = this.removeComment.bind(this);
 
     this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
@@ -322,7 +320,7 @@ export class TasksPage extends Component {
   onQueryChange = (query) => {
     this.setState({query});
     this.props.history.push({
-      search: setQueryParam('query', query)
+      search: setQueryParams(['query='+query])
     });
   };
 
@@ -373,7 +371,7 @@ export class TasksPage extends Component {
       />)
   }
 
-  createTask() {
+  createTask = () => {
     if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
       this.props.showError(i18n.t('task.user-new-tasks-closed'));
       return;
@@ -383,7 +381,7 @@ export class TasksPage extends Component {
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');
-  }
+  };
 
   getTaskTypesFromProject = (index) => {
     if (!this.props.selectedProject ||
@@ -437,22 +435,21 @@ export class TasksPage extends Component {
     const projectUrl = this.props.match.params.projectUrl;
 
     const selectedFilters = this.getSelectedFilters();
+    const isFiltersActive = selectedFilters.length > 0;
 
     return (
       <I18n ns='translations'>
         {
           (t, { i18n }) => (
           <div className={'task-page-root-wrapper'}>
-            <div className="g-col">
-              <SearchBar
-                query={this.state.query}
-                onQueryChange={this.onQueryChange}
-                setMenuOpen={this.props.setMenuOpen}
-                isFilterActive={ selectedFilters.length > 0}
-              />
-              <SelectedFiltersLabels
-                selectedFilters={ selectedFilters }
-                onClearFilter={this.removeQueryByLabel} />
+            <div className={'top-nav-wrapper'}>
+              <TopNav onQueryChange={this.onQueryChange}
+                      isFilterActive={isFiltersActive}
+                      query={this.state.query}
+                      setMenuOpen={this.props.setMenuOpen}
+                      selectedFilters={selectedFilters}
+                      createTask={this.createTask}
+                      removeQueryByLabel={this.removeQueryByLabel}/>
             </div>
 
             <div className='task-page-wrapper'>
@@ -464,7 +461,6 @@ export class TasksPage extends Component {
                 <TaskList history={this.props.history}
                   tasks={this.state.tasks}
                   selectTask={this.goToTask}
-                  createTask={this.createTask}
                   selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
                   selectedProject = { this.props.selectedProject }
                   projectUrl = { projectUrl } //TODO - should be from state

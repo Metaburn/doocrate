@@ -6,7 +6,7 @@ import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
 import { I18n } from 'react-i18next';
 import './task-filters.css';
-import { setQueryParam, setQueryParams } from "../../../utils/browser-utils";
+import { setQueryParams } from "../../../utils/browser-utils";
 
 class TaskFilters extends Component {
   constructor() {
@@ -88,14 +88,14 @@ class TaskFilters extends Component {
                 TaskFilters.getFilterQuery(location) === 'taskType' &&
                 TaskFilters.getFilterText(location) === '1')
             }} to={{ pathname: defaultTask,
-              search: setQueryParams([{name:'filter',value:'taskType'},{name:'text',value:'1'}])}}>
+              search: setQueryParams(['filter=taskType&text=1'])}}>
               {this.getTaskTypeFromProject(0)}</NavLink></li>
 
             <li><NavLink isActive={(match, location) => {
               return (TaskFilters.getFilterQuery(location) === 'taskType' &&
                 TaskFilters.getFilterText(location) === '2')
             }} to={{ pathname: defaultTask,
-              search: setQueryParams([{name:'filter',value:'taskType'},{name:'text',value:'2'}])}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
+              search: setQueryParams(['filter=taskType&text=2'])}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
 
             <li><NavLink isActive={(match, location) => {
               return(
@@ -103,7 +103,7 @@ class TaskFilters extends Component {
               TaskFilters.getFilterText(location) === '3'
               )
             }} to={{ pathname: defaultTask,
-              search: setQueryParams([{name:'filter',value:'taskType'},{name:'text',value:'3'}])}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
+              search: setQueryParams(['filter=taskType&text=3'])}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
 
             <li><NavLink isActive={(match, location) => {
               return(
@@ -111,7 +111,7 @@ class TaskFilters extends Component {
                 TaskFilters.getFilterText(location) === '4'
               )
             }} to={{ pathname: defaultTask,
-              search: setQueryParams([{name:'filter',value:'taskType'},{name:'text',value:'4'}])}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
+              search: setQueryParams(['filter=taskType&text=4'])}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
 
             <li><NavLink isActive={(match, location) => {
               return(
@@ -119,17 +119,17 @@ class TaskFilters extends Component {
                 TaskFilters.getFilterText(location) === '5'
               )
             }} to={{ pathname: defaultTask,
-              search: setQueryParams([{name:'filter',value:'taskType'},{name:'text',value:'5'}])}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
+              search: setQueryParams(['filter=taskType&text=5'])}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
             </div>
 
           <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.task-type')}</h1>
           <div className={'task-type'}>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
-              search: setQueryParam('filter','mine')}}>
+              search: setQueryParams(['filter=mine'])}}>
               {t('task.my-tasks')}
               </NavLink></li>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
-              search: setQueryParam('filter','unassigned')}}>
+              search: setQueryParams(['filter=unassigned'])}}>
               {t('task.free-tasks')}
               </NavLink></li>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{

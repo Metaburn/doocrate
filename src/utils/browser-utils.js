@@ -34,19 +34,13 @@ export function urlSearchParamsToString(paramObject) {
 
 // Array of params [{name:name,value:value}] to set in query url
 export function setQueryParams(params) {
-  const result = new URLSearchParams(window.location.search);
-  for (const param of params){
-    result.set(param.name, param.value);
-  }
-
-  return result.toString();
-}
-
-// Set a given name and value in query url
-export function setQueryParam(name, value) {
-  const result = new URLSearchParams(window.location.search);
-  result.set(name, value);
-  return result.toString();
+  let currentSearchParams = getUrlSearchParams();
+  const paramsObj = getUrlSearchParams('?' + params);
+  Object.keys(paramsObj).forEach(param => {
+      if (param == null || param === '' || !currentSearchParams) return;
+      currentSearchParams[param] = paramsObj[param];
+    });
+  return urlSearchParamsToString(currentSearchParams);
 }
 
 /*

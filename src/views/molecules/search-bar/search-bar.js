@@ -19,7 +19,7 @@ class SearchBar extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className={`search-bar flex-${t('lang-float')}`}>
+            <div className={`search-bar`}>
               <div className={'search-container'}>
                 <input
                   className={"search-input"}

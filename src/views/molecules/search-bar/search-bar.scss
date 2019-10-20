@@ -12,7 +12,10 @@
     align-items: center;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+    -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+    box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
     border: 1px solid transparent;
 
     &:hover {
@@ -42,12 +45,40 @@
       padding: 0.5rem 0.5rem 0.5rem 0;
       flex: 1;
 
+      box-sizing: border-box;
+
       font-family: $base-font-family;
       font-size: 16px;
+
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      outline: none;
+
+      &::-webkit-input-placeholder { /* Edge */
+        color: #7B7B7B;
+      }
+
+      &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #7B7B7B;
+      }
+
+      &::placeholder {
+        color: #7B7B7B;
+      }
     }
   }
 
   .filter-icon-wrapper {
-    margin: 0 20px;
+    margin: 0 10px;
+  }
+
+  .filter-icon-wrapper-right {
+    margin-right: 15px;
+    margin-left: 0;
+  }
+
+  .filter-icon-wrapper-left {
+    margin-left: 15px;
+    margin-right: 0;
   }
 }

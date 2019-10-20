@@ -1,21 +1,20 @@
 @import 'views/styles/shared';
 
 .task-page-root-wrapper {
-  padding-top: 16px;
+  padding-top: 0;
 
   .search-bar {
-    padding-left: 10px;
-    padding-bottom: 15px;
+    padding: 22px 0 8px 0;
 
     .search-container {
-      width: 440px;
+      width: 100%;
     }
   }
 }
 
-.add-task-button {
-  margin: 0.43em;
-  display: inline-block;
+.top-nav-wrapper {
+  padding: 16px;
+  max-width: 50%;
 }
 
 .task-page-wrapper {
@@ -64,7 +63,7 @@
   .search-bar {
     .search-input {
       width: 100%;
-      min-width: 80px;
+      min-width: 0;
     }
   }
 }
@@ -77,7 +76,6 @@
   .task-page-root-wrapper {
 
     .search-bar {
-
       .search-container {
         width: auto;
         flex: auto;
@@ -85,12 +83,15 @@
     }
   }
 
-
 }
 
-@media (max-width: 795px) {
+@media (max-width: 767px) {
   .task-view-wrapper {
     width: 100%;
     min-width: 50%;
+  }
+
+  .top-nav-wrapper {
+    max-width: 100%;
   }
 }

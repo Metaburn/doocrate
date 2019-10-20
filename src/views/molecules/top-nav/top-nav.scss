@@ -1,0 +1,39 @@
+@import 'views/styles/shared';
+
+.top-nav {
+  padding: 24px;
+  width: inherit;
+  background-color: #67439B;
+  -webkit-border-radius: 16px;
+  -moz-border-radius: 16px;
+  border-radius: 16px;
+  -webkit-box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
+  -moz-box-shadow: 0px 4px 4px  rgba(103, 67, 155, 0.16);
+  box-shadow: 0px 4px 4px  rgba(103, 67, 155, 0.16);
+
+  .add-task-button {
+    display: flex;
+    height: 48px;
+    font-size: 16px;
+    background-color: $primary-color;
+    color: white;
+    -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+    -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+    box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+  }
+
+  .add-task-icon {
+    font-size: 16px;
+  }
+
+  .add-task-icon-left {
+    padding-right: 2px;
+  }
+
+  .add-task-icon-right {
+    padding-left: 2px;
+  }
+}

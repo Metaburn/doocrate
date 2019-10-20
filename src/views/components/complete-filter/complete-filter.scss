@@ -1,7 +1,8 @@
 @import 'views/styles/shared';
 
 .complete-filter {
-  display: inline-block;
+  position: absolute;
+  left: 5px;
 }
 
 .complete-tooltip-container {
