@@ -1,1 +1,1 @@
-export { default } from './selected-filters-labels';
+export { PopularLabels } from './popular-labels';

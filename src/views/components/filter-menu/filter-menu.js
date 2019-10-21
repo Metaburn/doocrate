@@ -17,13 +17,6 @@ import { setQueryParams } from "../../../utils/browser-utils";
 
 class FilterMenu extends Component {
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      menuIsOpen: false,
-    }
-  }
-
   render() {
     return (
       <I18n ns='translations'>
@@ -32,13 +25,13 @@ class FilterMenu extends Component {
             <div className={'filter-menu'}>
               <h1 className={`title title-${t('lang-float')}`}>{t('filter.header')}</h1>
               {<TaskFilters
-                selectedProject={this.props.selectedProject} //TODO does this work with this.state.selectedProject
+                selectedProject={this.props.selectedProject}
                 labelsPool={this.props.labelsPool || []}
                 onLabelChange={this.onLabelChanged}
-                query={this.state.query}
                 generateCSV={this.generateCSV.bind(this)}
                 userDefaultProject={this.props.auth.defaultProject}
-                isAdmin={this.isAdmin()}/>
+                isAdmin={this.isAdmin()}
+                popularLabels={this.props.popularLabels}/>
               }
             </div>
           )
@@ -104,6 +97,7 @@ FilterMenu.propTypes = {
   updateTask: PropTypes.func.isRequired,
   setMenuOpen: PropTypes.func.isRequired,
   labelsPool: PropTypes.object,
+  popularLabels: PropTypes.array,
   auth: PropTypes.object.isRequired
 };
 
@@ -113,7 +107,7 @@ const mapStateToProps = (state) => {
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
     labelsPool: state.tasks.labelsPool,
-    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
+    popularLabels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     buildFilter: buildFilter
   }

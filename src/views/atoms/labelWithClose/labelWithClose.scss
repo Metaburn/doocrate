@@ -1,16 +1,7 @@
 @import 'views/styles/shared';
 
-.label-wrapper {
-  font-size: 0.8em;
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  border-radius: 9px;
-  border: none;
-  padding: 3px 0;
-
-
+// We inject this into a label as a children so we modify the label wrapper
+.label-wrapper{
 
   .label-text-left {
     padding-left: 10px;

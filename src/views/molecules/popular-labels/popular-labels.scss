@@ -1,22 +1,33 @@
 @import 'views/styles/shared';
 
-.selected-filters-labels-wrapper {
+.popular-labels-wrapper {
   display: flex;
 
-  .label-wrapper {
-    margin: 5px 5px;
-  }
-
-  .selected-filters-labels {
+  .popular-labels {
     display: flex;
     flex-flow: row wrap;
-  }
 
-  .flex-left {
-    padding-left: 10px;
-  }
+    .label-wrapper {
 
-  .flex-right {
-    padding-right: 10px;
+      margin: 5px 5px;
+      padding: 3px 5px;
+
+      .label-text {
+        padding:0;
+      }
+    }
+
+    .selected-filters-labels {
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .flex-left {
+      padding-left: 10px;
+    }
+
+    .flex-right {
+      padding-right: 10px;
+    }
   }
 }

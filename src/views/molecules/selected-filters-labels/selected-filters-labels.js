@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { I18n } from 'react-i18next';
 
 import './selected-filters-labels.css';
-import Label from "src/views/atoms/label";
+import LabelWithClose from "../../atoms/labelWithClose/labelWithClose";
 
 class SelectedFiltersLabels extends Component {
 
@@ -22,7 +22,7 @@ class SelectedFiltersLabels extends Component {
                 {
                   this.props.selectedFilters.map(filter => {
                     return (
-                      <Label key={filter.value}
+                      <LabelWithClose key={filter.value}
                              label={filter.value}
                              extra={filter.type}
                              backgroundColor={'#eb1478'}

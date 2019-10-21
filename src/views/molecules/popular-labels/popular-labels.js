@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import { I18n } from 'react-i18next';
 
-import './selected-filters-labels.css';
+import './popular-labels.css';
 import Label from "src/views/atoms/label";
 
-class SelectedFiltersLabels extends Component {
+class PopularLabels extends Component {
 
   constructor() {
     super(...arguments);
@@ -17,16 +17,15 @@ class SelectedFiltersLabels extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className={'selected-filters-labels-wrapper'}>
-              <div className={`selected-filters-labels flex-${t('lang-float')}`}>
+            <div className={'popular-labels-wrapper'}>
+              <div className={`popular-labels flex-${t('lang-float')}`}>
                 {
-                  this.props.selectedFilters.map(filter => {
+                  this.props.labels.map(label => {
                     return (
-                      <Label key={filter.value}
-                             label={filter.value}
-                             extra={filter.type}
-                             backgroundColor={'#eb1478'}
-                             onClear={this.props.onClearFilter}/>
+                      <Label key={label}
+                             label={label}
+                             backgroundColor={'#AAA'}
+                             onClick={this.props.onLabelClick}/>
                     )
                   })
                 }
@@ -38,9 +37,9 @@ class SelectedFiltersLabels extends Component {
   }
 }
 
-SelectedFiltersLabels.propTypes = {
-  selectedFilters: PropTypes.array,
-  onClearFilter: PropTypes.func,
+PopularLabels.propTypes = {
+  labels: PropTypes.array,
+  onLabelClick: PropTypes.func,
 };
 
-export default SelectedFiltersLabels;
+export default PopularLabels;
