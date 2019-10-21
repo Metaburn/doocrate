@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import TaskFilters from '../../components/task-filters';
-
-import './filter-menu.css';
-import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 import {authActions} from "../../../auth";
 import {connect} from "react-redux";
@@ -11,33 +9,28 @@ import {buildFilter, taskFilters, tasksActions} from "../../../tasks";
 import {labelActions} from "../../../labels";
 import {notificationActions} from "../../../notification";
 import {commentsActions} from "../../../comments";
-import { I18n } from 'react-i18next';
 import i18n from "../../../i18n";
 import { setQueryParams } from "../../../utils/browser-utils";
+import './filter-menu.css';
 
 class FilterMenu extends Component {
-
   render() {
+    const { selectedProject, labelsPool, auth, popularLabels } = this.props;
+    const classNames = `filter-menu lang-${i18n.language}`;
+
     return (
-      <I18n ns='translations'>
-        {
-          (t) => (
-            <div className={'filter-menu'}>
-              <h1 className={`title title-${t('lang-float')}`}>{t('filter.header')}</h1>
-              {<TaskFilters
-                selectedProject={this.props.selectedProject}
-                labelsPool={this.props.labelsPool || []}
-                onLabelChange={this.onLabelChanged}
-                generateCSV={this.generateCSV.bind(this)}
-                userDefaultProject={this.props.auth.defaultProject}
-                isAdmin={this.isAdmin()}
-                popularLabels={this.props.popularLabels}/>
-              }
-            </div>
-          )
-        }
-      </I18n>
-    )
+      <div className={classNames}>
+        <h1 className="menu-title">{i18n.t('filter.header')}</h1>
+        <TaskFilters
+          selectedProject={selectedProject} //TODO does this work with this.state.selectedProject
+          labelsPool={labelsPool || []}
+          onLabelChange={this.onLabelChanged}
+          generateCSV={this.generateCSV.bind(this)}
+          userDefaultProject={auth.defaultProject}
+          isAdmin={this.isAdmin()}
+          popularLabels={popularLabels}/>
+      </div>
+    );
   }
 
   // Check if admin of that project

@@ -18,13 +18,11 @@
   }
 
   .filter-icon {
-    background-image: url(./filter_icon.png);
-    width: 22px;
-    height: 25px;
-    background-size: cover;
+    background: url(./filter_icon.png) no-repeat center;
+    background-size: 16px;
     display: inline-block;
-    overflow: hidden;
-    border: none;
+    width: 22px;
+    height: 22px;
 
     &:hover {
       background-image: url(./filter-icon-selected.png);

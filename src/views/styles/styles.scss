@@ -24,11 +24,10 @@ a {
 
 button {
   font-family: $base-font-family;
-}
 
-
-button:focus {
-  outline:0;
+  &:focus {
+    outline: none;
+  }
 }
 
 div:focus {

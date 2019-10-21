@@ -1,75 +1,10 @@
 @import 'views/styles/shared';
 
-/*
-Sidebar wrapper styles
-Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
-*/
-.bm-menu-wrap {
-  position: fixed;
-  height: 100%;
+.filter-side-menu-overlay {
+  background: rgba(0, 0, 0, 0.3);
 }
 
-.right-menu {
-  left: 0;
-}
-
-.left-menu {
-
-}
-
-/* Position and sizing of burger button */
-.bm-burger-button {
-  display: none;
-}
-
-/* Color/shape of burger icon bars */
-.bm-burger-bars {
-  background: #373a47;
-}
-
-/* Color/shape of burger icon bars on hover*/
-.bm-burger-bars-hover {
-  background: #a90000;
-}
-
-.side-menu {
-  /* Position and sizing of clickable cross button */
-  .bm-cross-button {
-    height: 24px;
-    width: 24px;
-    top: 18px;
-  }
-
-  /* Color/shape of close button cross */
-  .bm-cross {
-    background: #bdc3c7;
-  }
-
-  /* General sidebar styles */
-  .bm-menu {
-    padding: 0;
-    background: #f2f2f2;
-    font-size: 1.15em;
-  }
-
-  /* Morph shape necessary with bubble or elastic */
-  .bm-morph-shape {
-    fill: #373a47;
-  }
-
-  /* Wrapper for item list */
-  .bm-item-list {
-
-  }
-
-  /* Individual item */
-  .bm-item {
-    display: block;
-  }
-
-  /* Styling of overlay */
-  .bm-overlay {
-    background: rgba(0, 0, 0, 0.3);
-  }
-
+.filter-side-menu {
+  background: #eee;
+  transition: .3s ease-in-out;
 }

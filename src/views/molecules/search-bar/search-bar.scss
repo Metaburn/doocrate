@@ -7,8 +7,7 @@
     display: inline-flex;
     position: relative;
     overflow: hidden;
-    background: white;
-
+    background: #fff;
     align-items: center;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -35,8 +34,11 @@
     }
 
     .search-icon {
-      padding: 0.5rem;
-      font-size: 2em;
+      position: absolute;
+      left: 0;
+      z-index: 1;
+      font-size: 26px;
+      padding: 0 5px;
     }
 
     .search-input {
@@ -80,5 +82,12 @@
   .filter-icon-wrapper-left {
     margin-left: 15px;
     margin-right: 0;
+  }
+
+  &.lang-en {
+    .search-icon {
+      right: 0;
+      left: auto;
+    }
   }
 }

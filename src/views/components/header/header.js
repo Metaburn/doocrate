@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css'
 
 import './header.css';
-import GoogleTranslate from '../google-translate/google-translate';
+// import GoogleTranslate from '../google-translate/google-translate';
 import {updateUserData} from "../../../auth/auth";
 import HeaderActions from "../header-actions/header-actions";
 import getRandomImage from "../../../utils/unsplash";
@@ -45,7 +45,7 @@ class Header extends Component {
         {
           (t, {i18n}) => (
             <header className='header notranslate'>
-              <SideMenu auth={this.props.auth}/>
+              <SideMenu auth={this.props.auth} i18n={i18n}/>
               <div className={'header-wrapper'}>
                 <div>
                   <ToastContainer
@@ -82,9 +82,9 @@ class Header extends Component {
                     <div className={`lang-select lang-left`}>
                       {this.renderLanguageButton(t, i18n)}
                     </div>
-                    <GoogleTranslate
+                    {/* <GoogleTranslate
                     shouldClose={ this.props.shouldClose }
-                    shouldGoogleTranslateToEnglish= {this.state.shouldGoogleTranslateToEnglish}/>
+                    shouldGoogleTranslateToEnglish= {this.state.shouldGoogleTranslateToEnglish}/> */}
                   </div>
                 </div>
               </div>

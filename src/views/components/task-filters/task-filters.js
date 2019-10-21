@@ -4,14 +4,15 @@ import { NavLink } from 'react-router-dom';
 import { getUrlSearchParams, removeQueryParam} from 'src/utils/browser-utils.js';
 import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
-import { I18n } from 'react-i18next';
+import i18n from '../../../i18n';
+import { setQueryParams } from '../../../utils/browser-utils';
+import PopularLabels from '../../molecules/popular-labels/popular-labels';
 import './task-filters.css';
-import { setQueryParams } from "../../../utils/browser-utils";
-import PopularLabels from "../../molecules/popular-labels/popular-labels";
 
 class TaskFilters extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
+
     this.state = {
       label: [],
       CSVLink: undefined
@@ -38,8 +39,6 @@ class TaskFilters extends Component {
   }
 
   onCSVLink() {
-    console.log("inCSV");
-
     this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>Download CSV</CSVLink></li>});
   }
 
@@ -50,7 +49,7 @@ class TaskFilters extends Component {
       this.props.selectedProject.taskTypes.length <= index
     ) {
       return ''; //TODO - should look better like a placeholder
-    }else {
+    } else {
       return this.props.selectedProject.taskTypes[index];
     }
   }
@@ -65,103 +64,80 @@ class TaskFilters extends Component {
     return result;
   };
 
+  FilterLink = ({ id }) => {
+    const project = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined') ?
+      this.props.selectedProject.url : this.props.userDefaultProject;
+    const defaultTask = `/${project}/task/1`;
+    const linkTitle = this.getTaskTypeFromProject(id);
+    const search = setQueryParams([`filter=taskType&text=${id + 1}`]);
+
+    const isActive = (match, location) =>
+      TaskFilters.getFilterQuery(location) === 'taskType' &&
+      TaskFilters.getFilterText(location) === (id + 1);
+
+    return (
+      <NavLink isActive={isActive} to={{ pathname: defaultTask, search }}>
+        {linkTitle}
+      </NavLink>
+    );
+  }
+
   onPopularLabelClick = (label) => {
     this.handleLabelChange([label]);
   };
 
   render() {
     let downloadCSV = null;
+
     if (this.props.isAdmin) {
-      downloadCSV = this.state.CSVLink ?  this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
+      downloadCSV = this.state.CSVLink ? this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
     }
-    const project = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined')?
+
+    const project = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined') ?
       this.props.selectedProject.url : this.props.userDefaultProject;
 
     const defaultTask = '/' + project + '/task/1';
 
-    return(
-      <I18n ns='translations'>
-      {
-      (t) => (
-        <div className="task-filters">
-        <ul className='main-filters'>
-          <div className={'categories'}>
-            <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.category')}</h1>
-
-            <li><NavLink isActive={(match, location) => {
-              return(
-                TaskFilters.getFilterQuery(location) === 'taskType' &&
-                TaskFilters.getFilterText(location) === '1')
-            }} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=taskType&text=1'])}}>
-              {this.getTaskTypeFromProject(0)}</NavLink></li>
-
-            <li><NavLink isActive={(match, location) => {
-              return (TaskFilters.getFilterQuery(location) === 'taskType' &&
-                TaskFilters.getFilterText(location) === '2')
-            }} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=taskType&text=2'])}}>{this.getTaskTypeFromProject(1)}</NavLink></li>
-
-            <li><NavLink isActive={(match, location) => {
-              return(
-                TaskFilters.getFilterQuery(location) === 'taskType' &&
-              TaskFilters.getFilterText(location) === '3'
-              )
-            }} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=taskType&text=3'])}}>{this.getTaskTypeFromProject(2)}</NavLink></li>
-
-            <li><NavLink isActive={(match, location) => {
-              return(
-                TaskFilters.getFilterQuery(location) === 'taskType' &&
-                TaskFilters.getFilterText(location) === '4'
-              )
-            }} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=taskType&text=4'])}}>{this.getTaskTypeFromProject(3)}</NavLink></li>
-
-            <li><NavLink isActive={(match, location) => {
-              return(
-                TaskFilters.getFilterQuery(location) === 'taskType' &&
-                TaskFilters.getFilterText(location) === '5'
-              )
-            }} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=taskType&text=5'])}}>{this.getTaskTypeFromProject(4)}</NavLink></li>
-            </div>
-
-          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.task-type')}</h1>
-          <div className={'task-type'}>
-            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=mine'])}}>
-              {t('task.my-tasks')}
-            </NavLink></li>
-            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
-              search: setQueryParams(['filter=unassigned'])}}>
-              {t('task.free-tasks')}
-            </NavLink></li>
-            <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
-              pathname: defaultTask,
-              search: removeQueryParam(['filter'])
-            }}>{t('task.all-tasks')}</NavLink></li>
-          </div>
-
-          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.popular-tags')}</h1>
-          <PopularLabels
-            labels={this.props.popularLabels}
-            onLabelClick={this.onPopularLabelClick}/>
-
-          {downloadCSV}
-          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.by-tag')}</h1>
-          <li>
-            <AutoSuggestedTags
-              value={this.state.label}
-              labels={this.labelsPoolToTags()}
-              placeholder={t('task.search-by-tags')}
-              onChange={this.handleLabelChange}/>
-          </li>
-
-        </ul>
+    return (
+      <nav className="task-filters">
+        <div className="categories">
+          <div className="heading">{i18n.t('filter.category')}</div>
+          {[0, 1, 2, 3, 4].map((id) => (<this.FilterLink id={id}/>))}
         </div>
-      )}
-      </I18n>
+
+        <div className="heading">{i18n.t('filter.task-type')}</div>
+        <div className="task-type">
+          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
+            search: setQueryParams(['filter=mine'])}}>
+            {i18n.t('task.my-tasks')}
+          </NavLink>
+
+          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
+            search: setQueryParams(['filter=unassigned'])}}>
+            {i18n.t('task.free-tasks')}
+          </NavLink>
+
+          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+            pathname: defaultTask,
+            search: removeQueryParam(['filter']) }}>
+            {i18n.t('task.all-tasks')}
+          </NavLink>
+        </div>
+
+        {downloadCSV}
+
+        <div className="heading">{i18n.t('filter.popular-tags')}</div>
+        <PopularLabels
+          labels={this.props.popularLabels}
+          onLabelClick={this.onPopularLabelClick}/>
+
+        <div className="heading">{i18n.t('filter.by-tag')}</div>
+        <AutoSuggestedTags
+          value={this.state.label}
+          labels={this.labelsPoolToTags()}
+          placeholder={i18n.t('task.search-by-tags')}
+          onChange={this.handleLabelChange}/>
+      </nav>
     );
   }
 
@@ -180,6 +156,5 @@ TaskFilters.propTypes = {
   isAdmin: PropTypes.bool.isRequired,
   userDefaultProject: PropTypes.string,
 };
-
 
 export default TaskFilters;
