@@ -46,7 +46,7 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
       <Autosuggest
         ref={props.ref}
         suggestions={suggestions}
-        shouldRenderSuggestions={(value) => value && value.trim().length > 0}
+        shouldRenderSuggestions={(value) => true}
         getSuggestionValue={(suggestion) => suggestion}
         renderSuggestion={(suggestion) => <div className={"suggestion"}>{suggestion}</div>}
         inputProps={{...props, onChange: handleOnChange}}
