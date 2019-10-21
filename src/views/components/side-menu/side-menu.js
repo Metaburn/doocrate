@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
-import { slide as Menu } from 'react-burger-menu'
-import { I18n } from 'react-i18next';
-
-import './side-menu.css';
+import classnames from 'classnames';
+import OffCanvas from 'react-aria-offcanvas';
 import FilterMenu from "../filter-menu/filter-menu";
 import {userInterfaceActions} from "../../../user-interface";
 import {createSelector} from "reselect";
@@ -12,11 +9,12 @@ import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
 import { throttle } from 'lodash';
+import './side-menu.css';
 
 class SideMenu extends Component {
-
   constructor(props, context) {
     super(props, context);
+
     this.state = {
       isMobile: this.isMobile(),
       isTablet: this.isTablet()
@@ -24,12 +22,6 @@ class SideMenu extends Component {
 
     this.throttled = null;
   }
-
-  static propTypes = {
-    auth: PropTypes.object.isRequired,
-    setMenuOpen: PropTypes.func.isRequired,
-    menuIsOpen: PropTypes.func.isRequired,
-  };
 
   // We listen for window resize but making sure not every resize count to
   // not get too many updates and kill performances
@@ -59,41 +51,41 @@ class SideMenu extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.throttledHandleWindowResize);
-
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.throttledHandleWindowResize);
   }
 
-  handleChange = (state) => {
-    this.props.setMenuOpen(state.isOpen);
-  };
-
   render() {
-    const width = this.state.isMobile? '80%':
-      this.state.isTablet ? '50%' :
-      '300px';
+    const { i18n, menuIsOpen, setMenuOpen } = this.props;
+    const { isMobile, isTablet } = this.state;
+
+    const isHebrew = i18n.language === 'he';
+    const position = isMobile ? 'bottom' : isHebrew ? 'right' : 'left';
+    const classNames = classnames('filter-side-menu', { 'is-mobile': isMobile });
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
-            <Menu right={i18n.language !== 'he'}
-                  isOpen={this.props.menuIsOpen}
-                  className={`side-menu ${i18n.language === 'he' ? 'right-menu' : 'left-menu'}`}
-                  disableOverlayClick={false}
-                  onStateChange={(state) => this.handleChange(state)}
-                  width={ width }>
-              <FilterMenu/>
-            </Menu>
-          )
-        }
-      </I18n>
+      <OffCanvas
+        overlayClassName="filter-side-menu-overlay"
+        className={classNames}
+        position={position}
+        height="100%"
+        closeOnOverlayClick={true}
+        isOpen={menuIsOpen}
+        onClose={() => setMenuOpen(false)}>
+        <FilterMenu/>
+      </OffCanvas>
     );
   }
 }
 
+SideMenu.propTypes = {
+  auth: PropTypes.object.isRequired,
+  i18n: PropTypes.object.isRequired,
+  menuIsOpen: PropTypes.bool.isRequired,
+  setMenuOpen: PropTypes.func.isRequired
+};
 
 const mapStateToProps = createSelector(
   getAuth,
@@ -104,10 +96,6 @@ const mapStateToProps = createSelector(
   })
 );
 
-
 const mapDispatchToProps = Object.assign(userInterfaceActions);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SideMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(SideMenu);

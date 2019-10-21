@@ -1,27 +1,54 @@
 @import 'views/styles/shared';
 
-
 .task-filters {
-  @include clearfix;
-  padding: 0 30px;
+  padding: 12px 20px;
   font-size: rem(16px);
-  line-height: 24px;
-  display: inline-block;
-  width: 100%;
+  line-height: 100%;
+
+  .heading {
+    font-size: 20px;
+    padding: 0;
+    margin-bottom: 10px;
+  }
 
   ul {
     list-style-type: none;
   }
 
-  .react-tagsinput-custom {
-    z-index: 2;
-    background: white;
+  a {
+    color: #999;
+    text-decoration: none;
+    padding: 4px 15px 5px;
+    margin-bottom: 2px;
+    border: 0;
     border-radius: 3px;
-    overflow: hidden;
+    transition: all .2s ease;
+
+    &:hover {
+      color: $white;
+      background: $primary-color;
+    }
+
+    &.active {
+      color: $white;
+      background: $primary-color;
+    }
+  }
+
+  .react-tagsinput-input {
+    margin: 0;
+  }
+
+  .react-tagsinput-custom {
+    background: white;
+    display: inline-block;
     width: auto;
     min-width: 186px;
-    display: inline-block;
-    font-family: '"aktiv-grotesk-std", Helvetica Neue, Arial, sans-serif' !important;
+    margin-top: 0;
+    padding: 4px 0;
+    z-index: 2;
+    border-radius: 3px;
+    overflow: hidden;
     font-size: 16px !important;
     border: 1px solid #d5dce0;
     padding: 4px 0 0 0;
@@ -38,17 +65,6 @@
     }
   }
 
-  .main-filters {
-    .react-tagsinput-custom {
-      margin-top: 0;
-      padding: 4px 0;
-    }
-
-    .react-tagsinput-input {
-      margin: 0;
-    }
-  }
-
   .categories {
     padding-top: 0.2em;
     padding-bottom: 1em;
@@ -61,59 +77,9 @@
     padding-bottom: 4px;
   }
 
-  .filter-heading-left {
-    padding-left: 10px;
-  }
-
-  .filter-heading-right {
-    padding-right: 10px;
-  }
-
   .task-type {
     display: flex;
     flex-direction: column;
     padding-bottom: 1em;
   }
-
-  .main-filters li {
-    padding: 3px 20px;
-
-    a {
-      color: #999;
-      text-decoration: none;
-      transition: all 0.2s ease;
-
-      &:hover {
-        color: #666;
-        border-bottom: 2px solid #666;
-      }
-
-      &.active {
-        color: $primary-color;
-        border-bottom: 3px solid $primary-color;
-      }
-    }
-
-  }
-}
-
-@media (max-width: 768px) {
-  .task-filters {
-    padding: 0 1em;
-  }
-}
-
-@media (max-width: 480px) {
-  .task-filters {
-    padding: 0 1em;
-
-    .filter-heading-left {
-      padding-left: 4px;
-    }
-
-    .filter-heading-right {
-      padding-right: 4px;
-    }
-  }
-
 }

@@ -1,43 +1,30 @@
 import React, {Component} from 'react';
-import PropTypes from "prop-types";
-import { I18n } from 'react-i18next';
+import PropTypes from 'prop-types';
 import Icon from '../../components/icon';
-import FilterIcon from "src/views/atoms/filter-icon";
-
+import FilterIcon from 'src/views/atoms/filter-icon';
+import i18n from '../../../i18n';
 import './search-bar.css';
 
 class SearchBar extends Component {
-
-  constructor() {
-    super(...arguments);
-    this.state = {
-    };
-  }
-
   render() {
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <div className={`search-bar`}>
-              <div className={'search-container'}>
-                <input
-                  className={"search-input"}
-                  placeholder={t('task.search-by-query')}
-                  type={"text"}
-                  value={this.props.query}
-                  onChange={(e) => {
-                    this.props.onQueryChange(e.target.value)
-                  }}/>
-                <Icon className={'search-icon'} name={'search'}/>
-              </div>
+      <div className={`search-bar lang-${i18n.language}`}>
+        <div className={'search-container'}>
+          <input
+            className={"search-input"}
+            placeholder={i18n.t('task.search-by-query')}
+            type={"text"}
+            value={this.props.query}
+            onChange={(e) => {
+              this.props.onQueryChange(e.target.value)
+            }}/>
+          <Icon className={'search-icon'} name={'search'}/>
+        </div>
 
-              <FilterIcon isActive={this.props.isFilterActive} onClick={() => {
-                this.props.setMenuOpen(true)
-              }}/>
-            </div>
-          )}
-      </I18n>
+        <FilterIcon isActive={this.props.isFilterActive} onClick={() => {
+          this.props.setMenuOpen(true)
+        }}/>
+      </div>
     );
   }
 }
