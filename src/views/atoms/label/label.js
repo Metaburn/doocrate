@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { I18n } from 'react-i18next';
+import classNames from 'classnames';
 
 import './label.css';
 
 class Label extends React.Component {
   render() {
+    const labelClasses = classNames('label-wrapper', { 'clickable': this.props.onClick });
     const backgroundColor = this.props.backgroundColor || '#999';
     return (
       <I18n ns='translations'>
@@ -13,7 +15,7 @@ class Label extends React.Component {
           (t, {i18n}) => (
             <div key={this.props.label}
                  style={{'backgroundColor': `${backgroundColor}`}}
-                 className='label-wrapper'
+                 className={labelClasses}
                  onClick={()=> this.onClick()}>
               <span className={`label-text label-text-${t('lang-float')}`}>
                 {this.props.label}
