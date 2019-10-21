@@ -13,6 +13,9 @@ class PopularLabels extends Component {
   }
 
   render() {
+    if(!this.props.labels) {
+      return null;
+    }
     return (
       <I18n ns='translations'>
         {
