@@ -1,6 +1,7 @@
 @import 'views/styles/shared';
 
 .top-nav {
+  position: relative;
   padding: 24px;
   width: inherit;
   background-color: #67439B;
@@ -13,20 +14,44 @@
 
   .add-task-button {
     display: flex;
-    height: 48px;
+    position: fixed;
+    bottom: 30px;
+    right: 12px;
     font-size: 16px;
+    z-index: 2000;
     background-color: $primary-color;
     color: white;
-    -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
-    -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
-    box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.24);
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
+    -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.5);
+    -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.5);
+    box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.5);
+    -webkit-border-radius: 60px;
+    -moz-border-radius: 60px;
+    border-radius: 60px;
+    width: 60px;
+    height: 60px;
+
+    &:hover {
+      width: 64px;
+      height: 64px;
+      right: 10px;
+      bottom: 28px;
+      -webkit-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.6);
+      -moz-box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.6);
+      box-shadow: 0px 4px 4px rgba(68, 44, 102, 0.6);
+
+      .add-task-icon {
+        font-size: 42px;
+      }
+    }
   }
 
   .add-task-icon {
-    font-size: 16px;
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    -ms-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    font-size: 39px;
   }
 
   .add-task-icon-left {
@@ -36,4 +61,18 @@
   .add-task-icon-right {
     padding-left: 2px;
   }
+}
+
+
+@media only screen and (max-width: 480px){
+  .top-nav {
+    .add-task-button {
+      bottom: 80px;
+
+      &:hover {
+        bottom: 78px;
+      }
+    }
+  }
+
 }

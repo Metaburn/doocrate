@@ -26,7 +26,6 @@ class TopNav extends Component {
                 className='button button-small add-task-button'
                 onClick={this.props.createTask}>
                 <Icon name={'add'} className={`add-task-icon add-task-icon-${t('lang-float')}`}/>
-                {t(`task.add-task`)}
               </Button>
               <SearchBar
                 query={this.props.query}
