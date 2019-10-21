@@ -59,7 +59,7 @@ class SideMenu extends Component {
 
   render() {
     const { i18n, menuIsOpen, setMenuOpen } = this.props;
-    const { isMobile, isTablet } = this.state;
+    const { isMobile } = this.state;
 
     const isHebrew = i18n.language === 'he';
     const position = isMobile ? 'bottom' : isHebrew ? 'right' : 'left';
