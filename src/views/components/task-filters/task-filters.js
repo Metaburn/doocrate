@@ -7,6 +7,7 @@ import {CSVLink} from 'react-csv';
 import { I18n } from 'react-i18next';
 import './task-filters.css';
 import { setQueryParams } from "../../../utils/browser-utils";
+import PopularLabels from "../../molecules/popular-labels/popular-labels";
 
 class TaskFilters extends Component {
   constructor() {
@@ -62,6 +63,10 @@ class TaskFilters extends Component {
       result[label] = true;
     }
     return result;
+  };
+
+  onPopularLabelClick = (label) => {
+    this.handleLabelChange([label]);
   };
 
   render() {
@@ -127,16 +132,21 @@ class TaskFilters extends Component {
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
               search: setQueryParams(['filter=mine'])}}>
               {t('task.my-tasks')}
-              </NavLink></li>
+            </NavLink></li>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
               search: setQueryParams(['filter=unassigned'])}}>
               {t('task.free-tasks')}
-              </NavLink></li>
+            </NavLink></li>
             <li><NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
               pathname: defaultTask,
               search: removeQueryParam(['filter'])
             }}>{t('task.all-tasks')}</NavLink></li>
           </div>
+
+          <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.popular-tags')}</h1>
+          <PopularLabels
+            labels={this.props.popularLabels}
+            onLabelClick={this.onPopularLabelClick}/>
 
           {downloadCSV}
           <h1 className={`filter-heading filter-heading-${t('lang-float')}`}>{t('filter.by-tag')}</h1>
@@ -164,11 +174,11 @@ class TaskFilters extends Component {
 TaskFilters.propTypes = {
   onLabelChange: PropTypes.func.isRequired,
   selectedProject: PropTypes.object,
+  popularLabels: PropTypes.array,
   labelsPool: PropTypes.object.isRequired,
   generateCSV: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
   userDefaultProject: PropTypes.string,
-  query: PropTypes.string.isRequired
 };
 
 

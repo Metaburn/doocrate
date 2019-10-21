@@ -136,7 +136,8 @@
     "header": "FILTERS",
     "category": "Category",
     "task-type": "Task Type",
-    "by-tag": "Filter by label",
+    "popular-tags": "Popular Tags",
+    "by-tag": "Filter by Tag",
     "filter": "FILTER"
   },
   "user": {
