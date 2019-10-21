@@ -34,7 +34,6 @@
     }
 
     .search-icon {
-      position: absolute;
       left: 0;
       z-index: 1;
       font-size: 26px;
@@ -45,6 +44,7 @@
       border: none;
       height: auto;
       padding: 0 1em 0 0;
+      margin-left: -1em; //To make up for the 1em so the icon won't get pushed aside
       flex: 1;
 
       box-sizing: border-box;
@@ -88,6 +88,11 @@
     .search-icon {
       right: 0;
       left: auto;
+    }
+
+    .search-input {
+      padding: 0 0 0 2em;
+      margin-left: -1em; //To make up for the 1em so the icon won't get pushed aside
     }
   }
 }
