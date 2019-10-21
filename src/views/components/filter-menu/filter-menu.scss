@@ -3,6 +3,7 @@
 .filter-menu {
   height: 100%;
   text-align: left;
+  overflow: auto;
 
   &.lang-he {
     text-align: right;
@@ -12,5 +13,13 @@
     padding: 15px 0 10px;
     font-size: 28px;
     text-align: center;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .filter-menu {
+    .menu-title {
+      padding: 4px 0 4px;
+    }
   }
 }
