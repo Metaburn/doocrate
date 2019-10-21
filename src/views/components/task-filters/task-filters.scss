@@ -4,6 +4,7 @@
   padding: 12px 20px;
   font-size: rem(16px);
   line-height: 100%;
+  margin-bottom: 150px; //We add this to support mobile browsers overflow
 
   .heading {
     font-size: 20px;
@@ -81,5 +82,16 @@
     display: flex;
     flex-direction: column;
     padding-bottom: 1em;
+  }
+
+  .popular-labels-wrapper {
+    margin-bottom: 10px;
+  }
+}
+
+
+@media only screen and (max-width: 480px) {
+  .task-filters {
+    padding: 0 12px;
   }
 }
