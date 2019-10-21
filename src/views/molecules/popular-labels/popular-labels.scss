@@ -1,0 +1,33 @@
+@import 'views/styles/shared';
+
+.popular-labels-wrapper {
+  display: flex;
+
+  .popular-labels {
+    display: flex;
+    flex-flow: row wrap;
+
+    .label-wrapper {
+
+      margin: 5px 5px;
+      padding: 3px 5px;
+
+      .label-text {
+        padding:0;
+      }
+    }
+
+    .selected-filters-labels {
+      display: flex;
+      flex-flow: row wrap;
+    }
+
+    .flex-left {
+      padding-left: 10px;
+    }
+
+    .flex-right {
+      padding-right: 10px;
+    }
+  }
+}

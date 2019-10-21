@@ -9,28 +9,17 @@
   border-radius: 9px;
   border: none;
   padding: 3px 0;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
 
-  .label-text {
+  &.clickable {
+    cursor: pointer;
 
-  }
-
-  .label-text-left {
-    padding-left: 10px;
-  }
-
-  .label-text-right {
-    padding-right: 10px;
-  }
-
-  .close-button {
-    color: white;
-    border: none;
-    background: none;
-    vertical-align: middle;
-    padding-left: 10px;
-
-    .material-icons {
-      font-size: 1.5em;
+    &:hover {
+      background-color: $primary-color !important;
     }
   }
 }

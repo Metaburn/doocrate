@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 import { getUrlSearchParams, removeQueryParam} from 'src/utils/browser-utils.js';
 import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
-import i18n from "../../../i18n";
-import { setQueryParams } from "../../../utils/browser-utils";
+import i18n from '../../../i18n';
+import { setQueryParams } from '../../../utils/browser-utils';
+import PopularLabels from '../../molecules/popular-labels/popular-labels';
 import './task-filters.css';
 
 class TaskFilters extends Component {
@@ -79,6 +80,10 @@ class TaskFilters extends Component {
         {linkTitle}
       </NavLink>
     );
+  }
+
+  onPopularLabelClick = (label) => {
+    this.handleLabelChange([label]);
   };
 
   render() {
@@ -93,7 +98,7 @@ class TaskFilters extends Component {
 
     const defaultTask = '/' + project + '/task/1';
 
-    return(
+    return (
       <nav className="task-filters">
         <div className="categories">
           <div className="heading">{i18n.t('filter.category')}</div>
@@ -101,7 +106,6 @@ class TaskFilters extends Component {
         </div>
 
         <div className="heading">{i18n.t('filter.task-type')}</div>
-
         <div className="task-type">
           <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
             search: setQueryParams(['filter=mine'])}}>
@@ -122,6 +126,11 @@ class TaskFilters extends Component {
 
         {downloadCSV}
 
+        <div className="heading">{i18n.t('filter.popular-tags')}</div>
+        <PopularLabels
+          labels={this.props.popularLabels}
+          onLabelClick={this.onPopularLabelClick}/>
+
         <div className="heading">{i18n.t('filter.by-tag')}</div>
         <AutoSuggestedTags
           value={this.state.label}
@@ -141,11 +150,11 @@ class TaskFilters extends Component {
 TaskFilters.propTypes = {
   onLabelChange: PropTypes.func.isRequired,
   selectedProject: PropTypes.object,
+  popularLabels: PropTypes.array,
   labelsPool: PropTypes.object.isRequired,
   generateCSV: PropTypes.func.isRequired,
   isAdmin: PropTypes.bool.isRequired,
   userDefaultProject: PropTypes.string,
-  query: PropTypes.string.isRequired
 };
 
 export default TaskFilters;

@@ -1,3 +1,5 @@
+@import 'views/styles/shared';
+
 .auto-suggested-wrapper {
   display: flex;
   flex-direction: row-reverse;
@@ -6,6 +8,7 @@
     // position: absolute;
     z-index: 5;
     // background: white;
+    font-family: $base-font-family;
   }
 
   .react-tagsinput-tag {
@@ -29,7 +32,7 @@
     display: block;
     // height: 1.7em;
     // margin: 10px;
-    
+
     width: 100%;
     z-index: 6;
   }

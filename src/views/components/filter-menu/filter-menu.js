@@ -15,19 +15,20 @@ import './filter-menu.css';
 
 class FilterMenu extends Component {
   render() {
-    const { selectedProject, labelsPool, auth } = this.props;
+    const { selectedProject, labelsPool, auth, popularLabels } = this.props;
     const classNames = `filter-menu lang-${i18n.language}`;
 
     return (
       <div className={classNames}>
         <h1 className="menu-title">{i18n.t('filter.header')}</h1>
-        {<TaskFilters
+        <TaskFilters
           selectedProject={selectedProject} //TODO does this work with this.state.selectedProject
           labelsPool={labelsPool || []}
           onLabelChange={this.onLabelChanged}
           generateCSV={this.generateCSV.bind(this)}
           userDefaultProject={auth.defaultProject}
-          isAdmin={this.isAdmin()}/>}
+          isAdmin={this.isAdmin()}
+          popularLabels={popularLabels}/>
       </div>
     );
   }
@@ -89,6 +90,7 @@ FilterMenu.propTypes = {
   updateTask: PropTypes.func.isRequired,
   setMenuOpen: PropTypes.func.isRequired,
   labelsPool: PropTypes.object,
+  popularLabels: PropTypes.array,
   auth: PropTypes.object.isRequired
 };
 
@@ -98,7 +100,7 @@ const mapStateToProps = (state) => {
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
     labelsPool: state.tasks.labelsPool,
-    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
+    popularLabels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     buildFilter: buildFilter
   }
