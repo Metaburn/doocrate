@@ -40,7 +40,7 @@ const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
     const inputValue = (props.value && props.value.trim().toLowerCase()) || '';
 
       let suggestions = Object.keys(labels).filter((l) => {
-        return inputValue === l.slice(0, inputValue.length);
+        return inputValue === l.slice(0, inputValue.length).toLowerCase();
       });
 
     return (

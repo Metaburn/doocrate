@@ -3,6 +3,28 @@
 .search-bar {
   display: flex;
 
+  &.lang-he {
+    .search-info {
+      width: 17em;
+    }
+  }
+
+  .search-info {
+    width: 12em;
+
+    h1 {
+      font-size: 24px;
+      color: white;
+    }
+
+    h2 {
+      font-size: 16px;
+      line-height: 19px;
+      color: white;
+      opacity: 0.5;
+    }
+  }
+
   .search-container {
     height: 56px;
     display: inline-flex;
@@ -95,5 +117,11 @@
       padding: 0 0 0 2em;
       margin-left: -1em; //To make up for the 1em so the icon won't get pushed aside
     }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .search-info {
+    display: none;
   }
 }

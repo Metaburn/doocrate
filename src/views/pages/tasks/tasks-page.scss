@@ -4,7 +4,7 @@
   padding-top: 0;
 
   .search-bar {
-    padding: 10px 0 8px 0;
+    padding: 0;
 
     .search-container {
       width: 100%;
@@ -60,6 +60,7 @@
   }
 
   .search-bar {
+    padding: 10px 0 8px 0;
     .search-input {
       width: 100%;
       min-width: 0;
@@ -94,4 +95,6 @@
     max-width: 100%;
     padding: 16px;
   }
+
 }
+
