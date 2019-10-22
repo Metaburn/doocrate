@@ -32,6 +32,8 @@ class TopNav extends Component {
                 onQueryChange={this.props.onQueryChange}
                 setMenuOpen={this.props.setMenuOpen}
                 isFilterActive={ this.props.isFilterActive}
+                title={this.props.title}
+                tasksCount={this.props.tasksCount}
               />
               <SelectedFiltersLabels
                 selectedFilters={ this.props.selectedFilters }
@@ -45,6 +47,8 @@ class TopNav extends Component {
 
 TopNav.propTypes = {
   query: PropTypes.string,
+  title: PropTypes.string,
+  tasksCount: PropTypes.string,
   onQueryChange: PropTypes.func,
   setMenuOpen: PropTypes.func,
   removeQueryByLabel: PropTypes.func,

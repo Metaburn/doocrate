@@ -9,7 +9,16 @@ class SearchBar extends Component {
   render() {
     return (
       <div className={`search-bar lang-${i18n.language}`}>
+        <div className={'search-info'}>
+          {(this.props.title &&
+          <h1>
+            {this.props.title}
+          </h1>
+          )}
+          {(this.props.tasksCount && <h2>{i18n.t('task.showing-x-tasks',{count: this.props.tasksCount})}</h2>)}
+        </div>
         <div className={'search-container'}>
+
           <input
             className={"search-input"}
             placeholder={i18n.t('task.search-by-query')}
@@ -30,6 +39,8 @@ class SearchBar extends Component {
 }
 
 SearchBar.propTypes = {
+  title: PropTypes.string,
+  tasksCount: PropTypes.string,
   query: PropTypes.string,
   onQueryChange: PropTypes.func,
   setMenuOpen: PropTypes.func,

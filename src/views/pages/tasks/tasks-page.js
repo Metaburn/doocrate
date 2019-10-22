@@ -423,6 +423,19 @@ export class TasksPage extends Component {
     return results;
   };
 
+  getSelectedFilterTitle = () => {
+    const params = getUrlSearchParams();
+    const filter = params['filter'];
+
+    if(filter === 'mine') {
+      return(i18n.t('task.my-tasks'));
+    }
+    if(filter === 'unassigned') {
+      return(i18n.t('task.free-tasks'))
+    }
+    return(i18n.t('task.all-tasks'));
+  };
+
   removeQueryByLabel = (type, value) => {
     removeQueryParamAndGo(this.props.history, [type], value);
   };
@@ -436,6 +449,8 @@ export class TasksPage extends Component {
 
     const selectedFilters = this.getSelectedFilters();
     const isFiltersActive = selectedFilters.length > 0;
+    const tasksCount = (this.props.tasks && this.props.tasks.size >0) ? this.props.tasks.size : null;
+    const title = this.getSelectedFilterTitle();
 
     return (
       <I18n ns='translations'>
@@ -449,7 +464,9 @@ export class TasksPage extends Component {
                       setMenuOpen={this.props.setMenuOpen}
                       selectedFilters={selectedFilters}
                       createTask={this.createTask}
-                      removeQueryByLabel={this.removeQueryByLabel}/>
+                      removeQueryByLabel={this.removeQueryByLabel}
+                      tasksCount={tasksCount}
+                      title={title}/>
             </div>
 
             <div className='task-page-wrapper'>
