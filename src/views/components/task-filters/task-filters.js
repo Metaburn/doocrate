@@ -76,11 +76,11 @@ class TaskFilters extends Component {
       TaskFilters.getFilterText(location) === (id + 1);
 
     return (
-      <NavLink isActive={isActive} to={{ pathname: defaultTask, search }}>
+      <NavLink className={'filter-link'} isActive={isActive} to={{ pathname: defaultTask, search }}>
         {linkTitle}
       </NavLink>
     );
-  }
+  };
 
   onPopularLabelClick = (label) => {
     this.handleLabelChange([label]);
@@ -102,22 +102,22 @@ class TaskFilters extends Component {
       <nav className="task-filters">
         <div className="categories">
           <div className="heading">{i18n.t('filter.category')}</div>
-          {[0, 1, 2, 3, 4].map((id) => (<this.FilterLink id={id}/>))}
+          {[0, 1, 2, 3, 4].map((id) => (<this.FilterLink key={id} id={id}/>))}
         </div>
 
         <div className="heading">{i18n.t('filter.task-type')}</div>
         <div className="task-type">
-          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
+          <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'mine'} to={{ pathname: defaultTask,
             search: setQueryParams(['filter=mine'])}}>
             {i18n.t('task.my-tasks')}
           </NavLink>
 
-          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
+          <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'unassigned'} to={{ pathname: defaultTask,
             search: setQueryParams(['filter=unassigned'])}}>
             {i18n.t('task.free-tasks')}
           </NavLink>
 
-          <NavLink isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
+          <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
             pathname: defaultTask,
             search: removeQueryParam(['filter']) }}>
             {i18n.t('task.all-tasks')}

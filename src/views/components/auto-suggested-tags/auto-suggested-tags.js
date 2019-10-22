@@ -4,13 +4,14 @@ import Autosuggest from 'react-autosuggest';
 import TagsInput from 'react-tagsinput';
 
 import './auto-suggested-tags.css';
+import i18n from "../../../i18n";
 
 const AutoSuggestedTags = ({value, labels, placeholder, onChange}) => {
   const showPlaceholder = !value || value.length === 0 ;
 
   function renderLayout (tagComponents, inputComponent) {
     return (
-      <span className='auto-suggested-wrapper'>
+      <span className={`auto-suggested-wrapper lang-${i18n.language}`}>
         {inputComponent}
         {tagComponents}
       </span>
