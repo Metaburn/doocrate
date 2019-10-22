@@ -4,7 +4,7 @@
   padding: 12px 20px;
   font-size: rem(16px);
   line-height: 100%;
-  margin-bottom: 150px; //We add this to support mobile browsers overflow
+  margin-bottom: 120px; //We add this to support mobile browsers overflow
 
   .heading {
     font-size: 20px;
@@ -18,8 +18,9 @@
 
   .filter-link {
     color: #999;
+    font-size: 18px;
     text-decoration: none;
-    padding: 4px 8px 5px;
+    padding: 8px 8px 5px 8px;
     margin-bottom: 2px;
     border: 0;
     border-radius: 3px;
@@ -92,5 +93,11 @@
 @media only screen and (max-width: 480px) {
   .task-filters {
     padding: 0 12px;
+
+    .filter-link {
+      font-size: 16px;
+      text-decoration: none;
+      padding: 8px 4px 5px 4px;
+    }
   }
 }
