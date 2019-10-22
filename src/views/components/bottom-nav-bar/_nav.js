@@ -1,6 +1,7 @@
-export const nav = (auth) => [
+export const nav = (auth, projectUrl) => [
   {
-    path: "/",
+    path: "/" + projectUrl + '/task/1',
+    pathIncludes: "/" + projectUrl, //To support only being active with /project/test/anything?anyquery
     icon: "home",
   },
   {
