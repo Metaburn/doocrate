@@ -71,7 +71,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           </Switch>
         }
       </main>
-      <BottomNavBar auth={auth}/>
+      <BottomNavBar auth={auth} selectedProject={selectedProject}/>
     </div>
       )}
   </I18n>

@@ -7,26 +7,33 @@ import BottomNavTile from "./bottom-nav-bar-tile"
 import {nav} from "./_nav"
 import "./bottom-nav-bar.scss"
 
+
 class BottomNavBar extends Component {
 
   static propTypes = {
     auth: PropTypes.object.isRequired,
+    selectedProject: PropTypes.object,
   };
 
-  activeRoute = (routeName)  =>{
-    return this.props.location.pathname === routeName;
+  activeRoute = (routeName, pathIncludes)  =>{
+    if(pathIncludes) {
+      return this.props.location.pathname.includes(pathIncludes);
+    }else{
+      return this.props.location.pathname === routeName;
+    }
   };
 
   render() {
-    const {auth} = this.props;
-    const routes = nav(auth);
+    const {auth, selectedProject} = this.props;
+    const projectUrl = this.props.selectedProject? this.props.selectedProject.url : null;
+    const routes = nav(auth, projectUrl);
 
     return (
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
             <div className={"bottom-nav"}>
-                {routes.map(r => (<BottomNavTile key={r.path} icon={r.icon} path={r.path} active={this.activeRoute(r.path)}/>))}
+                {routes.map(r => (<BottomNavTile key={r.path} icon={r.icon} path={r.path} active={this.activeRoute(r.path, r.pathIncludes)}/>))}
             </div>
           )
         }
