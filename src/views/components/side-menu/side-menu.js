@@ -59,7 +59,10 @@ class SideMenu extends Component {
 
   render() {
     const { i18n, menuIsOpen, setMenuOpen } = this.props;
-    const { isMobile } = this.state;
+    const { isMobile, isTablet } = this.state;
+    const width = isMobile? '90%' :
+      isTablet? '70%':
+        '370px';
 
     const isHebrew = i18n.language === 'he';
     const position = isMobile ? 'bottom' : isHebrew ? 'right' : 'left';
@@ -72,6 +75,7 @@ class SideMenu extends Component {
         position={position}
         height="100%"
         closeOnOverlayClick={true}
+        width={width}
         isOpen={menuIsOpen}
         onClose={() => setMenuOpen(false)}>
         <FilterMenu/>
