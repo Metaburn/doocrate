@@ -48,7 +48,7 @@ TopNav.propTypes = {
   onQueryChange: PropTypes.func,
   setMenuOpen: PropTypes.func,
   removeQueryByLabel: PropTypes.func,
-  selectedFilters: PropTypes.string,
+  selectedFilters: PropTypes.array,
   isFilterActive: PropTypes.bool,
   createTask: PropTypes.func
 };
