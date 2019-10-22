@@ -1,34 +1,55 @@
+$bottom-nav-width: 395px;
 
-.bottom-nav{
-  display: none;
+.bottom-nav {
+  position: fixed;
+  z-index: 9999;
+  height: 64px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  background: #F8F7FA;
+  border: 1px solid #E0E4E9;
+  box-sizing: border-box;
+  -webkit-box-shadow: 0px 4px 8px rgba(103, 67, 155, 0.24);
+  -moz-box-shadow: 0px 4px 8px rgba(103, 67, 155, 0.24);
+  box-shadow: 0px 4px 8px rgba(103, 67, 155, 0.24);
+  border-radius: 16px;
+
+  bottom: 30px;
+  left: 50%;
+  width: $bottom-nav-width;
+  margin-left: ($bottom-nav-width/2)*-1; //This sets it in the center of the screen
+
+  .active{
+    background: #eae5f1;
+  }
+
+  .bottom-nav-tile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex: 1;
+    color: #67439B;
+
+    &:hover{
+      background: #eae5f1;
+    }
+  }
 }
 
 @media only screen and (max-width: 480px){
   .bottom-nav {
     position: fixed;
-    z-index: 9999;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 64px;
+    bottom: 17px;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    margin-left: 0;
+
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    background: #FFFFFF;
-    border: 1px solid #E0E4E9;
-    box-sizing: border-box;
-
-    .active{
-      background: #d7f7ff;
-    }
-
-    .bottom-nav-tile{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      flex: 1;
-    }
   }
 
 }
