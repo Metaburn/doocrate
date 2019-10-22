@@ -449,7 +449,7 @@ export class TasksPage extends Component {
 
     const selectedFilters = this.getSelectedFilters();
     const isFiltersActive = selectedFilters.length > 0;
-    const tasksCount = (this.props.tasks && this.props.tasks.size >0) ? this.props.tasks.size : null;
+    const tasksCount = (this.state.tasks && this.state.tasks.size >0) ? this.state.tasks.size : null;
     const title = this.getSelectedFilterTitle();
 
     return (
