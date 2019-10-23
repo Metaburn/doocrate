@@ -31,6 +31,12 @@
             "value": "1; mode=block"
           }
         ]
+      }, {
+        "source": "/service-worker.js",
+        "headers": [{
+          "key": "Cache-Control",
+          "value": "no-cache"
+        }]
       }
     ],
     "rewrites": [
