@@ -14,6 +14,7 @@ $bottom-nav-width: 395px;
   -moz-box-shadow: 0px 4px 8px rgba(103, 67, 155, 0.24);
   box-shadow: 0px 4px 8px rgba(103, 67, 155, 0.24);
   border-radius: 16px;
+  overflow: hidden;
 
   bottom: 30px;
   left: 50%;
@@ -53,4 +54,3 @@ $bottom-nav-width: 395px;
   }
 
 }
-
