@@ -11,11 +11,21 @@ module.exports = {
         }
     },
     plugins: [
-        'react'
+        'react',
+        'react-hooks'
     ],
     parserOptions: {
         ecmaFeatures: {
-            jsx: true
+            jsx: true,
+            ecmaVersion: 6,
+            arrowFunctions: true,
+            ecmaFeatures: {
+                experimentalObjectRestSpread: true
+            }
         }
+    },
+    rules: {
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': 'warn'
     }
 };
