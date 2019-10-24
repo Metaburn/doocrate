@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import OffCanvas from 'react-aria-offcanvas';
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
-
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
 import { userInterfaceActions } from 'src/user-interface';
@@ -24,7 +23,6 @@ import { setCookie } from "../../../utils/browser-utils";
 import { I18n } from 'react-i18next';
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
-
 
 export class TasksPage extends Component {
   constructor() {
@@ -48,7 +46,8 @@ export class TasksPage extends Component {
       labels: null,
       isLoadedComments: false,
       isCurrentTaskValid: false,
-      query: ""
+      query: "",
+      isTaskVisible: false
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -303,9 +302,8 @@ export class TasksPage extends Component {
 
 
   goToTask(task) {
-    if (this.confirmUnsavedTask()) {
-      return;
-    }
+    if (this.confirmUnsavedTask()) { return; }
+
     const project_url = this.props.match.params.projectUrl;
     let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
 
@@ -314,7 +312,9 @@ export class TasksPage extends Component {
     }
 
     setTimeout(()=>{this.setState({newTask: null})}, 100);
+
     this.props.history.push(taskParameter);
+    this.setIsTaskVisible(true);
   }
 
   onQueryChange = (query) => {
@@ -368,7 +368,7 @@ export class TasksPage extends Component {
         isValidCallback={this.setCurrentTaskValid}
         isDraft={this.state.newTask != null}
         submitNewTask={this.submitNewTask}
-      />)
+      />);
   }
 
   createTask = () => {
@@ -440,7 +440,13 @@ export class TasksPage extends Component {
     removeQueryParamAndGo(this.props.history, [type], value);
   };
 
+  setIsTaskVisible = (isTaskVisible) => {
+    this.setState({ isTaskVisible });
+  }
+
   render() {
+    const { isTaskVisible } = this.state;
+
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
@@ -454,26 +460,27 @@ export class TasksPage extends Component {
 
     return (
       <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
+        {(t, { i18n }) => (
           <div className={'task-page-root-wrapper'}>
             <div className={'top-nav-wrapper'}>
               <TopNav onQueryChange={this.onQueryChange}
-                      isFilterActive={isFiltersActive}
-                      query={this.state.query}
-                      setMenuOpen={this.props.setMenuOpen}
-                      selectedFilters={selectedFilters}
-                      createTask={this.createTask}
-                      removeQueryByLabel={this.removeQueryByLabel}
-                      tasksCount={tasksCount}
-                      title={title}/>
+                isFilterActive={isFiltersActive}
+                query={this.state.query}
+                setMenuOpen={this.props.setMenuOpen}
+                selectedFilters={selectedFilters}
+                createTask={this.createTask}
+                removeQueryByLabel={this.removeQueryByLabel}
+                tasksCount={tasksCount}
+                title={title}/>
             </div>
 
             <div className='task-page-wrapper'>
               <LoaderUnicorn isShow={ isLoading }/>
+
               <div className='task-view-wrapper'>
-                { this.renderTaskView() }
+                {/* { this.renderTaskView() } */}
               </div>
+
               <div className='task-list-wrapper'>
                 <TaskList history={this.props.history}
                   tasks={this.state.tasks}
@@ -484,15 +491,25 @@ export class TasksPage extends Component {
                 />
               </div>
 
-              { (this.state.selectedTask == null) ?
-                <div className='task-view-bottom-loader'>&nbsp;</div>: ''
-              }
+              {(this.state.selectedTask == null) &&
+                <div className='task-view-bottom-loader'>&nbsp;</div>}
             </div>
+
+            <OffCanvas
+              overlayClassName="task-side-view-overlay"
+              className="task-side-view"
+              position="right"
+              height="100%"
+              width="50%"
+              closeOnOverlayClick={true}
+              isOpen={isTaskVisible}
+              onClose={() => this.setIsTaskVisible(false)}>
+              {this.renderTaskView()}
+            </OffCanvas>
           </div>
-          )
-        }
+        )}
       </I18n>
-    )
+    );
   }
 }
 
