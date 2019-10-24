@@ -1,9 +1,14 @@
 @import 'views/styles/shared';
 
+.task-side-view-overlay {
+  background: rgba(42, 46, 75, 0.5) !important
+}
+
 .task-side-view {
+  transition: .25s ease-out;
   background: $white;
   overflow-y: auto;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 10px 0px #999999;
 }
 
 .task-view-container {

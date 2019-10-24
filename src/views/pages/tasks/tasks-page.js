@@ -322,6 +322,7 @@ export class TasksPage extends Component {
     const selectedTask = tasks.find((task) => task.get('id') === selectedTaskId);
 
     return {
+      i18n,
       selectedTask,
       removeTask: this.props.removeTask,
       updateTask: this.props.updateTask,

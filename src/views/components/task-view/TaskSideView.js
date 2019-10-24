@@ -4,13 +4,15 @@ import TaskView from './task-view';
 import { isMobile, isTablet } from '../../../utils/browser-utils';
 
 const TaskSideView = ({
-  selectedTask, removeTask, updateTask,
+  i18n, selectedTask, removeTask, updateTask,
   assignTask, selectedProject, isAdmin, isGuide,
   followTask, unfollowTask, unassignTask,
   unloadComments, createComment, updateComment, removeComment,
   isValidCallback, isDraft, submitNewTask, resetSelectedTask
 }) => {
-  const position = isMobile ? 'bottom' : 'right';
+
+  const isHebrew = i18n.language === 'he';
+  const position = isMobile ? 'bottom' : isHebrew ? 'left' : 'right';
   const isOpen = !!selectedTask;
 
   return (
@@ -18,7 +20,7 @@ const TaskSideView = ({
       overlayClassName="task-side-view-overlay"
       className="task-side-view"
       position={position}
-      height="84%"
+      height="100%"
       width="50%"
       closeOnOverlayClick={true}
       isOpen={isOpen}
