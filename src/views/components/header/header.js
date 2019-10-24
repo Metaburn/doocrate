@@ -61,7 +61,7 @@ class Header extends Component {
                     }
                     } />
 
-                  <div className='header-side'>
+                  <div className={`header-side lang-${i18n.language}`}>
                     <h4 className='project-title'>{this.props.selectedProject?
                       <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
                       ''

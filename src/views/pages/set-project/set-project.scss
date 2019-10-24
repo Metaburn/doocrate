@@ -7,6 +7,7 @@
 
   padding: 0 1em 1em 1em;
   margin-top: 1em;
+  margin-bottom: 6em;
 
   background: white;
   -webkit-border-radius: 8px;
@@ -62,3 +63,11 @@
   }
 }
 
+@media only screen and (max-width: 480px) {
+  .set-project {
+    input[type=text] {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+}
