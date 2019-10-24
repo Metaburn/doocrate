@@ -87,7 +87,6 @@ export function initAuth(user) {
   };
 }
 
-
 export function signInError(error) {
   const errorMessage = error && error.message? error.message : error;
   console.log(errorMessage);

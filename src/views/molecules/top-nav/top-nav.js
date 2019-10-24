@@ -48,7 +48,7 @@ class TopNav extends Component {
 TopNav.propTypes = {
   query: PropTypes.string,
   title: PropTypes.string,
-  tasksCount: PropTypes.string,
+  tasksCount: PropTypes.number,
   onQueryChange: PropTypes.func,
   setMenuOpen: PropTypes.func,
   removeQueryByLabel: PropTypes.func,

@@ -6,7 +6,7 @@
   "lang-float-reverse": "right",
   "nav": {
     "en-lang": "English",
-    "he-lang": "Hebrew",
+    "he-lang": "עברית",
     "en-lang-short": "EN",
     "he-lang-short": "עב"
   },
@@ -19,7 +19,6 @@
   "header": {
     "disconnect": "Sign out ",
     "me": "🧝",
-    "my-space": "Personal space",
     "all-projects": "All projects",
     "update-my-profile":"Update my profile",
     "create-project": "Start your own project"
@@ -55,7 +54,8 @@
   },
   "my-space": {
     "updated-successfully": "Success 🎉",
-    "role": "Role",
+    "edit-profile": "Edit Profile",
+    "projects-you-manage": "Projects You Manage",
     "projects": "My projects",
     "edit-project": "Edit project",
     "project-report": "Project Report",
@@ -190,16 +190,18 @@
     "a2": "<span>The Doocrate allows us to organize under an event / project and to manage our own tasks</span><span>The doocrate is build under the TEAL model which is based on a flat (Non hierarchical) structure<br/></span><span>Insatead of an hierarchical community / company - the system allows to self organize and self mangement by small teams that are responsible on their internal operational and their way of communication with other teams in the community</span>",
     "q3": "Why did we build this?",
     "a3": "<span>We were searching for a simple intuitive way to share the TEAL way of living<br />The alternatives were not good enough - either had too many options or didn't fit the model of many humans collaborating<br /></span>",
-    "q4": "I can't do something. Technical support?",
-    "a4": "<span>Sure. Email support@doocrate.com</span>",
-    "q5": "This is amazing. I want to create my own project",
-    "a5": "<span><a href='https://doocrate.com/create-project'>Click here to create your own project</a></span>",
-    "q6": "How can I help?",
-    "a6": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href={'https://www.facebook.com/groups/415274585770726/'}>Join our facebook here</a> and message us</span>",
-    "q7": "I'm a developer. How can I help?",
-    "a7": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
-    "q8": "Who are you wonderful people who invest time in this?",
-    "a8": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed<a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>"
+    "q4": "Are any other projects are using Doocrate?",
+    "a4": "Sure. You can find them on the <a href='/projects?show=true'>All Projects</a> Page",
+    "q5": "I can't do something. Technical support?",
+    "a5": "<span>Sure. Email support@doocrate.com</span>",
+    "q6": "This is amazing. I want to create my own project",
+    "a6": "<span><a href='https://doocrate.com/create-project'>Click here to create your own project</a></span>",
+    "q7": "How can I help?",
+    "a7": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href={'https://www.facebook.com/groups/415274585770726/'}>Join our facebook here</a> and message us</span>",
+    "q8": "I'm a developer. How can I help?",
+    "a8": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
+    "q9": "Who are you wonderful people who invest time in this?",
+    "a9": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed<a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>"
   },
   "footer": {
     "about": "This system was written as",

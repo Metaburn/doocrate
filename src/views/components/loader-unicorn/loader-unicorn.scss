@@ -1,20 +1,24 @@
 .loader-unicorn {
   transition: opacity 500ms 0ms;
   opacity: 1.0;
-  height: 218px;
-  width: 319px;
-  position: absolute;
-  pointer-events: none;
-  left: calc(50% - 160px);
-  top: 12.5em;
-  z-index: 50;
-  border: 1px solid #ccc;
+  background-size: cover;
+  background: url('https://i.imgur.com/wULKbXa.gif') no-repeat right -27px bottom 10px;
+  background-size: 287px 197px;
+  display: inline-block;
+  overflow: hidden;
   -webkit-box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
   -moz-box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
   box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
   -webkit-border-radius: 80px;
   -moz-border-radius: 80px;
-  border-radius: 80px;
+  border-radius: 200px;
+  position: absolute;
+  pointer-events: none;
+  left: calc(50% - 160px);
+  top: 12.5em;
+  z-index: 50;
+  height: 218px;
+  width: 220px;
 }
 
 .loader-unicorn.hideme {

@@ -13,35 +13,22 @@ import i18n from "../../../i18n";
 import { notificationActions } from "../../../notification";
 import EditorPreview from "../../components/editor-preview/editor-preview";
 import {createSelector} from "reselect";
-import {getAuth} from "../../../auth";
+import {authActions, getAuth} from "../../../auth";
 import Icon from 'src/views/components/icon';
 import Button from "../../components/button/button";
 
 export class Me extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
 
     this.state = {
       bio: '',
-      user: null,
       isEditing: false
     };
   }
 
   componentWillMount() {
-    this.updateStateByProps(this.props);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.updateStateByProps(nextProps);
-  }
-
-  updateStateByProps(props) {
-    if (!props) {
-      return;
-    }
-
-    this.setState({bio: props.auth.bio, user: props.user});
+    this.setState({bio: this.props.auth.bio})
   }
 
   toggleEditing = () => {
@@ -55,15 +42,7 @@ export class Me extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className='g-row me notranslate'>
-              <br/>
-              {this.props.user? this.props.user.name: ''}
-              <h1>{t('header.my-space')}</h1>
-              {auth && auth.email ?
-                <div>{t('my-space.email')}: {auth.updatedEmail}</div>
-                :
-                ''
-              }
+            <div className='me notranslate'>
               {auth && auth.photoURL ?
                 <div className={'avatar-wrapper'}>
                   <Img className={'avatar'} src={auth.photoURL}/>
@@ -71,10 +50,16 @@ export class Me extends Component {
                 :
                 ''
               }
-
-              <Button onClick={ this.toggleEditing}>
-                <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
-              </Button>
+              {auth && auth.name &&
+              <Fragment>
+                <span className={'user-name'} onClick={()=> {this.props.isShowUpdateProfile(true)}}>
+                  <Button className={'edit-email'} onClick={()=> {this.props.isShowUpdateProfile(true)}}>
+                    <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
+                  </Button>
+                  {auth.name}
+                </span>
+              </Fragment>
+              }
 
               <form className='user-form' onSubmit={this.handleSubmit}>
                 <span className={'bio-description'}>{t('user.bio-description')}</span>
@@ -82,13 +67,18 @@ export class Me extends Component {
                 {this.renderSubmit(t)}
               </form>
 
+              {!this.state.isEditing &&
+              <Button className={'edit-profile'} onClick={this.toggleEditing}>
+                {i18n.t('my-space.edit-profile')}
+              </Button>
+              }
+
               {auth && auth.role !== 'user' ?
-                <div>{t('my-space.role')}: {auth.role}</div>
+                <div className={'projects-you-manage'}>{t('my-space.projects-you-manage')}:</div>
                 :
                 ''
               }
               { this.renderAdminProjects(t)}
-              <br/>
             </div>
           )}
       </I18n>
@@ -136,6 +126,9 @@ export class Me extends Component {
   }
 
   renderSubmit(t) {
+    if(!this.state.isEditing) {
+      return;
+    }
     return (
       <div className={'submit-wrapper'}>
         <input className={`button button-small`}
@@ -154,9 +147,10 @@ export class Me extends Component {
       bio: this.state.bio,
     };
 
-    updateUserData(fieldsToUpdate);
-    this.props.showSuccess(i18n.t('my-space.updated-successfully'));
-    this.props.history.goBack();
+    updateUserData(fieldsToUpdate).then( () => {
+      this.props.showSuccess(i18n.t('my-space.updated-successfully'));
+      this.props.history.goBack();
+    })
   };
 
   renderAdminProjects = (t) => {
@@ -185,6 +179,7 @@ export class Me extends Component {
 Me.propTypes = {
   auth: PropTypes.object.isRequired,
   showSuccess: PropTypes.func.isRequired,
+  isShowUpdateProfile: PropTypes.func.isRequired
 };
 
 
@@ -202,6 +197,7 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = Object.assign(
   {},
   notificationActions,
+  authActions
 );
 
 export default connect(
