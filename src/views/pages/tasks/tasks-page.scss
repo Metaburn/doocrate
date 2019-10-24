@@ -37,8 +37,6 @@
   flex: 5500 1 605px;
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
-  padding-left: 16px;
-  padding-right: 16px;
 }
 
 @media (max-width: 767px) {
@@ -75,4 +73,10 @@
     max-width: 100%;
     padding: 16px;
   }
+
+  .task-list-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
 }
