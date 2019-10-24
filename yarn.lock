@@ -10299,10 +10299,10 @@ react-input-autosize@^2.2.1:
   dependencies:
     prop-types "^15.5.8"
 
-react-inputs-validation@4.1.8:
-  version "4.1.8"
-  resolved "https://registry.yarnpkg.com/react-inputs-validation/-/react-inputs-validation-4.1.8.tgz#f58efaab464ea29caa6632ba0b0fff29a8063dd0"
-  integrity sha512-EKQBbf7GHtjIDvKCF9LRASgf4TrZkKIzcZBJmxBZ02gJBbqpoo8P8DNYM3rXkB8+HFXsgK0hUnTdxQ+aRagWXQ==
+react-inputs-validation@3.4.11:
+  version "3.4.11"
+  resolved "https://registry.yarnpkg.com/react-inputs-validation/-/react-inputs-validation-3.4.11.tgz#806d819307c10e443442b038babbd87fc133a20a"
+  integrity sha512-+z8T38enkwkPBlFwxwGNqEYwI12S55s8HS2zZPvaAqGj0JH//kwWSWxjWanDZpZ4olvMTBIdcdgsuRkycpex1Q==
 
 react-is@^16.3.2, react-is@^16.8.1, react-is@^16.8.6:
   version "16.10.2"

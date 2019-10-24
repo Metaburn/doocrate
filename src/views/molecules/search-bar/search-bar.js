@@ -40,7 +40,7 @@ class SearchBar extends Component {
 
 SearchBar.propTypes = {
   title: PropTypes.string,
-  tasksCount: PropTypes.string,
+  tasksCount: PropTypes.number,
   query: PropTypes.string,
   onQueryChange: PropTypes.func,
   setMenuOpen: PropTypes.func,
