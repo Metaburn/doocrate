@@ -13,7 +13,12 @@
 }
 
 .top-nav-wrapper {
-  padding: 0 122px 24px 122px;
+  padding: 0 0 24px 0;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
 }
 
 .task-page-wrapper {

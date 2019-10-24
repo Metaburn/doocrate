@@ -3,16 +3,24 @@
 
 .header {
   .header-wrapper {
-    padding: 0 0 3em 0;
-    border-bottom: 1px solid #cccccc54;
-    margin: 0 0.5em 0.5em 0.5em;
-    height: 50px;
+    padding: 5px 0 0 0;
+    margin: 0;
     overflow: hidden;
-    line-height: 44px;
+    font-size: 16px;
   }
 
   .header-side {
-    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &.lang-en {
+      flex-direction: row;
+    }
+    
+    &.lang-he {
+      flex-direction: row;
+    }
 
     a {
       &:hover {
@@ -40,7 +48,6 @@
     }
 
     .project-title {
-      float: left;
       font-size: rem(14px);
     }
   }
@@ -59,54 +66,19 @@
     min-width: 350px;
   }
 
-  .lang-right {
-    float: right;
-    margin-right: 0.7em;
+  .lang-he {
+    direction: ltr;
   }
-  .lang-left {
-    float: left;
-    margin-left: 0.7em;
-  }
-}
-
-.header-title {
-  margin: 0 0 0 0;
-  align-items: center;
-  direction: ltr;
-  padding-right: 6px;
-
-  float: left;
-  font-size: rem(14px);
-  font-weight: 400;
-  text-rendering: auto;
-  transform: translate(0,0);
-
-  &:before {
-    display: inline-block;
-    border: 2px solid #eb1478;
-    margin-right: 8px;
-    margin-left: 8px;
-    border-radius: 100%;
-    height: 1em;
-    width: 1em;
-    content: ' ';
+  .lang-en {
+    direction: ltr;
   }
 
-  a {
-    color: black;
-    transition: all .2s ease;
-
-    &:hover {
-      color: $primary-color;
-    }
-
-    &.active {
-      color: $primary-color;
-      border-bottom: 4px solid $primary-color;
+  .language-buttons-wrapper {
+    .button-as-link {
+      font-size: 16px !important;
     }
   }
 }
-
 
 @media (max-width: 767px) {
   .header {

@@ -8,6 +8,8 @@
 
     <title>Doocrate</title>
 
+		<meta name="description" content="Doocrate - Freestyle Co-Creation. Community Collaboration.">
+
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <link rel="icon" type="image/png" sizes="96x96" href="%PUBLIC_URL%/favicon-96x96.png">
@@ -22,15 +24,16 @@
       // Finding the middle of the image and setting it to mouse position
       var _onMouseMove = function(e) {
         let unicorn = document.getElementsByClassName('loader-unicorn');
-        if(unicorn && unicorn.length > 0 && unicorn[0].style.opacity !== 0) {
-          unicorn[0].style.top = (e.screenY.toString() - parseInt(unicorn[0].style.height, 10)).toString() +'px';
-          unicorn[0].style.left = (e.screenX.toString() - parseInt(unicorn[0].style.width, 10) / 2).toString() + 'px';
+        var unistyle = unicorn[0].style;
+        if(unicorn && unicorn.length > 0 && unistyle.opacity !== 0) {
+          unistyle.top = (e.screenY.toString() - parseInt(unistyle.height, 10)).toString() +'px';
+          unistyle.left = (e.screenX.toString() - parseInt(unistyle.width, 10) / 2).toString() + 'px';
         }
         // unset mouse listen when unicorn is hidden
-        if (unicorn && unicorn.length && unicorn[0].style.opacity === 0) {
+        if (unicorn && unicorn.length && unistyle.opacity === 0) {
           document.removeEventListener('mousemove', _onMouseMove, false);
         }
-      }
+      };
 
       document.addEventListener('mousemove', _onMouseMove, false);
     </script>
@@ -43,15 +46,14 @@
 
   <body style="background-color:#f1f4f5;">
     <div id="root">
-      <img class="loader-unicorn" src="https://i.imgur.com/wULKbXa.gif"
-        style="transition: opacity 500ms 0ms;
+      <div class="loader-unicorn" style="transition: opacity 500ms 0ms;
               opacity: 1.0;
               height: 218px;
-              width: 319px;
+              width: 220px;
               position: absolute;
               pointer-events: none;
               left: calc(50% - 160px);
-              top: 12.5em;"/>
+              top: 12.5em;"></div>
     </div>
   </body>
 </html>

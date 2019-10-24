@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 
 import {I18n} from 'react-i18next';
 import Img from 'react-image';
@@ -93,14 +93,14 @@ class AboutCarousel extends React.Component {
                 {
                   humans.map(person => {
                     return (
-                      <Fragment key={person.name_en} className='each-fade'>
+                      <div key={person.name_en} className='each-fade'>
                         <h3 className='person-name'>
                           {person[`name_${t('lang')}`]}
                           </h3>
                         <div className='image-container'>
                           <Img src={person.img}/>
                         </div>
-                      </Fragment>
+                      </div>
                     )
                   })
                 }
