@@ -89,3 +89,6 @@ export function setCookie(name, value,years=10) {
   var expires = "expires="+date.toGMTString();
   document.cookie = name+"=" + value + "; " + expires+"; path=/";
 }
+
+export const isMobile = window.innerWidth < 480;
+export const isTablet = (window.innerWidth < 768  && window.innerWidth > 480);

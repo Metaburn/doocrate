@@ -1,14 +1,13 @@
 @import 'views/styles/shared';
 
 .task-side-view {
+  background: $white;
   overflow-y: auto;
-  // padding-bottom: 60px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
 }
 
 .task-view-container {
-  border-radius: 3px 3px 0 0;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.15);
-  background: white;
+  background: $white;
   line-height: 1.1em;
   margin-bottom: 2em;
   z-index: 10;

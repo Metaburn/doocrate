@@ -15,12 +15,7 @@ export class TaskItemRow extends Component {
 
     this.state = {};
 
-    this.select = this.select.bind(this);
     this.renderLabel = this.renderLabel.bind(this);
-  }
-
-  select() {
-    this.props.selectTask(this.props.task);
   }
 
   render() {
@@ -36,15 +31,12 @@ export class TaskItemRow extends Component {
       {
       (t, { i18n }) => (
         // Removed tab index as it causes error in the active task when switching between fields
-        <div className={containerClasses} /* tabIndex={this.props.taskNumber+100} */
-          onClick={this.select}
-          onKeyUp={this.select}>
-          { task && task.isCritical ?
+        <div className={containerClasses}>
+          {task && task.isCritical &&
             <div className='cell'>
-              <Icon name='warning' className='warning grow' />
-            </div>
-          : ''
-          }
+              <Icon name='warning' className='warning grow'/>
+            </div>}
+
           <div className='cell'>
             {this.renderTitle(task, t)}
           </div>
@@ -61,7 +53,6 @@ export class TaskItemRow extends Component {
       </I18n>
     );
   }
-
 
   renderTitle(task, translate) {
     let classNames = 'task-item-title';
@@ -108,7 +99,6 @@ export class TaskItemRow extends Component {
 
 TaskItemRow.propTypes = {
   task: PropTypes.object.isRequired,
-  selectTask: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
   selectedProject: PropTypes.object,
 };
