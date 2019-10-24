@@ -19,7 +19,6 @@
   "header": {
     "disconnect": "Sign out ",
     "me": "🧝",
-    "my-space": "Personal space",
     "all-projects": "All projects",
     "update-my-profile":"Update my profile",
     "create-project": "Start your own project"
@@ -55,7 +54,8 @@
   },
   "my-space": {
     "updated-successfully": "Success 🎉",
-    "role": "Role",
+    "edit-profile": "Edit Profile",
+    "projects-you-manage": "Projects You Manage",
     "projects": "My projects",
     "edit-project": "Edit project",
     "project-report": "Project Report",

@@ -143,6 +143,11 @@ export function updateUserData(authUser) {
             {merge: true});
 
           updateAuthFields(authUser);
+
+          // Update local auth
+          // TODO - ideally this would fire again an init auth so the local auth object would update
+          Object.assign(authUser, userSnapshot.data());
+          authActions.initAuth(newUserData);
         }
         resolve(authUser);
       }

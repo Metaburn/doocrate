@@ -18,7 +18,6 @@
   "header": {
     "disconnect": "התנתקי",
     "me": "🧝",
-    "my-space":"האזור האישי שלי",
     "all-projects": "כל הפרוייקטים בעולם",
     "update-my-profile":"עדכון הפרופיל שלי",
     "create-project": "צור פרוייקט משלך"
@@ -54,7 +53,8 @@
   },
   "my-space": {
     "updated-successfully": "הצלחה 🎉",
-    "role": "תפקידך",
+    "edit-profile": "ערוך פרופיל",
+    "projects-you-manage": "פרוייקטים שאתה מנהל",
     "projects": "הפרוייקטים שלי",
     "edit-project": "ערוך פרוייקט",
     "project-report": "דוח פרוייקט",
