@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 
 import './language-buttons.css';
 import PropTypes from "prop-types";
