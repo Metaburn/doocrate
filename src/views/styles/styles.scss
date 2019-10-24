@@ -9,6 +9,10 @@ html {
   overflow-y: scroll;
 }
 
+body {
+  padding: 0 122px 0 122px
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -162,14 +166,6 @@ input[type='button']
 .goog-te-banner-frame.skiptranslate {display: none !important;}
 body { top: 0px !important; }
 
-// Fix Select bug on firefox
-//.Select-control {
-//
-//}
-//.Select-value {
-//  border: 1px solid #ccc;
-//}
-
 
 // Rich text editor - limit height
 .ck-editor__editable_inline {
@@ -184,4 +180,11 @@ body { top: 0px !important; }
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
+}
+
+
+@media (max-width: 767px) {
+  body {
+    padding: 0;
+  }
 }

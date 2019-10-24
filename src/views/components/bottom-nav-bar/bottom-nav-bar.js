@@ -25,7 +25,12 @@ class BottomNavBar extends Component {
 
   render() {
     const {auth, selectedProject} = this.props;
-    const projectUrl = selectedProject? selectedProject.url : null;
+
+    const projectUrl = (selectedProject &&
+      selectedProject.url &&
+      selectedProject.url !== 'undefined')?
+      selectedProject.url : auth.defaultProject;
+
     const routes = nav(auth, projectUrl);
 
     return (
