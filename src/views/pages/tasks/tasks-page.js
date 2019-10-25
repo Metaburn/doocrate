@@ -345,7 +345,7 @@ export class TasksPage extends Component {
     if (this.state.newTask != null) {
       taskObj = this.state.newTask;
     } else if (this.state.selectedTask != null) {
-      taskObj = this.state.selectedTask.toJS();
+      taskObj = this.state.selectedTask;
     }
 
     return (
