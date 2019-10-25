@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import './loader-unicorn.css';
 
 const LoaderUnicorn = ({ isShow }) => {
+  if (!isShow) { return null; }
+
   const componentClasses = ['loader-unicorn'];
   if(!isShow) { componentClasses.push('hideme'); }
 

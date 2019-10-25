@@ -100,8 +100,9 @@ export class FirebaseList {
 
     let unsubscribe = collection.onSnapshot(snapshot => {
       if(!initialized) {
-        emit(this._actions.onLoad(list));
+        emit(this._actions.onLoad(snapshot.docs));
         initialized = true;
+        return;
       }
       const isLocalChange = snapshot.metadata.hasPendingWrites;
       snapshot.docChanges().forEach(change => {
@@ -136,4 +137,5 @@ export class FirebaseList {
     data.id = snapshot.id;
     return new this._modelClass(data);
   }
+
 }

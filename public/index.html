@@ -24,14 +24,18 @@
       // Finding the middle of the image and setting it to mouse position
       var _onMouseMove = function(e) {
         let unicorn = document.getElementsByClassName('loader-unicorn');
+
+        // unset mouse listen when unicorn is hidden
+        if (unicorn && unicorn.length && unicorn[0].opacity === 0) {
+          document.removeEventListener('mousemove', _onMouseMove, false);
+          return;
+        }
+
+        if(!unicorn || ! unicorn.length > 0) { return; }
         var unistyle = unicorn[0].style;
         if(unicorn && unicorn.length > 0 && unistyle.opacity !== 0) {
           unistyle.top = (e.screenY.toString() - parseInt(unistyle.height, 10)).toString() +'px';
           unistyle.left = (e.screenX.toString() - parseInt(unistyle.width, 10) / 2).toString() + 'px';
-        }
-        // unset mouse listen when unicorn is hidden
-        if (unicorn && unicorn.length && unistyle.opacity === 0) {
-          document.removeEventListener('mousemove', _onMouseMove, false);
         }
       };
 
