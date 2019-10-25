@@ -11,8 +11,10 @@ import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
   render() {
-    const { task, projectUrl } = this.props;
-    const proejctRoute = `/${projectUrl}`;
+    const { auth, task, selectedProject } = this.props;
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+    const projectRoute = `/${projectUrl}`;
 
     return(
       <I18n ns='translations'>
@@ -20,7 +22,7 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          <Link to={proejctRoute} className="button-no-border close-button">
+          <Link to={projectRoute} className="button-no-border close-button">
             <Icon name="close" className="close-icon grow"/>
           </Link>
 
@@ -122,6 +124,7 @@ TaskViewHeader.propTypes = {
   showButtonAsFollow: PropTypes.bool.isRequired,
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
+  selectedProject: PropTypes.object.isRequired,
   saveTask: PropTypes.func.isRequired,
   markAsDoneUndone: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired

@@ -18,6 +18,26 @@ export const TasksState = new Record({
   created: null
 });
 
+/*
+ Mapping from a firebase collection to a simple array
+ We are adding the id and a function that allow to perform object.get
+ */
+function firebaseCollectionToList(collection) {
+  return collection.map(task => {
+    return Object.assign(task.data(),{get: (object)=>task[object], id: task.id});
+  });
+}
+
+
+function extractLabels(collection) {
+  const result = [];
+  for (const doc of collection) {
+    result.push(...Object.keys(doc.data().label));
+  }
+  return result;
+}
+
+
 
 export function tasksReducer(state = new TasksState(), {payload, type}) {
   switch (type) {
@@ -27,7 +47,6 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         created: payload,
         list: state.list.unshift(payload),
         // Adds all the labels from the task into the labels pool
-
         labelsPool: state.labelsPool.union(Object.keys(payload.label)),
       });
 
@@ -40,8 +59,8 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       });
 
     case LOAD_TASKS_SUCCESS:
-      return state.set('list', new List(payload.reverse()))
-        .set('labelsPool',new Set());
+      return state.set('list', new List(firebaseCollectionToList(payload.reverse())))
+        .set('labelsPool',new Set(extractLabels((payload))));
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

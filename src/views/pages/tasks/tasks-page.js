@@ -316,6 +316,7 @@ export class TasksPage extends Component {
     updateUserData(newUserData);
   }
 
+
   getTaskViewProps() {
     const { tasks } = this.props;
     const { selectedTaskId } = this.state;

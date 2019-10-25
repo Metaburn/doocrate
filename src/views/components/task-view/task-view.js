@@ -569,7 +569,7 @@ export class TaskView extends Component {
           saveTask={this.handleSave}
           markAsDoneUndone={this.handleMarkAsDoneUndone}
           auth={auth}
-          projectUrl={selectedProject.url}/>
+          projectUrl={selectedProject}/>
         <div className="task-view">
           <form noValidate>
             <div className="form-input">
