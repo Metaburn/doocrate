@@ -13,10 +13,6 @@ import MyPortfolio from "../../molecules/myPortfolio/myPortfolio";
 import './me.css';
 
 export class Me extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const auth = this.props.auth;
 
