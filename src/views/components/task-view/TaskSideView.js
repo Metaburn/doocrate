@@ -6,14 +6,15 @@ import { isMobile, isTablet } from '../../../utils/browser-utils';
 const TaskSideView = ({
   i18n, selectedTask, removeTask, updateTask,
   assignTask, selectedProject, isAdmin, isGuide,
-  followTask, unfollowTask, unassignTask,
-  unloadComments, createComment, updateComment, removeComment,
+  followTask, unfollowTask, unassignTask, unloadComments,
+  createComment, updateComment, removeComment,
   isValidCallback, isDraft, submitNewTask, resetSelectedTask
 }) => {
 
   const isHebrew = i18n.language === 'he';
   const position = isMobile ? 'bottom' : isHebrew ? 'left' : 'right';
-  const isOpen = !!selectedTask;
+  const width = isMobile ? '90%' : isTablet? '60%' :'50%';
+  const isOpen = !!selectedTask || isDraft;
 
   return (
     <OffCanvas
@@ -21,7 +22,7 @@ const TaskSideView = ({
       className="task-side-view"
       position={position}
       height="100%"
-      width="50%"
+      width={width}
       closeOnOverlayClick={true}
       isOpen={isOpen}
       onClose={resetSelectedTask}>
@@ -46,6 +47,6 @@ const TaskSideView = ({
         submitNewTask={submitNewTask}/>
     </OffCanvas>
   );
-}
+};
 
 export default TaskSideView;

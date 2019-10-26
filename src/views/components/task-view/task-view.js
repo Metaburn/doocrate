@@ -132,47 +132,33 @@ export class TaskView extends Component {
       extraFields
     } = nextSelectedTask;
 
-      // this checks if we got another task, or we're updating the same one
-      if (id !== this.state.id) {
-        const labelAsArray = label ?
-          (Object.keys(label).map( l => { return l })) : [];
+    // this checks if we got another task, or we're updating the same one
+      const labelAsArray = label ?
+      (Object.keys(label).map( l => { return l })) : [];
 
-        // Set default task types
-        let defaultType = this.getDefaultTaskTypes(props);
+      // Set default task types
+      let defaultType = this.getDefaultTaskTypes(props);
 
-        let popularTags = this.getPopularTags(props);
+      let popularTags = this.getPopularTags(props);
 
-        this.setState({
-          id: id || '',
-          title: title || '',
-          description:description || '',
-          requirements:requirements || '',
-          label: labelAsArray || [],
-          listeners: listeners || [],
-          isCritical: isCritical || false,
-          isDone: isDone || false,
-          created: created || null,
-          doneDate: doneDate || null,
-          dueDate: dueDate || null,
-          type: type || null,
-          defaultType: defaultType || [],
-          popularTags: popularTags,
-          extraFields: extraFields || {},
-          validation: {}
-        });
-      } else {
-        // A new task?
-
-        // Set default task types
-        let defaultType = this.getDefaultTaskTypes(props);
-
-        let popularTags = this.getPopularTags(props);
-
-        this.setState({
-          defaultType: defaultType || [],
-          popularTags: popularTags,
-        });
-      }
+      this.setState({
+        id: id || '',
+        title: title || '',
+        description:description || '',
+        requirements:requirements || '',
+        label: labelAsArray || [],
+        listeners: listeners || [],
+        isCritical: isCritical || false,
+        isDone: isDone || false,
+        created: created || null,
+        doneDate: doneDate || null,
+        dueDate: dueDate || null,
+        type: type || null,
+        defaultType: defaultType || [],
+        popularTags: popularTags,
+        extraFields: extraFields || {},
+        validation: {}
+      });
   }
 
   getDefaultTaskTypes(props) {
@@ -507,7 +493,7 @@ export class TaskView extends Component {
   }
 
   render() {
-    const task = this.props.selectedTask;
+    let task = this.props.selectedTask;
 
     if (!task) {
       return (

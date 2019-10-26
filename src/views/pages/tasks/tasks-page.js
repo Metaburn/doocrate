@@ -79,8 +79,19 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
+    if (selectedTaskId === "new-task") {
+      if (this.state.newTask == null) {
+        this.setState({
+          selectedTaskId: null,
+          newTask: this.createNewTask()
+        });
 
-    this.setState({ selectedTaskId });
+        this.props.unloadComments();
+      }
+      return;
+    }
+
+    this.setState({ selectedTaskId, newTask: null });
 
     // if url has a task id - select it
     // if (nextProps.match != null && nextProps.match.params.projectUrl &&
@@ -320,7 +331,14 @@ export class TasksPage extends Component {
   getTaskViewProps() {
     const { tasks } = this.props;
     const { selectedTaskId } = this.state;
-    const selectedTask = tasks.find((task) => task.get('id') === selectedTaskId);
+
+    // TODO - is this the right place to make this decision?
+    let selectedTask;
+    if(this.state.newTask) {
+      selectedTask = this.state.newTask;
+    }else {
+      selectedTask = tasks.find((task) => task.get('id') === selectedTaskId);
+    }
 
     return {
       i18n,
@@ -341,7 +359,6 @@ export class TasksPage extends Component {
       isValidCallback: this.setCurrentTaskValid,
       isDraft: this.state.newTask != null,
       submitNewTask: this.submitNewTask,
-      newTask: this.state.newTask,
       isTaskVisible: !!this.state.selectedTask,
       resetSelectedTask: this.resetSelectedTask
     };
@@ -417,8 +434,11 @@ export class TasksPage extends Component {
   };
 
   resetSelectedTask = () => {
-    this.setState({ selectedTaskId: null });
-  }
+    this.setState({
+      newTask: null,
+      selectedTaskId: null,
+    });
+  };
 
   render() {
     const { tasks } = this.props;
