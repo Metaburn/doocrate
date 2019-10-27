@@ -136,11 +136,11 @@ export function signOut() {
   };
 }
 
-export function isShowUpdateProfile(isShow) {
+export function isShowUpdateProfile(isShow, includingBio) {
   return dispatch => {
     dispatch({
       type: UPDATE_PROFILE,
-      payload: isShow
+      payload: {show: isShow, includingBio: includingBio}
     })
   };
 }

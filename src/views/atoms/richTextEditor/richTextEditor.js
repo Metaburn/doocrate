@@ -24,7 +24,7 @@ class RichTextEditor extends Component {
     const {isEditing,i18n} = this.props;
 
     return (
-      <div className={'richTextEditor'}>
+      <div className={'rich-text-editor'}>
 
         {(!isEditing &&
           <EditorPreview
@@ -43,6 +43,7 @@ class RichTextEditor extends Component {
                 "undo", "redo"],
               language: {ui: 'en', content: i18n.language}
             }}
+            onBlur={this.props.onBlur}
             onChange={this.props.onChange}
           />
         )}
@@ -54,6 +55,7 @@ class RichTextEditor extends Component {
 RichTextEditor.propTypes = {
   onToggleEditing: PropTypes.func,
   onChange: PropTypes.func,
+  onBlur: PropTypes.func,
   data: PropTypes.string,
   isEditing: PropTypes.bool.isRequired,
   i18n: PropTypes.object.isRequired,

@@ -9,7 +9,6 @@
   margin: 2em auto;
   max-width: 600px;
   padding: 2em 2em 4em 2em;
-  background: white;
   -webkit-border-radius: 16px;
   -moz-border-radius: 16px;
   border-radius: 16px;
@@ -19,6 +18,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  .my-tasks {
+    width: 100%;
+  }
 
   a {
     color: $primary-color;
@@ -63,7 +66,6 @@
 @media only screen and (max-width: 480px){
   .me {
     margin: 0 auto;
-    background: none;
     padding-bottom: 4em;
   }
 

@@ -5,14 +5,25 @@ import { I18n } from 'react-i18next';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { notificationActions } from "../../../notification";
-import {createSelector} from "reselect";
-import {authActions, getAuth} from "../../../auth";
+import {authActions} from "../../../auth";
 import { updateUserData } from "src/auth/auth";
 import MyPortfolio from "../../molecules/myPortfolio/myPortfolio";
 
-import './me.css';
+import './me-page.css';
+import {buildFilter, taskFilters} from "src/tasks";
+import MyTasks from "../../molecules/myTasks/myTasks";
 
-export class Me extends Component {
+export class MePage extends Component {
+
+  constructor() {
+    super(...arguments);
+
+    this.state = {
+      showCreatedTasks: true,
+      showAssignedTasks: true
+    }
+  }
+
   render() {
     const auth = this.props.auth;
 
@@ -27,6 +38,16 @@ export class Me extends Component {
                 isShowUpdateProfile={this.props.isShowUpdateProfile}
                 updateUserData={(userData) => this.updateUserData(i18n, userData)}
                 i18n={i18n}/>
+
+              <MyTasks
+                buildFilter={buildFilter}
+                taskFilters={taskFilters}
+                tasks={this.props.tasks}
+                auth={this.props.auth}
+                onLabelClick={this.props.onLabelClick}
+                i18n={i18n}
+              />
+
 
               {auth && auth.role !== 'user' ?
                 <div className={'projects-you-manage'}>{t('my-space.projects-you-manage')}:</div>
@@ -43,7 +64,6 @@ export class Me extends Component {
   updateUserData = (i18n, newData) => {
     updateUserData(newData).then( () => {
       this.props.showSuccess(i18n.t('my-space.updated-successfully'));
-      this.props.history.goBack();
     })
   };
 
@@ -71,22 +91,18 @@ export class Me extends Component {
   }
 }
 
-Me.propTypes = {
+MePage.propTypes = {
   auth: PropTypes.object.isRequired,
   showSuccess: PropTypes.func.isRequired,
   isShowUpdateProfile: PropTypes.func.isRequired
 };
 
-
-//=====================================
-//  CONNECT
-//-------------------------------------
-const mapStateToProps = createSelector(
-  getAuth,
-  (auth) => ({
-    auth
-  })
-);
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    tasks: state.tasks.list,
+  }
+};
 
 
 const mapDispatchToProps = Object.assign(
@@ -98,4 +114,4 @@ const mapDispatchToProps = Object.assign(
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Me);
+)(MePage);

@@ -54,10 +54,10 @@ describe('Auth reducer', () => {
     it('should set shouldShowUpdateProfile to true', () => {
       let state = authReducer(undefined, {
         type: UPDATE_PROFILE,
-        payload: true
+        payload: {show: true, includingBio:false},
       });
 
-      expect(state.shouldShowUpdateProfile).toBe(true);
+      expect(state.shouldShowUpdateProfile).toBe({show: true, includingBio:false},);
     });
   });
 

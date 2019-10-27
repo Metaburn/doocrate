@@ -2,6 +2,8 @@ import { createSelector } from 'reselect';
 
 const filters = {
   user: (auth, value) =>  ({type: "user", uid: value}),
+  userOnlyCreator: (auth, value) =>  ({type: "userOnlyCreator", uid: value}),
+  userOnlyAssignee: (auth, value) =>  ({type: "userOnlyAssignee", uid: value}),
   complete: (auth, value) => ({type: "complete", text: value}),
   unassigned: (auth, value) => ({type: "unassigned"}),
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
@@ -69,6 +71,22 @@ export const taskFilters = {
         return ((task.assignee && (task.assignee.id === auth)) ||
           (task.creator && task.creator.id === auth));
       });
+  },
+
+  userOnlyCreator: (tasks, filter) => {
+    const auth = filter.uid;
+    return tasks.filter(task =>
+    {
+      return (task.creator && task.creator.id === auth);
+    });
+  },
+
+  userOnlyAssignee: (tasks, filter) => {
+    const auth = filter.uid;
+    return tasks.filter(task =>
+    {
+      return (task.assignee && task.assignee.id === auth);
+    });
   },
 
   query: (tasks, filter) => {

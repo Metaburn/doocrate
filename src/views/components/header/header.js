@@ -50,16 +50,19 @@ class Header extends Component {
                   />
 
                   <SetUserInfo
-                    isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
+                    isOpen = { (this.state.showSetUserInfoScreen) ||
+                    (this.props.auth.shouldShowUpdateProfile && this.props.auth.shouldShowUpdateProfile.show) }
                     userInfo={ this.props.auth }
+                    includingBio={this.props.auth.shouldShowUpdateProfile && this.props.auth.shouldShowUpdateProfile.includingBio }
                     photoURL={ this.props.auth.photoURL || getRandomImage()}
                     updateUserInfo={ this.updateUserInfo }
                     onClosed = { () => {
                       this.setState({showSetUserInfoScreen: false});
                       this.props.isShowUpdateProfile(false);
                       this.setState({showSetUserInfoScreen: false})
-                    }
-                    } />
+                    }}
+                    i18n={i18n}
+                    />
 
                   <div className={`header-side lang-${i18n.language}`}>
                     <h4 className='project-title'>{this.props.selectedProject?

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 
 import './set-user-info.css';
 import Img from 'react-image';
-import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
 import getRandomImage from 'src/utils/unsplash';
+import RichTextEditor from "../../atoms/richTextEditor/richTextEditor";
 
 
 export class SetUserInfo extends Component {
@@ -13,15 +13,14 @@ export class SetUserInfo extends Component {
     super(...arguments);
     this.state = {
       isOpen: true,
+      includingBio: false,
       email: '',
+      bio: '',
       name: '',
       photoURL: '',
-      originalEmail: '',
+      originalEmail: ''
     };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleImageClick = this.handleImageClick.bind(this);
   }
 
   onOpenModal = () => {
@@ -55,6 +54,7 @@ export class SetUserInfo extends Component {
         // Otherwise revert to original mail
         email: props.userInfo.updatedEmail || props.userInfo.email || '',
         name: props.userInfo.name || '',
+        bio: props.userInfo.bio || '',
         isOpen: props.isOpen || false,
         photoURL: props.photoURL || ''
       });
@@ -71,31 +71,27 @@ export class SetUserInfo extends Component {
     const { isOpen:isOpenState } = this.state;
 
     const isOpen = isOpenProps && isOpenState;
+    const { i18n } = this.props;
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
-            <Modal open={isOpen} onClose={this.onCloseModal} center>
-              <div className='set-user-info' dir={t('lang-dir')}>
-                <div className='modal-content'>
-                  <div className='modal-header'>
-                    <h1>{t('user.title')}</h1>
-                  </div>
-                  {this.renderBody(t)}
-                </div>
-              </div>
-            </Modal>
-          )
-        }
-      </I18n>
+      <Modal open={isOpen} onClose={this.onCloseModal} center>
+        <div className='set-user-info' dir={i18n.t('lang-dir')}>
+          <div className='modal-content'>
+            <div className='modal-header'>
+              <h1>{i18n.t('user.title')}</h1>
+            </div>
+            {this.renderBody()}
+          </div>
+        </div>
+      </Modal>
     );
   }
 
-  renderBody(t) {
+  renderBody() {
+    const { i18n } = this.props;
     const { name } = this.props.userInfo;
     const photoURL = this.state.photoURL;
-    const avatar = photoURL ? <Img className={`avatar avatar-${t('lang-float')}`} src={photoURL} alt={name} onClick={this.handleImageClick}/> : '';
+    const avatar = photoURL ? <Img className={`avatar avatar-${i18n.t('lang-float')}`} src={photoURL} alt={name} onClick={this.handleImageClick}/> : '';
 
     return (
       <div className='modal-body'>
@@ -103,24 +99,50 @@ export class SetUserInfo extends Component {
           <div className={'avatar-wrapper'}>
             { avatar }
             <span className={'avatar-parallel'}>
-              <span><b>{t('user.email')}</b></span>
+              <span><b>{i18n.t('user.email')}</b></span>
               <span className={'flex-rows-break'}/>
-              {this.renderInput('email', t('user.set-my-email'), true, 'email')}
-              <span><b>{t('user.set-my-name-description')}</b></span>
-              {this.renderInput('name', t('user.set-my-name'), true, 'name')}
+              {this.renderInput('email', i18n.t('user.set-my-email'), true, 'email')}
+              <span><b>{i18n.t('user.set-my-name-description')}</b></span>
+              {this.renderInput('name', i18n.t('user.set-my-name'), true, 'name')}
+              {this.props.includingBio && this.renderBio()}
             </span>
           </div>
-          {this.renderSubmit(t)}
+          {this.renderSubmit()}
         </form>
       </div>
     );
   }
 
-  renderSubmit(t) {
+  renderBio = () => {
+    const { i18n } = this.props;
+
+    return(
+      <Fragment>
+        <span><b>{i18n.t('user.bio-description')}</b></span>
+
+        <RichTextEditor
+        i18n={i18n}
+        data={this.state.bio}
+        isEditing={true}
+        onChange={this.onBioEditorChange}
+        onToggleEditing={this.onToggleEditing}/>
+
+      </Fragment>
+        );
+  };
+
+  onBioEditorChange = (event, editor) => {
+    this.setState({
+      bio: editor.getData()
+    });
+  };
+
+  renderSubmit() {
+    const { i18n } = this.props;
     return (
       <div className={'submit-wrapper'}>
         <input className={`button button-small` }
-               type="submit" value={t('user.submit')}/>
+               type="submit" value={i18n.t('user.submit')}/>
       </div>
     );
   }
@@ -141,38 +163,41 @@ export class SetUserInfo extends Component {
     );
   }
 
-  handleImageClick(event) {
-    // Roll a random image - 250 to 300 (Resolution)
+  handleImageClick = () =>{
+    // Roll a random image
     this.setState({
       photoURL: getRandomImage()
     });
-  }
+  };
 
-  handleChange(e) {
+  handleChange = (e) => {
     let fieldName = e.target.name;
     this.setState({
       [fieldName]: e.target.value
     });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     if(event) {
       event.preventDefault();
     }
     const fieldsToUpdate = {
       email: this.state.email,
       name: this.state.name,
+      bio: this.state.bio,
       photoURL: this.state.photoURL
     };
 
     this.props.updateUserInfo(fieldsToUpdate);
     this.onCloseModal();
-  }
+  };
 
 }
 
 SetUserInfo.propTypes = {
+  i18n: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
+  includingBio: PropTypes.bool.isRequired,
   userInfo: PropTypes.object.isRequired,
   photoURL: PropTypes.string.isRequired,
   updateUserInfo: PropTypes.func.isRequired,

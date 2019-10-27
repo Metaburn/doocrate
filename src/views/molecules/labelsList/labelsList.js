@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import { I18n } from 'react-i18next';
 
-import './popular-labels.css';
+import './labelsList.css';
 import Label from "src/views/atoms/label";
 
-class PopularLabels extends Component {
+class LabelsList extends Component {
 
   constructor() {
     super(...arguments);
@@ -20,8 +20,8 @@ class PopularLabels extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className={'popular-labels-wrapper'}>
-              <div className={`popular-labels flex-${t('lang-float')}`}>
+            <div className={'labels-list-wrapper'}>
+              <div className={`labels-list flex-${t('lang-float')}`}>
                 {
                   this.props.labels.map(label => {
                     return (
@@ -40,9 +40,9 @@ class PopularLabels extends Component {
   }
 }
 
-PopularLabels.propTypes = {
+LabelsList.propTypes = {
   labels: PropTypes.array,
   onLabelClick: PropTypes.func,
 };
 
-export default PopularLabels;
+export default LabelsList;

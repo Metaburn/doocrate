@@ -42,10 +42,10 @@ class MyPortfolio extends Component {
         {auth && auth.name &&
         <Fragment>
               <span className={'user-name'} onClick={() => {
-                this.props.isShowUpdateProfile(true)
+                this.props.isShowUpdateProfile(true, true)
               }}>
                 <Button className={'edit-email'} onClick={() => {
-                  this.props.isShowUpdateProfile(true)
+                  this.props.isShowUpdateProfile(true, true)
                 }}>
                   <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
                 </Button>
@@ -55,16 +55,9 @@ class MyPortfolio extends Component {
         }
 
         <form className='user-form' onSubmit={this.handleSubmit}>
-          <span className={'bio-description'}>{i18n.t('user.bio-description')}</span>
           {this.renderBio()}
           {this.renderSubmit()}
         </form>
-
-        {!this.state.isEditing &&
-        <Button className={'edit-profile'} onClick={this.onToggleEditing}>
-          {i18n.t('my-space.edit-bio')}
-        </Button>
-        }
 
       </div>
     )
@@ -82,7 +75,9 @@ class MyPortfolio extends Component {
     if(!this.state.bio && !this.state.isEditing) {
       return (<span>
         {i18n.t('my-space.bio-empty')}
+        &nbsp;
         <Button className={'button-as-link'} onClick={ this.onToggleEditing }>{i18n.t('my-space.bio-empty-action')}</Button>
+        &nbsp;
         {i18n.t('my-space.bio-empty-encourage')}
       </span>);
     }
@@ -92,6 +87,7 @@ class MyPortfolio extends Component {
       data={this.state.bio}
       isEditing={this.state.isEditing}
       onChange={this.onEditorChange}
+      onBlur={this.handleSubmit}
       onToggleEditing={this.onToggleEditing}/>)
   }
 
@@ -109,7 +105,7 @@ class MyPortfolio extends Component {
   }
 
   handleSubmit = (event) => {
-    if(event) {
+    if(event && typeof(event.preventDefault) === "function") {
       event.preventDefault();
     }
 
@@ -117,6 +113,8 @@ class MyPortfolio extends Component {
       uid: this.props.auth.id,
       bio: this.state.bio,
     };
+
+    this.setState({isEditing: false});
 
     this.props.updateUserData(fieldsToUpdate);
   };

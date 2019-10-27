@@ -16,7 +16,7 @@ export const AuthState = new Record({
   canCreateTask: false,
   canAssignTask: false,
   didntBuy: false,
-  shouldShowUpdateProfile: false,
+  shouldShowUpdateProfile: {show: false, includingBio:false},
   adminProjects: [],
   defaultProject: null,
   language: null
@@ -51,7 +51,7 @@ export function authReducer(state = new AuthState(), {payload, type}) {
 
     case UPDATE_PROFILE:
       return state.merge({
-        shouldShowUpdateProfile: (!!payload)
+        shouldShowUpdateProfile: payload
   });
 
     default:

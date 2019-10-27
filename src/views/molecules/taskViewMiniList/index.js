@@ -1,0 +1,1 @@
+export { TaskViewMiniList } from './taskViewMiniList';
