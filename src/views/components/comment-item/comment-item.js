@@ -11,7 +11,7 @@ import Icon from "../icon";
 import ToolTip from "react-portal-tooltip";
 import Button from "../button";
 import Textarea from "react-textarea-autosize";
-import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
+import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 
 export class CommentItem extends Component {
   constructor() {

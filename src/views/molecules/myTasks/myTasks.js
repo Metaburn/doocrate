@@ -46,7 +46,7 @@ class MyTasks extends Component {
 
         <TaskViewMiniList
           i18n={this.props.i18n}
-          onSelectTask={this.goToTask}
+          onSelectTask={this.props.onSelectTask}
           onLabelClick={this.props.onLabelClick}
           tasks={tasksToShow}
           selectedTaskId={1000}
@@ -85,9 +85,11 @@ MyTasks.propTypes = {
   i18n: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
+  selectedProject: PropTypes.object.isRequired,
   taskFilters: PropTypes.object.isRequired,
   buildFilter: PropTypes.func.isRequired,
-  onLabelClick: PropTypes.func.isRequired
+  onLabelClick: PropTypes.func.isRequired,
+  onSelectTask: PropTypes.func.isRequired
 };
 
 export default MyTasks

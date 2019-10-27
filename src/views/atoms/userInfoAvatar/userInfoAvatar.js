@@ -2,12 +2,12 @@ import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
-import UserInfoTooltip from '../user-info-tooltip/user-info-tooltip';
+import UserInfoTooltip from '../../components/user-info-tooltip/user-info-tooltip';
 import {createSelector} from "reselect";
 import { loadUser } from "src/users/actions";
-import {getAuth} from "../../../auth";
+import {getAuth} from "../../../auth/index";
 import {connect} from "react-redux";
-import './user-info-avatar.css';
+import './userInfoAvatar.css';
 
 class UserInfoAvatar extends Component {
   constructor(props) {
@@ -20,8 +20,12 @@ class UserInfoAvatar extends Component {
     this.targetElm = createRef();
   }
 
-  toggleTooltip = (e) => {
+  toggleTooltip = (event) => {
     this.loadUserInfo();
+    if(event) {
+      event.preventDefault();
+      return;
+    }
   };
 
   handleClose = (e) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
+import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 
 import './task-creator.css';
 import { I18n } from 'react-i18next';

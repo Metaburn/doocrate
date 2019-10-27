@@ -23,10 +23,6 @@ class MyPortfolio extends Component {
     this.setState({bio: this.props.auth.bio})
   }
 
-  onToggleEditing = () => {
-    this.setState({isEditing:!this.state.isEditing});
-  };
-
   render() {
     const { auth, i18n } = this.props;
 
@@ -41,12 +37,12 @@ class MyPortfolio extends Component {
         }
         {auth && auth.name &&
         <Fragment>
-              <span className={'user-name'} onClick={() => {
-                this.props.isShowUpdateProfile(true, true)
-              }}>
-                <Button className={'edit-email'} onClick={() => {
-                  this.props.isShowUpdateProfile(true, true)
-                }}>
+              <span className={'user-name'} onClick={
+                this.showUpdateProfile
+              }>
+                <Button className={'edit-email'} onClick={
+                  this.showUpdateProfile
+                }>
                   <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
                 </Button>
                 {auth.name}
@@ -56,7 +52,6 @@ class MyPortfolio extends Component {
 
         <form className='user-form' onSubmit={this.handleSubmit}>
           {this.renderBio()}
-          {this.renderSubmit()}
         </form>
 
       </div>
@@ -69,6 +64,10 @@ class MyPortfolio extends Component {
     });
   };
 
+  showUpdateProfile = () => {
+    this.props.isShowUpdateProfile(true, true);
+  };
+
   renderBio() {
     const { i18n } = this.props;
 
@@ -76,7 +75,7 @@ class MyPortfolio extends Component {
       return (<span>
         {i18n.t('my-space.bio-empty')}
         &nbsp;
-        <Button className={'button-as-link'} onClick={ this.onToggleEditing }>{i18n.t('my-space.bio-empty-action')}</Button>
+        <Button className={'button-as-link'} onClick={ this.showUpdateProfile }>{i18n.t('my-space.bio-empty-action')}</Button>
         &nbsp;
         {i18n.t('my-space.bio-empty-encourage')}
       </span>);
@@ -88,20 +87,7 @@ class MyPortfolio extends Component {
       isEditing={this.state.isEditing}
       onChange={this.onEditorChange}
       onBlur={this.handleSubmit}
-      onToggleEditing={this.onToggleEditing}/>)
-  }
-
-  renderSubmit() {
-    const {i18n} = this.props;
-    if(!this.state.isEditing) {
-      return;
-    }
-    return (
-      <div className={'submit-wrapper'}>
-        <input className={`button button-small`}
-               type="submit" value={i18n.t('user.submit')}/>
-      </div>
-    );
+      onToggleEditing={this.showUpdateProfile}/>)
   }
 
   handleSubmit = (event) => {

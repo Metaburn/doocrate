@@ -5,7 +5,7 @@ import Icon from '../icon';
 import Img from 'react-image';
 
 import { I18n } from 'react-i18next';
-import UserInfoAvatar from "../user-info-avatar/user-info-avatar";
+import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 import follow from './follow.png';
 
 import './task-view-header.css';

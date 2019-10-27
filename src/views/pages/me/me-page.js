@@ -43,7 +43,9 @@ export class MePage extends Component {
                 buildFilter={buildFilter}
                 taskFilters={taskFilters}
                 tasks={this.props.tasks}
+                selectedProject={this.props.selectedProject}
                 auth={this.props.auth}
+                onSelectTask={this.onSelectTask}
                 onLabelClick={this.props.onLabelClick}
                 i18n={i18n}
               />
@@ -88,6 +90,10 @@ export class MePage extends Component {
         }
       </div>
     )
+  };
+
+  onSelectTask = (task) =>{
+    this.props.history.push('/' + this.props.selectedProject.url + '/task/' + task.id);
   }
 }
 
@@ -101,6 +107,7 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     tasks: state.tasks.list,
+    selectedProject: state.projects.selectedProject,
   }
 };
 

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import 'react-tagsinput/react-tagsinput.css';
 
 import './taskViewMini.css';
-import TaskCreator from "../../components/task-creator/task-creator";
 import classNames from "classnames";
-import Icon from "../../components/icon/icon";
+import UserInfoAvatar from "src/views/atoms/userInfoAvatar";
 import LabelsList from "../labelsList/labelsList";
+import userCircleSolid from "./user-circle-solid.svg";
 
 class TaskViewMini extends Component {
 
@@ -56,7 +56,7 @@ class TaskViewMini extends Component {
       );
     }
 
-    const {title, description, label, requirements, type, creator} = task;
+    const {title, description, label, requirements, type} = task;
     let containerClasses = classNames('task-view-mini',
       {'active': this.props.isActive},
       `lang-${i18n.language}`);
@@ -69,25 +69,18 @@ class TaskViewMini extends Component {
     return (
       <div className={containerClasses} dir={i18n.t('lang-dir')}
            onClick={() => this.props.onSelectTask(this.props.task)}>
-        <div>
-          <span className={'title'}>{title}</span>
+        <div className={'header'}>
+          <div className={'title'}>{title}</div>
+          <div className={`task-type`}>{type && type.label}</div>
         </div>
-        <div>
-          <span>{description}</span>
-        </div>
-        <div>
-          <span>{requirements}</span>
-        </div>
-        <div>
-          <div className={`instruction instruction-${i18n.t('lang-float')}`}><span>{i18n.t('task.type')}</span></div>
-          <span className={`task-type task-type-${i18n.t('lang-float')}`}>{(type) ? type.label : ''}<br/></span>
-        </div>
+        <div>{description}</div>
+        <div>{requirements}</div>
+
+        { this.renderAssignee() }
 
         <div className={`tags-container tags-container-${i18n.t('lang-float')}`}>
-          <Icon className="label notranslate" name="loyalty"/> {this.renderLabels(labelAsArray, false, '0')}
+          {this.renderLabels(labelAsArray, false, '0')}
         </div>
-
-        <TaskCreator creator={creator}/>
 
       </div>
     );
@@ -98,6 +91,29 @@ class TaskViewMini extends Component {
       <LabelsList
         labels={labels}
         onLabelClick={this.props.onLabelClick}/>
+    );
+  }
+
+  renderAssignee = () => {
+    const {assignee} = this.props.task;
+    if(!assignee) {
+      return (
+        <div className={`avatar-container lang-${this.props.i18n.language}`}>
+          <img src={userCircleSolid} alt={'Assignee'}/>
+          <span>{this.props.i18n.t('task.no-assignee')}</span>
+        </div>
+      )
+    }
+
+    return(
+      <div className={`avatar-container lang-${this.props.i18n.language}`}>
+        <UserInfoAvatar
+          uniqueId={'task-header-assignee'}
+          photoURL={assignee.photoURL}
+          userId={assignee.id}
+          alt={assignee.name}/>
+        <span>{assignee.name}</span>
+      </div>
     );
   }
 
