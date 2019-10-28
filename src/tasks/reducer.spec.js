@@ -17,7 +17,9 @@ class FirebaseTaskObject {
   constructor(props) {
     this._object = new Task({id: props.id, completed: props.completed, title: props.title});
   }
-
+  get id() {
+    return this._object.id;
+  }
   data() { return this._object }
 }
 
@@ -26,8 +28,8 @@ describe('Tasks reducer', () => {
   let task2;
 
   beforeEach(() => {
-    task1 = new FirebaseTaskObject({completed: false, id: '0', title: 'task 1'});
-    task2 = new FirebaseTaskObject({completed: false, id: '1', title: 'task 2'});
+    task1 = new FirebaseTaskObject({completed: false, id: 0, title: 'task 1'});
+    task2 = new FirebaseTaskObject({completed: false, id: 1, title: 'task 2'});
   });
 
 
@@ -51,10 +53,10 @@ describe('Tasks reducer', () => {
 
       let nextState = tasksReducer(state, {
         type: REMOVE_TASK_SUCCESS,
-        payload: task1.data()
+        payload: task1
       });
 
-      expect(nextState.deleted).toBe(task1.data());
+      expect(nextState.deleted).toBe(task1);
       expect(nextState.list.size).toBe(1);
       expect(nextState.list.get(0)).toBe(task2);
       expect(nextState.previous).toBe(state.list);
@@ -90,16 +92,16 @@ describe('Tasks reducer', () => {
   describe('UPDATE_TASK_SUCCESS', () => {
     it('should update task', () => {
       let state = new TasksState({list: new List([task1, task2])});
-      const changedTask = task1.data().set('title', 'changed');
+      task1.data().set('title', 'changed');
 
       let nextState = tasksReducer(state, {
         type: UPDATE_TASK_SUCCESS,
-        payload: task2
+        payload: task1
       });
 
       expect(nextState.list.size).toBe(2);
-      expect(nextState.list.get(0)).toBe(task2);
-      expect(nextState.list.get(1).title).toBe(task1.title);
+      expect(nextState.list.get(0).title).toBe(task1.title);
+      expect(nextState.list.get(1).title).toBe(task2.title);
     });
   });
 

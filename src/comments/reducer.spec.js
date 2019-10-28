@@ -16,6 +16,9 @@ class FirebaseCommentObject {
   constructor(props) {
     this._object = new Comment({id: props.id, 'body': props.body});
   }
+  get id() {
+    return this._object.id;
+  }
 
   data() { return this._object }
 }

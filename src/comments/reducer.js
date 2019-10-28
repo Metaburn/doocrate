@@ -37,7 +37,7 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
       return state.merge({
         deleted: payload,
         previous: state.list,
-        list: state.list.filter(comment => comment.data().id !== payload.id)
+        list: state.list.filter(comment => comment.id !== payload.id)
       });
 
     case LOAD_COMMENTS_SUCCESS:

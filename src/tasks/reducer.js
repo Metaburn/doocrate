@@ -47,7 +47,7 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         deleted: payload,
         created: null,
         previous: state.list,
-        list: state.list.filter(task => task.data().id !== payload.id)
+        list: state.list.filter(task => task.id !== payload.id)
       });
 
     case LOAD_TASKS_SUCCESS:
