@@ -57,5 +57,6 @@
 }
 
 .task-view-mini-list > div:first-child {
-  width: 97%; //Fixes an issue with overflow and box-shadow being cut
+  width: 94%; //Fixes an issue with overflow and box-shadow being cut
+  margin: 0 auto;
 }

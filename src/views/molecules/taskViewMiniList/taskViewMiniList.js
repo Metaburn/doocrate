@@ -84,7 +84,7 @@ TaskViewMiniList.propTypes = {
   tasks: PropTypes.array.isRequired,
   onSelectTask: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
-  selectedTaskId: PropTypes.string,
+  selectedTaskId: PropTypes.number,
 };
 
 export default TaskViewMiniList;

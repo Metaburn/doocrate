@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import 'react-tagsinput/react-tagsinput.css';
 
+import classNames from 'classnames';
 import './myTasks.css';
 import TaskViewMiniList from "../taskViewMiniList/taskViewMiniList";
 
@@ -18,7 +19,7 @@ class MyTasks extends Component {
   render() {
     //TODO - Performance wise - This should probably be in the reducer and not in render
     // Includes task I've created and assigned
-    const { auth, tasks, buildFilter, taskFilters } = this.props;
+    const { auth, tasks, buildFilter, taskFilters, i18n } = this.props;
     const myTasksFilter = buildFilter(auth, 'user', auth.id);
     const myTasks = taskFilters[myTasksFilter.type](tasks, myTasksFilter);
 
@@ -28,21 +29,30 @@ class MyTasks extends Component {
     const myTasksOnlyAssignee = taskFilters[myTasksFilterOnlyAssignee.type](myTasks, myTasksFilter);
 
     let tasksToShow;
-    if (this.state.showAssignedTasks && this.state.showCreatedTasks) {
+
+    const {showAssignedTasks, showCreatedTasks } = this.state;
+
+    if (showAssignedTasks && showCreatedTasks) {
       tasksToShow = myTasks;
-    } else if (this.state.showAssignedTasks) {
+    } else if (showAssignedTasks) {
       tasksToShow = myTasksOnlyAssignee;
-    } else if (this.state.showCreatedTasks) {
+    } else if (showCreatedTasks) {
       tasksToShow = myTasksOnlyCreator;
     }
 
+    const baseClasses = 'button button-small';
+    const classShowAll = classNames(baseClasses, {'active': showAssignedTasks && showCreatedTasks});
+    const classOnlyAssignee = classNames(baseClasses, {'active': showAssignedTasks && !showCreatedTasks});
+    const classOnlyCreated = classNames(baseClasses, {'active': showCreatedTasks && !showAssignedTasks});
+
     return (
       <div className={'my-tasks'}>
-        <span> {tasksToShow.size} </span>
 
-        <button className={'button-as-link'} onClick={this.showAll}>Show All</button>
-        <button className={'button-as-link'} onClick={this.onlyShowCreated}>Only Created</button>
-        <button className={'button-as-link'} onClick={this.onlyShowAssigned}>Only Assigned</button>
+        <button className={classShowAll} onClick={this.showAll}>{i18n.t('my-space.show-all')}</button>
+        <button className={classOnlyAssignee} onClick={this.onlyShowAssigned}>{i18n.t('my-space.only-assigned')}</button>
+        <button className={classOnlyCreated} onClick={this.onlyShowCreated}>{i18n.t('my-space.only-created')}</button>
+
+        {<h2 className={'tasks-counter'}>{i18n.t('task.showing-x-tasks',{count: tasksToShow.size})}</h2>}
 
         <TaskViewMiniList
           i18n={this.props.i18n}

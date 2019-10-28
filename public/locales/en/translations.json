@@ -62,6 +62,9 @@
     "bio-empty": "You haven't wrote anything.",
     "bio-empty-action": "Click here to edit your Bio",
     "bio-empty-encourage": "so other members can learn more about you"
+    "only-created": "Only Created",
+    "only-assigned": "Only Assigned",
+    "show-all": "Show All"
   },
   "task": {
     "add-task": "Add a new task",

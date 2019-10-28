@@ -1,17 +1,19 @@
-import React, {Component} from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {Component} from "react";
+import { NavLink } from "react-router-dom";
 
-import { I18n } from 'react-i18next';
+import { I18n } from "react-i18next";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import { notificationActions } from "../../../notification";
-import {authActions} from "../../../auth";
+import {authActions} from "src/auth";
+import { projectActions } from "src/projects";
 import { updateUserData } from "src/auth/auth";
 import MyPortfolio from "../../molecules/myPortfolio/myPortfolio";
+import {buildFilter, taskFilters, tasksActions} from "src/tasks";
+import MyTasks from "../../molecules/myTasks/myTasks";
+import {INCOMPLETE_TASKS} from "src/tasks";
 
 import './me-page.css';
-import {buildFilter, taskFilters} from "src/tasks";
-import MyTasks from "../../molecules/myTasks/myTasks";
 
 export class MePage extends Component {
 
@@ -21,6 +23,16 @@ export class MePage extends Component {
     this.state = {
       showCreatedTasks: true,
       showAssignedTasks: true
+    }
+  }
+
+  componentWillMount() {
+    if(!this.props.selectedProject) {
+      this.props.selectProjectFromUrl();
+    }
+    
+    if(!this.props.tasks || this.props.tasks.size <= 0) {
+      this.props.loadTasks(this.props.selectedProject.url, INCOMPLETE_TASKS);
     }
   }
 
@@ -115,7 +127,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = Object.assign(
   {},
   notificationActions,
-  authActions
+  authActions,
+  tasksActions,
+  projectActions
 );
 
 export default connect(

@@ -46,7 +46,6 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           <RequireAuthRoute authenticated={auth && auth.authenticated} exact path="/logout/" component={LogoutPage}/>
           <RequireUnauthRoute authenticated={auth && auth.authenticated} exact path="/magic-link" component={MagicLink}/>
           <Route authenticated={auth && auth.authenticated} path="/projects" component={ProjectsPage}/>
-          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/me" component={MePage}/>
           <Route authenticated={auth && auth.authenticated} path="/about" component={AboutPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } exact path="/admin/dashboard" component={AdminDashboard}/>
           {
@@ -56,6 +55,7 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/:id" component={TasksPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/task/new-task" component={TasksPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/edit" component={CreateProjectPage}/>
+          <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/me" component={MePage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated && auth.role === "admin" } path="/:projectUrl/reports" component={ReportsPage}/>
           <RequireAuthRoute authenticated={auth && auth.authenticated} path="/:projectUrl/" component={TasksPage} />
           <Route component={NotFound}/>
