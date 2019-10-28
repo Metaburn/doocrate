@@ -3,12 +3,14 @@ import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 
 import {
   CREATE_TASK_SUCCESS,
-  LOAD_TASKS_SUCCESS,
+  REMOVE_TASK_SUCCESS,
   UPDATE_TASK_SUCCESS
 } from './action-types';
 
 import { Task } from './task';
 import { tasksReducer, TasksState } from './reducer';
+import {commentsReducer, CommentsState} from "../comments/reducer";
+import {REMOVE_COMMENT_SUCCESS} from "../comments/action-types";
 
 
 class FirebaseTaskObject {
@@ -40,6 +42,22 @@ describe('Tasks reducer', () => {
 
       expect(nextState.list.get(0)).toBe(task2);
       expect(nextState.list.get(1)).toBe(task1);
+    });
+  });
+
+  describe('REMOVE_TASK_SUCCESS', () => {
+    it('should remove task from list', () => {
+      let state = new TasksState({list: new List([task1, task2])});
+
+      let nextState = tasksReducer(state, {
+        type: REMOVE_TASK_SUCCESS,
+        payload: task1.data()
+      });
+
+      expect(nextState.deleted).toBe(task1.data());
+      expect(nextState.list.size).toBe(1);
+      expect(nextState.list.get(0)).toBe(task2);
+      expect(nextState.previous).toBe(state.list);
     });
   });
 
