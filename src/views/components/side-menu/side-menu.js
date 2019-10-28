@@ -8,58 +8,12 @@ import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
-import { throttle } from 'lodash';
+import { isMobile, isTablet } from '../../../utils/browser-utils';
 import './side-menu.css';
 
 class SideMenu extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      isMobile: this.isMobile(),
-      isTablet: this.isTablet()
-    };
-
-    this.throttled = null;
-  }
-
-  // We listen for window resize but making sure not every resize count to
-  // not get too many updates and kill performances
-  throttledHandleWindowResize = () => {
-    if(!this.throttled) {
-      // initialize the throttled function
-      this.throttled = throttle(() => {
-        this.setState({
-          isMobile: this.isMobile(),
-        isTablet: this.isTablet()});
-      }, 200, {leading: true});
-
-    }else {
-      // call the throttled function
-      this.throttled();
-    }
-  };
-
-  isMobile = () => {
-    return window.innerWidth < 480 ;
-  };
-
-  isTablet = () => {
-    return window.innerWidth < 768  &&
-      window.innerWidth > 480;
-  };
-
-  componentDidMount() {
-    window.addEventListener('resize', this.throttledHandleWindowResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.throttledHandleWindowResize);
-  }
-
   render() {
     const { i18n, menuIsOpen, setMenuOpen } = this.props;
-    const { isMobile, isTablet } = this.state;
     const width = isMobile? '90%' :
       isTablet? '70%':
         '370px';
@@ -72,12 +26,12 @@ class SideMenu extends Component {
       <OffCanvas
         overlayClassName="filter-side-menu-overlay"
         className={classNames}
-        position={position}
         height="100%"
-        closeOnOverlayClick={true}
         width={width}
+        position={position}
         isOpen={menuIsOpen}
-        onClose={() => setMenuOpen(false)}>
+        onClose={() => setMenuOpen(false)}
+        closeOnOverlayClick={true}>
         <FilterMenu/>
       </OffCanvas>
     );

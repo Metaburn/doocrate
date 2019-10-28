@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Button from '../button';
 import Icon from '../icon';
 import Img from 'react-image';
-
 import { I18n } from 'react-i18next';
 import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 import follow from './follow.png';
-
 import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
-
   render() {
-    const { task } = this.props;
+    const { auth, task, selectedProject } = this.props;
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+    const projectRoute = `/${projectUrl}`;
 
     return(
       <I18n ns='translations'>
@@ -21,9 +22,9 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          <Button className='button-no-border close-button' onClick={ () => this.props.selectTask() }>
-            <Icon name='close' className='close-icon grow' />
-          </Button>
+          <Link to={projectRoute} className="button-no-border close-button">
+            <Icon name="close" className="close-icon grow"/>
+          </Link>
 
           {this.props.isDraft ? '' : !task.assignee ? <Button
             className='button button-small action-button assign_task'
@@ -86,7 +87,9 @@ export class TaskViewHeader extends Component {
                   return;
                 }
                 this.props.removeTask(task);
-                this.props.selectTask();
+
+                // TODO (Removed selectTask call)
+                // Navigate to main page: /${projectUrl}
               }}
               type='button'>
               <Icon name='delete' className='header-icon grow delete'/>
@@ -108,7 +111,6 @@ export class TaskViewHeader extends Component {
 }
 
 TaskViewHeader.propTypes = {
-  selectTask: PropTypes.func.isRequired,
   assignTask: PropTypes.func.isRequired,
   followTask: PropTypes.func.isRequired,
   unfollowTask: PropTypes.func.isRequired,
@@ -122,10 +124,10 @@ TaskViewHeader.propTypes = {
   showButtonAsFollow: PropTypes.bool.isRequired,
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
+  selectedProject: PropTypes.object.isRequired,
   saveTask: PropTypes.func.isRequired,
   markAsDoneUndone: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
-
 
 export default TaskViewHeader;
