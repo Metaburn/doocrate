@@ -78,7 +78,7 @@ class TaskViewMini extends Component {
 
         { this.renderAssignee() }
 
-        <div className={`tags-container tags-container-${i18n.t('lang-float')}`}>
+        <div className={`tags-container lang-${this.props.i18n.language}`}>
           {this.renderLabels(labelAsArray, false, '0')}
         </div>
 

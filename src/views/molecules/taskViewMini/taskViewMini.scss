@@ -9,7 +9,6 @@
   padding: 32px 25px;
 
   color: rgba(51, 33, 76, 0.64);
-
   &.lang-en {
     text-align: left;
   }
@@ -62,6 +61,24 @@
       border-radius: 40px;
     }
   }
+
+  .tags-container {
+    display: flex;
+    clear: both;
+
+    .label {
+      padding: 0 0.5em;
+    }
+
+    &.lang-he {
+      flex-direction: row;
+    }
+
+    &.lang-en {
+      flex-direction: row-reverse;
+    }
+  }
+
 
   &:hover {
     cursor: pointer;
