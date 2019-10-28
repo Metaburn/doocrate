@@ -23,7 +23,10 @@ export const TasksState = new Record({
 function extractLabels(collection) {
   const result = [];
   for (const doc of collection) {
-    result.push(...Object.keys(doc.data().label));
+    const labels = doc.data().label;
+    if(labels) {
+      result.push(...Object.keys(labels));
+    }
   }
   return result;
 }
@@ -36,7 +39,7 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         created: payload,
         list: state.list.unshift(payload),
         // Adds all the labels from the task into the labels pool
-        labelsPool: state.labelsPool.union(Object.keys(payload.label)),
+        labelsPool: state.labelsPool.union(Object.keys(payload.label || {})),
       });
 
     case REMOVE_TASK_SUCCESS:

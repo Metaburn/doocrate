@@ -57,7 +57,8 @@ describe('Auth reducer', () => {
         payload: {show: true, includingBio:false},
       });
 
-      expect(state.shouldShowUpdateProfile).toBe({show: true, includingBio:false},);
+      expect(state.shouldShowUpdateProfile.show).toBe(true);
+      expect(state.shouldShowUpdateProfile.includingBio).toBe(false);
     });
   });
 
@@ -65,21 +66,10 @@ describe('Auth reducer', () => {
     it('should set shouldShowUpdateProfile to true', () => {
       let state = authReducer(undefined, {
         type: UPDATE_PROFILE,
-        payload: false
+        payload: {show: true}
       });
 
-      expect(state.shouldShowUpdateProfile).toBe(false);
-    });
-  });
-
-  describe('Update Profile Hide', () => {
-    it('should set shouldShowUpdateProfile to true when no payload', () => {
-      let state = authReducer(undefined, {
-        type: UPDATE_PROFILE,
-        payload: null
-      });
-
-      expect(state.shouldShowUpdateProfile).toBe(false);
+      expect(state.shouldShowUpdateProfile.show).toBe(true);
     });
   });
 
