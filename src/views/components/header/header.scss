@@ -17,7 +17,7 @@
     &.lang-en {
       flex-direction: row;
     }
-    
+
     &.lang-he {
       flex-direction: row;
     }
@@ -64,6 +64,7 @@
   .toastify {
     z-index: 10000;
     min-width: 350px;
+    font-size: 23px;
   }
 
   .lang-he {

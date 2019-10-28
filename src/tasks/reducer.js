@@ -1,5 +1,6 @@
 import { List, Record, Set } from 'immutable';
 import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
+import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 
 import {
   CREATE_TASK_SUCCESS,
@@ -18,16 +19,6 @@ export const TasksState = new Record({
   created: null
 });
 
-/*
- Mapping from a firebase collection to a simple array
- We are adding the id and a function that allow to perform object.get
- */
-function firebaseCollectionToList(collection) {
-  return collection.map(task => {
-    return Object.assign(task.data(),{get: (object)=>task[object], id: task.id});
-  });
-}
-
 
 function extractLabels(collection) {
   const result = [];
@@ -36,8 +27,6 @@ function extractLabels(collection) {
   }
   return result;
 }
-
-
 
 export function tasksReducer(state = new TasksState(), {payload, type}) {
   switch (type) {

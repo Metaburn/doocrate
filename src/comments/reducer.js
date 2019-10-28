@@ -11,6 +11,7 @@ import {
   UPDATE_COMMENT_SUCCESS,
 } from './action-types';
 
+import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 
 export const CommentsState = new Record({
   deleted: null,
@@ -40,7 +41,7 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
       });
 
     case LOAD_COMMENTS_SUCCESS:
-      return state.set('list', new List(payload.reverse()));
+      return state.set('list', new List(firebaseCollectionToList(payload.reverse())));
 
     case UNLOAD_COMMENTS_SUCCESS:
       return state.set('list', new List());
