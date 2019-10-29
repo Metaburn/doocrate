@@ -5,7 +5,7 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
     const chunks = query.split('=');
     const key = chunks[0];
     if(!chunks[1]) {
-      return {};
+      return {[key]: ''};
     }
     const values = decodeURI(chunks[1]).split(','); //We want to support value=123,555
     const value = (values.length > 1 ) ? values : values[0];
