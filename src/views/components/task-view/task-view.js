@@ -496,23 +496,13 @@ export class TaskView extends Component {
   render() {
     let task = this.props.selectedTask;
 
-    if (!task) {
-      return (
-        <div className="task-view g-row">
-          <div className="g-col">
-            <h1>&nbsp;</h1>
-          </div>
-        </div>
-      );
-    }
-
     const { auth, isAdmin, isDraft, selectedTask,
       selectTask, followTask, unfollowTask,
       unassignTask, removeTask, selectedProject } = this.props;
     const { description, defaultType, popularTags } = this.state;
 
-    const isUserCreator = task.creator && task.creator.id === auth.id;
-    const isUserAssignee = task.assignee && task.assignee.id === auth.id;
+    const isUserCreator = task && task.creator && task.creator.id === auth.id;
+    const isUserAssignee = task && task.assignee && task.assignee.id === auth.id;
     const canEditTask = isUserCreator || isUserAssignee || isAdmin;
     const canDeleteTask = isUserCreator || isAdmin;
     const showUnassignButton = isUserAssignee || isUserCreator || isAdmin;
@@ -534,7 +524,7 @@ export class TaskView extends Component {
     }
 
     const showDeleteButton = (!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft);
-    const showButtonAsFollow = !includes(task.listeners, auth.id);
+    const showButtonAsFollow = task && !includes(task.listeners, auth.id);
 
     return (
       <div className="task-view-container" dir={i18n.t('lang-dir')}>
@@ -607,7 +597,7 @@ export class TaskView extends Component {
               <div className="is-critical">
                 {this.renderCheckbox(task, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
               </div>}
-            <TaskCreator creator={task.creator}/>
+            <TaskCreator creator={task ? task.creator: null}/>
           </form>
         </div>
 

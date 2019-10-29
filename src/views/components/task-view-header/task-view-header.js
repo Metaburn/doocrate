@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Button from '../button';
 import Icon from '../icon';
 import Img from 'react-image';
@@ -15,6 +14,7 @@ export class TaskViewHeader extends Component {
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
       auth.defaultProject;
     const projectRoute = `/${projectUrl}`;
+    const assignee = task? task.assignee : {};
 
     return(
       <I18n ns='translations'>
@@ -26,7 +26,7 @@ export class TaskViewHeader extends Component {
             <Icon name="close" className="close-icon grow"/>
           </button>
 
-          {this.props.isDraft ? '' : !task.assignee ? <Button
+          {this.props.isDraft ? '' : (!assignee) ? <Button
             className='button button-small action-button assign_task'
             onClick={()=>this.props.assignTask(task)}
             type='button'>{t('task.take-responsibility')}</Button> :
@@ -34,13 +34,14 @@ export class TaskViewHeader extends Component {
             <div className='avatar-container'>
               <UserInfoAvatar
                 uniqueId={'task-header-assignee'}
-                photoURL={task.assignee.photoURL}
-                userId={task.assignee.id}
-                alt={task.assignee.name}/>
-              <span>{task.assignee.name}</span>
+                photoURL={assignee.photoURL}
+                userId={assignee.id}
+                alt={assignee.name}/>
+              <span>{assignee.name}</span>
             </div>}
 
-          { this.props.showUnassignButton && task.assignee &&
+
+          { this.props.showUnassignButton && assignee &&
             <Button
             className='action-button button-grey'
             onClick={()=> { this.props.unassignTask(task)}}
@@ -76,7 +77,7 @@ export class TaskViewHeader extends Component {
             <Button
               className='button button-small action-button'
               onClick={()=> { this.props.markAsDoneUndone() }}
-              type='button'>{ task.isDone? t('task.mark-uncomplete') : t('task.mark-complete')}</Button>
+              type='button'>{ (task && task.isDone)? t('task.mark-uncomplete') : t('task.mark-complete')}</Button>
           }
 
           { this.props.showDeleteButton &&
