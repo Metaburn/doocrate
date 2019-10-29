@@ -608,17 +608,17 @@ export class TaskView extends Component {
           </form>
         </div>
 
-        {/* <CommentList
+        { <CommentList
           task={task}
           comments={this.props.comments}
           auth={this.props.auth}
           updateComment={this.props.updateComment}
-          removeComment={this.props.removeComment}/> */}
+          removeComment={this.props.removeComment}/> }
 
-        { /* TODO: These functions shouldnt be called from render method. :) */}
-        {/* { this.renderAddComment() } */}
-        {/* { this.renderTakeOwnershipModal(task) } */}
-        {/* { this.renderAssignmentModal(task) } */}
+        { this.renderAddComment() }
+        { this.renderTakeOwnershipModal(task) }
+        { this.renderAssignmentModal(task)}
+        }
       </div>
     );
   }

@@ -79,76 +79,77 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
-    if (selectedTaskId === "new-task") {
-      if (this.state.newTask == null) {
-        this.setState({
-          selectedTaskId: null,
-          newTask: this.createNewTask()
-        });
 
-        this.props.unloadComments();
+    //if url has a task id - select it
+    if (nextProps.match != null && nextProps.match.params.projectUrl &&
+      nextProps.match.params.id) {
+
+      this.setProjectCookie(nextProps.match.params.projectUrl);
+
+      if (selectedTaskId === "new-task") {
+        // New task
+        if (this.state.newTask == null) {
+          this.setState({
+            selectedTaskId: null,
+            newTask: this.createNewTask(),
+            isLoadedComments: false
+          });
+          this.props.unloadComments();
+        }
+      } else if (selectedTaskId === "1") {
+        // No task selected - same as project page
+        this.setState({
+          isLoadedComments: false,
+          selectedTaskId: null
+        });
+      } else {
+        // Load selected task
+        if(!this.state.selectedTaskId) {
+          this.setState({ isLoadedComments: false });
+        }
+
+        if(!this.state.isLoadedComments ||
+          (selectedTaskId !== this.state.selectedTaskId)) {
+          // Select the task
+          this.setState({
+            isLoadedComments: true,
+            selectedTaskId: selectedTaskId,
+            newTask: null
+          });
+          this.props.unloadComments();
+          let project_url = this.props.match.params.projectUrl;
+          this.props.loadComments(project_url, selectedTaskId);
+        }
       }
-      return;
+    } else {
+      this.setState({ isLoadedComments: false });
     }
 
-    this.setState({ selectedTaskId, newTask: null });
-
-    // if url has a task id - select it
-    // if (nextProps.match != null && nextProps.match.params.projectUrl &&
-    //   nextProps.match.params.id) {
-
-    //   this.setProjectCookie(nextProps.match.params.projectUrl);
-
-    //   const tid = nextProps.match.params.id;
-
-    //   if (tid === "new-task") {
-    //     if (this.state.newTask == null) {
-    //       this.setState({
-    //         newTask: this.createNewTask()
-    //       });
-    //       this.props.unloadComments();
-    //     }
-    //   } else if (tid === "1") {
-    //     this.setState({
-    //       isLoadedComments: false,
-    //       selectedTask: null
-    //     });
-    //   } else {
-    //     if(!this.state.selectedTask) {
-    //       this.setState({ isLoadedComments: false });
-    //     }
-
-    //     if(!this.state.isLoadedComments ||
-    //       (this.state.selectedTask && tid !== this.state.selectedTask.id)) {
-    //       this.setState({ isLoadedComments: true });
-    //       this.props.unloadComments();
-    //       let project_url = this.props.match.params.projectUrl;
-    //       this.props.loadComments(project_url, tid);
-    //     }
-    //   }
-    // } else {
-    //   this.setState({ isLoadedComments: false });
-    // }
-
-    // // prepare filter if exists
-    // this.debouncedFilterTasksFromProps(nextProps);
+    // prepare filter if exists
+    this.debouncedFilterTasksFromProps(nextProps);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    // let {tasks} = this.props;
-    // TODO - check that
-    /*const params = getUrlSearchParams(this.props.location.search);
-    if (prevState.labels !== params['labels']) {
-      tasks = this.filterTaskFromLabel(tasks);
-      this.setState({tasks});
-    }*/
+  /*
+    componentDidUpdate(prevProps, prevState) {
+      // TODO
+      let {tasks} = this.props;
+      let shouldSetState = false;
+      if (prevState.labels !== this.state.labels) {
+        tasks = this.filterTaskFromLabel(tasks);
+        shouldSetState = true;
+      }
 
-    // Sync url toolbar and the query parameter
-    // if (prevState.query !== this.state.query) {
-    //   tasks = this.filterTaskFromQuery(tasks);
-    //   this.setState({tasks});
-    // }
+      //Sync url toolbar and the query parameter
+      if (prevState.query !== this.state.query) {
+        tasks = this.filterTaskFromQuery(tasks);
+        shouldSetState = true;
+      }
+
+      if(shouldSetState) {
+        this.setState({tasks});
+      }
   }
+  */
 
   setProjectCookie(projectUrl) {
     // Since we are parsing the url we might get undefined as a string
@@ -203,7 +204,7 @@ export class TasksPage extends Component {
 
   onNewTaskAdded(task) {
     //Remove this to keeps the user on the same page - allowing to create another new task
-    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ));
+    //const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ));
 
     // TODO (Remove this.goToTask(taskObj) call)
     // navigate to new task
@@ -503,6 +504,7 @@ TasksPage.propTypes = {
   tasks: PropTypes.instanceOf(List).isRequired,
   unloadTasks: PropTypes.func.isRequired,
   unloadComments: PropTypes.func.isRequired,
+  loadComments: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   setMenuOpen: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
