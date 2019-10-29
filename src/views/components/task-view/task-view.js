@@ -496,6 +496,8 @@ export class TaskView extends Component {
   render() {
     let task = this.props.selectedTask;
 
+    if (!task) return null;
+
     const { auth, isAdmin, isDraft, selectedTask,
       selectTask, followTask, unfollowTask,
       unassignTask, removeTask, selectedProject } = this.props;

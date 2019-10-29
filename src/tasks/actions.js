@@ -178,6 +178,26 @@ export function loadTasksSuccess(tasks) {
   };
 }
 
+// TODO: hydrate task list after filter/search
+// export function setFilteredTasks(tasks) {
+//   return {
+//     type: SET_TASKS_SUCCESS,
+//     payload: tasks
+//   };
+// }
+
+// TODO: hydrate task list after filter/search
+// {
+//   query: 'asdasd',
+//   filter: 'asdasd'
+// }
+// export function setFilters(filters) {
+//   return {
+//     type: SET_FILTERS,
+//     payload: filters
+//   };
+// }
+
 export function filterTasks(filterType) {
   return {
     type: FILTER_TASKS,
