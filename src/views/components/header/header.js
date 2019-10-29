@@ -38,7 +38,7 @@ class Header extends Component {
         {
           (t, {i18n}) => (
             <header className='header notranslate'>
-              <SideMenu auth={this.props.auth} i18n={i18n}/>
+              <SideMenu auth={this.props.auth} i18n={i18n} />
               <div className={'header-wrapper'}>
                 <div>
                   <ToastContainer

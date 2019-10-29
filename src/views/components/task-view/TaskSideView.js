@@ -44,7 +44,8 @@ const TaskSideView = ({
         removeComment={removeComment}
         isValidCallback={isValidCallback}
         isDraft={isDraft}
-        submitNewTask={submitNewTask}/>
+        submitNewTask={submitNewTask}
+        closeTaskView={resetSelectedTask}/>
     </OffCanvas>
   );
 };

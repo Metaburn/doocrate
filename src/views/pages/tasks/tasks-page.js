@@ -33,10 +33,15 @@ export class TasksPage extends Component {
     this.state = {
       selectedTaskId: taskId,
       newTask: null,
-      labels: null,
       isLoadedComments: false,
       isCurrentTaskValid: false,
-      query: ''
+      filterParams: {
+        query: '',
+        labels: '',
+        filter: '',
+        typeText: '',
+        complete: '',
+      },
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -48,6 +53,7 @@ export class TasksPage extends Component {
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
     this.removeComment = this.removeComment.bind(this);
+    this.resetSelectedTask = this.resetSelectedTask.bind(this);
 
     // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
@@ -79,6 +85,30 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
+
+    // If only query changed then no need to reopen the tasks page
+    const params = getUrlSearchParams(nextProps.location.search);
+    //This should be || '' empty string cause in the url it translates to empty string
+    const filterQuery = params['query'] || ''; //See comment above
+    const filterType = params['filter'] || '';
+    const filterTypeText = params['text'] || '';
+    const filterByLabels = params['labels'] || '';
+    const filterByComplete = params['complete'] || '';
+
+    const { filterParams } = this.state;
+
+    // Check for any change in filters
+    if(
+      (filterQuery !== filterParams.query) ||
+      (filterByLabels !== filterParams.labels) ||
+      (filterType !== filterParams.filter) ||
+      (filterTypeText !== filterParams.typeText) ||
+      (filterByComplete !== filterParams.complete)
+    ) {
+
+      this.debouncedFilterTasksFromProps(nextProps);
+      return;
+    }
 
     //if url has a task id - select it
     if (nextProps.match != null && nextProps.match.params.projectUrl &&
@@ -122,34 +152,11 @@ export class TasksPage extends Component {
         }
       }
     } else {
-      this.setState({ isLoadedComments: false });
+      this.setState({ isLoadedComments: false,
+        selectedTaskId: null });
     }
-
-    // prepare filter if exists
-    this.debouncedFilterTasksFromProps(nextProps);
   }
 
-  /*
-    componentDidUpdate(prevProps, prevState) {
-      // TODO
-      let {tasks} = this.props;
-      let shouldSetState = false;
-      if (prevState.labels !== this.state.labels) {
-        tasks = this.filterTaskFromLabel(tasks);
-        shouldSetState = true;
-      }
-
-      //Sync url toolbar and the query parameter
-      if (prevState.query !== this.state.query) {
-        tasks = this.filterTaskFromQuery(tasks);
-        shouldSetState = true;
-      }
-
-      if(shouldSetState) {
-        this.setState({tasks});
-      }
-  }
-  */
 
   setProjectCookie(projectUrl) {
     // Since we are parsing the url we might get undefined as a string
@@ -159,47 +166,66 @@ export class TasksPage extends Component {
   }
 
   filterTasksFromProps(nextProps) {
-    let currentTasks = nextProps.tasks;
-    const params = getUrlSearchParams(nextProps.location.search);
-    const filterType = params['filter'];
-    const filterTextType = params['text'];
-    const filterByLabels = params['labels'];
+    let tasks = nextProps.tasks;
+    const urlParams = getUrlSearchParams(nextProps.location.search);
 
-    const completeFilterValue = params['complete'];
+    tasks = this.filterByFilterType(urlParams, tasks);
+    tasks = this.filterByComplete(urlParams, tasks);
+    tasks = this.filterTaskFromLabel(urlParams, tasks);
+    const filterParams = {
+      filter: urlParams["filter"] || '',
+      typeText: urlParams["text"] || '',
+      complete: urlParams["complete"] || '',
+      labels: urlParams["labels"] || '',
+      query: urlParams["query"] || '',
+    };
+
+    tasks = this.filterTaskFromQuery(urlParams, tasks);
+
+    this.setState({
+      tasks,
+      filterParams});
+  }
+
+  filterByFilterType(urlParams, tasks) {
+    const filterType = urlParams["filter"];
+    const filterTextType = urlParams["text"];
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
-      currentTasks = this.props.filters[filter.type](currentTasks, filter);
+      tasks = this.props.filters[filter.type](tasks, filter);
     }
-
-    // Complete can be - None, false, true
-    if(completeFilterValue || completeFilterValue === 'false') {
-      const completeFilter = this.props.buildFilter(this.props.auth, 'complete', completeFilterValue);
-      currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
-    }
-
-    currentTasks = this.filterTaskFromLabel(currentTasks, filterByLabels);
-    currentTasks = this.filterTaskFromQuery(currentTasks);
-
-    // TODO should not be here
-    this.setState({tasks: currentTasks});
+    return tasks
   }
 
-  filterTaskFromLabel(tasks, labels) {
-    let currentTasks = tasks;
+  filterByComplete(urlParams, tasks) {
+    const completeFilterValue = urlParams["complete"];
+    if(completeFilterValue || completeFilterValue === "false") {
+      const completeFilter = this.props.buildFilter(this.props.auth, "complete", completeFilterValue);
+      tasks = this.props.filters[completeFilter.type](tasks, completeFilter);
+    }
+    return tasks;
+  }
+
+  filterTaskFromLabel(urlParams, tasks) {
+    const { auth, buildFilter, filters } = this.props;
+    const labels = urlParams["labels"];
     if ( labels != null && labels.length > 0) {
-      const filter = this.props.buildFilter(this.props.auth, "label", this.state.labels);
-      currentTasks = this.props.filters["label"](currentTasks, filter, labels);
+      const filter = buildFilter(auth, "label", labels);
+      tasks = filters["label"](tasks, filter, labels);
     }
 
-    return currentTasks;
+    return tasks;
   }
 
-  filterTaskFromQuery = (tasks) => {
-    let currentTasks = tasks;
-    const filter = this.props.buildFilter(this.props.auth, "query", this.state.query);
-    currentTasks = this.props.filters["query"](currentTasks, filter, this.state.query);
-    return currentTasks;
+  filterTaskFromQuery = (urlParams, tasks) => {
+    const { auth, buildFilter, filters } = this.props;
+    const query = urlParams["query"];
+    if(query) {
+      const filter = buildFilter(auth, "query", query);
+      tasks = filters["query"](tasks, filter, query);
+    }
+    return tasks;
   };
 
   onNewTaskAdded(task) {
@@ -311,7 +337,9 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
-    this.setState({query});
+    const {filterParams} = this.state;
+    filterParams.query = query;
+    this.setState({filterParams});
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
@@ -434,10 +462,19 @@ export class TasksPage extends Component {
     removeQueryParamAndGo(this.props.history, [type], value);
   };
 
-  resetSelectedTask = () => {
+  resetSelectedTask() {
     this.setState({
       newTask: null,
       selectedTaskId: null,
+    });
+    const { auth, selectedProject } = this.props;
+
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+
+    this.props.history.push({
+      pathname: `/${projectUrl}/task/1`,
+      search: this.props.location.search
     });
   };
 

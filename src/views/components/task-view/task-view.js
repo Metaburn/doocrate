@@ -71,7 +71,8 @@ export class TaskView extends Component {
     unloadComments: PropTypes.func.isRequired,
     isValidCallback: PropTypes.func.isRequired,
     isDraft: PropTypes.bool.isRequired,
-    submitNewTask: PropTypes.func.isRequired
+    submitNewTask: PropTypes.func.isRequired,
+    closeTaskView: PropTypes.func.isRequired
   };
 
   // TODO: Move to utils or use Lodash instead
@@ -555,7 +556,9 @@ export class TaskView extends Component {
           saveTask={this.handleSave}
           markAsDoneUndone={this.handleMarkAsDoneUndone}
           auth={auth}
-          projectUrl={selectedProject}/>
+          projectUrl={selectedProject}
+          closeTaskView={this.props.closeTaskView}
+        />
         <div className="task-view">
           <form noValidate>
             <div className="form-input">

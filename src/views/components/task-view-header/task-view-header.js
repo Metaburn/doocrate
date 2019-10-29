@@ -22,9 +22,9 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          <Link to={projectRoute} className="button-no-border close-button">
+          <button onClick={this.props.closeTaskView} className="button-no-border close-button">
             <Icon name="close" className="close-icon grow"/>
-          </Link>
+          </button>
 
           {this.props.isDraft ? '' : !task.assignee ? <Button
             className='button button-small action-button assign_task'
@@ -127,7 +127,8 @@ TaskViewHeader.propTypes = {
   selectedProject: PropTypes.object.isRequired,
   saveTask: PropTypes.func.isRequired,
   markAsDoneUndone: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  closeTaskView: PropTypes.func.isRequired,
 };
 
 export default TaskViewHeader;
