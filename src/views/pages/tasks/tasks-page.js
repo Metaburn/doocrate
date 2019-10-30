@@ -31,6 +31,7 @@ export class TasksPage extends Component {
     const taskId = props.match.params.id;
 
     this.state = {
+      tasks: props.tasks,
       selectedTaskId: taskId,
       newTask: null,
       isLoadedComments: false,
@@ -62,8 +63,11 @@ export class TasksPage extends Component {
   componentDidMount() {
     const { projectUrl } = this.props.match.params;
 
-    this.props.loadTasks(projectUrl, INCOMPLETE_TASKS);
-    this.props.loadLabels(projectUrl);
+    // this.props.loadTasks(projectUrl, INCOMPLETE_TASKS);
+    // this.props.loadLabels(projectUrl);
+
+    // Fire action to update filters
+    // this.props.match.params
   }
 
   componentWillMount() {
@@ -74,6 +78,9 @@ export class TasksPage extends Component {
       project_url = 'project_test';
       this.props.history.push('/project_test/task/1?complete=false');
     }
+
+    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
+    this.props.loadLabels(project_url);
 
     // Sets the default loading page
     if (!this.props.filterType && firebaseConfig.defaultPageToLoad) {
@@ -86,6 +93,11 @@ export class TasksPage extends Component {
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
 
+    // TODO filteredTask
+    this.setState({
+      tasks: nextProps.tasks
+    });
+
     // If only query changed then no need to reopen the tasks page
     const params = getUrlSearchParams(nextProps.location.search);
     //This should be || '' empty string cause in the url it translates to empty string
@@ -95,20 +107,28 @@ export class TasksPage extends Component {
     const filterByLabels = params['labels'] || '';
     const filterByComplete = params['complete'] || '';
 
+    // in Redux store - one place to hold the data :-)
+    // {
+    //   query: 'asdasd',
+    //   filter: 'asdasd'
+    // }
+
     const { filterParams } = this.state;
 
     // Check for any change in filters
-    if(
+    /*if(
       (filterQuery !== filterParams.query) ||
       (filterByLabels !== filterParams.labels) ||
       (filterType !== filterParams.filter) ||
       (filterTypeText !== filterParams.typeText) ||
       (filterByComplete !== filterParams.complete)
     ) {
+      /debugger;*/
+      //this.debouncedFilterTasksFromProps(nextProps);
+    //}
+    //this.filterTasksFromProps(nextProps);
 
-      this.debouncedFilterTasksFromProps(nextProps);
-      return;
-    }
+
 
     //if url has a task id - select it
     if (nextProps.match != null && nextProps.match.params.projectUrl &&
@@ -157,7 +177,6 @@ export class TasksPage extends Component {
     }
   }
 
-
   setProjectCookie(projectUrl) {
     // Since we are parsing the url we might get undefined as a string
     if(projectUrl && projectUrl !== 'undefined' && projectUrl !== 'me') {
@@ -166,12 +185,16 @@ export class TasksPage extends Component {
   }
 
   filterTasksFromProps(nextProps) {
-    let tasks = nextProps.tasks;
+    const { tasks } = this.state;
     const urlParams = getUrlSearchParams(nextProps.location.search);
 
-    tasks = this.filterByFilterType(urlParams, tasks);
-    tasks = this.filterByComplete(urlParams, tasks);
-    tasks = this.filterTaskFromLabel(urlParams, tasks);
+    let filteredTasks;
+
+    filteredTasks = this.filterByFilterType(urlParams, tasks);
+    filteredTasks = this.filterByComplete(urlParams, tasks);
+    filteredTasks = this.filterTaskFromLabel(urlParams, tasks);
+    filteredTasks = this.filterTaskFromQuery(urlParams, tasks);
+
     const filterParams = {
       filter: urlParams["filter"] || '',
       typeText: urlParams["text"] || '',
@@ -180,11 +203,13 @@ export class TasksPage extends Component {
       query: urlParams["query"] || '',
     };
 
-    tasks = this.filterTaskFromQuery(urlParams, tasks);
+    console.log({ filteredTasks });
+    console.log({ filterParams });
 
     this.setState({
-      tasks,
-      filterParams});
+      tasks: filteredTasks,
+      filterParams
+    });
   }
 
   filterByFilterType(urlParams, tasks) {
@@ -195,7 +220,8 @@ export class TasksPage extends Component {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
       tasks = this.props.filters[filter.type](tasks, filter);
     }
-    return tasks
+
+    return tasks;
   }
 
   filterByComplete(urlParams, tasks) {
@@ -356,10 +382,8 @@ export class TasksPage extends Component {
     updateUserData(newUserData);
   }
 
-
   getTaskViewProps() {
-    const { tasks } = this.props;
-    const { selectedTaskId } = this.state;
+    const { tasks, selectedTaskId } = this.state;
 
     // TODO - is this the right place to make this decision?
     let selectedTask;
@@ -479,8 +503,10 @@ export class TasksPage extends Component {
   };
 
   render() {
-    const { tasks } = this.props;
-    const { selectedTaskId } = this.state;
+    const { tasks, selectedTaskId } = this.state;
+
+    console.log({ tasks });
+
 
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
@@ -513,7 +539,7 @@ export class TasksPage extends Component {
 
           <div className='task-list-wrapper'>
             <TaskList history={this.props.history}
-              tasks={this.props.tasks}
+              tasks={tasks}
               selectedTaskId={selectedTaskId}
               selectedProject={this.props.selectedProject}
               projectUrl={projectUrl}/>

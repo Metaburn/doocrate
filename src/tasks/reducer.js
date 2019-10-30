@@ -50,9 +50,17 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         list: state.list.filter(task => task.id !== payload.id)
       });
 
-    case LOAD_TASKS_SUCCESS:
+    case LOAD_TASKS_SUCCESS: {
+
+      console.log({ payload });
+
+
       return state.set('list', new List(firebaseCollectionToList(payload.reverse())))
         .set('labelsPool',new Set(extractLabels((payload))));
+    }
+
+    // set filteredTask
+    // state.set('list', new List(firebaseCollectionToList(payload.reverse())))
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

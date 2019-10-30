@@ -503,15 +503,7 @@ export class TaskView extends PureComponent {
   render() {
     let task = this.props.selectedTask;
 
-    if (!task) {
-      return (
-        <div className="task-view">
-          <div>
-            <h1>&nbsp;</h1>
-          </div>
-        </div>
-      );
-    }
+    if (!task) return null;
 
     const { auth, isAdmin, isDraft, selectedTask,
       selectTask, followTask, unfollowTask,
@@ -633,10 +625,6 @@ export class TaskView extends PureComponent {
     );
   }
 }
-
-//=====================================
-//  CONNECT
-//-------------------------------------
 
 const mapStateToProps = createSelector(
   getCommentList,
