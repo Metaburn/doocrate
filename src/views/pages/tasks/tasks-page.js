@@ -180,7 +180,7 @@ export class TasksPage extends Component {
 
   filterByFilterType(nextFilters, tasks) {
     const filterType = nextFilters.filter;
-    const filterTextType = nextFilters.text;
+    const filterTextType = nextFilters.typeText;
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
