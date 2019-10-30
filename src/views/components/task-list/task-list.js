@@ -6,7 +6,6 @@ import TaskItem from '../task-item-row/task-item-row';
 import InfiniteScroll from 'react-infinite-scroller';
 import i18n from '../../../i18n';
 import CompleteFilter from '../complete-filter';
-import { getUrlSearchParams } from 'src/utils/browser-utils.js';
 import './task-list.css';
 
 class TaskList extends Component {
