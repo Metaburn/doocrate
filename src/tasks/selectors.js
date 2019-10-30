@@ -9,7 +9,7 @@ const filters = {
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
-  mine: (auth, value) => ({type: "user", uid: auth.id}),
+  mine: (auth, value) => ({type: "userOnlyAssignee", uid: auth.id}),
   query: (auth, value) => ({type: "query", text: value}),
 };
 
