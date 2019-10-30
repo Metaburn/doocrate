@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
-
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import EditorPreview from "../editor-preview/editor-preview";
+import i18n from 'src/i18n';
 
 import './richTextEditor.css';
 
@@ -21,7 +21,8 @@ class RichTextEditor extends Component {
   }
 
   render() {
-    const {isEditing,i18n} = this.props;
+    const {isEditing, onToggleEditing, onBlur, onChange} = this.props;
+    const { data } = this.state;
 
     return (
       <div className={'rich-text-editor'}>
@@ -29,22 +30,22 @@ class RichTextEditor extends Component {
         {(!isEditing &&
           <EditorPreview
             className={'editor-preview'}
-            data={this.state.data}
-            onClick={this.props.onToggleEditing}/>)}
+            data={data}
+            onClick={onToggleEditing}/>)}
 
         {/* We modify the alignment to rtl language if the user set language to hebrew by setting 'content' */}
         {(isEditing &&
           <CKEditor
             editor={ClassicEditor}
-            data={this.state.data}
+            data={data}
             config={{
               toolbar: ["heading", "|", "bold", "italic", "link", "bulletedList",
                 "numberedList", "blockQuote", "mediaEmbed",
                 "undo", "redo"],
               language: {ui: 'en', content: i18n.language}
             }}
-            onBlur={this.props.onBlur}
-            onChange={this.props.onChange}
+            onBlur={onBlur}
+            onChange={onChange}
           />
         )}
       </div>
@@ -58,7 +59,6 @@ RichTextEditor.propTypes = {
   onBlur: PropTypes.func,
   data: PropTypes.string,
   isEditing: PropTypes.bool.isRequired,
-  i18n: PropTypes.object.isRequired,
 };
 
 export default RichTextEditor;

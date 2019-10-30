@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import EditorPreview from "../../atoms/editor-preview/editor-preview";
 import Icon from "../icon/icon";
-import i18n from '../../../i18n.js';
+import i18n from 'src/i18n';
 import './user-info-tooltip.css';
 
 class UserInfoTooltip extends Component {
@@ -26,6 +26,7 @@ class UserInfoTooltip extends Component {
                target={target.current}
                onHide={handleClose}
                placement="bottom"
+               containerStyle={Object.assign({}, {"z-index":"10000"})}
                id={`user-info-tooltip-${uniqueId}`}>
         <div className="user-info-tooltip-container">
           {(isSelfView && <Link className={`edit-icon-container`} to="/me">

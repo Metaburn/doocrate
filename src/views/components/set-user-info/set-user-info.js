@@ -1,12 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-
-import './set-user-info.css';
 import Img from 'react-image';
 import Modal from 'react-responsive-modal';
 import getRandomImage from 'src/utils/unsplash';
 import RichTextEditor from "../../atoms/richTextEditor/richTextEditor";
+import i18n from 'src/i18n';
 
+import './set-user-info.css';
 
 export class SetUserInfo extends Component {
   constructor() {
@@ -71,7 +71,6 @@ export class SetUserInfo extends Component {
     const { isOpen:isOpenState } = this.state;
 
     const isOpen = isOpenProps && isOpenState;
-    const { i18n } = this.props;
 
     return (
       <Modal open={isOpen} onClose={this.onCloseModal} center>
@@ -88,7 +87,6 @@ export class SetUserInfo extends Component {
   }
 
   renderBody() {
-    const { i18n } = this.props;
     const { name } = this.props.userInfo;
     const photoURL = this.state.photoURL;
     const avatar = photoURL ? <Img className={`avatar avatar-${i18n.t('lang-float')}`} src={photoURL} alt={name} onClick={this.handleImageClick}/> : '';
@@ -114,14 +112,11 @@ export class SetUserInfo extends Component {
   }
 
   renderBio = () => {
-    const { i18n } = this.props;
-
     return(
       <Fragment>
         <span><b>{i18n.t('user.bio-description')}</b></span>
 
         <RichTextEditor
-        i18n={i18n}
         data={this.state.bio}
         isEditing={true}
         onChange={this.onBioEditorChange}
@@ -138,7 +133,6 @@ export class SetUserInfo extends Component {
   };
 
   renderSubmit() {
-    const { i18n } = this.props;
     return (
       <div className={'submit-wrapper'}>
         <input className={`button button-small` }
@@ -195,7 +189,6 @@ export class SetUserInfo extends Component {
 }
 
 SetUserInfo.propTypes = {
-  i18n: PropTypes.object.isRequired,
   isOpen: PropTypes.bool.isRequired,
   includingBio: PropTypes.bool.isRequired,
   userInfo: PropTypes.object.isRequired,
