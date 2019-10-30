@@ -326,16 +326,11 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
-    // TODO - check if needed
-
-    //filterParams.query = query;
-    //this.setState({filterParams});
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
 
     this.updateFilter();
-
   };
 
   updateUserInfo(userInfo) {
@@ -476,14 +471,14 @@ export class TasksPage extends Component {
   render() {
     const { selectedTaskId } = this.state;
     let { filteredTasks } = this.props;
-    if (filteredTasks == null || filteredTasks.size === 0) {
+    // On initial load if no filtered apply - save memory by using tasks
+    // Probably this is changed fastly - need to test this
+    // Otherwise better move this out of render
+    if (filteredTasks == null) {
       filteredTasks = this.props.tasks;
     }
 
-    // TODO : use state.tasks instead. It is possible that a filter would
-    // return 0 results, but loading has finished
-    const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
-    const isLoading = (filteredTasks.size <= 0 && !isNewTask);
+    const isLoading = (this.props.tasks.size <= 0);
     const projectUrl = this.props.match.params.projectUrl;
 
     const selectedFilters = this.getSelectedFilters();

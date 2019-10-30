@@ -68,7 +68,6 @@ class TaskList extends Component {
         <div className="task-list">
           {/* Suggest to remove filters */}
           {!isAnyTasks &&
-            (getUrlSearchParams()['complete'] !== undefined) &&
               <div className="no-tasks-placeholder">
                 <h3>
                   {i18n.t('task.no-tasks-found')}
