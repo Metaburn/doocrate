@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import 'react-tagsinput/react-tagsinput.css';
-
 import classNames from 'classnames';
-import './myTasks.css';
 import TaskViewMiniList from "../taskViewMiniList/taskViewMiniList";
+
+import 'react-tagsinput/react-tagsinput.css';
+import './myTasks.css';
 
 class MyTasks extends Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
 
 import Button from "../../components/button/button";
@@ -28,26 +28,22 @@ class MyPortfolio extends Component {
 
     return (
       <div className='my-portfolio'>
-        {auth && auth.photoURL ?
+        {auth && auth.photoURL &&
           <div className={'avatar-wrapper'}>
             <Img className={'avatar'} src={auth.photoURL}/>
           </div>
-          :
-          ''
         }
         {auth && auth.name &&
-        <Fragment>
-              <span className={'user-name'} onClick={
+            <span className={'user-name'} onClick={
+              this.showUpdateProfile
+            }>
+              <Button className={'edit-email'} onClick={
                 this.showUpdateProfile
               }>
-                <Button className={'edit-email'} onClick={
-                  this.showUpdateProfile
-                }>
-                  <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
-                </Button>
-                {auth.name}
-              </span>
-        </Fragment>
+                <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
+              </Button>
+              {auth.name}
+            </span>
         }
 
         <form className='user-form' onSubmit={this.handleSubmit}>
