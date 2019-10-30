@@ -1,7 +1,8 @@
 import React from 'react';
-import OffCanvas from 'react-aria-offcanvas';
 import TaskView from './task-view';
+import { slide as Menu } from 'react-burger-menu';
 import { isMobile, isTablet } from '../../../utils/browser-utils';
+import classnames from "classnames";
 
 const TaskSideView = ({
   i18n, selectedTask, removeTask, updateTask,
@@ -11,21 +12,23 @@ const TaskSideView = ({
   isValidCallback, isDraft, submitNewTask, resetSelectedTask
 }) => {
 
-  const isHebrew = i18n.language === 'he';
-  const position = isMobile ? 'bottom' : isHebrew ? 'left' : 'right';
-  const width = isMobile ? '90%' : isTablet? '60%' :'50%';
-  const isOpen = !!selectedTask || isDraft;
+  const isHebrew = i18n.language === "he";
+  const width = isMobile ? "90%" : isTablet? "60%" :"50%";
+  const isOpen = selectedTask || isDraft;
+  const classNames = classnames("task-side-view",
+    { "is-mobile": isMobile,
+      "right-menu": isHebrew,
+      "left-menu": !isHebrew});
 
   return (
-    <OffCanvas
-      overlayClassName="task-side-view-overlay"
-      className="task-side-view"
-      position={position}
-      height="100%"
-      width={width}
-      closeOnOverlayClick={true}
-      isOpen={isOpen}
-      onClose={resetSelectedTask}>
+
+    <Menu right={!isHebrew}
+          isOpen={isOpen}
+          className={classNames}
+          overlayClassName={"task-side-view-overlay"}
+          disableOverlayClick={false}
+          onStateChange={(state) => (!state.isOpen && resetSelectedTask())}
+          width={ width }>
 
       <TaskView
         removeTask={removeTask}
@@ -46,7 +49,7 @@ const TaskSideView = ({
         isDraft={isDraft}
         submitNewTask={submitNewTask}
         closeTaskView={resetSelectedTask}/>
-    </OffCanvas>
+    </Menu>
   );
 };
 

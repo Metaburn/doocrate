@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import OffCanvas from 'react-aria-offcanvas';
+import { slide as Menu } from 'react-burger-menu'
 import FilterMenu from "../filter-menu/filter-menu";
 import {userInterfaceActions} from "../../../user-interface";
 import {createSelector} from "reselect";
@@ -19,21 +19,20 @@ class SideMenu extends Component {
         '370px';
 
     const isHebrew = i18n.language === 'he';
-    const position = isMobile ? 'bottom' : isHebrew ? 'right' : 'left';
-    const classNames = classnames('filter-side-menu', { 'is-mobile': isMobile });
+    const classNames = classnames('filter-side-menu',
+      { 'is-mobile': isMobile,
+        'right-menu': !isHebrew,
+        'left-menu': isHebrew});
 
     return (
-      <OffCanvas
-        overlayClassName="filter-side-menu-overlay"
-        className={classNames}
-        height="100%"
-        width={width}
-        position={position}
-        isOpen={menuIsOpen}
-        onClose={() => setMenuOpen(false)}
-        closeOnOverlayClick={true}>
+      <Menu right={isHebrew}
+            isOpen={menuIsOpen}
+            className={classNames}
+            disableOverlayClick={false}
+            onStateChange={(state) => setMenuOpen(state.isOpen)}
+            width={ width }>
         <FilterMenu/>
-      </OffCanvas>
+      </Menu>
     );
   }
 }

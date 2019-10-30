@@ -495,6 +495,7 @@ export class TasksPage extends Component {
 
     return (
       <div className="task-page-root-wrapper">
+        <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
           <TopNav onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
@@ -521,8 +522,6 @@ export class TasksPage extends Component {
           {selectedTaskId == null &&
             <div className="task-view-bottom-loader">&nbsp;</div>}
         </div>
-
-        <TaskSideView {...this.getTaskViewProps()}/>
       </div>
     );
   }

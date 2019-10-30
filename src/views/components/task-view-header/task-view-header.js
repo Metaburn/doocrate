@@ -10,10 +10,7 @@ import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
   render() {
-    const { auth, task, selectedProject } = this.props;
-    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
-      auth.defaultProject;
-    const projectRoute = `/${projectUrl}`;
+    const { task } = this.props;
     const assignee = task? task.assignee : {};
 
     return(
