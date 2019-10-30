@@ -21,6 +21,7 @@ import { TakeOwnershipModal }  from '../take-ownership-modal';
 import TaskCreator from "../task-creator/task-creator";
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
+import Button from "../button/button";
 
 export class TaskView extends PureComponent {
   constructor(props) {
@@ -610,17 +611,26 @@ export class TaskView extends PureComponent {
           </form>
         </div>
 
-        { <CommentList
+        { !isDraft && <CommentList
           task={task}
           comments={this.props.comments}
           auth={this.props.auth}
           updateComment={this.props.updateComment}
           removeComment={this.props.removeComment}/> }
 
-        { this.renderAddComment() }
+        { !isDraft && this.renderAddComment() }
+
+        { isDraft && showSaveButton &&
+        <div className={'button-save-wrapper'}>
+          <Button
+          className='button button-small action-button'
+          onClick={this.handleSave}
+          type='button'>{i18n.t('task.save')}</Button>
+        </div>
+        }
+
         { this.renderTakeOwnershipModal(task) }
         { this.renderAssignmentModal(task)}
-        }
       </div>
     );
   }

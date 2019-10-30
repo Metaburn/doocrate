@@ -37,6 +37,7 @@ function extractLabels(collection) {
 
 export function tasksReducer(state = new TasksState(), {payload, type}) {
   switch (type) {
+    // This is fired when the user creates a task or when a remote user creates a task
     case CREATE_TASK_SUCCESS:
       return state.merge({
         deleted: null,

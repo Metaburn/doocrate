@@ -395,6 +395,9 @@ export class TasksPage extends Component {
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');
+    // Reset filters so user can see the new created task and not a list
+    // of filtered tasks
+    this.updateFilter();
   };
 
   getTaskTypesFromProject = (index) => {

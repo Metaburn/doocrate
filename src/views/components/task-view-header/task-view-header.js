@@ -10,7 +10,9 @@ import './task-view-header.css';
 
 export class TaskViewHeader extends Component {
   render() {
-    const { task } = this.props;
+    const { task, isDraft, showDeleteButton, showMarkAsDoneButton,
+      showUnassignButton, showButtonAsFollow, showSaveButton,
+      closeTaskView,assignTask, unassignTask, saveTask } = this.props;
     const assignee = task? task.assignee : {};
 
     return(
@@ -19,13 +21,13 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          <button onClick={this.props.closeTaskView} className="button-no-border close-button">
+          <button onClick={closeTaskView} className="button-no-border close-button">
             <Icon name="close" className="close-icon grow"/>
           </button>
 
-          {this.props.isDraft ? '' : (!assignee) ? <Button
+          {isDraft ? '' : (!assignee) ? <Button
             className='button button-small action-button assign_task'
-            onClick={()=>this.props.assignTask(task)}
+            onClick={()=>assignTask(task)}
             type='button'>{t('task.take-responsibility')}</Button> :
 
             <div className='avatar-container'>
@@ -38,22 +40,22 @@ export class TaskViewHeader extends Component {
             </div>}
 
 
-          { this.props.showUnassignButton && assignee &&
+          { showUnassignButton && assignee &&
             <Button
             className='action-button button-grey'
-            onClick={()=> { this.props.unassignTask(task)}}
+            onClick={()=> { unassignTask(task)}}
             type='button'>{t('task.remove-responsibility')}</Button>
           }
 
-          { this.props.showSaveButton &&
+          { showSaveButton && ! isDraft &&
           <Button
             className='button button-small action-button assign_task'
-            onClick={()=> { this.props.saveTask() }}
+            onClick={()=> { saveTask() }}
             type='button'>{t('task.save')}</Button>
           }
 
-          { !this.props.isDraft ?
-            (this.props.showButtonAsFollow ?
+          { !isDraft ?
+            (showButtonAsFollow ?
               <Button className='button button-small action-button'
                       onClick={() => this.props.followTask(task)}
                       alt={t('follow-task-alt')}>
@@ -70,14 +72,14 @@ export class TaskViewHeader extends Component {
             ): ''
           }
 
-          { this.props.showMarkAsDoneButton &&
+          { showMarkAsDoneButton &&
             <Button
               className='button button-small action-button'
               onClick={()=> { this.props.markAsDoneUndone() }}
               type='button'>{ (task && task.isDone)? t('task.mark-uncomplete') : t('task.mark-complete')}</Button>
           }
 
-          { this.props.showDeleteButton &&
+          { showDeleteButton &&
             <Button
               className='button button-small action-button'
               onClick={() => {
