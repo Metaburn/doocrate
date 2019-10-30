@@ -13,6 +13,8 @@ import {
   UPDATE_TASK_ERROR,
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
+  SET_FILTERED_TASKS,
+  SET_SELECTED_FILTERS,
 } from './action-types';
 
 
@@ -178,25 +180,19 @@ export function loadTasksSuccess(tasks) {
   };
 }
 
-// TODO: hydrate task list after filter/search
-// export function setFilteredTasks(tasks) {
-//   return {
-//     type: SET_TASKS_SUCCESS,
-//     payload: tasks
-//   };
-// }
+export function setFilteredTasks(tasks) {
+  return {
+    type: SET_FILTERED_TASKS,
+    payload: tasks
+  };
+}
 
-// TODO: hydrate task list after filter/search
-// {
-//   query: 'asdasd',
-//   filter: 'asdasd'
-// }
-// export function setFilters(filters) {
-//   return {
-//     type: SET_FILTERS,
-//     payload: filters
-//   };
-// }
+export function setFilters(filters) {
+  return {
+    type: SET_SELECTED_FILTERS,
+    payload: filters
+  };
+}
 
 export function filterTasks(filterType) {
   return {

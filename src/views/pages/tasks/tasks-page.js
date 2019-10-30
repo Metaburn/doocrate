@@ -31,18 +31,10 @@ export class TasksPage extends Component {
     const taskId = props.match.params.id;
 
     this.state = {
-      tasks: props.tasks,
       selectedTaskId: taskId,
       newTask: null,
       isLoadedComments: false,
       isCurrentTaskValid: false,
-      filterParams: {
-        query: '',
-        labels: '',
-        filter: '',
-        typeText: '',
-        complete: '',
-      },
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -61,13 +53,14 @@ export class TasksPage extends Component {
   }
 
   componentDidMount() {
-    const { projectUrl } = this.props.match.params;
+    this.updateFilter();
+  }
 
-    // this.props.loadTasks(projectUrl, INCOMPLETE_TASKS);
-    // this.props.loadLabels(projectUrl);
-
-    // Fire action to update filters
-    // this.props.match.params
+  // Update the filter in the store from the current url.
+  // TODO This should probable moved to the store location listen to history.listen
+  updateFilter() {
+    const nextFilters = this.getFilterParams(this.props);
+    this.props.setFilters(nextFilters);
   }
 
   componentWillMount() {
@@ -94,41 +87,17 @@ export class TasksPage extends Component {
     const selectedTaskId = nextProps.match.params.id;
 
     // TODO filteredTask
-    this.setState({
-      tasks: nextProps.tasks
-    });
+    // this.setState({
+    //   tasks: nextProps.tasks
+    // });
 
-    // If only query changed then no need to reopen the tasks page
-    const params = getUrlSearchParams(nextProps.location.search);
-    //This should be || '' empty string cause in the url it translates to empty string
-    const filterQuery = params['query'] || ''; //See comment above
-    const filterType = params['filter'] || '';
-    const filterTypeText = params['text'] || '';
-    const filterByLabels = params['labels'] || '';
-    const filterByComplete = params['complete'] || '';
+    const nextFilters = this.getFilterParams(nextProps);
+    const { selectedFilters } = this.props;
 
-    // in Redux store - one place to hold the data :-)
-    // {
-    //   query: 'asdasd',
-    //   filter: 'asdasd'
-    // }
-
-    const { filterParams } = this.state;
-
-    // Check for any change in filters
-    /*if(
-      (filterQuery !== filterParams.query) ||
-      (filterByLabels !== filterParams.labels) ||
-      (filterType !== filterParams.filter) ||
-      (filterTypeText !== filterParams.typeText) ||
-      (filterByComplete !== filterParams.complete)
-    ) {
-      /debugger;*/
-      //this.debouncedFilterTasksFromProps(nextProps);
-    //}
-    //this.filterTasksFromProps(nextProps);
-
-
+    // ES compare
+    if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+      this.debouncedFilterTasksFromProps(nextProps);
+    }
 
     //if url has a task id - select it
     if (nextProps.match != null && nextProps.match.params.projectUrl &&
@@ -184,37 +153,34 @@ export class TasksPage extends Component {
     }
   }
 
+  getFilterParams = (props) =>{
+    const urlParams = getUrlSearchParams(props.location.search);
+    return {
+      filter: urlParams["filter"] || null,
+      typeText: urlParams["text"] || null,
+      complete: urlParams["complete"] || null,
+      labels: urlParams["labels"] || null,
+      query: urlParams["query"] || null,
+    };
+  };
+
   filterTasksFromProps(nextProps) {
-    const { tasks } = this.state;
-    const urlParams = getUrlSearchParams(nextProps.location.search);
+    const { tasks } = nextProps;
+    const nextFilters = this.getFilterParams(nextProps);
 
     let filteredTasks;
+    filteredTasks = this.filterByFilterType(nextFilters, tasks);
+    filteredTasks = this.filterByComplete(nextFilters, filteredTasks);
+    filteredTasks = this.filterTaskFromLabel(nextFilters, filteredTasks);
+    filteredTasks = this.filterTaskFromQuery(nextFilters, filteredTasks);
 
-    filteredTasks = this.filterByFilterType(urlParams, tasks);
-    filteredTasks = this.filterByComplete(urlParams, tasks);
-    filteredTasks = this.filterTaskFromLabel(urlParams, tasks);
-    filteredTasks = this.filterTaskFromQuery(urlParams, tasks);
-
-    const filterParams = {
-      filter: urlParams["filter"] || '',
-      typeText: urlParams["text"] || '',
-      complete: urlParams["complete"] || '',
-      labels: urlParams["labels"] || '',
-      query: urlParams["query"] || '',
-    };
-
-    console.log({ filteredTasks });
-    console.log({ filterParams });
-
-    this.setState({
-      tasks: filteredTasks,
-      filterParams
-    });
+    this.props.setFilters(nextFilters);
+    this.props.setFilteredTasks(filteredTasks);
   }
 
-  filterByFilterType(urlParams, tasks) {
-    const filterType = urlParams["filter"];
-    const filterTextType = urlParams["text"];
+  filterByFilterType(nextFilters, tasks) {
+    const filterType = nextFilters.filter;
+    const filterTextType = nextFilters.text;
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
@@ -224,8 +190,8 @@ export class TasksPage extends Component {
     return tasks;
   }
 
-  filterByComplete(urlParams, tasks) {
-    const completeFilterValue = urlParams["complete"];
+  filterByComplete(nextFilters, tasks) {
+    const completeFilterValue = nextFilters.complete;
     if(completeFilterValue || completeFilterValue === "false") {
       const completeFilter = this.props.buildFilter(this.props.auth, "complete", completeFilterValue);
       tasks = this.props.filters[completeFilter.type](tasks, completeFilter);
@@ -233,9 +199,9 @@ export class TasksPage extends Component {
     return tasks;
   }
 
-  filterTaskFromLabel(urlParams, tasks) {
+  filterTaskFromLabel(nextFilters, tasks) {
     const { auth, buildFilter, filters } = this.props;
-    const labels = urlParams["labels"];
+    const labels = nextFilters.labels;
     if ( labels != null && labels.length > 0) {
       const filter = buildFilter(auth, "label", labels);
       tasks = filters["label"](tasks, filter, labels);
@@ -244,9 +210,9 @@ export class TasksPage extends Component {
     return tasks;
   }
 
-  filterTaskFromQuery = (urlParams, tasks) => {
+  filterTaskFromQuery = (nextFilters, tasks) => {
     const { auth, buildFilter, filters } = this.props;
-    const query = urlParams["query"];
+    const query = nextFilters.query;
     if(query) {
       const filter = buildFilter(auth, "query", query);
       tasks = filters["query"](tasks, filter, query);
@@ -255,13 +221,10 @@ export class TasksPage extends Component {
   };
 
   onNewTaskAdded(task) {
-    //Remove this to keeps the user on the same page - allowing to create another new task
-    //const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ));
+    // Remove this to keeps the user on the same page - allowing to create another new task
 
-    // TODO (Remove this.goToTask(taskObj) call)
-    // navigate to new task
-
-    setTimeout(()=>{this.setState({newTask: null})}, 100);
+    // Navigate to newly created task
+    setTimeout(()=>{this.setState({newTask: null, selectedTaskId: task.id})}, 100);
   }
 
   createNewTask() {
@@ -363,12 +326,16 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
-    const {filterParams} = this.state;
-    filterParams.query = query;
-    this.setState({filterParams});
+    // TODO - check if needed
+
+    //filterParams.query = query;
+    //this.setState({filterParams});
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
+
+    this.updateFilter();
+
   };
 
   updateUserInfo(userInfo) {
@@ -383,12 +350,13 @@ export class TasksPage extends Component {
   }
 
   getTaskViewProps() {
-    const { tasks, selectedTaskId } = this.state;
+    const { selectedTaskId, newTask } = this.state;
+    const { tasks } = this.props;
 
     // TODO - is this the right place to make this decision?
     let selectedTask;
-    if(this.state.newTask) {
-      selectedTask = this.state.newTask;
+    if(newTask) {
+      selectedTask = newTask;
     }else {
       selectedTask = tasks.find((task) => task.get('id') === selectedTaskId);
     }
@@ -503,20 +471,21 @@ export class TasksPage extends Component {
   };
 
   render() {
-    const { tasks, selectedTaskId } = this.state;
-
-    console.log({ tasks });
-
+    const { selectedTaskId } = this.state;
+    let { filteredTasks } = this.props;
+    if (filteredTasks == null || filteredTasks.size === 0) {
+      filteredTasks = this.props.tasks;
+    }
 
     // TODO : use state.tasks instead. It is possible that a filter would
     // return 0 results, but loading has finished
     const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
-    const isLoading = (tasks.size <= 0 && !isNewTask);
+    const isLoading = (filteredTasks.size <= 0 && !isNewTask);
     const projectUrl = this.props.match.params.projectUrl;
 
     const selectedFilters = this.getSelectedFilters();
     const isFiltersActive = selectedFilters.length > 0;
-    const tasksCount = tasks.size;
+    const tasksCount = filteredTasks.size;
     const title = this.getSelectedFilterTitle();
 
     return (
@@ -538,8 +507,10 @@ export class TasksPage extends Component {
           <LoaderUnicorn isShow={isLoading}/>
 
           <div className='task-list-wrapper'>
-            <TaskList history={this.props.history}
-              tasks={tasks}
+            <TaskList
+              history={this.props.history}
+              location={this.props.location}
+              tasks={filteredTasks}
               selectedTaskId={selectedTaskId}
               selectedProject={this.props.selectedProject}
               projectUrl={projectUrl}/>
@@ -579,10 +550,14 @@ TasksPage.propTypes = {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
+    filteredTasks: state.tasks.filteredList,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
     labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
+    selectedFilters: state.tasks.selectedFilters,
+    setFilters: tasksActions.setFilters,
+    setFilteredTasks: tasksActions.setFilteredTasks,
     buildFilter: buildFilter
   }
 };

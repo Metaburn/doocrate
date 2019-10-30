@@ -7,6 +7,8 @@ import {
   REMOVE_TASK_SUCCESS,
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
+  SET_FILTERED_TASKS,
+  SET_SELECTED_FILTERS
 } from './action-types';
 
 
@@ -14,7 +16,9 @@ export const TasksState = new Record({
   deleted: null,
   previous: null,
   list: new List(),
-  labelsPool: new Set(),
+  filteredList: new List(),
+  selectedFilters: {}, //Selected filters such as query
+  labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
   created: null
 });
@@ -50,17 +54,15 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         list: state.list.filter(task => task.id !== payload.id)
       });
 
-    case LOAD_TASKS_SUCCESS: {
-
-      console.log({ payload });
-
-
+    case LOAD_TASKS_SUCCESS:
       return state.set('list', new List(firebaseCollectionToList(payload.reverse())))
         .set('labelsPool',new Set(extractLabels((payload))));
-    }
 
-    // set filteredTask
-    // state.set('list', new List(firebaseCollectionToList(payload.reverse())))
+    case SET_FILTERED_TASKS:
+      return state.set('filteredList', new List(payload.reverse()));
+
+    case SET_SELECTED_FILTERS:
+      return state.set('selectedFilters', payload);
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

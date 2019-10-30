@@ -35,12 +35,14 @@ class TaskList extends Component {
     const isAnyTasks = tasks && tasks.size > 0;
     let taskItems = [];
 
+    const search = this.props.location? this.props.location.search : '';
+
     if (isAnyTasks) {
       taskItems = tasks.slice(0, pageSize * (pageNumber + 1))
         .map((task, index) => {
           const taskId = task.get('id');
           const isActive = taskId === selectedTaskId;
-          const taskRoute = `/${projectUrl}/task/${taskId}`;
+          const taskRoute = `/${projectUrl}/task/${taskId}${search}`;
 
           return (
             <Link to={taskRoute} key={index}>
@@ -95,6 +97,8 @@ TaskList.propTypes = {
   tasks: PropTypes.instanceOf(List).isRequired,
   selectedTaskId: PropTypes.string,
   selectedProject: PropTypes.object,
+  history: PropTypes.object,
+  location: PropTypes.object,
   projectUrl: PropTypes.string.isRequired
 };
 
