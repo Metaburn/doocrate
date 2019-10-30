@@ -53,7 +53,6 @@
   },
   "my-space": {
     "updated-successfully": "הצלחה 🎉",
-    "edit-profile": "ערוך פרופיל",
     "projects-you-manage": "פרוייקטים שאתה מנהל",
     "projects": "הפרוייקטים שלי",
     "edit-project": "ערוך פרוייקט",
@@ -61,7 +60,10 @@
     "email": "אימייל",
     "bio-empty": "לא כתבת כלום על עצמך",
     "bio-empty-action": "לחץ כאן לערוך את הפרופיל שלך",
-    "bio-empty-encourage": "כדי שהקהילה תוכל ללמוד עליך יותר"
+    "bio-empty-encourage": "כדי שהקהילה תוכל ללמוד עליך יותר",
+    "only-created": "משימות שיצרת בלבד",
+    "only-assigned": "משימות שלקחת אחריות עליהן בלבד",
+    "show-all": "כל המשימות שלי"
   },
   "task": {
     "add-task": "הוסף משימה",
@@ -130,7 +132,8 @@
     "errors": {
       "not-empty": "שדה חובה לא יכול להיות ריק",
       "min-3": "שדה חייב להיות באורך לפחות שלושה תווים"
-    }
+    },
+    "no-assignee": "אין אחראי"
   },
   "filter": {
     "header": "סינון משימות",
@@ -195,12 +198,14 @@
     "a5": "<span>כמובן. שלח מייל ל support@doocrate.com</span>",
     "q6": "זה מדהים. אני רוצה ליצור פרוייקט משלי",
     "a6": "<span><a href='/create-project'>לחץ כאן ליצירת פרוייקט חדש</a></span>",
-    "q7": "איך אני יכול/ה לעזור?",
-    "a7": "<span>שמח לשמוע פידבק על שימוש במוצר ועל שימושים אחרים שאתם חושבים לעשות איתו ובאופן כללי לשמוע את דעתכם, לכן פתחנו קבוצת מיקוד שנשמור איתה על קשר רצוף על מנת להבין איך המוצר צריך להראות.<a href={'https://www.facebook.com/groups/415274585770726/'}>הצטרפו לקבוצת הפייסבוק שלנו כאן</a></span>",
-    "q8": "אני מפתח איך אני יכול/ה לעזור?",
-    "a8": "<span>מוזמן להצטרף אלינו לפיתוח - הנה המשימות -<a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>הטרלו שלנו</a><br/>והנה הקוד<a href='https://github.com/metaburn/doocrate'/><br/>אם אתה מחפש איך לתרום - מוזמן לפנות לגל<br/>galbra@gmail.com</span>",
-    "q9": "מי אתם אנשים מופלאים שמשקיעים את הזמן שלהם בזה?",
-    "a9": "<span>אנחנו חלק מקולקטיב בשם מטהברן ששם לו למטרה לייצר כלים פשוטים לניהול קהילות יצירה משותפת<br/>פיתחנו את <a href='http://dreams.burnerot.com/'>מערכת החלומות</a> עבור ברנרות ועבור ברנים אחרים<br/>"
+    "q7": "איך יוצאים מפה? איפה כפתור ההתנתקות?",
+    "a7": "<a href='/logout'>הנה כאן את יכולה לצאת מכאן</a>",
+    "q8": "איך אני יכול/ה לעזור?",
+    "a8": "<span>שמח לשמוע פידבק על שימוש במוצר ועל שימושים אחרים שאתם חושבים לעשות איתו ובאופן כללי לשמוע את דעתכם, לכן פתחנו קבוצת מיקוד שנשמור איתה על קשר רצוף על מנת להבין איך המוצר צריך להראות.<a href={'https://www.facebook.com/groups/415274585770726/'}>הצטרפו לקבוצת הפייסבוק שלנו כאן</a></span>",
+    "q9": "אני מפתח איך אני יכול/ה לעזור?",
+    "a9": "<span>מוזמן להצטרף אלינו לפיתוח - הנה המשימות -<a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>הטרלו שלנו</a><br/>והנה הקוד<a href='https://github.com/metaburn/doocrate'/><br/>אם אתה מחפש איך לתרום - מוזמן לפנות לגל<br/>galbra@gmail.com</span>",
+    "q10": "מי אתם אנשים מופלאים שמשקיעים את הזמן שלהם בזה?",
+    "a10": "<span>אנחנו חלק מקולקטיב בשם מטהברן ששם לו למטרה לייצר כלים פשוטים לניהול קהילות יצירה משותפת<br/>פיתחנו את <a href='http://dreams.burnerot.com/'>מערכת החלומות</a> עבור ברנרות ועבור ברנים אחרים<br/>"
   },
   "footer": {
     "about": "המערכת נכתבה",

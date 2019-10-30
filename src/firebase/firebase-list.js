@@ -137,5 +137,14 @@ export class FirebaseList {
     data.id = snapshot.id;
     return new this._modelClass(data);
   }
+}
 
+/*
+ Mapping from a firebase collection to a simple array
+ We are adding the id and a function that allow to perform object.get
+ */
+export function firebaseCollectionToList(collection) {
+  return collection.map(document => {
+    return Object.assign(document.data(),{get: (object)=>document[object], id: document.id});
+  });
 }

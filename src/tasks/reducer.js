@@ -1,11 +1,14 @@
 import { List, Record, Set } from 'immutable';
 import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
+import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 
 import {
   CREATE_TASK_SUCCESS,
   REMOVE_TASK_SUCCESS,
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
+  SET_FILTERED_TASKS,
+  SET_SELECTED_FILTERS
 } from './action-types';
 
 
@@ -13,41 +16,35 @@ export const TasksState = new Record({
   deleted: null,
   previous: null,
   list: new List(),
-  labelsPool: new Set(),
+  filteredList: new List(),
+  selectedFilters: {}, //Selected filters such as query
+  labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
   created: null
 });
-
-/*
- Mapping from a firebase collection to a simple array
- We are adding the id and a function that allow to perform object.get
- */
-function firebaseCollectionToList(collection) {
-  return collection.map(task => {
-    return Object.assign(task.data(),{get: (object)=>task[object], id: task.id});
-  });
-}
 
 
 function extractLabels(collection) {
   const result = [];
   for (const doc of collection) {
-    result.push(...Object.keys(doc.data().label));
+    const labels = doc.data().label;
+    if(labels) {
+      result.push(...Object.keys(labels));
+    }
   }
   return result;
 }
 
-
-
 export function tasksReducer(state = new TasksState(), {payload, type}) {
   switch (type) {
+    // This is fired when the user creates a task or when a remote user creates a task
     case CREATE_TASK_SUCCESS:
       return state.merge({
         deleted: null,
         created: payload,
         list: state.list.unshift(payload),
         // Adds all the labels from the task into the labels pool
-        labelsPool: state.labelsPool.union(Object.keys(payload.label)),
+        labelsPool: state.labelsPool.union(Object.keys(payload.label || {})),
       });
 
     case REMOVE_TASK_SUCCESS:
@@ -61,6 +58,12 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
     case LOAD_TASKS_SUCCESS:
       return state.set('list', new List(firebaseCollectionToList(payload.reverse())))
         .set('labelsPool',new Set(extractLabels((payload))));
+
+    case SET_FILTERED_TASKS:
+      return state.set('filteredList', new List(payload.reverse()));
+
+    case SET_SELECTED_FILTERS:
+      return state.set('selectedFilters', payload);
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

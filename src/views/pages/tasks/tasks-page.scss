@@ -25,6 +25,7 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row-reverse;
+  justify-content: flex-end;
 }
 
 .task-page-child {
@@ -33,22 +34,9 @@
 
 .task-list-wrapper {
   z-index: 2;
-  max-width: 50%;
-  min-width: 50%;
   flex: 5500 1 605px;
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.task-view-wrapper {
-  justify-content: flex-start;
-  min-width: 50%;
-  max-width: 800px;
-  position: relative;
-  padding-left: 20px;
-  padding-right: 20px;
 }
 
 @media (max-width: 767px) {
@@ -58,10 +46,6 @@
   }
   .task-page-wrapper {
     flex-wrap: wrap;
-  }
-
-  .task-view-wrapper {
-    min-width: 50%
   }
 
   .search-bar {
@@ -74,12 +58,7 @@
 }
 
 @media (max-width: 1120px) {
-  .task-view-wrapper {
-    min-width: 50%;
-  }
-
   .task-page-root-wrapper {
-
     .search-bar {
       .search-container {
         width: auto;
@@ -87,19 +66,17 @@
       }
     }
   }
-
 }
 
 @media (max-width: 767px) {
-  .task-view-wrapper {
-    width: 100%;
-    min-width: 50%;
-  }
-
   .top-nav-wrapper {
     max-width: 100%;
     padding: 16px;
   }
 
-}
+  .task-list-wrapper {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
 
+}

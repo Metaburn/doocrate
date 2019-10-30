@@ -2,59 +2,65 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
-
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
 import TaskList from '../../components/task-list';
-import TaskView from '../../components/task-view';
+import TaskSideView from '../../components/task-view/TaskSideView';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
 import i18n from '../../../i18n.js';
-import './tasks-page.css';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
-import { I18n } from 'react-i18next';
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
-
+import './tasks-page.css';
 
 export class TasksPage extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props) {
+    super(props);
+
+    this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
+
+    const taskId = props.match.params.id;
+
+    this.state = {
+      selectedTaskId: taskId,
+      newTask: null,
+      isLoadedComments: false,
+      isCurrentTaskValid: false,
+    };
+
+    this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
     this.createNewTask = this.createNewTask.bind(this);
     this.isAdmin = this.isAdmin.bind(this);
     this.isGuide = this.isGuide.bind(this);
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
     this.unassignTask = this.unassignTask.bind(this);
-    this.goToTask = this.goToTask.bind(this);
     this.onNewTaskAdded = this.onNewTaskAdded.bind(this);
     this.submitNewTask = this.submitNewTask.bind(this);
     this.removeComment = this.removeComment.bind(this);
-
-    this.setCurrentTaskValid = (isValid) => this.setState({isCurrentTaskValid: isValid});
-
-    this.state = {
-      tasks: this.props.tasks,
-      selectedTask: null,
-      newTask: null,
-      labels: null,
-      isLoadedComments: false,
-      isCurrentTaskValid: false,
-      query: ""
-    };
-
-    this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
+    this.resetSelectedTask = this.resetSelectedTask.bind(this);
 
     // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
+  }
+
+  componentDidMount() {
+    this.updateFilter();
+  }
+
+  // Update the filter in the store from the current url.
+  // TODO This should probable moved to the store location listen to history.listen
+  updateFilter() {
+    const nextFilters = this.getFilterParams(this.props);
+    this.props.setFilters(nextFilters);
   }
 
   componentWillMount() {
@@ -65,16 +71,78 @@ export class TasksPage extends Component {
       project_url = 'project_test';
       this.props.history.push('/project_test/task/1?complete=false');
     }
-    // TODO - should be set by a filter on the user view
-    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
 
+    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
     this.props.loadLabels(project_url);
 
     // Sets the default loading page
-    if(!this.props.filterType && firebaseConfig.defaultPageToLoad) {
+    if (!this.props.filterType && firebaseConfig.defaultPageToLoad) {
       this.props.history.push({
         search: firebaseConfig.defaultPageToLoad
-      })
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const selectedTaskId = nextProps.match.params.id;
+
+    // TODO filteredTask
+    // this.setState({
+    //   tasks: nextProps.tasks
+    // });
+
+    const nextFilters = this.getFilterParams(nextProps);
+    const { selectedFilters } = this.props;
+
+    // ES compare
+    if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+      this.debouncedFilterTasksFromProps(nextProps);
+    }
+
+    //if url has a task id - select it
+    if (nextProps.match != null && nextProps.match.params.projectUrl &&
+      nextProps.match.params.id) {
+
+      this.setProjectCookie(nextProps.match.params.projectUrl);
+
+      if (selectedTaskId === "new-task") {
+        // New task
+        if (this.state.newTask == null) {
+          this.setState({
+            selectedTaskId: null,
+            newTask: this.createNewTask(),
+            isLoadedComments: false
+          });
+          this.props.unloadComments();
+        }
+      } else if (selectedTaskId === "1") {
+        // No task selected - same as project page
+        this.setState({
+          isLoadedComments: false,
+          selectedTaskId: null
+        });
+      } else {
+        // Load selected task
+        if(!this.state.selectedTaskId) {
+          this.setState({ isLoadedComments: false });
+        }
+
+        if(!this.state.isLoadedComments ||
+          (selectedTaskId !== this.state.selectedTaskId)) {
+          // Select the task
+          this.setState({
+            isLoadedComments: true,
+            selectedTaskId: selectedTaskId,
+            newTask: null
+          });
+          this.props.unloadComments();
+          let project_url = this.props.match.params.projectUrl;
+          this.props.loadComments(project_url, selectedTaskId);
+        }
+      }
+    } else {
+      this.setState({ isLoadedComments: false,
+        selectedTaskId: null });
     }
   }
 
@@ -85,122 +153,78 @@ export class TasksPage extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if url has a task id - select it
-    if (nextProps.match != null && nextProps.match.params.projectUrl &&
-      nextProps.match.params.id) {
-
-      this.setProjectCookie(nextProps.match.params.projectUrl);
-
-      const tid = nextProps.match.params.id;
-
-      if (tid === "new-task") {
-        if (this.state.newTask == null) {
-          this.setState({
-            newTask: this.createNewTask()
-          });
-          this.props.unloadComments();
-        }
-      } else if (tid === "1") {
-        this.setState({
-          isLoadedComments: false,
-          selectedTask: null});
-      } else {
-        // Select existing task by tid
-        this.setState({
-          // TODO - perhaps it's faster to use the backend to actually find this specific task
-          selectedTask: nextProps.tasks.find((task)=>( task.get('id') === tid ))
-        });
-
-        if(!this.state.selectedTask) {
-          this.setState({ isLoadedComments: false });
-        }
-
-        if(!this.state.isLoadedComments ||
-          (this.state.selectedTask && tid !== this.state.selectedTask.id)) {
-          this.setState({ isLoadedComments: true });
-          this.props.unloadComments();
-          let project_url = this.props.match.params.projectUrl;
-          this.props.loadComments(project_url, tid);
-        }
-      }
-    } else {
-      this.setState({ isLoadedComments: false });
-    }
-
-    // prepare filter if exists
-    this.debouncedFilterTasksFromProps(nextProps);
-  }
+  getFilterParams = (props) =>{
+    const urlParams = getUrlSearchParams(props.location.search);
+    return {
+      filter: urlParams["filter"] || null,
+      typeText: urlParams["text"] || null,
+      complete: urlParams["complete"] || null,
+      labels: urlParams["labels"] || null,
+      query: urlParams["query"] || null,
+    };
+  };
 
   filterTasksFromProps(nextProps) {
-    let currentTasks = nextProps.tasks;
-    const params = getUrlSearchParams(nextProps.location.search);
-    const filterType = params['filter'];
-    const filterTextType = params['text'];
-    const filterByLabels = params['labels'];
+    const { tasks } = nextProps;
+    const nextFilters = this.getFilterParams(nextProps);
 
-    const completeFilterValue = params['complete'];
+    let filteredTasks;
+    filteredTasks = this.filterByFilterType(nextFilters, tasks);
+    filteredTasks = this.filterByComplete(nextFilters, filteredTasks);
+    filteredTasks = this.filterTaskFromLabel(nextFilters, filteredTasks);
+    filteredTasks = this.filterTaskFromQuery(nextFilters, filteredTasks);
+
+    this.props.setFilters(nextFilters);
+    this.props.setFilteredTasks(filteredTasks);
+  }
+
+  filterByFilterType(nextFilters, tasks) {
+    const filterType = nextFilters.filter;
+    const filterTextType = nextFilters.typeText;
 
     if (filterType) {
       const filter = this.props.buildFilter(this.props.auth, filterType, filterTextType);
-      currentTasks = this.props.filters[filter.type](currentTasks, filter);
+      tasks = this.props.filters[filter.type](tasks, filter);
     }
 
-    // Complete can be - None, false, true
-    if(completeFilterValue || completeFilterValue === 'false') {
-      const completeFilter = this.props.buildFilter(this.props.auth, 'complete', completeFilterValue);
-      currentTasks = this.props.filters[completeFilter.type](currentTasks, completeFilter);
-    }
-
-    currentTasks = this.filterTaskFromLabel(currentTasks, filterByLabels);
-    currentTasks = this.filterTaskFromQuery(currentTasks);
-
-    // TODO should not be here
-    this.setState({tasks: currentTasks});
+    return tasks;
   }
 
-  filterTaskFromLabel(tasks, labels) {
-    let currentTasks = tasks;
+  filterByComplete(nextFilters, tasks) {
+    const completeFilterValue = nextFilters.complete;
+    if(completeFilterValue || completeFilterValue === "false") {
+      const completeFilter = this.props.buildFilter(this.props.auth, "complete", completeFilterValue);
+      tasks = this.props.filters[completeFilter.type](tasks, completeFilter);
+    }
+    return tasks;
+  }
+
+  filterTaskFromLabel(nextFilters, tasks) {
+    const { auth, buildFilter, filters } = this.props;
+    const labels = nextFilters.labels;
     if ( labels != null && labels.length > 0) {
-      const filter = this.props.buildFilter(this.props.auth, "label", this.state.labels);
-      currentTasks = this.props.filters["label"](currentTasks, filter, labels);
+      const filter = buildFilter(auth, "label", labels);
+      tasks = filters["label"](tasks, filter, labels);
     }
 
-    return currentTasks;
+    return tasks;
   }
 
-  filterTaskFromQuery = (tasks) => {
-    let currentTasks = tasks;
-    const filter = this.props.buildFilter(this.props.auth, "query", this.state.query);
-    currentTasks = this.props.filters["query"](currentTasks, filter, this.state.query);
-    return currentTasks;
+  filterTaskFromQuery = (nextFilters, tasks) => {
+    const { auth, buildFilter, filters } = this.props;
+    const query = nextFilters.query;
+    if(query) {
+      const filter = buildFilter(auth, "query", query);
+      tasks = filters["query"](tasks, filter, query);
+    }
+    return tasks;
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    let {tasks} = this.props;
-    // TODO - check that
-    /*const params = getUrlSearchParams(this.props.location.search);
-    if (prevState.labels !== params['labels']) {
-      tasks = this.filterTaskFromLabel(tasks);
-      this.setState({tasks});
-    }*/
-
-    // Sync url toolbar and the query parameter
-    if (prevState.query !== this.state.query) {
-      tasks = this.filterTaskFromQuery(tasks);
-      this.setState({tasks});
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.unloadTasks();
-  }
-
   onNewTaskAdded(task) {
-    //Remove this to keeps the user on the same page - allowing to create another new task
-    const taskObj = this.props.tasks.find((t)=>( t.get('id') === task.id ));
-    this.goToTask(taskObj);
-    setTimeout(()=>{this.setState({newTask: null})}, 100);
+    // Remove this to keeps the user on the same page - allowing to create another new task
+
+    // Navigate to newly created task
+    setTimeout(()=>{this.setState({newTask: null, selectedTaskId: task.id})}, 100);
   }
 
   createNewTask() {
@@ -301,29 +325,13 @@ export class TasksPage extends Component {
     return false;
   }
 
-
-  goToTask(task) {
-    if (this.confirmUnsavedTask()) {
-      return;
-    }
-    const project_url = this.props.match.params.projectUrl;
-    let taskParameter = task? `/${project_url}/task/${task.get('id')}` : `/${project_url}/task/1`;
-
-    if (this.props.location.search) {
-      taskParameter += this.props.location.search;
-    }
-
-    setTimeout(()=>{this.setState({newTask: null})}, 100);
-    this.props.history.push(taskParameter);
-  }
-
   onQueryChange = (query) => {
-    this.setState({query});
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
-  };
 
+    this.updateFilter();
+  };
 
   updateUserInfo(userInfo) {
     const oldUserData = this.props.auth;
@@ -336,39 +344,40 @@ export class TasksPage extends Component {
     updateUserData(newUserData);
   }
 
-  renderTaskView() {
-    if (this.state.selectedTask == null && this.state.newTask == null) {
-      return (<div className='task-view-loader'>&nbsp;</div>);
+  getTaskViewProps() {
+    const { selectedTaskId, newTask } = this.state;
+    const { tasks } = this.props;
+
+    // TODO - is this the right place to make this decision?
+    let selectedTask;
+    if(newTask) {
+      selectedTask = newTask;
+    }else {
+      selectedTask = tasks.find((task) => task.get('id') === selectedTaskId);
     }
 
-    let taskObj;
-    if (this.state.newTask != null) {
-      taskObj = this.state.newTask;
-    } else if (this.state.selectedTask != null) {
-      taskObj = this.state.selectedTask;
-    }
-
-    return (
-      <TaskView
-        removeTask={this.props.removeTask}
-        updateTask={this.props.updateTask}
-        selectTask={this.goToTask}
-        selectedTask={taskObj}
-        selectedProject={this.props.selectedProject}
-        isAdmin={this.isAdmin()}
-        isGuide={this.isGuide()}
-        assignTask={this.assignTaskToSignedUser}
-        followTask={this.followTaskToSignedUser}
-        unfollowTask={this.unfollowTaskToSignedUser}
-        unassignTask={this.unassignTask}
-        unloadComments={this.props.unloadComments}
-        createComment={this.props.createComment}
-        updateComment={this.props.updateComment}
-        removeComment={this.removeComment}
-        isValidCallback={this.setCurrentTaskValid}
-        isDraft={this.state.newTask != null}
-        submitNewTask={this.submitNewTask}
-      />)
+    return {
+      i18n,
+      selectedTask,
+      removeTask: this.props.removeTask,
+      updateTask: this.props.updateTask,
+      selectedProject: this.props.selectedProject,
+      isAdmin: this.isAdmin(),
+      isGuide: this.isGuide(),
+      assignTask: this.assignTaskToSignedUser,
+      followTask: this.followTaskToSignedUser,
+      unfollowTask: this.unfollowTaskToSignedUser,
+      unassignTask: this.unassignTask,
+      unloadComments: this.props.unloadComments,
+      createComment: this.props.createComment,
+      updateComment: this.props.updateComment,
+      removeComment: this.removeComment,
+      isValidCallback: this.setCurrentTaskValid,
+      isDraft: this.state.newTask != null,
+      submitNewTask: this.submitNewTask,
+      isTaskVisible: !!this.state.selectedTask,
+      resetSelectedTask: this.resetSelectedTask
+    };
   }
 
   createTask = () => {
@@ -381,6 +390,9 @@ export class TasksPage extends Component {
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');
+    // Reset filters so user can see the new created task and not a list
+    // of filtered tasks
+    this.updateFilter();
   };
 
   getTaskTypesFromProject = (index) => {
@@ -440,59 +452,73 @@ export class TasksPage extends Component {
     removeQueryParamAndGo(this.props.history, [type], value);
   };
 
+  resetSelectedTask() {
+    this.setState({
+      newTask: null,
+      selectedTaskId: null,
+    });
+    const { auth, selectedProject } = this.props;
+
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+
+    this.props.history.push({
+      pathname: `/${projectUrl}/task/1`,
+      search: this.props.location.search
+    });
+  };
+
   render() {
-    // TODO : use state.tasks instead. It is possible that a filter would
-    // return 0 results, but loading has finished
-    const isNewTask = this.props.match && this.props.match.params && this.props.match.params.id === 'new-task';
-    const isLoading = (!this.state.tasks || (this.props.tasks.size <= 0 && !isNewTask));
+    const { selectedTaskId } = this.state;
+    let { filteredTasks } = this.props;
+    // On initial load if no filtered apply - save memory by using tasks
+    // Probably this is changed fastly - need to test this
+    // Otherwise better move this out of render
+    if (filteredTasks == null) {
+      filteredTasks = this.props.tasks;
+    }
+
+    const isLoading = (this.props.tasks.size <= 0);
     const projectUrl = this.props.match.params.projectUrl;
 
     const selectedFilters = this.getSelectedFilters();
     const isFiltersActive = selectedFilters.length > 0;
-    const tasksCount = (this.state.tasks && this.state.tasks.size >0) ? this.state.tasks.size : null;
+    const tasksCount = filteredTasks.size;
     const title = this.getSelectedFilterTitle();
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
-          <div className={'task-page-root-wrapper'}>
-            <div className={'top-nav-wrapper'}>
-              <TopNav onQueryChange={this.onQueryChange}
-                      isFilterActive={isFiltersActive}
-                      query={this.state.query}
-                      setMenuOpen={this.props.setMenuOpen}
-                      selectedFilters={selectedFilters}
-                      createTask={this.createTask}
-                      removeQueryByLabel={this.removeQueryByLabel}
-                      tasksCount={tasksCount}
-                      title={title}/>
-            </div>
+      <div className="task-page-root-wrapper">
+        <TaskSideView {...this.getTaskViewProps()}/>
+        <div className="top-nav-wrapper">
+          <TopNav onQueryChange={this.onQueryChange}
+            isFilterActive={isFiltersActive}
+            query={this.state.query}
+            setMenuOpen={this.props.setMenuOpen}
+            selectedFilters={selectedFilters}
+            createTask={this.createTask}
+            removeQueryByLabel={this.removeQueryByLabel}
+            tasksCount={tasksCount}
+            title={title}/>
+        </div>
 
-            <div className='task-page-wrapper'>
-              <LoaderUnicorn isShow={ isLoading }/>
-              <div className='task-view-wrapper'>
-                { this.renderTaskView() }
-              </div>
-              <div className='task-list-wrapper'>
-                <TaskList history={this.props.history}
-                  tasks={this.state.tasks}
-                  selectTask={this.goToTask}
-                  selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""} //TODO?
-                  selectedProject = { this.props.selectedProject }
-                  projectUrl = { projectUrl } //TODO - should be from state
-                />
-              </div>
+        <div className='task-page-wrapper'>
+          <LoaderUnicorn isShow={isLoading}/>
 
-              { (this.state.selectedTask == null) ?
-                <div className='task-view-bottom-loader'>&nbsp;</div>: ''
-              }
-            </div>
+          <div className='task-list-wrapper'>
+            <TaskList
+              history={this.props.history}
+              location={this.props.location}
+              tasks={filteredTasks}
+              selectedTaskId={selectedTaskId}
+              selectedProject={this.props.selectedProject}
+              projectUrl={projectUrl}/>
           </div>
-          )
-        }
-      </I18n>
-    )
+
+          {selectedTaskId == null &&
+            <div className="task-view-bottom-loader">&nbsp;</div>}
+        </div>
+      </div>
+    );
   }
 }
 
@@ -509,6 +535,7 @@ TasksPage.propTypes = {
   tasks: PropTypes.instanceOf(List).isRequired,
   unloadTasks: PropTypes.func.isRequired,
   unloadComments: PropTypes.func.isRequired,
+  loadComments: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
   setMenuOpen: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
@@ -521,10 +548,14 @@ TasksPage.propTypes = {
 const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
+    filteredTasks: state.tasks.filteredList,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
     labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
+    selectedFilters: state.tasks.selectedFilters,
+    setFilters: tasksActions.setFilters,
+    setFilteredTasks: tasksActions.setFilteredTasks,
     buildFilter: buildFilter
   }
 };

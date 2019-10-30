@@ -49,7 +49,7 @@ service cloud.firestore {
     // Allow to update it the user is the project creator
     match /projects/{anyProject} {
       allow create: if request.auth != null;
-      allow read: if request.auth != null;
+      allow read: if true; //Allow all to read the existing project
       allow update: if request.auth != null && isCreator();
       allow delete: if request.auth != null && isCreator();
 

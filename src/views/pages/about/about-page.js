@@ -55,6 +55,24 @@ const AboutPage = () => {
             } />
             <br /><br />
 
+            <h1>{t('about.q8')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a8', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q9')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a9', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
+            <h1>{t('about.q10')}</h1>
+            <div dangerouslySetInnerHTML={
+              {__html: t('about.a10', {interpolation: {escapeValue: false}})}
+            } />
+            <br /><br />
+
             {t('about.faces')}
             <div className={'carousel-container'}>
               <AboutCarousel />

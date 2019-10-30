@@ -6,7 +6,7 @@ import AutoSuggestedTags from '../auto-suggested-tags';
 import {CSVLink} from 'react-csv';
 import i18n from '../../../i18n';
 import { setQueryParams } from '../../../utils/browser-utils';
-import PopularLabels from '../../molecules/popular-labels/popular-labels';
+import LabelsList from '../../molecules/labelsList/labelsList';
 import './task-filters.css';
 
 class TaskFilters extends Component {
@@ -127,7 +127,7 @@ class TaskFilters extends Component {
         {downloadCSV}
 
         <div className="heading">{i18n.t('filter.popular-tags')}</div>
-        <PopularLabels
+        <LabelsList
           labels={this.props.popularLabels}
           onLabelClick={this.onPopularLabelClick}/>
 

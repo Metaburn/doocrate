@@ -13,6 +13,8 @@ import {
   UPDATE_TASK_ERROR,
   UPDATE_TASK_SUCCESS,
   SELECT_TASK,
+  SET_FILTERED_TASKS,
+  SET_SELECTED_FILTERS,
 } from './action-types';
 
 
@@ -175,6 +177,20 @@ export function loadTasksSuccess(tasks) {
   return {
     type: LOAD_TASKS_SUCCESS,
     payload: tasks
+  };
+}
+
+export function setFilteredTasks(tasks) {
+  return {
+    type: SET_FILTERED_TASKS,
+    payload: tasks
+  };
+}
+
+export function setFilters(filters) {
+  return {
+    type: SET_SELECTED_FILTERS,
+    payload: filters
   };
 }
 

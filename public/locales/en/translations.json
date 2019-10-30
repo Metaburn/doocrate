@@ -54,7 +54,6 @@
   },
   "my-space": {
     "updated-successfully": "Success 🎉",
-    "edit-profile": "Edit Profile",
     "projects-you-manage": "Projects You Manage",
     "projects": "My projects",
     "edit-project": "Edit project",
@@ -62,7 +61,10 @@
     "email": "Email",
     "bio-empty": "You haven't wrote anything.",
     "bio-empty-action": "Click here to edit your Bio",
-    "bio-empty-encourage": "so other members can learn more about you"
+    "bio-empty-encourage": "so other members can learn more about you",
+    "only-created": "Only Created",
+    "only-assigned": "Only Assigned",
+    "show-all": "All of my tasks"
   },
   "task": {
     "add-task": "Add a new task",
@@ -131,7 +133,8 @@
     "errors": {
       "not-empty": "This field cannot be empty",
       "min-3": "This field must have at least 3 characters"
-    }
+    },
+    "no-assignee": "No Owner yet"
   },
   "filter": {
     "header": "FILTERS",
@@ -196,12 +199,14 @@
     "a5": "<span>Sure. Email support@doocrate.com</span>",
     "q6": "This is amazing. I want to create my own project",
     "a6": "<span><a href='https://doocrate.com/create-project'>Click here to create your own project</a></span>",
-    "q7": "How can I help?",
-    "a7": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href={'https://www.facebook.com/groups/415274585770726/'}>Join our facebook here</a> and message us</span>",
-    "q8": "I'm a developer. How can I help?",
-    "a8": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
-    "q9": "Who are you wonderful people who invest time in this?",
-    "a9": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed<a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>"
+    "q7": "Where is the logout button?",
+    "a7": "<a href='/logout'>Here Let's get you out of here</a>",
+    "q8": "How can I help?",
+    "a8": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href={'https://www.facebook.com/groups/415274585770726/'}>Join our facebook here</a> and message us</span>",
+    "q9": "I'm a developer. How can I help?",
+    "a9": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
+    "q10": "Who are you wonderful people who invest time in this?",
+    "a10": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed<a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>"
   },
   "footer": {
     "about": "This system was written as",

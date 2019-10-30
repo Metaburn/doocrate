@@ -1,20 +1,6 @@
 @import 'views/styles/shared';
 
-.me {
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
-  transition: all 0.2s;
-  margin: 2em auto;
-  max-width: 600px;
-  padding: 2em 2em 4em 2em;
-  background: white;
-  -webkit-border-radius: 16px;
-  -moz-border-radius: 16px;
-  border-radius: 16px;
-
-  text-align: center;
+.my-portfolio {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,8 +8,8 @@
 
   .avatar-wrapper {
     align-self: center;
-    max-width: 150px;
-    max-height: 150px;
+    max-width: 110px;
+    max-height: 110px;
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     -ms-transition: all 0.3s;
@@ -47,6 +33,10 @@
       margin-left: 8px;
 
     }
+  }
+
+  .user-form {
+    margin: 1em 0;
   }
 
   .bio-description {
@@ -73,28 +63,6 @@
     }
   }
 
-  a {
-    color: $primary-color;
-  }
-
-  .user-form {
-    margin: 1em 0;
-  }
-
-  .avatar {
-    -webkit-border-radius: 120px;
-    -moz-border-radius: 120px;
-    border-radius: 120px;
-  }
-
-  .editor-preview {
-    border: 1px solid transparent;
-    &:hover {
-      border: 1px dotted;
-      cursor: pointer;
-    }
-  }
-
   .submit-wrapper {
     margin-top: 2em;
     text-align: center;
@@ -112,47 +80,15 @@
     }
   }
 
-  .projects-you-manage {
-    margin-top: 3em;
-    font-weight: bold;
-  }
-
-  .projects {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .project {
-    display: inline-flex;
-    flex-flow: wrap;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-    background: white;
-    padding: 5px;
-    margin: 10px 0;
-
-    &:hover {
-      background-color: rgb(238, 238, 238);
-    }
-
-    span {
-      margin: 0 10px;
-
-      &:first-child {
-        margin: 0;
-      }
-    }
+  .avatar {
+    -webkit-border-radius: 120px;
+    -moz-border-radius: 120px;
+    border-radius: 120px;
   }
 }
 
-
 @media only screen and (max-width: 480px){
   .me {
-    margin: 0 auto;
-    background: none;
-    padding-bottom: 4em;
     .avatar-wrapper {
       max-width: 90px;
       max-height: 90px;

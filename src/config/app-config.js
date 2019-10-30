@@ -1,8 +1,6 @@
 export const appConfig = {
   // Time in milliseconds to show the toast notification message
   notificationShowTime: 8000,
-  // Set this to close the system temporary on the client size
-  isSystemClosed: false,
   // We chose the popular label colors from that array
   colorTags: [
     'EB1478',

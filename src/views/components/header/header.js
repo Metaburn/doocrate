@@ -32,13 +32,14 @@ class Header extends Component {
   }
 
   render() {
-
+    const { auth, isShowUpdateProfile, selectedProject } = this.props;
+    const { showSetUserInfoScreen } = this.state;
     return (
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
             <header className='header notranslate'>
-              <SideMenu auth={this.props.auth} i18n={i18n}/>
+              <SideMenu auth={auth} i18n={i18n} />
               <div className={'header-wrapper'}>
                 <div>
                   <ToastContainer
@@ -50,20 +51,23 @@ class Header extends Component {
                   />
 
                   <SetUserInfo
-                    isOpen = { (this.state.showSetUserInfoScreen) || this.props.auth.shouldShowUpdateProfile}
-                    userInfo={ this.props.auth }
-                    photoURL={ this.props.auth.photoURL || getRandomImage()}
+                    isOpen = { (showSetUserInfoScreen) ||
+                    (auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.show) }
+                    userInfo={ auth }
+                    includingBio={auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.includingBio }
+                    photoURL={ auth.photoURL || getRandomImage()}
                     updateUserInfo={ this.updateUserInfo }
                     onClosed = { () => {
                       this.setState({showSetUserInfoScreen: false});
-                      this.props.isShowUpdateProfile(false);
+                      isShowUpdateProfile(false);
                       this.setState({showSetUserInfoScreen: false})
-                    }
-                    } />
+                    }}
+                    i18n={i18n}
+                    />
 
                   <div className={`header-side lang-${i18n.language}`}>
-                    <h4 className='project-title'>{this.props.selectedProject?
-                      <NavLink to={'/'+this.props.selectedProject.url+'/task/1'}>{this.props.selectedProject.name}</NavLink> :
+                    <h4 className='project-title'>{selectedProject?
+                      <NavLink to={'/'+selectedProject.url+'/task/1'}>{selectedProject.name}</NavLink> :
                       ''
                     }</h4>
                     <div className={`language-buttons-wrapper lang-${i18n.language}`}>
@@ -86,7 +90,8 @@ class Header extends Component {
 
 
   showSetUserInfo() {
-    this.setState({showSetUserInfoScreen: (this.props.auth.id && !this.props.auth.isEmailConfigured)})
+    const { auth } = this.props;
+    this.setState({showSetUserInfoScreen: (auth.id && !auth.isEmailConfigured)})
   }
 
   changeLanguage = (i18n, changeLang) => {

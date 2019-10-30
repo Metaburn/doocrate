@@ -1,0 +1,17 @@
+@import 'views/styles/shared';
+
+.my-tasks {
+  .button {
+    margin: 0 0.6em;
+
+    &.active {
+      background: $primary-color;
+      pointer-events: none;
+      color: white;
+    }
+  }
+
+  .tasks-counter {
+    margin-top: 0.5em;
+  }
+}

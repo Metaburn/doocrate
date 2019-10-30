@@ -1,85 +1,38 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import OffCanvas from 'react-aria-offcanvas';
+import { slide as Menu } from 'react-burger-menu'
 import FilterMenu from "../filter-menu/filter-menu";
 import {userInterfaceActions} from "../../../user-interface";
 import {createSelector} from "reselect";
 import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
-import { throttle } from 'lodash';
+import { isMobile, isTablet } from '../../../utils/browser-utils';
 import './side-menu.css';
 
 class SideMenu extends Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      isMobile: this.isMobile(),
-      isTablet: this.isTablet()
-    };
-
-    this.throttled = null;
-  }
-
-  // We listen for window resize but making sure not every resize count to
-  // not get too many updates and kill performances
-  throttledHandleWindowResize = () => {
-    if(!this.throttled) {
-      // initialize the throttled function
-      this.throttled = throttle(() => {
-        this.setState({
-          isMobile: this.isMobile(),
-        isTablet: this.isTablet()});
-      }, 200, {leading: true});
-
-    }else {
-      // call the throttled function
-      this.throttled();
-    }
-  };
-
-  isMobile = () => {
-    return window.innerWidth < 480 ;
-  };
-
-  isTablet = () => {
-    return window.innerWidth < 768  &&
-      window.innerWidth > 480;
-  };
-
-  componentDidMount() {
-    window.addEventListener('resize', this.throttledHandleWindowResize);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.throttledHandleWindowResize);
-  }
-
   render() {
     const { i18n, menuIsOpen, setMenuOpen } = this.props;
-    const { isMobile, isTablet } = this.state;
     const width = isMobile? '90%' :
       isTablet? '70%':
         '370px';
 
     const isHebrew = i18n.language === 'he';
-    const position = isMobile ? 'bottom' : isHebrew ? 'right' : 'left';
-    const classNames = classnames('filter-side-menu', { 'is-mobile': isMobile });
+    const classNames = classnames('filter-side-menu',
+      { 'is-mobile': isMobile,
+        'right-menu': !isHebrew,
+        'left-menu': isHebrew});
 
     return (
-      <OffCanvas
-        overlayClassName="filter-side-menu-overlay"
-        className={classNames}
-        position={position}
-        height="100%"
-        closeOnOverlayClick={true}
-        width={width}
-        isOpen={menuIsOpen}
-        onClose={() => setMenuOpen(false)}>
+      <Menu right={isHebrew}
+            isOpen={menuIsOpen}
+            className={classNames}
+            disableOverlayClick={false}
+            onStateChange={(state) => setMenuOpen(state.isOpen)}
+            width={ width }>
         <FilterMenu/>
-      </OffCanvas>
+      </Menu>
     );
   }
 }

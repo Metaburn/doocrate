@@ -187,4 +187,10 @@ body { top: 0px !important; }
   body {
     padding: 0;
   }
+
+  // Fixes an issue with react-validation component of it's older version
+  // TODO - remove this when you upgraded react validation to the latest version
+  body > textarea {
+    width: auto !important;
+  }
 }

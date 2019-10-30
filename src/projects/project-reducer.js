@@ -8,13 +8,12 @@ import {
   NEW_PROJECT_CREATED,
 } from './action-types';
 import { SELECT_PROJECT } from './action-types';
-
+import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
 });
-
 
 export function projectsReducer(state = new ProjectState(), {payload, type}) {
   switch (type) {
@@ -33,7 +32,7 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
       });
 
     case LOAD_PROJECTS_SUCCESS:
-      return state.set('list', new List(payload.reverse()));
+      return state.set('list', new List(firebaseCollectionToList(payload.reverse())));
 
     case UPDATE_PROJECT_SUCCESS:
       return state.merge({

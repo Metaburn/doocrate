@@ -131,17 +131,16 @@ export function signInWithGoogle(isIssues) {
 
 export function signOut() {
   return dispatch => {
-    window.location.href = '/';
     firebaseAuth.signOut()
       .then(() => dispatch(signOutSuccess()));
   };
 }
 
-export function isShowUpdateProfile(isShow) {
+export function isShowUpdateProfile(isShow, includingBio) {
   return dispatch => {
     dispatch({
       type: UPDATE_PROFILE,
-      payload: isShow
+      payload: {show: isShow, includingBio: includingBio}
     })
   };
 }
