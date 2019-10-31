@@ -91,6 +91,7 @@ export class CommentItem extends Component {
   renderHeader(t, comment) {
     if (!comment.creator) return;
     const {creator} = comment;
+    const {projectUrl} = this.props;
 
     return (
       <div className='comment-header'>
@@ -101,6 +102,7 @@ export class CommentItem extends Component {
               uniqueId={comment.id}
               photoURL={creator.photoURL}
               userId={creator.id}
+              projectUrl={projectUrl}
               alt={creator.name}/> {creator.name} <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
         </div>
       </div>
@@ -182,6 +184,7 @@ CommentItem.propTypes = {
   commentNumber: PropTypes.number.isRequired,
   removeComment: PropTypes.func.isRequired,
   updateComment: PropTypes.func.isRequired,
+  projectUrl: PropTypes.string.isRequired,
   auth: PropTypes.object.isRequired
 };
 

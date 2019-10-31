@@ -31,6 +31,7 @@ class TaskCreator extends Component {
 
 TaskCreator.propTypes = {
   creator: PropTypes.object,
+  projectUrl: PropTypes.string,
 };
 
 export default TaskCreator;

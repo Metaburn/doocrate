@@ -56,8 +56,10 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       });
 
     case LOAD_TASKS_SUCCESS:
-      return state.set('list', new List(firebaseCollectionToList(payload.reverse())))
-        .set('labelsPool',new Set(extractLabels((payload))));
+      const defaultTasks = new List(firebaseCollectionToList(payload.reverse()));
+      return state.set('list', defaultTasks)
+        .set('labelsPool',new Set(extractLabels((payload))))
+        .set('filteredList', defaultTasks);
 
     case SET_FILTERED_TASKS:
       return state.set('filteredList', new List(payload.reverse()));

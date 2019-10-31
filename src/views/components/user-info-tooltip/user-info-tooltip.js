@@ -15,7 +15,7 @@ class UserInfoTooltip extends Component {
 
   render() {
     const uniqueId = this.props.uniqueId || '';
-    const {auth, userId, isVisible, target, handleClose, user} = this.props;
+    const {auth, userId, isVisible, target, handleClose, user, projectUrl} = this.props;
 
     const isSelfView = (auth && auth.id === userId);
 
@@ -29,7 +29,7 @@ class UserInfoTooltip extends Component {
                containerStyle={Object.assign({}, {"z-index":"10000"})}
                id={`user-info-tooltip-${uniqueId}`}>
         <div className="user-info-tooltip-container">
-          {(isSelfView && <Link className={`edit-icon-container`} to="/me">
+          {(isSelfView && <Link className={`edit-icon-container`} to={`/${projectUrl}/me`}>
             { userComponent }
             <Icon name='edit' alt={i18n.t('general.click-to-edit')}/>
           </Link>)}
@@ -55,6 +55,7 @@ UserInfoTooltip.propTypes = {
   uniqueId: PropTypes.string,
   userId: PropTypes.string.isRequired,
   handleClose: PropTypes.func,
+  projectUrl: PropTypes.string,
 };
 
 const mapStateToProps = createSelector(getAuth, (auth) => ({ auth }));
