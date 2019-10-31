@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Tour from 'reactour';
 import Emoji from "../emoji/emoji";
+import i18n from "src/i18n";
 
 import './tourDoocrate.css';
 
@@ -15,14 +16,14 @@ class TourDoocrate extends Component {
 
     this.steps = [
       {
-        content: `Welcome to the Doocrate! click the arrow`
+        content: i18n.t('tour.welcome')
       },
       {
         selector: '[data-tour="one"]',
         content: () => (
           <div>
             <p>
-              This is how you create a new task <Emoji symbol="🐳"/><Emoji symbol="🎋"/>
+              {i18n.t('tour.create-task')}<Emoji symbol='🐳' /><Emoji symbol='🎋' /><Emoji symbol='👉🏼'/>
             </p>
           </div>
         ),
@@ -32,7 +33,7 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              This is where you search for tasks or humans <span role={"img"}><Emoji symbol="🧞‍🧜‍🧚‍🧙"/>‍</span>
+              {i18n.t('tour.search-humans')} <span role={"img"}><Emoji symbol="🧞‍🧜‍🧚‍🧙"/>‍</span>
             </p>
           </div>
         ),
@@ -42,19 +43,20 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              Here is the Filter - You can search by category or any popular tags
+              {i18n.t('tour.filter')}
             </p>
           </div>
         ),
+        position: "top"
       },
       {
         selector: '[data-tour="four"]',
         content: () => (
           <div>
             <p>
-              And here is your personal space - where you will found your personal tasks list.
+              {i18n.t('tour.personal-space')}
             </p>
-            <p>Go ahead and click it</p>
+            <p>{i18n.t('tour.click-it')}</p>
           </div>
         ),
       },
@@ -63,12 +65,30 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              That's it! have fun! <Emoji symbol="🙌👩🏼‍🎤 👨🏼‍🎤"/>
+              {i18n.t('tour.final')}<Emoji symbol="🙌👩🏼‍🎤 👨🏼‍🎤"/>
             </p>
           </div>
         ),
       }
     ];
+  }
+
+  renderNextButton = (text) => {
+    return (
+      <span className={`tour-button next-${i18n.language}`}>{text}</span>
+    )
+  };
+
+  renderPrevButton = (text) => {
+    return (
+      <span className={`tour-button back-${i18n.language}`}>{text}</span>
+    )
+  };
+
+  renderLastStepNextButton =(text) => {
+    return (
+      <span className={`tour-button next-${i18n.language}`}>{text}</span>
+    );
   }
 
   render() {
@@ -77,8 +97,13 @@ class TourDoocrate extends Component {
         <Tour
           steps={this.steps}
           isOpen={tour.isShow}
-          className={"tour-doocrate-helper"}
+          className={`tour-doocrate-helper lang-${i18n.language}`}
           onRequestClose={this.props.onCloseTour}
+          badgeContent={(curr, tot) => i18n.t('tour.of',{start: curr, end: tot})}
+          prevButton={this.renderPrevButton(i18n.t('tour.prev'))}
+          disableDotsNavigation={true}
+          nextButton={this.renderNextButton(i18n.t('tour.next'))}
+          lastStepNextButton={this.renderLastStepNextButton(i18n.t('tour.last-step-btn'))}
           rounded={8}/>
       );
     }
