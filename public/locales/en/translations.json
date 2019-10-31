@@ -188,6 +188,19 @@
     "signup-email": "Complete sign up",
     "signin-email": "Log in"
   },
+  "tour": {
+    "next": "Next",
+    "prev": "Back",
+    "of": "{{start}} of {{end}}",
+    "last-step-btn": "Beautiful",
+    "welcome": "Welcome to the Doocrate!\r\nclick on Next to begin",
+    "create-task": "This is how you create a new task",
+    "search-humans": "This is where you search for tasks or humans",
+    "filter": "Here is the Filter - You can search by category or any popular tags",
+    "personal-space": "And here is your personal space - where you will found your personal tasks list.",
+    "click-it": "Go ahead and click it",
+    "final": "You did it! You've reached the end. have fun!"
+  },
   "signin": {
     "welcome": "Welcome back",
     "enter-email": "Enter your email to get a magic link",
@@ -204,6 +217,8 @@
     "interactive-tour-answer": "Sure. click here",
     "q1": "How do I switch Language? - איך אני מחליף שפה",
     "a1": "<a href='?lng=he'>לחץ כאן - Click here</a>",
+    "q_docs": "Where can I read more about this?",
+    "a_docs": "<a href='https://docs.doocrate.com/'>Here you'll find manuals</a> For everything Doocrate",
     "q2": "What is doocrate?",
     "a2": "<span>The Doocrate allows us to organize under an event / project and to manage our own tasks</span><span>The doocrate is build under the TEAL model which is based on a flat (Non hierarchical) structure<br/></span><span>Insatead of an hierarchical community / company - the system allows to self organize and self mangement by small teams that are responsible on their internal operational and their way of communication with other teams in the community</span>",
     "q3": "Why did we build this?",
