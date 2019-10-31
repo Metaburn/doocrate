@@ -1,10 +1,11 @@
-import React, { Component }  from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import i18n from 'src/i18n';
 
 import './taskViewMiniList.css';
 import TaskViewMini from "../taskViewMini/taskViewMini";
+import MeEmptyPlaceholder from "../meEmptyPlaceholder/meEmptyPlaceholder";
 
 class TaskViewMiniList extends Component {
   constructor(props) {
@@ -51,17 +52,8 @@ class TaskViewMiniList extends Component {
     return (
       <div className="task-view-mini-list">
         {(!isAnyTasks &&
-          <div className="no-tasks-placeholder">
-            <h3>
-              {i18n.t('task.no-tasks-found')}
-              <div>
-                <button className={`click-here-${i18n.t('lang-float')}`} onClick={() => {
-                  console.log('HERE')
-                }}>I AM AN ACTION
-                </button>
-                I AM A PLACEHOLDER
-              </div>
-            </h3>
+          <div className={'me-empty-placeholder-wrapper'}>
+            <MeEmptyPlaceholder projectUrl={projectUrl} />
           </div>
         )}
 

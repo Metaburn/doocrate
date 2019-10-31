@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -24,7 +24,7 @@ import Button from "../button/button";
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
 
-export class TaskView extends PureComponent {
+export class TaskView extends Component {
   constructor(props) {
     super(props);
 
@@ -105,7 +105,7 @@ export class TaskView extends PureComponent {
     }
   }
 
-  // We only want this component to be shown if this is an existing task
+  // We only want this shouldComponentUpdatecomponent to be shown if this is an existing task
   // or if it's a new draft - that prevents a case where this component flashes
   // when a user deselects a task
   shouldComponentUpdate(nextProps) {

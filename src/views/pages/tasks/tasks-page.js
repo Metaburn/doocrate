@@ -15,11 +15,12 @@ import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
-import i18n from '../../../i18n.js';
+import i18n from 'src/i18n.js';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
+
 import './tasks-page.css';
 
 export class TasksPage extends Component {
@@ -35,6 +36,7 @@ export class TasksPage extends Component {
       newTask: null,
       isLoadedComments: false,
       isCurrentTaskValid: false,
+      searchTaskFocused: false,
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -110,6 +112,10 @@ export class TasksPage extends Component {
           isLoadedComments: false,
           selectedTaskId: null
         });
+      } else if (selectedTaskId === "search-task") {
+        this.setState({
+          searchTaskFocused: true
+        })
       } else {
         // Load selected task
         if(!this.state.selectedTaskId) {
@@ -506,6 +512,7 @@ export class TasksPage extends Component {
           {selectedTaskId == null &&
             <div className="task-view-bottom-loader">&nbsp;</div>}
         </div>
+        <div className={`search-overlay ${this.state.searchTaskFocused ? 'show-me': ''}`} onClick={() => {this.resetSelectedTask() {)}}/>
       </div>
     );
   }
