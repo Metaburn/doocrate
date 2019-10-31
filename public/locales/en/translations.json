@@ -66,6 +66,19 @@
     "only-assigned": "Only Assigned",
     "show-all": "All of my tasks"
   },
+  "me-empty": {
+    "title": "Looking what to do next?",
+    "start-tour": "Start the tour",
+    "start-tour-desc": "Learn how to do things",
+    "create-task":"Create yourself a task",
+    "create-task-desc":"Feeling creative? create a task",
+    "search-free-task": "Search yourself a free task",
+    "search-free-task-desc": "See what tasks exists",
+    "search-humans": "Search for humans",
+    "search-humans-desc": "Or human's tasks",
+    "filter-by-tags": "Filter tasks by tags",
+    "filter-by-tags-desc": "Popular or casual tags"
+  },
   "task": {
     "add-task": "Add a new task",
     "yes": "❤️💪 Yes ❤️💪",
@@ -186,7 +199,9 @@
   },
   "about": {
     "faces": "Faces of the humans how made it happen",
-    "return": "Back to the system",
+    "return": "Back to Home",
+    "interactive-tour-question": "Do you have an interactive tour?",
+    "interactive-tour-answer": "Sure. click here",
     "q1": "How do I switch Language? - איך אני מחליף שפה",
     "a1": "<a href='?lng=he'>לחץ כאן - Click here</a>",
     "q2": "What is doocrate?",
@@ -206,7 +221,8 @@
     "q9": "I'm a developer. How can I help?",
     "a9": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
     "q10": "Who are you wonderful people who invest time in this?",
-    "a10": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed<a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>"
+    "a10": "<span>We are part of Metaburn collecitve - our goal is to create simply tools to manage co-creational communities. <br/>We've developed <a href='http://dreams.burnerot.com/'>The dreams platform</a> for burnerot and other international burns<br/>",
+    "you": "You. Yes Yes. You and your amazing co-creational community"
   },
   "footer": {
     "about": "This system was written as",

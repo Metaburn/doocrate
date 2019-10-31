@@ -1,10 +1,11 @@
-import React, { Component }  from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import i18n from 'src/i18n';
 
 import './taskViewMiniList.css';
 import TaskViewMini from "../taskViewMini/taskViewMini";
+import MeEmptyPlaceholder from "../meEmptyPlaceholder/meEmptyPlaceholder";
 
 class TaskViewMiniList extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class TaskViewMiniList extends Component {
   }
 
   render() {
-    const {tasks, selectedTaskId, onSelectTask, onLabelClick, projectUrl} = this.props;
+    const {tasks, selectedTaskId, onSelectTask, onLabelClick,
+      projectUrl, setTour} = this.props;
     const {pageSize, pageNumber} = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
 
@@ -51,17 +53,10 @@ class TaskViewMiniList extends Component {
     return (
       <div className="task-view-mini-list">
         {(!isAnyTasks &&
-          <div className="no-tasks-placeholder">
-            <h3>
-              {i18n.t('task.no-tasks-found')}
-              <div>
-                <button className={`click-here-${i18n.t('lang-float')}`} onClick={() => {
-                  console.log('HERE')
-                }}>I AM AN ACTION
-                </button>
-                I AM A PLACEHOLDER
-              </div>
-            </h3>
+          <div className={'me-empty-placeholder-wrapper'}>
+            <MeEmptyPlaceholder
+              projectUrl={projectUrl}
+              setTour={setTour}/>
           </div>
         )}
 
@@ -71,7 +66,6 @@ class TaskViewMiniList extends Component {
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
             useWindow={false}
-            z
             loader={<div className="loader">{i18n.t('general.loading')}</div>}>
             {taskItems}
           </InfiniteScroll>
@@ -84,6 +78,7 @@ TaskViewMiniList.propTypes = {
   tasks: PropTypes.array.isRequired,
   onSelectTask: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
+  setTour: PropTypes.func.isRequired,
   selectedTaskId: PropTypes.number,
   projectUrl: PropTypes.string.isRequired,
 };

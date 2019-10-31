@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Route, withRouter, Switch } from 'react-router-dom';
-
 import { I18n } from 'react-i18next';
 import { authActions, getAuth } from 'src/auth';
+import { userInterfaceActions, getTour } from 'src/user-interface';
 import { getProject } from 'src/projects';
 import Header from '../components/header';
 import BottomNavBar from '../components/bottom-nav-bar';
@@ -16,7 +16,6 @@ import MagicLink from '../pages/magic-link';
 import TasksPage from '../pages/tasks';
 import MePage from '../pages/me';
 import CreateProjectPage from '../pages/set-project';
-
 import NotFound from '../pages/not-found/';
 import AboutPage from '../pages/about';
 import ReportsPage from '../pages/reports';
@@ -25,7 +24,7 @@ import AdminDashboard from '../pages/admin-dashboard';
 import { createSelector } from 'reselect';
 import 'url-search-params-polyfill';
 
-const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile}) => (
+const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdateProfile, tour, setTour}) => (
   <I18n ns='translations'>
     {
       (t, { i18n }) => (
@@ -35,6 +34,8 @@ const App = ({auth, selectedProject, signOut, createProjectRedirect, isShowUpdat
         signOut={signOut}
         createProject={createProjectRedirect}
         isShowUpdateProfile={isShowUpdateProfile}
+        tour={tour}
+        setTour={setTour}
         selectedProject={selectedProject}
       />
 
@@ -81,9 +82,11 @@ App.propTypes = {
 const mapStateToProps = createSelector(
   getAuth,
   getProject,
-  (auth, selectedProject) => ({
+  getTour,
+  (auth, selectedProject, tour) => ({
     auth,
-    selectedProject: selectedProject || {}
+    selectedProject: selectedProject || {},
+    tour: tour
   })
 );
 
@@ -91,6 +94,7 @@ const mapStateToProps = createSelector(
 const mapDispatchToProps = {
   signOut: authActions.signOut,
   isShowUpdateProfile: authActions.isShowUpdateProfile,
+  setTour: userInterfaceActions.setTour
 };
 
 export default withRouter(

@@ -10,6 +10,7 @@ export const nav = (auth, projectUrl) => [
   },
   {
     path: "/" + projectUrl + "/me",
+    dataTour: "four",
     icon: "person",
     show: auth && auth.authenticated
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import ToolTip from 'react-portal-tooltip';
-import Icon from '../icon';
+import Icon from '../../atoms/icon';
 import { setQueryParams, removeQueryParam} from 'src/utils/browser-utils.js';
 
 import { I18n } from 'react-i18next';

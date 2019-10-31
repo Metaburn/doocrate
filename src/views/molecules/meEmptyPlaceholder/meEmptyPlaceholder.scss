@@ -1,0 +1,14 @@
+@import 'views/styles/shared';
+
+.me-empty-placeholder {
+  .items-row {
+    display: flex;
+    font-size: 18px;
+    align-items: center;
+    padding-top: 1em;
+
+    .material-icons {
+      font-size: 40px;
+    }
+  }
+}

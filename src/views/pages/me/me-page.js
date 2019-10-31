@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import { notificationActions } from "../../../notification";
 import {authActions} from "src/auth";
 import { projectActions } from "src/projects";
+import { userInterfaceActions } from "src/user-interface";
 import { updateUserData } from "src/auth/auth";
 import MyPortfolio from "../../molecules/myPortfolio/myPortfolio";
 import {buildFilter, taskFilters, tasksActions} from "src/tasks";
@@ -61,6 +62,7 @@ export class MePage extends Component {
                 onSelectTask={this.onSelectTask}
                 onLabelClick={this.props.onLabelClick}
                 projectUrl={projectUrl}
+                setTour={(isShow, step) => {this.setTourAndGo(isShow, step)}}
               />
 
 
@@ -75,6 +77,23 @@ export class MePage extends Component {
       </I18n>
     )
   }
+
+  setTourAndGo = (isShow, step ) => {
+    const { selectedProject, auth } = this.props;
+
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+    this.props.history.push(`/${projectUrl}/task/1`);
+
+    // Some bugs doesn't allow us to start the tour when navigating to another page
+    // This prevent it
+
+    setTimeout(() => {
+      this.props.setTour(isShow, step);
+    }, 1000);
+    this.props.history.push(`/${this.props.projectUrl}/task/1`);
+
+  };
 
   updateUserData = (i18n, newData) => {
     updateUserData(newData).then( () => {
@@ -130,7 +149,8 @@ const mapDispatchToProps = Object.assign(
   notificationActions,
   authActions,
   tasksActions,
-  projectActions
+  projectActions,
+  {setTour: userInterfaceActions.setTour}
 );
 
 export default connect(

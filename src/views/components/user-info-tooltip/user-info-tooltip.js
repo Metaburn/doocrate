@@ -7,7 +7,7 @@ import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import EditorPreview from "../../atoms/editor-preview/editor-preview";
-import Icon from "../icon/icon";
+import Icon from "../../atoms/icon/icon";
 import i18n from 'src/i18n';
 import './user-info-tooltip.css';
 

@@ -4,24 +4,18 @@ import { ToastContainer } from 'react-toastify';
 import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
 import { NavLink } from 'react-router-dom';
-
-import 'react-toastify/dist/ReactToastify.min.css'
-
-import './header.css';
 import {updateUserData} from "../../../auth/auth";
 import getRandomImage from "../../../utils/unsplash";
 import {SetUserInfo} from "../set-user-info";
 import {getCookie} from "../../../utils/browser-utils";
 import SideMenu from "../side-menu/side-menu";
 import LanguageButtons from "../../atoms/language-buttons/language-buttons";
+import TourDoocrate from "../../atoms/tourDoocrate/tourDoocrate";
+
+import "react-toastify/dist/ReactToastify.min.css";
+import "./header.css";
 
 class Header extends Component {
-  static propTypes = {
-    auth: PropTypes.object.isRequired,
-    signOut: PropTypes.func.isRequired,
-    isShowUpdateProfile: PropTypes.func.isRequired,
-  };
-
   constructor() {
     super(...arguments);
 
@@ -32,7 +26,7 @@ class Header extends Component {
   }
 
   render() {
-    const { auth, isShowUpdateProfile, selectedProject } = this.props;
+    const { auth, isShowUpdateProfile, selectedProject, tour } = this.props;
     const { showSetUserInfoScreen } = this.state;
     return (
       <I18n ns='translations'>
@@ -49,6 +43,10 @@ class Header extends Component {
                     newestOnTop={true}
                     pauseOnHover
                   />
+
+                  <TourDoocrate
+                    tour={tour}
+                    onCloseTour={() => {this.props.setTour(false, 0)}}/>
 
                   <SetUserInfo
                     isOpen = { (showSetUserInfoScreen) ||
@@ -88,7 +86,6 @@ class Header extends Component {
     this.showSetUserInfo();
   }
 
-
   showSetUserInfo() {
     const { auth } = this.props;
     this.setState({showSetUserInfoScreen: (auth.id && !auth.isEmailConfigured)})
@@ -123,5 +120,13 @@ class Header extends Component {
   }
 
 }
+
+Header.props = {
+  auth: PropTypes.object.isRequired,
+  signOut: PropTypes.func.isRequired,
+  isShowUpdateProfile: PropTypes.func.isRequired,
+  setTour: PropTypes.func.isRequired,
+  tour: PropTypes.object.isRequired,
+};
 
 export default Header;

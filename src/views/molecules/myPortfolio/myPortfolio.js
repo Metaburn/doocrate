@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import Button from "../../components/button/button";
-import Icon from "../../components/icon/icon";
+import Icon from "../../atoms/icon/icon";
 import Img from 'react-image';
 import i18n from "src/i18n";
 import RichTextEditor from "../../atoms/richTextEditor";

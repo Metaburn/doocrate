@@ -65,6 +65,19 @@
     "only-assigned": "משימות שלקחת אחריות עליהן בלבד",
     "show-all": "כל המשימות שלי"
   },
+  "me-empty": {
+    "title": "מחפש.ת מה לעשות?",
+    "start-tour": "התחילי את הסיור",
+    "start-tour-desc": "ותלמדי איך לעשות דברים בקלות",
+    "create-task":"צרי לעצמך משימה",
+    "create-task-desc":"מרגישה השראה? צרי משימה",
+    "search-free-task": "חפש לעצמך משימה פנויה",
+    "search-free-task-desc": "בערימת המשימות",
+    "search-humans": "חפש בני אדם",
+    "search-humans-desc": "או משימות שקשורות לבני האדם הללו",
+    "filter-by-tags": "פלטר משימות לפי תגיות",
+    "filter-by-tags-desc": "פופולריות - או תגיות יומיומיות"
+  },
   "task": {
     "add-task": "הוסף משימה",
     "yes": "❤️💪 הו כן ❤️💪",
@@ -184,8 +197,10 @@
     "try-again": "אם זה לא עובד. לחץ כאן לנסות שוב"
   },
   "about": {
-    "faces": "פרצופים של האנשים שגרמו לזה לקרות",
-    "return": "חזור למערכת",
+    "faces": "האנשים שגרמו לזה לקרות",
+    "return": "חזרי הבייתה",
+    "interactive-tour-question": "יש לכם סיור אינטראקיבי?",
+    "interactive-tour-answer": "בטח. לחץ כאן",
     "q1": "איך אני מחליף שפה - How do I switch Language?",
     "a1": "<a href='?lng=en'>לחץ כאן - Click here</a>",
     "q2": "מה זה דואוקרט?",
@@ -205,7 +220,8 @@
     "q9": "אני מפתח איך אני יכול/ה לעזור?",
     "a9": "<span>מוזמן להצטרף אלינו לפיתוח - הנה המשימות -<a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>הטרלו שלנו</a><br/>והנה הקוד<a href='https://github.com/metaburn/doocrate'/><br/>אם אתה מחפש איך לתרום - מוזמן לפנות לגל<br/>galbra@gmail.com</span>",
     "q10": "מי אתם אנשים מופלאים שמשקיעים את הזמן שלהם בזה?",
-    "a10": "<span>אנחנו חלק מקולקטיב בשם מטהברן ששם לו למטרה לייצר כלים פשוטים לניהול קהילות יצירה משותפת<br/>פיתחנו את <a href='http://dreams.burnerot.com/'>מערכת החלומות</a> עבור ברנרות ועבור ברנים אחרים<br/>"
+    "a10": "<span>אנחנו חלק מקולקטיב בשם מטהברן ששם לו למטרה לייצר כלים פשוטים לניהול קהילות יצירה משותפת<br/>פיתחנו את <a href='http://dreams.burnerot.com/'>מערכת החלומות</a> עבור ברנרות ועבור ברנים אחרים<br/>",
+    "you": "את.ה כן.כן אתה והקהילה המדהימה שאתה חלק ממנה"
   },
   "footer": {
     "about": "המערכת נכתבה",

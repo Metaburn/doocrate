@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import './task-item-row.css';
 import Img from 'react-image';
 import ReactTooltip from 'react-tooltip'
-import Icon from '../icon';
+import Icon from '../../atoms/icon';
 import { connect } from 'react-redux';
 import { I18n } from 'react-i18next';
 

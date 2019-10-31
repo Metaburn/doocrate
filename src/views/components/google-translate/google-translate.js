@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import './google-translate.css';
 import PropTypes from "prop-types";
 import Button from "../button/button";
-import Icon from "../icon/icon";
+import Icon from "../../atoms/icon/icon";
 
 // Calls google translate when a user clicks on english
 // If shouldGoogleTranslateToEnglish is set then it auto translate to english

@@ -15,11 +15,12 @@ import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
-import i18n from '../../../i18n.js';
+import i18n from 'src/i18n.js';
 import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
+
 import './tasks-page.css';
 
 export class TasksPage extends Component {
@@ -545,7 +546,9 @@ const mapStateToProps = (state) => {
     selectedFilters: state.tasks.selectedFilters,
     setFilters: tasksActions.setFilters,
     setFilteredTasks: tasksActions.setFilteredTasks,
-    buildFilter: buildFilter
+    buildFilter: buildFilter,
+    setTour: userInterfaceActions.setTour,
+    tour: state.userInterface.tour
   }
 };
 

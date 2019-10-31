@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import TaskViewMiniList from "../taskViewMiniList/taskViewMiniList";
@@ -20,7 +20,7 @@ class MyTasks extends Component {
   render() {
     //TODO - Performance wise - This should probably be in the reducer and not in render
     // Includes task I've created and assigned
-    const { auth, tasks, buildFilter, taskFilters, projectUrl } = this.props;
+    const { auth, tasks, buildFilter, taskFilters, projectUrl, setTour } = this.props;
     const myTasksFilter = buildFilter(auth, 'user', auth.id);
     const myTasks = taskFilters[myTasksFilter.type](tasks, myTasksFilter);
 
@@ -49,11 +49,15 @@ class MyTasks extends Component {
     return (
       <div className={'my-tasks'}>
 
-        <button className={classShowAll} onClick={this.showAll}>{i18n.t('my-space.show-all')}</button>
-        <button className={classOnlyAssignee} onClick={this.onlyShowAssigned}>{i18n.t('my-space.only-assigned')}</button>
-        <button className={classOnlyCreated} onClick={this.onlyShowCreated}>{i18n.t('my-space.only-created')}</button>
+        {tasksToShow.size > 0 &&
+        <Fragment>
+          <button className={classShowAll} onClick={this.showAll}>{i18n.t('my-space.show-all')}</button>
+          <button className={classOnlyAssignee} onClick={this.onlyShowAssigned}>{i18n.t('my-space.only-assigned')}</button>
+          <button className={classOnlyCreated} onClick={this.onlyShowCreated}>{i18n.t('my-space.only-created')}</button>
+        </Fragment>
+        }
 
-        {<h2 className={'tasks-counter'}>{i18n.t('task.showing-x-tasks',{count: tasksToShow.size})}</h2>}
+        {tasksToShow.size > 0 && <h2 className={'tasks-counter'}>{i18n.t('task.showing-x-tasks',{count: tasksToShow.size})}</h2>}
 
         <TaskViewMiniList
           onSelectTask={this.props.onSelectTask}
@@ -61,6 +65,7 @@ class MyTasks extends Component {
           tasks={tasksToShow}
           selectedTaskId={1000}
           projectUrl={projectUrl}
+          setTour={setTour}
           /*
           TODO - This should be set in the store (Maybe in the ui store or tasks store)
           selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}*/
@@ -99,7 +104,8 @@ MyTasks.propTypes = {
   buildFilter: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
   onSelectTask: PropTypes.func.isRequired,
-  projectUrl: PropTypes.string.isRequired
+  projectUrl: PropTypes.string.isRequired,
+  setTour: PropTypes.func.isRequired
 };
 
 export default MyTasks
