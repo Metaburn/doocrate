@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import 'react-tagsinput/react-tagsinput.css';
-
-import './taskViewMini.css';
 import classNames from "classnames";
 import UserInfoAvatar from "src/views/atoms/userInfoAvatar";
 import LabelsList from "../labelsList/labelsList";
+import i18n from 'src/i18n';
+
 import userCircleSolid from "./user-circle-solid.svg";
+import 'react-tagsinput/react-tagsinput.css';
+import './taskViewMini.css';
 
 class TaskViewMini extends Component {
 
@@ -46,7 +47,7 @@ class TaskViewMini extends Component {
   }
 
   render() {
-    const {task,i18n} = this.props;
+    const {task} = this.props;
 
     if (!task) {
       return (
@@ -78,7 +79,7 @@ class TaskViewMini extends Component {
 
         { this.renderAssignee() }
 
-        <div className={`tags-container lang-${this.props.i18n.language}`}>
+        <div className={`tags-container lang-${i18n.language}`}>
           {this.renderLabels(labelAsArray, false, '0')}
         </div>
 
@@ -95,23 +96,26 @@ class TaskViewMini extends Component {
   }
 
   renderAssignee = () => {
-    const {assignee} = this.props.task;
+    const {task, projectUrl} = this.props;
+    const {assignee} = task;
+
     if(!assignee) {
       return (
-        <div className={`avatar-container lang-${this.props.i18n.language}`}>
+        <div className={`avatar-container lang-${i18n.language}`}>
           <img src={userCircleSolid} alt={'Assignee'}/>
-          <span>{this.props.i18n.t('task.no-assignee')}</span>
+          <span>{i18n.t('task.no-assignee')}</span>
         </div>
       )
     }
 
     return(
-      <div className={`avatar-container lang-${this.props.i18n.language}`}>
+      <div className={`avatar-container lang-${i18n.language}`}>
         <UserInfoAvatar
           uniqueId={'task-header-assignee'}
           photoURL={assignee.photoURL}
           userId={assignee.id}
-          alt={assignee.name}/>
+          alt={assignee.name}
+          projectUrl={projectUrl}/>
         <span>{assignee.name}</span>
       </div>
     );
@@ -124,7 +128,7 @@ TaskViewMini.propTypes = {
   onLabelClick: PropTypes.func.isRequired,
   isActive: PropTypes.bool.isRequired,
   task: PropTypes.object.isRequired,
-  i18n: PropTypes.object.isRequired
+  projectUrl: PropTypes.string.isRequired,
 };
 
 export default TaskViewMini

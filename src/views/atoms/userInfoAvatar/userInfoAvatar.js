@@ -49,7 +49,7 @@ class UserInfoAvatar extends Component {
   };
 
   render() {
-    const { userId, photoURL, alt } = this.props;
+    const { userId, photoURL, alt, projectUrl } = this.props;
     const { isVisible, user } = this.state;
     const uniqueId = this.props.uniqueId || '';
 
@@ -67,7 +67,8 @@ class UserInfoAvatar extends Component {
                 isVisible={isVisible}
                 handleClose={this.handleClose}
                 uniqueId={uniqueId}
-                userId={userId}/>
+                userId={userId}
+                projectUrl={projectUrl}/>
             </span>
           )}
       </I18n>
@@ -81,6 +82,7 @@ UserInfoAvatar.propTypes = {
   photoURL: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
+  projectUrl: PropTypes.string.isRequired,
 };
 
 //=====================================

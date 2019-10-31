@@ -54,6 +54,7 @@ export class TasksPage extends Component {
 
   componentDidMount() {
     this.updateFilter();
+
   }
 
   // Update the filter in the store from the current url.
@@ -85,11 +86,6 @@ export class TasksPage extends Component {
 
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
-
-    // TODO filteredTask
-    // this.setState({
-    //   tasks: nextProps.tasks
-    // });
 
     const nextFilters = this.getFilterParams(nextProps);
     const { selectedFilters } = this.props;
@@ -471,12 +467,6 @@ export class TasksPage extends Component {
   render() {
     const { selectedTaskId } = this.state;
     let { filteredTasks } = this.props;
-    // On initial load if no filtered apply - save memory by using tasks
-    // Probably this is changed fastly - need to test this
-    // Otherwise better move this out of render
-    if (filteredTasks == null) {
-      filteredTasks = this.props.tasks;
-    }
 
     const isLoading = (this.props.tasks.size <= 0);
     const projectUrl = this.props.match.params.projectUrl;

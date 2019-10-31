@@ -2,19 +2,22 @@ import React, { Component }  from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import CommentItem from '../comment-item/comment-item';
+import i18n from 'src/i18n';
+
 import './comment-list.css';
-import { I18n } from 'react-i18next';
 
 class CommentList extends Component {
   static propTypes = {
     comments: PropTypes.instanceOf(List),
     task: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    projectUrl: PropTypes.string.isRequired
   };
 
   render() {
-    if(!this.props.comments) { return};
-    let commentItems = this.props.comments.map((comment, index) => {
+    const { projectUrl, auth, comments} = this.props;
+    if(!comments) { return};
+    let commentItems = comments.map((comment, index) => {
       return (
         <CommentItem
           key={index}
@@ -22,22 +25,18 @@ class CommentList extends Component {
           comment={comment}
           updateComment={this.props.updateComment}
           removeComment={this.props.removeComment}
-          auth={this.props.auth}
+          auth={auth}
+          projectUrl={projectUrl}
         />
       )
     });
 
     return (
       <div className='comment-list'>
-        <I18n ns='translations'>
-          {
-            (t, { i18n }) => (
-              <div>
-                <div className={'comment-title'}>{t('comments.title')}</div>
-                {commentItems}
-              </div>
-            )}
-        </I18n>
+        <div>
+          <div className={'comment-title'}>{i18n.t('comments.title')}</div>
+          {commentItems}
+        </div>
       </div>
     );
   };

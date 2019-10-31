@@ -556,7 +556,7 @@ export class TaskView extends PureComponent {
           saveTask={this.handleSave}
           markAsDoneUndone={this.handleMarkAsDoneUndone}
           auth={auth}
-          projectUrl={selectedProject}
+          projectUrl={selectedProject.url}
           closeTaskView={this.props.closeTaskView}
         />
         <div className="task-view">
@@ -607,7 +607,7 @@ export class TaskView extends PureComponent {
               <div className="is-critical">
                 {this.renderCheckbox(task, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
               </div>}
-            <TaskCreator creator={task ? task.creator: null}/>
+            <TaskCreator creator={task ? task.creator: null} projectUrl={selectedProject.url}/>
           </form>
         </div>
 
@@ -616,7 +616,8 @@ export class TaskView extends PureComponent {
           comments={this.props.comments}
           auth={this.props.auth}
           updateComment={this.props.updateComment}
-          removeComment={this.props.removeComment}/> }
+          removeComment={this.props.removeComment}
+          projectUrl={selectedProject.url}/> }
 
         { !isDraft && this.renderAddComment() }
 

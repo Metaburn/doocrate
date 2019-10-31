@@ -12,7 +12,7 @@ export class TaskViewHeader extends Component {
   render() {
     const { task, isDraft, showDeleteButton, showMarkAsDoneButton,
       showUnassignButton, showButtonAsFollow, showSaveButton,
-      closeTaskView,assignTask, unassignTask, saveTask } = this.props;
+      closeTaskView,assignTask, unassignTask, saveTask, projectUrl } = this.props;
     const assignee = task? task.assignee : {};
 
     return(
@@ -35,7 +35,8 @@ export class TaskViewHeader extends Component {
                 uniqueId={'task-header-assignee'}
                 photoURL={assignee.photoURL}
                 userId={assignee.id}
-                alt={assignee.name}/>
+                alt={assignee.name}
+                projectUrl={projectUrl} />
               <span>{assignee.name}</span>
             </div>}
 
@@ -124,8 +125,8 @@ TaskViewHeader.propTypes = {
   showButtonAsFollow: PropTypes.bool.isRequired,
   showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
-  selectedProject: PropTypes.object.isRequired,
   saveTask: PropTypes.func.isRequired,
+  projectUrl: PropTypes.string.isRequired,
   markAsDoneUndone: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   closeTaskView: PropTypes.func.isRequired,
