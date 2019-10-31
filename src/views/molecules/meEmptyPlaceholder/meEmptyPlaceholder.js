@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from "react";
 import PropTypes from "prop-types";
-import Icon from "../../components/icon/icon";
+import Icon from "../../atoms/icon/icon";
 import {NavLink} from "react-router-dom";
 import i18n from "src/i18n";
 

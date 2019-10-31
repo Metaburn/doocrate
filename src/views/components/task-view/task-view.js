@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import { getAuth } from 'src/auth';
 import {debounce} from 'lodash';
 import {includes} from "lodash/collection";
-import Icon from '../icon';
+import Icon from '../../atoms/icon';
 import Textarea from 'react-textarea-autosize';
 import { Textbox } from 'react-inputs-validation';
 import TagsInput from 'react-tagsinput';

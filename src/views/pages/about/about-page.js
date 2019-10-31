@@ -4,7 +4,6 @@ import { I18n } from 'react-i18next';
 import AboutCarousel from 'src/views/components/about-carousel';
 import {connect} from "react-redux";
 import { userInterfaceActions } from "src/user-interface";
-import {createSelector} from "reselect";
 
 import './about-page.css';
 import MeEmptyPlaceholder from "../../molecules/meEmptyPlaceholder/meEmptyPlaceholder";

@@ -7,7 +7,7 @@ import 'moment/locale/he';
 import 'moment-timezone';
 import Linkify from 'react-linkify';
 import {I18n} from 'react-i18next';
-import Icon from "../icon";
+import Icon from "../../atoms/icon";
 import ToolTip from "react-portal-tooltip";
 import Button from "../button";
 import Textarea from "react-textarea-autosize";

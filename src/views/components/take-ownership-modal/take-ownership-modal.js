@@ -5,7 +5,7 @@ import './take-ownership-modal.css';
 
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
-import Icon from "../icon/icon";
+import Icon from "../../atoms/icon/icon";
 
 export class TakeOwnershipModal extends Component {
   constructor() {

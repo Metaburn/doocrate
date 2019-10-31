@@ -6,7 +6,7 @@ import './top-nav.css';
 import Button from "../../components/button/button";
 import SearchBar from "../search-bar/search-bar";
 import SelectedFiltersLabels from "../selected-filters-labels/selected-filters-labels";
-import Icon from "../../components/icon/icon";
+import Icon from "../../atoms/icon/icon";
 
 class TopNav extends Component {
 

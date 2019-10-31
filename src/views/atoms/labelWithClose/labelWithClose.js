@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from "src/views/components/icon";
+import Icon from "src/views/atoms/icon";
 import { I18n } from 'react-i18next';
 
 import './labelWithClose.css';

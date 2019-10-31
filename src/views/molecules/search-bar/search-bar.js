@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Icon from '../../components/icon';
+import Icon from '../../atoms/icon';
 import FilterIcon from 'src/views/atoms/filter-icon';
 import i18n from '../../../i18n';
 import './search-bar.css';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Switch, Redirect } from 'react-router-dom';
 import ReactTooltip from 'react-tooltip';
 import Button from '../button';
-import Icon from '../icon';
+import Icon from '../../atoms/icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import Tour from 'reactour';
+import Emoji from "../emoji/emoji";
 
 import './tourDoocrate.css';
 
@@ -21,7 +22,7 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              This is how you create a new task 🐳🎋
+              This is how you create a new task <Emoji symbol="🐳"/><Emoji symbol="🎋"/>
             </p>
           </div>
         ),
@@ -31,7 +32,7 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              This is where you search for tasks or humans 🧞‍🧜‍🧚‍🧙‍
+              This is where you search for tasks or humans <span role={"img"}><Emoji symbol="🧞‍🧜‍🧚‍🧙"/>‍</span>
             </p>
           </div>
         ),
@@ -62,7 +63,7 @@ class TourDoocrate extends Component {
         content: () => (
           <div>
             <p>
-              That's it! have fun! 🙌👩🏼‍🎤 👨🏼‍🎤
+              That's it! have fun! <Emoji symbol="🙌👩🏼‍🎤 👨🏼‍🎤"/>
             </p>
           </div>
         ),

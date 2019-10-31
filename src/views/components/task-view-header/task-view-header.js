@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
-import Icon from '../icon';
+import Icon from '../../atoms/icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";

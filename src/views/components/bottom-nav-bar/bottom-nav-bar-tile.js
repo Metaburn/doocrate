@@ -1,6 +1,6 @@
 import React, {Fragment} from 'react';
 import { Link } from 'react-router-dom';
-import Icon from "../icon"
+import Icon from "../../atoms/icon"
 
 export default ({icon, path, active, dataTour}) => {
   const activeClass = active? 'active': '';
