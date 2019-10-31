@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {withRouter} from "react-router-dom"
-import i18n from "src/i18n";
 
 import BottomNavTile from "./bottom-nav-bar-tile"
 import {nav} from "./_nav"
