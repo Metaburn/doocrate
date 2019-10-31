@@ -33,6 +33,12 @@ export class AboutPage extends Component {
                 }/>
                 <br/><br/>
 
+                <h3>{t('about.q_docs')}</h3>
+                <div dangerouslySetInnerHTML={
+                  {__html: t('about.a_docs', {interpolation: {escapeValue: false}})}
+                }/>
+                <br/><br/>
+
                 <h3>{t('about.q2')}</h3>
                 <div dangerouslySetInnerHTML={
                   {__html: t('about.a2', {interpolation: {escapeValue: false}})}
