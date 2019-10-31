@@ -15,11 +15,14 @@ class TopNav extends Component {
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
-            <div className={'top-nav'}>
+            <div className={'top-nav'} data-tour={"two"}>
               <Button
                 className='button button-small add-task-button'
-                onClick={this.props.createTask}>
-                <Icon name={'add'} className={`add-task-icon add-task-icon-${t('lang-float')}`}/>
+                onClick={this.props.createTask}
+                dataTour={"one"}
+              >
+                <Icon name={'add'} className={`add-task-icon add-task-icon-${t('lang-float')}`}
+                      />
               </Button>
               <SearchBar
                 query={this.props.query}

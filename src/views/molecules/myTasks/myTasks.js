@@ -20,7 +20,7 @@ class MyTasks extends Component {
   render() {
     //TODO - Performance wise - This should probably be in the reducer and not in render
     // Includes task I've created and assigned
-    const { auth, tasks, buildFilter, taskFilters, projectUrl } = this.props;
+    const { auth, tasks, buildFilter, taskFilters, projectUrl, setTour } = this.props;
     const myTasksFilter = buildFilter(auth, 'user', auth.id);
     const myTasks = taskFilters[myTasksFilter.type](tasks, myTasksFilter);
 
@@ -65,6 +65,7 @@ class MyTasks extends Component {
           tasks={tasksToShow}
           selectedTaskId={1000}
           projectUrl={projectUrl}
+          setTour={setTour}
           /*
           TODO - This should be set in the store (Maybe in the ui store or tasks store)
           selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}*/
@@ -103,7 +104,8 @@ MyTasks.propTypes = {
   buildFilter: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
   onSelectTask: PropTypes.func.isRequired,
-  projectUrl: PropTypes.string.isRequired
+  projectUrl: PropTypes.string.isRequired,
+  setTour: PropTypes.func.isRequired
 };
 
 export default MyTasks

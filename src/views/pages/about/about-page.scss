@@ -8,6 +8,10 @@
   border-radius: 16px;
   max-width: 700px;
 
+  .button-as-link {
+    text-decoration: underline;
+  }
+
   a {
     text-decoration: underline;
     color: $primary-color;
@@ -17,5 +21,12 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 480px){
+  .about-page {
+    padding: 2em 1em 2em 2em;
+    margin-bottom: 6em;
   }
 }

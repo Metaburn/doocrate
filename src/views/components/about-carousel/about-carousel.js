@@ -1,115 +1,89 @@
 import React from 'react';
 
-import {I18n} from 'react-i18next';
-import Img from 'react-image';
-import { Fade } from 'react-slideshow-image';
-
+import together from './together.png';
 import './about-carousel.css';
+import i18n from 'src/i18n';
 
 class AboutCarousel extends React.Component {
   render() {
-    const properties = {
-      autoplay: true,
-      duration: 3000,
-      transitionDuration: 1500,
-      infinite: true,
-      indicators: false,
-      arrows: false,
-    };
 
     let humans = [{
       name_he:'גל ברכה',
       name_en: 'Gal Bracha',
-      img:'https://placekitten.com/550/350?image=4'
     },{
       name_he:'מתן זוהר',
       name_en:'Matan Zohar',
-      img:'https://placekitten.com/550/350?image=8'
     },{
       name_he:'דניאל ברוקס',
       name_en:'Daniel Broks',
-      img:'https://placekitten.com/550/350?image=10'
     },{
       name_he:'אור גרנות',
       name_en:'Or Granot',
-      img:'https://placekitten.com/550/350?image=15'
     },{
       name_he:'רקפת בר סלע',
       name_en:'Rakefet Bar Sela',
-      img:'https://placekitten.com/550/350?image=11'
     },{
       name_he:'הילה היילו',
       name_en:'Hila Halo Lor',
-      img:'https://placekitten.com/550/350?image=2'
     },{
       name_he:'יערה מסיקה',
       name_en:'Yarra Mesika',
-      img:'https://placekitten.com/550/350?image=12'
     },{
       name_he:'הילה זני',
       name_en:'Hila Zeni',
-      img:'https://placekitten.com/550/350?image=13'
     },{
       name_he:'יונתן רוסאק',
       name_en:'Yonatan Rossak',
-      img:'https://placekitten.com/550/350?image=9'
     },{
       name_he:'רותם בונדר',
       name_en:'Rotem Bonder',
-      img:'https://placekitten.com/550/350?image=14'
     },{
       name_he:'טל לותן',
       name_en:'Tal Lotan',
-      img:'https://placekitten.com/550/350?image=3'
     },{
       name_he:'הילה ברזילי',
       name_en:'Hila Barzilai',
-      img:'https://placekitten.com/550/350?image=16'
     },{
-      name_he:'Nate',
+      name_he:'נייט',
       name_en:'Nate',
-      img:'https://placekitten.com/550/350?image=5'
     },{
       name_he:'אורי קדוש',
       name_en:'Ori Kadosh',
-      img:'https://placekitten.com/550/350?image=18'
     },{
       name_he:'ניר בניטה',
       name_en:'Nir-Benita',
-      img:'https://placekitten.com/550/350?image=8'
+    },
+    {
+      name_he:'אנטון נוסוביצקי',
+      name_en: 'Anton Nosovitsky',
     }
     ];
 
     const shuffle = (array) => array.sort(() => Math.random() - 0.5);
     humans = shuffle(humans);
+    humans = shuffle(humans);
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-        <div className='about-carousel'>
-            <div className='slide-container'>
-              <Fade {...properties}>
-                {
-                  humans.map(person => {
-                    return (
-                      <div key={person.name_en} className='each-fade'>
-                        <h3 className='person-name'>
-                          {person[`name_${t('lang')}`]}
-                          </h3>
-                        <div className='image-container'>
-                          <Img src={person.img}/>
-                        </div>
-                      </div>
-                    )
-                  })
-                }
-              </Fade>
-            </div>
-        </div>
-          )}
-      </I18n>
-    );
+    <div className='about-carousel'>
+      <img src={together} alt={'Team'}/>
+      <br/><br/>
+      {i18n.t('about.faces')}
+      <br/><br/>
+      {
+        humans.map(person => {
+          return (
+          <h3 key={person.name_en} className='person-name'>
+            {person[`name_${i18n.t('lang')}`]}&nbsp;
+            </h3>
+          )
+        })
+      }
+      <br/>
+      <h3 className={'person-name'}>
+        {i18n.t('about.you')}
+      </h3>
+    </div>
+    )
   }
 }
 

@@ -26,7 +26,8 @@ class SearchBar extends Component {
             value={this.props.query}
             onChange={(e) => {
               this.props.onQueryChange(e.target.value)
-            }}/>
+            }}
+          />
           <Icon className={'search-icon'} name={'search'}/>
         </div>
 

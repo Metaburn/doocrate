@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import i18n from 'src/i18n';
@@ -24,7 +24,8 @@ class TaskViewMiniList extends Component {
   }
 
   render() {
-    const {tasks, selectedTaskId, onSelectTask, onLabelClick, projectUrl} = this.props;
+    const {tasks, selectedTaskId, onSelectTask, onLabelClick,
+      projectUrl, setTour} = this.props;
     const {pageSize, pageNumber} = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
 
@@ -53,7 +54,9 @@ class TaskViewMiniList extends Component {
       <div className="task-view-mini-list">
         {(!isAnyTasks &&
           <div className={'me-empty-placeholder-wrapper'}>
-            <MeEmptyPlaceholder projectUrl={projectUrl} />
+            <MeEmptyPlaceholder
+              projectUrl={projectUrl}
+              setTour={setTour}/>
           </div>
         )}
 
@@ -63,7 +66,6 @@ class TaskViewMiniList extends Component {
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
             useWindow={false}
-            z
             loader={<div className="loader">{i18n.t('general.loading')}</div>}>
             {taskItems}
           </InfiniteScroll>
@@ -76,6 +78,7 @@ TaskViewMiniList.propTypes = {
   tasks: PropTypes.array.isRequired,
   onSelectTask: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
+  setTour: PropTypes.func.isRequired,
   selectedTaskId: PropTypes.number,
   projectUrl: PropTypes.string.isRequired,
 };

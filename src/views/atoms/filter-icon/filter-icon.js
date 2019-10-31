@@ -11,7 +11,8 @@ const FilterIcon = ({isActive, onClick}) => {
     <I18n ns='translations'>
       {
         (t, { i18n }) => (
-          <button className={`filter-icon-wrapper filter-icon-wrapper-${t('lang-float')}`} onClick={onClick}>
+          <button className={`filter-icon-wrapper filter-icon-wrapper-${t('lang-float')}`}
+                  onClick={onClick} data-tour="three">
             <span className={`filter-icon ${isActiveClass}`} tabIndex={0} />
             <span className={`filter-text ${isActiveClass}`}>{t('filter.filter')}</span>
           </button>

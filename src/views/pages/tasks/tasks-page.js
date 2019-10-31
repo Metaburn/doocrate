@@ -36,7 +36,6 @@ export class TasksPage extends Component {
       newTask: null,
       isLoadedComments: false,
       isCurrentTaskValid: false,
-      searchTaskFocused: false,
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
@@ -112,10 +111,6 @@ export class TasksPage extends Component {
           isLoadedComments: false,
           selectedTaskId: null
         });
-      } else if (selectedTaskId === "search-task") {
-        this.setState({
-          searchTaskFocused: true
-        })
       } else {
         // Load selected task
         if(!this.state.selectedTaskId) {
@@ -512,7 +507,6 @@ export class TasksPage extends Component {
           {selectedTaskId == null &&
             <div className="task-view-bottom-loader">&nbsp;</div>}
         </div>
-        <div className={`search-overlay ${this.state.searchTaskFocused ? 'show-me': ''}`} onClick={() => {this.resetSelectedTask() {)}}/>
       </div>
     );
   }
@@ -552,7 +546,9 @@ const mapStateToProps = (state) => {
     selectedFilters: state.tasks.selectedFilters,
     setFilters: tasksActions.setFilters,
     setFilteredTasks: tasksActions.setFilteredTasks,
-    buildFilter: buildFilter
+    buildFilter: buildFilter,
+    setTour: userInterfaceActions.setTour,
+    tour: state.userInterface.tour
   }
 };
 

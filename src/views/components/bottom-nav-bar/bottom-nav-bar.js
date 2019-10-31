@@ -39,7 +39,7 @@ class BottomNavBar extends Component {
 
     return (
       <div className={"bottom-nav"}>
-          {routes.map(r => (<BottomNavTile key={r.path} icon={r.icon} path={r.path} active={this.activeRoute(r.path, r.pathIncludes)}/>))}
+          {routes.map(r => (<BottomNavTile key={r.path} icon={r.icon} path={r.path} dataTour={r.dataTour} active={this.activeRoute(r.path, r.pathIncludes)}/>))}
       </div>
     )
   }
