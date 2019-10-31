@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
 import TaskViewMiniList from "../taskViewMiniList/taskViewMiniList";
+import i18n from "src/i18n";
 
 import 'react-tagsinput/react-tagsinput.css';
 import './myTasks.css';
@@ -19,7 +20,7 @@ class MyTasks extends Component {
   render() {
     //TODO - Performance wise - This should probably be in the reducer and not in render
     // Includes task I've created and assigned
-    const { auth, tasks, buildFilter, taskFilters, i18n } = this.props;
+    const { auth, tasks, buildFilter, taskFilters, projectUrl } = this.props;
     const myTasksFilter = buildFilter(auth, 'user', auth.id);
     const myTasks = taskFilters[myTasksFilter.type](tasks, myTasksFilter);
 
@@ -55,11 +56,11 @@ class MyTasks extends Component {
         {<h2 className={'tasks-counter'}>{i18n.t('task.showing-x-tasks',{count: tasksToShow.size})}</h2>}
 
         <TaskViewMiniList
-          i18n={this.props.i18n}
           onSelectTask={this.props.onSelectTask}
           onLabelClick={this.props.onLabelClick}
           tasks={tasksToShow}
           selectedTaskId={1000}
+          projectUrl={projectUrl}
           /*
           TODO - This should be set in the store (Maybe in the ui store or tasks store)
           selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}*/
@@ -92,14 +93,13 @@ class MyTasks extends Component {
 }
 
 MyTasks.propTypes = {
-  i18n: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
-  selectedProject: PropTypes.object.isRequired,
   taskFilters: PropTypes.object.isRequired,
   buildFilter: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
-  onSelectTask: PropTypes.func.isRequired
+  onSelectTask: PropTypes.func.isRequired,
+  projectUrl: PropTypes.string.isRequired
 };
 
 export default MyTasks

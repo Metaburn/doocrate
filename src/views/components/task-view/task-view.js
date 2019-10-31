@@ -19,9 +19,10 @@ import i18n from '../../../i18n';
 import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
 import TaskCreator from "../task-creator/task-creator";
+import Button from "../button/button";
+
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
-import Button from "../button/button";
 
 export class TaskView extends PureComponent {
   constructor(props) {
@@ -107,7 +108,7 @@ export class TaskView extends PureComponent {
   // We only want this component to be shown if this is an existing task
   // or if it's a new draft - that prevents a case where this component flashes
   // when a user deselects a task
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     return nextProps.selectedTask || nextProps.isDraft;
   }
 
@@ -328,7 +329,7 @@ export class TaskView extends PureComponent {
           type="checkbox"
           checked={this.state[fieldName]}
           value={ placeholder }
-          onChange={(e) => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
+          onChange={() => { this.setState({ [fieldName]: !this.state[fieldName]}) }}
           disabled={!isEditable}/>
         {placeholder}
       </label>
@@ -502,17 +503,17 @@ export class TaskView extends PureComponent {
   }
 
   render() {
-    let task = this.props.selectedTask;
+    const { selectedTask } = this.props;
+    if (!selectedTask) return null;
 
-    if (!task) return null;
-
-    const { auth, isAdmin, isDraft, selectedTask,
-      selectTask, followTask, unfollowTask,
-      unassignTask, removeTask, selectedProject } = this.props;
+    const { isAdmin, isDraft, selectTask, followTask, unfollowTask,
+      unassignTask, removeTask, selectedProject, auth } = this.props;
     const { description, defaultType, popularTags } = this.state;
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
 
-    const isUserCreator = task && task.creator && task.creator.id === auth.id;
-    const isUserAssignee = task && task.assignee && task.assignee.id === auth.id;
+    const isUserCreator = selectedTask && selectedTask.creator && selectedTask.creator.id === auth.id;
+    const isUserAssignee = selectedTask && selectedTask.assignee && selectedTask.assignee.id === auth.id;
     const canEditTask = isUserCreator || isUserAssignee || isAdmin;
     const canDeleteTask = isUserCreator || isAdmin;
     const showUnassignButton = isUserAssignee || isUserCreator || isAdmin;
@@ -527,14 +528,14 @@ export class TaskView extends PureComponent {
     // We allow deletion of task which created in the last 24 hours
     let isTaskCreatedInTheLastDay = false;
 
-    if (task && task.created) {
+    if (selectedTask && selectedTask.created) {
       const now = new Date();
 
-      isTaskCreatedInTheLastDay = (now - task.created) <= oneDay;
+      isTaskCreatedInTheLastDay = (now - selectedTask.created) <= oneDay;
     }
 
     const showDeleteButton = (!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft);
-    const showButtonAsFollow = task && !includes(task.listeners, auth.id);
+    const showButtonAsFollow = selectedTask && !includes(selectedTask.listeners, auth.id);
 
     return (
       <div className="task-view-container" dir={i18n.t('lang-dir')}>
@@ -556,7 +557,7 @@ export class TaskView extends PureComponent {
           saveTask={this.handleSave}
           markAsDoneUndone={this.handleMarkAsDoneUndone}
           auth={auth}
-          projectUrl={selectedProject.url}
+          projectUrl={projectUrl}
           closeTaskView={this.props.closeTaskView}
         />
         <div className="task-view">
@@ -564,22 +565,22 @@ export class TaskView extends PureComponent {
             <div className="form-input">
               {canEditTask ?
                 this.renderInput('title', i18n.t('task.name'), canEditTask, '0', true, true) :
-                <span>{task.title}</span>}
+                <span>{selectedTask.title}</span>}
             </div>
             <div className="form-input">
               {canEditTask ?
                 this.renderTextArea('description', canEditTask, '0', 'task.description') :
-                <span>{task.description}</span>}
+                <span>{selectedTask.description}</span>}
             </div>
             <div className="form-input">
               {canEditTask ?
                 this.renderTextArea('requirements', canEditTask, '0', 'task.requirements') :
-                <span>{task.requirements}</span>}
+                <span>{selectedTask.requirements}</span>}
             </div>
             <div className="form-input"><div className={`instruction instruction-${i18n.t('lang-float')}`}><span>{i18n.t('task.type')}</span></div>
               {canEditTask ?
                 this.renderSelect('type', i18n.t('general.select-default'), defaultType,'0') :
-                <span className={`task-type task-type-${i18n.t('lang-float')}`}>{(task.type) ? task.type.label : ''}<br/></span>}
+                <span className={`task-type task-type-${i18n.t('lang-float')}`}>{(selectedTask.type) ? selectedTask.type.label : ''}<br/></span>}
 
             </div>
 
@@ -601,23 +602,23 @@ export class TaskView extends PureComponent {
                 </div>
               </div>}
 
-            {canEditTask && this.state.extraFields && this.renderExtraFields(i18n.t, task, canEditTask)}
+            {canEditTask && this.state.extraFields && this.renderExtraFields(i18n.t, selectedTask, canEditTask)}
 
             {canEditTask &&
               <div className="is-critical">
-                {this.renderCheckbox(task, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
+                {this.renderCheckbox(selectedTask, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
               </div>}
-            <TaskCreator creator={task ? task.creator: null} projectUrl={selectedProject.url}/>
+            <TaskCreator creator={selectedTask ? selectedTask.creator: null} projectUrl={projectUrl}/>
           </form>
         </div>
 
         { !isDraft && <CommentList
-          task={task}
+          task={selectedTask}
           comments={this.props.comments}
           auth={this.props.auth}
           updateComment={this.props.updateComment}
           removeComment={this.props.removeComment}
-          projectUrl={selectedProject.url}/> }
+          projectUrl={projectUrl}/> }
 
         { !isDraft && this.renderAddComment() }
 
@@ -630,8 +631,8 @@ export class TaskView extends PureComponent {
         </div>
         }
 
-        { this.renderTakeOwnershipModal(task) }
-        { this.renderAssignmentModal(task)}
+        { this.renderTakeOwnershipModal(selectedTask) }
+        { this.renderAssignmentModal(selectedTask)}
       </div>
     );
   }

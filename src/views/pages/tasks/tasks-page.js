@@ -57,13 +57,6 @@ export class TasksPage extends Component {
 
   }
 
-  // Update the filter in the store from the current url.
-  // TODO This should probable moved to the store location listen to history.listen
-  updateFilter() {
-    const nextFilters = this.getFilterParams(this.props);
-    this.props.setFilters(nextFilters);
-  }
-
   componentWillMount() {
     let project_url = this.props.match.params.projectUrl;
     // Redirect to test project
@@ -140,6 +133,14 @@ export class TasksPage extends Component {
       this.setState({ isLoadedComments: false,
         selectedTaskId: null });
     }
+  }
+
+
+  // Update the filter in the store from the current url.
+  // TODO This should probable moved to the store location listen to history.listen
+  updateFilter() {
+    const nextFilters = this.getFilterParams(this.props);
+    this.props.setFilters(nextFilters);
   }
 
   setProjectCookie(projectUrl) {
@@ -353,7 +354,6 @@ export class TasksPage extends Component {
     }
 
     return {
-      i18n,
       selectedTask,
       removeTask: this.props.removeTask,
       updateTask: this.props.updateTask,
@@ -466,12 +466,12 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    let { filteredTasks } = this.props;
-
-    const isLoading = (this.props.tasks.size <= 0);
-    const projectUrl = this.props.match.params.projectUrl;
-
+    const { filteredTasks, match, tasks, setMenuOpen, selectedProject } = this.props;
     const selectedFilters = this.getSelectedFilters();
+
+    const isLoading = tasks.size <= 0;
+    const projectUrl = match.params.projectUrl;
+
     const isFiltersActive = selectedFilters.length > 0;
     const tasksCount = filteredTasks.size;
     const title = this.getSelectedFilterTitle();
@@ -482,8 +482,7 @@ export class TasksPage extends Component {
         <div className="top-nav-wrapper">
           <TopNav onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
-            query={this.state.query}
-            setMenuOpen={this.props.setMenuOpen}
+            setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
@@ -500,7 +499,7 @@ export class TasksPage extends Component {
               location={this.props.location}
               tasks={filteredTasks}
               selectedTaskId={selectedTaskId}
-              selectedProject={this.props.selectedProject}
+              selectedProject={selectedProject}
               projectUrl={projectUrl}/>
           </div>
 

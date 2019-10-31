@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
-
 import Button from "../../components/button/button";
 import Icon from "../../components/icon/icon";
 import Img from 'react-image';
-
+import i18n from "src/i18n";
 import RichTextEditor from "../../atoms/richTextEditor";
 
 import './myPortfolio.css';
@@ -24,7 +23,7 @@ class MyPortfolio extends Component {
   }
 
   render() {
-    const { auth, i18n } = this.props;
+    const { auth } = this.props;
 
     return (
       <div className='my-portfolio'>
@@ -65,8 +64,6 @@ class MyPortfolio extends Component {
   };
 
   renderBio() {
-    const { i18n } = this.props;
-
     if(!this.state.bio && !this.state.isEditing) {
       return (<span>
         {i18n.t('my-space.bio-empty')}
@@ -78,7 +75,6 @@ class MyPortfolio extends Component {
     }
 
     return(<RichTextEditor
-      i18n={i18n}
       data={this.state.bio}
       isEditing={this.state.isEditing}
       onChange={this.onEditorChange}
@@ -105,7 +101,6 @@ class MyPortfolio extends Component {
 MyPortfolio.propTypes = {
   auth: PropTypes.object.isRequired,
   showSuccess: PropTypes.func.isRequired,
-  i18n: PropTypes.object.isRequired,
   updateUserData: PropTypes.func.isRequired,
   isShowUpdateProfile: PropTypes.func.isRequired
 };
