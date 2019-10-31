@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import EditorPreview from "../editor-preview/editor-preview";
-import i18n from 'src/i18n';
+import i18n from "src/i18n";
 
 import './richTextEditor.css';
 

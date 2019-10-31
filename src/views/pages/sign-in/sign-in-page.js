@@ -80,7 +80,6 @@ class SignInPage extends Component {
   };
 
   render() {
-
     return (
       <I18n ns='translations'>
         {

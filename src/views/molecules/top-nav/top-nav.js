@@ -10,12 +10,6 @@ import Icon from "../../components/icon/icon";
 
 class TopNav extends Component {
 
-  constructor() {
-    super(...arguments);
-    this.state = {
-    };
-  }
-
   render() {
     return (
       <I18n ns='translations'>

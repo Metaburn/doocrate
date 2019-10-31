@@ -3,9 +3,10 @@ import TaskView from './task-view';
 import { slide as Menu } from 'react-burger-menu';
 import { isMobile, isTablet } from '../../../utils/browser-utils';
 import classnames from "classnames";
+import i18n from "src/i18n";
 
 const TaskSideView = ({
-  i18n, selectedTask, removeTask, updateTask,
+  selectedTask, removeTask, updateTask,
   assignTask, selectedProject, isAdmin, isGuide,
   followTask, unfollowTask, unassignTask, unloadComments,
   createComment, updateComment, removeComment,

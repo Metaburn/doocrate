@@ -30,14 +30,16 @@ export class MePage extends Component {
     if(!this.props.selectedProject) {
       this.props.selectProjectFromUrl();
     }
-    
+
     if(!this.props.tasks || this.props.tasks.size <= 0) {
       this.props.loadTasks(this.props.selectedProject.url, INCOMPLETE_TASKS);
     }
   }
 
   render() {
-    const auth = this.props.auth;
+    const { auth, selectedProject} = this.props;
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
 
     return (
       <I18n ns='translations'>
@@ -49,17 +51,16 @@ export class MePage extends Component {
                 showSuccess={this.props.showSuccess}
                 isShowUpdateProfile={this.props.isShowUpdateProfile}
                 updateUserData={(userData) => this.updateUserData(i18n, userData)}
-                i18n={i18n}/>
+                />
 
               <MyTasks
                 buildFilter={buildFilter}
                 taskFilters={taskFilters}
                 tasks={this.props.tasks}
-                selectedProject={this.props.selectedProject}
                 auth={this.props.auth}
                 onSelectTask={this.onSelectTask}
                 onLabelClick={this.props.onLabelClick}
-                i18n={i18n}
+                projectUrl={projectUrl}
               />
 
 

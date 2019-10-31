@@ -1,6 +1,7 @@
 import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
+import i18n from 'src/i18n';
 
 import './taskViewMiniList.css';
 import TaskViewMini from "../taskViewMini/taskViewMini";
@@ -22,7 +23,7 @@ class TaskViewMiniList extends Component {
   }
 
   render() {
-    const {tasks, selectedTaskId, onSelectTask, onLabelClick, i18n} = this.props;
+    const {tasks, selectedTaskId, onSelectTask, onLabelClick, projectUrl} = this.props;
     const {pageSize, pageNumber} = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
 
@@ -40,7 +41,7 @@ class TaskViewMiniList extends Component {
               onSelectTask={onSelectTask}
               onLabelClick={onLabelClick}
               isActive={isActive}
-              i18n={i18n}/>
+              projectUrl={projectUrl}/>
           );
         });
     }
@@ -80,11 +81,11 @@ class TaskViewMiniList extends Component {
 }
 
 TaskViewMiniList.propTypes = {
-  i18n: PropTypes.object.isRequired,
   tasks: PropTypes.array.isRequired,
   onSelectTask: PropTypes.func.isRequired,
   onLabelClick: PropTypes.func.isRequired,
   selectedTaskId: PropTypes.number,
+  projectUrl: PropTypes.string.isRequired,
 };
 
 export default TaskViewMiniList;
