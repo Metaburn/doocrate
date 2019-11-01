@@ -4,8 +4,8 @@ import classNames from "classnames";
 import UserInfoAvatar from "src/views/atoms/userInfoAvatar";
 import LabelsList from "../labelsList/labelsList";
 import i18n from 'src/i18n';
+import EmptyAvatar from "../../atoms/emptyAvatar/emptyAvatar";
 
-import userCircleSolid from "./user-circle-solid.svg";
 import 'react-tagsinput/react-tagsinput.css';
 import './taskViewMini.css';
 
@@ -101,10 +101,7 @@ class TaskViewMini extends Component {
 
     if(!assignee) {
       return (
-        <div className={`avatar-container lang-${i18n.language}`}>
-          <img src={userCircleSolid} alt={'Assignee'}/>
-          <span>{i18n.t('task.no-assignee')}</span>
-        </div>
+        <EmptyAvatar alt={"Assignee"} isShowText={true}/>
       )
     }
 
