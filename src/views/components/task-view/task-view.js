@@ -168,6 +168,11 @@ export class TaskView extends Component {
         extraFields: extraFields || {},
         validation: {}
       });
+
+      // If got a new task clear editing
+      if(nextSelectedTask && nextSelectedTask.id !== this.state.id) {
+        this.setState({isEditing: false});
+      }
   }
 
   getDefaultTaskTypes(props) {
