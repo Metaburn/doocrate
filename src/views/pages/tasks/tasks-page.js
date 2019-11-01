@@ -72,10 +72,6 @@ export class TasksPage extends Component {
     }
   }
 
-  componentDidMount() {
-    this.updateFilter();
-  }
-
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
 
@@ -83,8 +79,13 @@ export class TasksPage extends Component {
     const { selectedFilters } = this.props;
 
     // ES compare
-    if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
-      this.debouncedFilterTasksFromProps(nextProps);
+    // To prevent a race condition we want to make sure that only
+    // when there are no tasks - we don't update those filters
+    // This allows to have the user loads a page directly with filters
+    if(nextProps.tasks && nextProps.tasks.size > 0) {
+      if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+        this.debouncedFilterTasksFromProps(nextProps);
+      }
     }
 
     //if url has a task id - select it
@@ -137,8 +138,10 @@ export class TasksPage extends Component {
 
   // Update the filter in the store from the current url.
   // TODO This should probable moved to the store location listen to history.listen
-  updateFilter() {
-    const nextFilters = this.getFilterParams(this.props);
+  updateFilter(nextFilters) {
+    if(!nextFilters) {
+      nextFilters = this.getFilterParams(this.props);
+    }
     this.props.setFilters(nextFilters);
   }
 
@@ -170,7 +173,7 @@ export class TasksPage extends Component {
     filteredTasks = this.filterTaskFromLabel(nextFilters, filteredTasks);
     filteredTasks = this.filterTaskFromQuery(nextFilters, filteredTasks);
 
-    this.props.setFilters(nextFilters);
+    this.updateFilter(nextFilters);
     this.props.setFilteredTasks(filteredTasks);
   }
 
