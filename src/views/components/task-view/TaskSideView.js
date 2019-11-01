@@ -1,12 +1,12 @@
-import React from 'react';
-import TaskView from './task-view';
-import { slide as Menu } from 'react-burger-menu';
-import { isMobile, isTablet } from '../../../utils/browser-utils';
+import React from "react";
+import TaskView from "./task-view";
+import { slide as Menu } from "react-burger-menu";
+import { isMobile, isTablet } from "../../../utils/browser-utils";
 import classnames from "classnames";
 import i18n from "src/i18n";
 
 const TaskSideView = ({
-  selectedTask, removeTask, updateTask,
+  selectedTask, onDeleteTask, updateTask,
   assignTask, selectedProject, isAdmin, isGuide,
   followTask, unfollowTask, unassignTask, unloadComments,
   createComment, updateComment, removeComment,
@@ -32,7 +32,7 @@ const TaskSideView = ({
           width={ width }>
 
       <TaskView
-        removeTask={removeTask}
+        onDeleteTask={onDeleteTask}
         updateTask={updateTask}
         selectedTask={selectedTask}
         selectedProject={selectedProject}

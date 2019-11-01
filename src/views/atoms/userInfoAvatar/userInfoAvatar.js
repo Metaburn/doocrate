@@ -82,7 +82,7 @@ UserInfoAvatar.propTypes = {
   photoURL: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  projectUrl: PropTypes.string.isRequired,
+  projectUrl: PropTypes.string,
 };
 
 //=====================================

@@ -127,7 +127,7 @@ export function unassignTask(task) {
   };
 }
 
-export function removeTask(task) {
+export function deleteTask(task) {
   return dispatch => {
     taskList.remove(task.id)
       .catch(error => dispatch(removeTaskError(error)));

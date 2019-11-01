@@ -60,24 +60,6 @@ export class TaskView extends Component {
     this.debouncedHandleSubmit = debounce(this.handleSubmit, 300);
   }
 
-  static propTypes = {
-    updateTask: PropTypes.func.isRequired,
-    removeTask: PropTypes.func.isRequired,
-    assignTask: PropTypes.func.isRequired,
-    followTask: PropTypes.func.isRequired,
-    unfollowTask: PropTypes.func.isRequired,
-    unassignTask: PropTypes.func.isRequired,
-    selectedTask: PropTypes.object,
-    selectedProject: PropTypes.object,
-    isAdmin: PropTypes.bool.isRequired,
-    isGuide: PropTypes.bool.isRequired,
-    unloadComments: PropTypes.func.isRequired,
-    isValidCallback: PropTypes.func.isRequired,
-    isDraft: PropTypes.bool.isRequired,
-    submitNewTask: PropTypes.func.isRequired,
-    closeTaskView: PropTypes.func.isRequired
-  };
-
   // TODO: Move to utils or use Lodash instead
   static arrayToObject(array) {
     let result = {};
@@ -521,9 +503,14 @@ export class TaskView extends Component {
     return selectedTask && selectedTask.creator && selectedTask.creator.id === auth.id;
   };
 
+  doesTaskHasAssignee = () => {
+    const { selectedTask } = this.props;
+    return selectedTask && selectedTask.assignee;
+  };
+
   isUserAssignee = () => {
     const { auth, selectedTask } = this.props;
-    return selectedTask && selectedTask.assignee && selectedTask.assignee.id === auth.id;
+    return this.doesTaskHasAssignee() && selectedTask.assignee.id === auth.id;
   };
 
   onEditTask = () => {
@@ -532,7 +519,7 @@ export class TaskView extends Component {
 
   getTaskViewHeaderProps = () => {
     const { selectedTask, isAdmin ,isDraft, selectTask, followTask,
-      unfollowTask,  unassignTask, removeTask, selectedProject, auth } = this.props;
+      unfollowTask,  unassignTask, onDeleteTask, selectedProject, auth } = this.props;
     const { isEditing, description } = this.state;
 
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
@@ -540,15 +527,16 @@ export class TaskView extends Component {
 
     const isUserCreator = this.isUserCreator();
     const isUserAssignee = this.isUserAssignee();
+    const doesTaskHasAssignee = this.doesTaskHasAssignee();
     const canEditTask = isUserCreator || isUserAssignee || isAdmin;
     const canDeleteTask = isEditing && (isUserCreator || isAdmin);
-    const showUnassignButton = (isUserAssignee || (isEditing && (isUserCreator || isAdmin)));
+    const isShowUnassignButton = (isUserAssignee || (isEditing && (isUserCreator || isAdmin) && doesTaskHasAssignee));
 
-    const showMarkAsDoneButton = isEditing && (!isDraft && canEditTask);
+    const isShowMarkAsDoneButton = (!isDraft && canEditTask);
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
-    const showSaveButton = isEditing && canEditTask;
+    const isShowSaveButton = isEditing && canEditTask;
     const isTaskEmpty = (!description || description === '');
 
     const oneDay = 60 * 60 * 24 * 1000;
@@ -560,7 +548,7 @@ export class TaskView extends Component {
       isTaskCreatedInTheLastDay = (now - selectedTask.created) <= oneDay;
     }
 
-    const showDeleteButton = isEditing && ((!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft));
+    const isShowDeleteButton = ((!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft));
     const showButtonAsFollow = selectedTask && !includes(selectedTask.listeners, auth.id);
 
     return {
@@ -570,15 +558,15 @@ export class TaskView extends Component {
       assignTask: () => this.setState({ shouldOpenAssignmentModal: true }),
       followTask: followTask,
       unfollowTask: unfollowTask,
-      unassignTask: unassignTask,
-      removeTask: removeTask,
+      onUnassignTask: unassignTask,
+      onDeleteTask: onDeleteTask,
       onEditTask: this.onEditTask,
-      showUnassignButton: showUnassignButton,
-      showSaveButton: showSaveButton,
+      isShowUnassignButton: isShowUnassignButton,
+      isShowSaveButton: isShowSaveButton,
       showButtonAsFollow: showButtonAsFollow,
-      showDeleteButton: showDeleteButton,
-      showMarkAsDoneButton: showMarkAsDoneButton,
-      showEditButton: canEditTask,
+      isShowDeleteButton: isShowDeleteButton,
+      isShowMarkAsDoneButton: isShowMarkAsDoneButton,
+      isShowEditButton: canEditTask,
       isDraft: isDraft,
       saveTask: this.handleSave,
       markAsDoneUndone: this.handleMarkAsDoneUndone,
@@ -682,6 +670,24 @@ export class TaskView extends Component {
     );
   }
 }
+
+TaskView.propTypes = {
+  updateTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
+  assignTask: PropTypes.func.isRequired,
+  followTask: PropTypes.func.isRequired,
+  unfollowTask: PropTypes.func.isRequired,
+  unassignTask: PropTypes.func.isRequired,
+  selectedTask: PropTypes.object,
+  selectedProject: PropTypes.object,
+  isAdmin: PropTypes.bool.isRequired,
+  isGuide: PropTypes.bool.isRequired,
+  unloadComments: PropTypes.func.isRequired,
+  isValidCallback: PropTypes.func.isRequired,
+  isDraft: PropTypes.bool.isRequired,
+  submitNewTask: PropTypes.func.isRequired,
+  closeTaskView: PropTypes.func.isRequired
+};
 
 const mapStateToProps = createSelector(
   getCommentList,
