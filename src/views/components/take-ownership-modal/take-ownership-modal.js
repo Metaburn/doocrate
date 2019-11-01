@@ -54,7 +54,9 @@ export class TakeOwnershipModal extends Component {
         {
           (t, { i18n }) => (
             <Modal open={isOpen} onClose={this.onCloseModal} center classNames={{
-              modal: 'take-ownership-modal-container'}}>
+              modal: 'take-ownership-modal-container',
+              overlay: 'take-ownership-overlay-container'
+            }}>
               <div className='take-ownership-modal' dir={t('lang-dir')}>
                 <div className='modal-content'>
                   {this.renderHeader(t)}
