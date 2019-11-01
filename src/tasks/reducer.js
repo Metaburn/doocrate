@@ -73,7 +73,10 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         created: null,
         list: state.list.map(task => {
           return task.id === payload.id ? payload : task;
-        })
+        }),
+        filteredList:state.filteredList.map(task => {
+          return task.id === payload.id ? payload : task;
+        }),
       });
 
     case SIGN_OUT_SUCCESS:
