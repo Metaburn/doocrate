@@ -43,17 +43,17 @@ class MeEmptyPlaceholder extends Component {
               textButton={i18n.t('me-empty.create-task')}
               textDescription={i18n.t('me-empty.create-task-desc')}/>
             <ItemRow
-              toUrl={`/${projectUrl}/task/search-task`}
+              toUrl={`/${projectUrl}/task/1?filter=unassigned`}
               iconName={"assignment_ind"}
               textButton={i18n.t('me-empty.search-free-task')}
               textDescription={i18n.t('me-empty.search-free-task-desc')}/>
             <ItemRow
-              toUrl={`/${projectUrl}/task/search-task`}
+              toUrl={`/${projectUrl}/task/1`}
               iconName={"face"}
               textButton={i18n.t('me-empty.search-humans')}
               textDescription={i18n.t('me-empty.search-humans-desc')}/>
             <ItemRow
-              toUrl={`/${projectUrl}/task/search-task`}
+              toUrl={`/${projectUrl}/task/1`}
               iconName={"label"}
               textButton={i18n.t('me-empty.filter-by-tags')}
               textDescription={i18n.t('me-empty.filter-by-tags-desc')}/>
