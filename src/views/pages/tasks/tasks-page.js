@@ -7,6 +7,7 @@ import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 import { commentsActions } from 'src/comments';
 import { authActions } from 'src/auth';
+import { projectActions } from 'src/projects';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
 import TaskList from '../../components/task-list';
@@ -53,19 +54,12 @@ export class TasksPage extends Component {
     window.changeLabelColor = setLabelWithRandomColor;
   }
 
-  componentDidMount() {
-    this.updateFilter();
-
-  }
-
   componentWillMount() {
-    let project_url = this.props.match.params.projectUrl;
-    // Redirect to test project
-    // TODO - Instead should redirect to all project in the world
-    if (!project_url) {
-      project_url = 'project_test';
-      this.props.history.push('/project_test/task/1?complete=false');
+    if(!this.props.selectedProject) {
+      this.props.selectProjectFromUrl();
     }
+
+    let project_url = this.props.match.params.projectUrl;
 
     this.props.loadTasks(project_url, INCOMPLETE_TASKS);
     this.props.loadLabels(project_url);
@@ -76,6 +70,10 @@ export class TasksPage extends Component {
         search: firebaseConfig.defaultPageToLoad
       });
     }
+  }
+
+  componentDidMount() {
+    this.updateFilter();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -560,6 +558,7 @@ const mapDispatchToProps = Object.assign(
   commentsActions,
   notificationActions,
   labelActions,
+  projectActions,
   authActions,
   userInterfaceActions
 );

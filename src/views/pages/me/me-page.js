@@ -28,12 +28,15 @@ export class MePage extends Component {
   }
 
   componentWillMount() {
+
     if(!this.props.selectedProject) {
       this.props.selectProjectFromUrl();
     }
 
-    if(!this.props.tasks || this.props.tasks.size <= 0) {
-      this.props.loadTasks(this.props.selectedProject.url, INCOMPLETE_TASKS);
+    if(this.props.selectedProject) {
+      if (!this.props.tasks || this.props.tasks.size <= 0) {
+        this.props.loadTasks(this.props.selectedProject.url, INCOMPLETE_TASKS);
+      }
     }
   }
 

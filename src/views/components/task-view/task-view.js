@@ -29,6 +29,7 @@ export class TaskView extends Component {
     super(props);
 
     this.state = {
+      isEditing: false,
       title: '',
       description: '',
       requirements: '',
@@ -89,8 +90,6 @@ export class TaskView extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // TODO - check this maybe called several times now that we use comments
-
     this.updateStateByProps(nextProps);
   }
 
@@ -169,6 +168,11 @@ export class TaskView extends Component {
         extraFields: extraFields || {},
         validation: {}
       });
+
+      // If got a new task clear editing
+      if(nextSelectedTask && nextSelectedTask.id !== this.state.id) {
+        this.setState({isEditing: false});
+      }
   }
 
   getDefaultTaskTypes(props) {
@@ -509,26 +513,39 @@ export class TaskView extends Component {
     updateTask(selectedTask, this.getFormFields());
   }
 
-  render() {
-    const { selectedTask } = this.props;
-    if (!selectedTask) return null;
+  isUserCreator = () => {
+    const { auth, selectedTask } = this.props;
+    return selectedTask && selectedTask.creator && selectedTask.creator.id === auth.id;
+  };
 
-    const { isAdmin, isDraft, selectTask, followTask, unfollowTask,
-      unassignTask, removeTask, selectedProject, auth } = this.props;
-    const { description, defaultType, popularTags } = this.state;
+  isUserAssignee = () => {
+    const { auth, selectedTask } = this.props;
+    return selectedTask && selectedTask.assignee && selectedTask.assignee.id === auth.id;
+  };
+
+  onEditTask = () => {
+    this.setState({isEditing: !this.state.isEditing});
+  };
+
+  getTaskViewHeaderProps = () => {
+    const { selectedTask, isAdmin ,isDraft, selectTask, followTask,
+      unfollowTask,  unassignTask, removeTask, selectedProject, auth } = this.props;
+    const { isEditing, description } = this.state;
+
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
       auth.defaultProject;
 
-    const isUserCreator = selectedTask && selectedTask.creator && selectedTask.creator.id === auth.id;
-    const isUserAssignee = selectedTask && selectedTask.assignee && selectedTask.assignee.id === auth.id;
+    const isUserCreator = this.isUserCreator();
+    const isUserAssignee = this.isUserAssignee();
     const canEditTask = isUserCreator || isUserAssignee || isAdmin;
-    const canDeleteTask = isUserCreator || isAdmin;
-    const showUnassignButton = isUserAssignee || isUserCreator || isAdmin;
-    const showMarkAsDoneButton = !isDraft && canEditTask;
+    const canDeleteTask = isEditing && (isUserCreator || isAdmin);
+    const showUnassignButton = (isUserAssignee || (isEditing && (isUserCreator || isAdmin)));
+
+    const showMarkAsDoneButton = isEditing && (!isDraft && canEditTask);
     // Uncomment this to allow to unassign only for admins / guides
     //const showUnassignButton = this.props.isAdmin || (this.props.isGuide && isUserCreator)
 
-    const showSaveButton = canEditTask;
+    const showSaveButton = isEditing && canEditTask;
     const isTaskEmpty = (!description || description === '');
 
     const oneDay = 60 * 60 * 24 * 1000;
@@ -537,65 +554,81 @@ export class TaskView extends Component {
 
     if (selectedTask && selectedTask.created) {
       const now = new Date();
-
       isTaskCreatedInTheLastDay = (now - selectedTask.created) <= oneDay;
     }
 
-    const showDeleteButton = (!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft);
+    const showDeleteButton = isEditing && ((!isDraft && (isTaskEmpty || isTaskCreatedInTheLastDay) && canDeleteTask) || (isAdmin && !isDraft));
     const showButtonAsFollow = selectedTask && !includes(selectedTask.listeners, auth.id);
+
+    return {
+      task: selectedTask,
+      canDeleteTask: canDeleteTask,
+      selectTask: selectTask,
+      assignTask: () => this.setState({ shouldOpenAssignmentModal: true }),
+      followTask: followTask,
+      unfollowTask: unfollowTask,
+      unassignTask: unassignTask,
+      removeTask: removeTask,
+      onEditTask: this.onEditTask,
+      showUnassignButton: showUnassignButton,
+      showSaveButton: showSaveButton,
+      showButtonAsFollow: showButtonAsFollow,
+      showDeleteButton: showDeleteButton,
+      showMarkAsDoneButton: showMarkAsDoneButton,
+      showEditButton: canEditTask,
+      isDraft: isDraft,
+      saveTask: this.handleSave,
+      markAsDoneUndone: this.handleMarkAsDoneUndone,
+      auth: auth,
+      projectUrl: projectUrl,
+      closeTaskView: this.props.closeTaskView,
+    }
+  };
+
+  render() {
+    const { selectedTask } = this.props;
+    if (!selectedTask) return null;
+
+    const { isDraft, selectedProject, auth, isAdmin } = this.props;
+    const { defaultType, popularTags, isEditing } = this.state;
+    const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
+      auth.defaultProject;
+
+    const canEditTask = this.isUserCreator() || this.isUserAssignee() || this.isAdmin;
+    const showSaveButton = isEditing && canEditTask;
 
     return (
       <div className="task-view-container" dir={i18n.t('lang-dir')}>
-        <TaskViewHeader
-          task={selectedTask}
-          canDeleteTask={canDeleteTask}
-          selectTask={selectTask}
-          assignTask={() => this.setState({ shouldOpenAssignmentModal: true })}
-          followTask={followTask}
-          unfollowTask={unfollowTask}
-          unassignTask={unassignTask}
-          removeTask={removeTask}
-          showUnassignButton={showUnassignButton}
-          showSaveButton={showSaveButton}
-          showButtonAsFollow={showButtonAsFollow}
-          showDeleteButton={showDeleteButton}
-          showMarkAsDoneButton={showMarkAsDoneButton}
-          isDraft={isDraft}
-          saveTask={this.handleSave}
-          markAsDoneUndone={this.handleMarkAsDoneUndone}
-          auth={auth}
-          projectUrl={projectUrl}
-          closeTaskView={this.props.closeTaskView}
-        />
+        <TaskViewHeader {...this.getTaskViewHeaderProps()}/>
         <div className="task-view">
           <form noValidate>
             <div className="form-input">
-              {canEditTask ?
+              {canEditTask && isEditing ?
                 this.renderInput('title', i18n.t('task.name'), canEditTask, '0', true, true) :
                 <span>{selectedTask.title}</span>}
             </div>
             <div className="form-input">
-              {canEditTask ?
+              {canEditTask && isEditing ?
                 this.renderTextArea('description', canEditTask, '0', 'task.description') :
                 <span>{selectedTask.description}</span>}
             </div>
             <div className="form-input">
-              {canEditTask ?
+              {canEditTask && isEditing ?
                 this.renderTextArea('requirements', canEditTask, '0', 'task.requirements') :
                 <span>{selectedTask.requirements}</span>}
             </div>
             <div className="form-input"><div className={`instruction instruction-${i18n.t('lang-float')}`}><span>{i18n.t('task.type')}</span></div>
-              {canEditTask ?
+              {canEditTask && isEditing ?
                 this.renderSelect('type', i18n.t('general.select-default'), defaultType,'0') :
                 <span className={`task-type task-type-${i18n.t('lang-float')}`}>{(selectedTask.type) ? selectedTask.type.label : ''}<br/></span>}
 
             </div>
 
             <div className={`tags-container tags-container-${i18n.t('lang-float')}`}>
-              <Icon className="label notranslate" name="loyalty"/> {this.renderTags(canEditTask, '0')}
+              <Icon className="label notranslate" name="loyalty"/> {this.renderTags(isEditing && canEditTask, '0')}
             </div>
 
-            {(canEditTask && popularTags) &&
+            {(canEditTask && isEditing && popularTags) &&
               <div>
                 <div className="instruction-label">
                   <span>{i18n.t('task.automatic-tags')}</span>
@@ -609,13 +642,15 @@ export class TaskView extends Component {
                 </div>
               </div>}
 
-            {canEditTask && this.state.extraFields && this.renderExtraFields(i18n.t, selectedTask, canEditTask)}
+            {canEditTask && isEditing && this.state.extraFields && this.renderExtraFields(i18n.t, selectedTask, canEditTask)}
 
-            {canEditTask &&
+            {canEditTask && isEditing &&
               <div className="is-critical">
                 {this.renderCheckbox(selectedTask, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
               </div>}
-            <TaskCreator creator={selectedTask ? selectedTask.creator: null} projectUrl={projectUrl}/>
+            {!isDraft &&
+              <TaskCreator creator={selectedTask ? selectedTask.creator : null} projectUrl={projectUrl}/>
+            }
           </form>
         </div>
 

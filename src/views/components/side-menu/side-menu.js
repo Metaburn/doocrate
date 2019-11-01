@@ -9,11 +9,13 @@ import {getAuth} from "../../../auth";
 import {connect} from "react-redux";
 import {getMenuIsOpen} from "../../../user-interface/selectors";
 import { isMobile, isTablet } from '../../../utils/browser-utils';
+import i18n from "src/i18n";
+
 import './side-menu.css';
 
 class SideMenu extends Component {
   render() {
-    const { i18n, menuIsOpen, setMenuOpen } = this.props;
+    const { menuIsOpen, setMenuOpen } = this.props;
     const width = isMobile? '90%' :
       isTablet? '70%':
         '370px';
@@ -39,7 +41,6 @@ class SideMenu extends Component {
 
 SideMenu.propTypes = {
   auth: PropTypes.object.isRequired,
-  i18n: PropTypes.object.isRequired,
   menuIsOpen: PropTypes.bool.isRequired,
   setMenuOpen: PropTypes.func.isRequired
 };
