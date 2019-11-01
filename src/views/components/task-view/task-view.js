@@ -138,8 +138,9 @@ export class TaskView extends Component {
     let nextSelectedTask = props.selectedTask || {};
     let { id, title, description, requirements, type,
       label, isCritical, listeners, dueDate, created, isDone, doneDate,
-      extraFields
-    } = nextSelectedTask;
+      extraFields,} = nextSelectedTask;
+
+    const { isDraft } = props;
 
     // this checks if we got another task, or we're updating the same one
       const labelAsArray = label ?
@@ -166,11 +167,13 @@ export class TaskView extends Component {
         defaultType: defaultType || [],
         popularTags: popularTags,
         extraFields: extraFields || {},
-        validation: {}
+        validation: {},
+        isEditing: isDraft || false
       });
 
-      // If got a new task clear editing
-      if(nextSelectedTask && nextSelectedTask.id !== this.state.id) {
+      // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
+      if ((nextSelectedTask && nextSelectedTask.id !== null) &&
+        (nextSelectedTask.id !== this.state.id)) {
         this.setState({isEditing: false});
       }
   }
