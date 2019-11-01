@@ -594,7 +594,7 @@ export class TaskView extends Component {
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
       auth.defaultProject;
 
-    const canEditTask = this.isUserCreator() || this.isUserAssignee() || this.isAdmin;
+    const canEditTask = this.isUserCreator() || this.isUserAssignee() || isAdmin;
     const showSaveButton = isEditing && canEditTask;
 
     return (
