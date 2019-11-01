@@ -150,13 +150,16 @@ export class TaskView extends Component {
         popularTags: popularTags,
         extraFields: extraFields || {},
         validation: {},
-        isEditing: isDraft || false
       });
 
       // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
       if ((nextSelectedTask && nextSelectedTask.id !== null) &&
         (nextSelectedTask.id !== this.state.id)) {
         this.setState({isEditing: false});
+      }else {
+        if (nextSelectedTask && nextSelectedTask.id === null) {
+          this.setState({isEditing: isDraft || false});
+        }
       }
   }
 

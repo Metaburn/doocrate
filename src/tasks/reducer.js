@@ -43,6 +43,7 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         deleted: null,
         created: payload,
         list: state.list.unshift(payload),
+        filteredList: state.list.unshift(payload),
         // Adds all the labels from the task into the labels pool
         labelsPool: state.labelsPool.union(Object.keys(payload.label || {})),
       });
@@ -52,7 +53,8 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         deleted: payload,
         created: null,
         previous: state.list,
-        list: state.list.filter(task => task.id !== payload.id)
+        list: state.list.filter(task => task.id !== payload.id),
+        filteredList: state.filteredList.filter(task => task.id !== payload.id),
       });
 
     case LOAD_TASKS_SUCCESS:
@@ -74,7 +76,7 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
         list: state.list.map(task => {
           return task.id === payload.id ? payload : task;
         }),
-        filteredList:state.filteredList.map(task => {
+        filteredList: state.filteredList.map(task => {
           return task.id === payload.id ? payload : task;
         }),
       });
