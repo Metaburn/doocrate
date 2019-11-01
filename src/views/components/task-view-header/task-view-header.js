@@ -5,6 +5,7 @@ import Icon from '../../atoms/icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
+
 import follow from './follow.png';
 import './task-view-header.css';
 
@@ -12,7 +13,8 @@ export class TaskViewHeader extends Component {
   render() {
     const { task, isDraft, showDeleteButton, showMarkAsDoneButton,
       showUnassignButton, showButtonAsFollow, showSaveButton,
-      closeTaskView,assignTask, unassignTask, saveTask, projectUrl } = this.props;
+      closeTaskView,assignTask, unassignTask, saveTask, projectUrl,
+      showEditButton, onEditTask} = this.props;
     const assignee = task? task.assignee : {};
 
     return(
@@ -24,6 +26,12 @@ export class TaskViewHeader extends Component {
           <button onClick={closeTaskView} className="button-no-border close-button">
             <Icon name="close" className="close-icon grow"/>
           </button>
+
+          {!isDraft && showEditButton &&
+          <button onClick={onEditTask} className="button button-small">
+            <Icon name={"edit"} className={"header-icon grow"}/>
+          </button>
+          }
 
           {isDraft ? '' : (!assignee) ? <Button
             className='button button-small action-button assign_task'
@@ -116,10 +124,12 @@ TaskViewHeader.propTypes = {
   followTask: PropTypes.func.isRequired,
   unfollowTask: PropTypes.func.isRequired,
   unassignTask: PropTypes.func.isRequired,
+  onEditTask: PropTypes.func.isRequired,
   removeTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
   showUnassignButton: PropTypes.bool.isRequired,
+  showEditButton: PropTypes.bool.isRequired,
   showSaveButton: PropTypes.bool.isRequired,
   showMarkAsDoneButton: PropTypes.bool.isRequired,
   showButtonAsFollow: PropTypes.bool.isRequired,
