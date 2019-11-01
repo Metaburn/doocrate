@@ -82,6 +82,7 @@
     "add-task": "הוסף משימה",
     "yes": "❤️💪 הו כן ❤️💪",
     "no": "לא",
+    "showing-x-my-tasks": "{{count}} משימות שלי",
     "showing-x-tasks": "מציג {{count}} משימות",
     "my-tasks": "המשימות שלי",
     "free-tasks": "משימות פנויות",

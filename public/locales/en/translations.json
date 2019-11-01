@@ -83,6 +83,7 @@
     "add-task": "Add a new task",
     "yes": "❤️💪 Yes ❤️💪",
     "no": "No",
+    "showing-x-my-tasks": "My {{count}} Tasks",
     "showing-x-tasks": "Showing {{count}} Tasks",
     "my-tasks": "My Tasks",
     "free-tasks": "Free tasks",
