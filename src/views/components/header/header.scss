@@ -9,6 +9,14 @@
     font-size: 16px;
   }
 
+  .toastify--top-right {
+    right:80px;
+  }
+
+  .toastify--top-left {
+    left:80px;
+  }
+
   .header-side {
     display: flex;
     align-items: center;
@@ -54,10 +62,18 @@
 
 
   @media only screen and (max-width: 480px) {
-    .toastify--top-center {
-      left:0;
-      right:0;
-      padding: 0 20px;
+    .header {
+      .toastify--top-right {
+        left: 0;
+        right: 0;
+        padding: 0 20px;
+      }
+
+      .toastify--top-left {
+        left: 0;
+        right: 0;
+        padding: 0 20px;
+      }
     }
   }
 

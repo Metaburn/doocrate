@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
-import { I18n } from 'react-i18next';
 import { appConfig } from 'src/config/app-config'
 import { NavLink } from 'react-router-dom';
 import {updateUserData} from "../../../auth/auth";
@@ -11,6 +10,7 @@ import {getCookie} from "../../../utils/browser-utils";
 import SideMenu from "../side-menu/side-menu";
 import LanguageButtons from "../../atoms/language-buttons/language-buttons";
 import TourDoocrate from "../../atoms/tourDoocrate/tourDoocrate";
+import i18n from "src/i18n";
 
 import "react-toastify/dist/ReactToastify.min.css";
 import "./header.css";
@@ -28,58 +28,56 @@ class Header extends Component {
   render() {
     const { auth, isShowUpdateProfile, selectedProject, tour } = this.props;
     const { showSetUserInfoScreen } = this.state;
+    const isHebrew = i18n.language === "he";
+    const position = isHebrew ? "top-right" : "top-left";
+
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <header className='header notranslate'>
-              <SideMenu auth={auth} i18n={i18n} />
-              <div className={'header-wrapper'}>
-                <div>
-                  <ToastContainer
-                    position='top-center'
-                    autoClose={appConfig.notificationShowTime}
-                    hideProgressBar={false}
-                    newestOnTop={true}
-                    pauseOnHover
-                  />
+      <header className='header notranslate'>
+        <SideMenu auth={auth}/>
+        <div className={'header-wrapper'}>
+          <div>
+            <ToastContainer
+              position={position}
+              autoClose={appConfig.notificationShowTime}
+              hideProgressBar={false}
+              newestOnTop={true}
+              pauseOnHover
+            />
 
-                  <TourDoocrate
-                    tour={tour}
-                    onCloseTour={() => {this.props.setTour(false, 0)}}/>
+            <TourDoocrate
+              tour={tour}
+              onCloseTour={() => {this.props.setTour(false, 0)}}/>
 
-                  <SetUserInfo
-                    isOpen = { (showSetUserInfoScreen) ||
-                    (auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.show) }
-                    userInfo={ auth }
-                    includingBio={auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.includingBio }
-                    photoURL={ auth.photoURL || getRandomImage()}
-                    updateUserInfo={ this.updateUserInfo }
-                    onClosed = { () => {
-                      this.setState({showSetUserInfoScreen: false});
-                      isShowUpdateProfile(false);
-                      this.setState({showSetUserInfoScreen: false})
-                    }}
-                    i18n={i18n}
-                    />
+            <SetUserInfo
+              isOpen = { (showSetUserInfoScreen) ||
+              (auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.show) }
+              userInfo={ auth }
+              includingBio={auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.includingBio }
+              photoURL={ auth.photoURL || getRandomImage()}
+              updateUserInfo={ this.updateUserInfo }
+              onClosed = { () => {
+                this.setState({showSetUserInfoScreen: false});
+                isShowUpdateProfile(false);
+                this.setState({showSetUserInfoScreen: false})
+              }}
+              i18n={i18n}
+              />
 
-                  <div className={`header-side lang-${i18n.language}`}>
-                    <h4 className='project-title'>{selectedProject?
-                      <NavLink to={'/'+selectedProject.url+'/task/1'}>{selectedProject.name}</NavLink> :
-                      ''
-                    }</h4>
-                    <div className={`language-buttons-wrapper lang-${i18n.language}`}>
-                      <LanguageButtons
-                        i18n={i18n}
-                        changeLanguage={this.changeLanguage}/>
-                    </div>
-                  </div>
-                </div>
+            <div className={`header-side lang-${i18n.language}`}>
+              <h4 className='project-title'>{selectedProject?
+                <NavLink to={'/'+selectedProject.url+'/task/1'}>{selectedProject.name}</NavLink> :
+                ''
+              }</h4>
+              <div className={`language-buttons-wrapper lang-${i18n.language}`}>
+                <LanguageButtons
+                  i18n={i18n}
+                  changeLanguage={this.changeLanguage}/>
               </div>
-            </header>
-          )}
-      </I18n>
-    );
+            </div>
+          </div>
+        </div>
+      </header>
+    )
   }
 
   componentWillMount() {
@@ -97,8 +95,9 @@ class Header extends Component {
   };
 
   updateUserLanguage = (language) => {
+    const { auth } = this.props;
     const userData = {};
-    userData.uid = this.props.auth.id;
+    userData.uid = auth.id;
     userData.language = language;
     updateUserData(userData);
   };
