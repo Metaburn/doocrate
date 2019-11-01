@@ -49,7 +49,7 @@ export function followTask(task, user) {
   let listeners = task.listeners;
 
   // Already exists
-  if(listeners.includes(user.id)) {
+  if(listeners && listeners.includes(user.id)) {
     return dispatch => { (dispatch(updateTaskError('One cannot listen more then once'))) }
   }
 
@@ -74,6 +74,9 @@ function addUserToListeners(task, user) {
 }
 
 function removeUserFromListeners(task, user) {
+  if (!task.listeners || task.listeners <= 0) {
+    return [];
+  }
   return task.listeners.filter(listenerId => listenerId !== user.id);
 }
 
