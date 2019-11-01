@@ -357,7 +357,7 @@ export class TasksPage extends Component {
 
     return {
       selectedTask,
-      removeTask: this.props.removeTask,
+      onDeleteTask: this.props.deleteTask,
       updateTask: this.props.updateTask,
       selectedProject: this.props.selectedProject,
       isAdmin: this.isAdmin(),
@@ -521,7 +521,7 @@ TasksPage.propTypes = {
   loadTasks: PropTypes.func.isRequired,
   loadLabels: PropTypes.func.isRequired,
   location: PropTypes.object.isRequired,
-  removeTask: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
   assignTask: PropTypes.func.isRequired,
   tasks: PropTypes.instanceOf(List).isRequired,
   unloadTasks: PropTypes.func.isRequired,

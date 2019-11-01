@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import Icon from '../../atoms/icon';
@@ -8,13 +8,15 @@ import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 
 import follow from './follow.png';
 import './task-view-header.css';
+import TaskHeaderTooltip from "../../molecules/TaskHeaderTooltip/taskHeaderTooltip";
+import EmptyAvatar from "../../atoms/emptyAvatar/emptyAvatar";
 
 export class TaskViewHeader extends Component {
   render() {
-    const { task, isDraft, showDeleteButton, showMarkAsDoneButton,
-      showUnassignButton, showButtonAsFollow, showSaveButton,
-      closeTaskView,assignTask, unassignTask, saveTask, projectUrl,
-      showEditButton, onEditTask} = this.props;
+    const { task, isDraft, isShowDeleteButton, isShowMarkAsDoneButton,
+      isShowUnassignButton, showButtonAsFollow, isShowSaveButton,
+      closeTaskView,assignTask, onUnassignTask, saveTask, projectUrl,
+      isShowEditButton, onEditTask, markAsDoneUndone, onDeleteTask} = this.props;
     const assignee = task? task.assignee : {};
 
     return(
@@ -23,117 +25,107 @@ export class TaskViewHeader extends Component {
       (t, { i18n }) => (
         <div className='task-view-header' name='task-view-header'>
 
-          <button onClick={closeTaskView} className="button-no-border close-button">
-            <Icon name="close" className="close-icon grow"/>
-          </button>
+          <div className={'task-view-header-actions'}>
 
-          {!isDraft && showEditButton &&
-          <button onClick={onEditTask} className="button button-small">
-            <Icon name={"edit"} className={"header-icon grow"}/>
-          </button>
-          }
+            <button onClick={closeTaskView} className="button-no-border close-button">
+              <Icon name="close" className="close-icon grow"/>
+            </button>
 
-          {isDraft ? '' : (!assignee) ? <Button
-            className='button button-small action-button assign_task'
-            onClick={()=>assignTask(task)}
-            type='button'>{t('task.take-responsibility')}</Button> :
-
-            <div className='avatar-container'>
-              <UserInfoAvatar
-                uniqueId={'task-header-assignee'}
-                photoURL={assignee.photoURL}
-                userId={assignee.id}
-                alt={assignee.name}
-                projectUrl={projectUrl} />
-              <span>{assignee.name}</span>
-            </div>}
+            {!isDraft && isShowEditButton &&
+            <button onClick={onEditTask} className="button button-small action-button">
+              <Icon name={"edit"} className={"header-icon grow"}/>
+            </button>
+            }
 
 
-          { showUnassignButton && assignee &&
-            <Button
-            className='action-button button-grey'
-            onClick={()=> { unassignTask(task)}}
-            type='button'>{t('task.remove-responsibility')}</Button>
-          }
+            {isDraft ? '' : (!assignee) ?
+              <Fragment>
+                <Button
+                className='button button-small action-button assign_task'
+                onClick={()=>assignTask(task)}
+                type='button'>{t('task.take-responsibility')}
+                  <EmptyAvatar alt={'Assignee'} isShowText={false}/>
+                </Button>
+              </Fragment>
+                :
 
-          { showSaveButton && ! isDraft &&
-          <Button
-            className='button button-small action-button assign_task'
-            onClick={()=> { saveTask() }}
-            type='button'>{t('task.save')}</Button>
-          }
+              <div className='avatar-container'>
+                <UserInfoAvatar
+                  uniqueId={'task-header-assignee'}
+                  photoURL={assignee.photoURL}
+                  userId={assignee.id}
+                  alt={assignee.name}
+                  projectUrl={projectUrl} />
+              </div>}
 
-          { !isDraft ?
-            (showButtonAsFollow ?
-              <Button className='button button-small action-button'
-                      onClick={() => this.props.followTask(task)}
-                      alt={t('follow-task-alt')}>
-                <span>{t('task.follow-task')}</span>
-                <Img className='follow-icon' src={follow}/>
-              </Button>
-              :
-              <Button className='button button-small action-button'
-                      onClick={() => this.props.unfollowTask(task)}
-                      alt={t('follow-task-alt')}>
-                <span>{t('task.unfollow-task')}</span>
-                <Img className='follow-icon' src={follow}/>
-              </Button>
-            ): ''
-          }
-
-          { showMarkAsDoneButton &&
+            { isShowSaveButton && ! isDraft &&
             <Button
               className='button button-small action-button'
-              onClick={()=> { this.props.markAsDoneUndone() }}
-              type='button'>{ (task && task.isDone)? t('task.mark-uncomplete') : t('task.mark-complete')}</Button>
-          }
+              onClick={()=> { saveTask() }}
+              type='button'>{t('task.save')}</Button>
+            }
 
-          { showDeleteButton &&
-            <Button
-              className='button button-small action-button'
-              onClick={() => {
-                if (!window.confirm(t('task.sure-delete'))) {
-                  return;
-                }
-                this.props.removeTask(task);
+            { !isDraft ?
+              (showButtonAsFollow ?
+                <Button className='button button-small action-button'
+                        onClick={() => this.props.followTask(task)}
+                        alt={t('follow-task-alt')}>
+                  <span>{t('task.follow-task')}</span>
+                  <Img className='follow-icon' src={follow}/>
+                </Button>
+                :
+                <Button className='button button-small action-button'
+                        onClick={() => this.props.unfollowTask(task)}
+                        alt={t('follow-task-alt')}>
+                  <span>{t('task.unfollow-task')}</span>
+                  <Img className='follow-icon' src={follow}/>
+                </Button>
+              ): ''
+            }
 
-                // TODO (Removed selectTask call)
-                // Navigate to main page: /${projectUrl}
-              }}
-              type='button'>
-              <Icon name='delete' className='header-icon grow delete'/>
-            </Button>
-          }
+            { task && task.isCritical &&
+              <span>
+                <Icon name='warning' className='header-icon grow' />
+                {t('task.critical')}
+              </span>
+            }
+          </div>
 
-          { task && task.isCritical &&
-            <span>
-              <Icon name='warning' className='header-icon grow' />
-              {t('task.critical')}
-            </span>
-          }
+          <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
+            <TaskHeaderTooltip
+              isShowMarkAsDoneButton={isShowMarkAsDoneButton}
+              isIconDoneUndone={task && task.isDone}
+              isShowDeleteButton={isShowDeleteButton}
+              isShowUnassignButton={isShowUnassignButton}
+              onSetAsDoneUndone={() => markAsDoneUndone(task)}
+              onDeleteTask={() => onDeleteTask(task)}
+              onUnassignTask={() => onUnassignTask(task)}/>
+          </div>
 
         </div>
       )}
       </I18n>
     )
   };
+
+
 }
 
 TaskViewHeader.propTypes = {
   assignTask: PropTypes.func.isRequired,
   followTask: PropTypes.func.isRequired,
   unfollowTask: PropTypes.func.isRequired,
-  unassignTask: PropTypes.func.isRequired,
+  onUnassignTask: PropTypes.func.isRequired,
   onEditTask: PropTypes.func.isRequired,
-  removeTask: PropTypes.func.isRequired,
+  onDeleteTask: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
   canDeleteTask: PropTypes.bool.isRequired,
-  showUnassignButton: PropTypes.bool.isRequired,
-  showEditButton: PropTypes.bool.isRequired,
-  showSaveButton: PropTypes.bool.isRequired,
-  showMarkAsDoneButton: PropTypes.bool.isRequired,
+  isShowEditButton: PropTypes.bool.isRequired,
+  isShowSaveButton: PropTypes.bool.isRequired,
+  isShowUnassignButton: PropTypes.bool.isRequired,
+  isShowMarkAsDoneButton: PropTypes.bool.isRequired,
+  isShowDeleteButton: PropTypes.bool.isRequired,
   showButtonAsFollow: PropTypes.bool.isRequired,
-  showDeleteButton: PropTypes.bool.isRequired,
   isDraft: PropTypes.bool.isRequired,
   saveTask: PropTypes.func.isRequired,
   projectUrl: PropTypes.string.isRequired,

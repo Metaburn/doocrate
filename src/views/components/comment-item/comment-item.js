@@ -118,8 +118,7 @@ export class CommentItem extends Component {
       style: {
         "z-index": "2000"
       }, arrowStyle: {
-        color: 'rgba(0,0,0,0)',
-        borderColor: false
+
       }
     };
 
@@ -128,7 +127,7 @@ export class CommentItem extends Component {
            onMouseEnter={() => this.setState({isTooltipActive: true})}
            onMouseLeave={() => this.setState({isTooltipActive: false})}>
         <Icon name='more_horiz'/>
-        <ToolTip active={this.state.isTooltipActive} position='bottom' arrow='left'
+        <ToolTip active={this.state.isTooltipActive} position='bottom'
                  parent={`#comment-${this.props.commentNumber}`}
                  style={tooltipStyle}>
           <span className={`tooltip-container dir-${t('lang-float')}`}>

@@ -12,7 +12,7 @@ class MyTasks extends Component {
     super(props);
 
     this.state = {
-      showCreatedTasks: true,
+      showCreatedTasks: false,
       showAssignedTasks: true
     }
   }
@@ -57,7 +57,11 @@ class MyTasks extends Component {
         </Fragment>
         }
 
-        {tasksToShow.size > 0 && <h2 className={'tasks-counter'}>{i18n.t('task.showing-x-tasks',{count: tasksToShow.size})}</h2>}
+        {tasksToShow.size > 0 &&
+        <h2 className={'tasks-counter'}>
+          {i18n.t('task.showing-x-my-tasks',{count: tasksToShow.size})}
+          </h2>
+        }
 
         <TaskViewMiniList
           onSelectTask={this.props.onSelectTask}
