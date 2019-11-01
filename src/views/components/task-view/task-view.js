@@ -494,9 +494,16 @@ export class TaskView extends Component {
   }
 
   handleSubmit(event) {
+    if (event) { event.preventDefault(); }
+
     const { isDraft, updateTask, selectedTask } = this.props;
 
-    if (event) { event.preventDefault(); }
+    // TODO - check if correct
+    // Task was already saved (Due to onBlur) and state got cleared - no need to save
+    if(!this.state.id) {
+      return;
+    }
+
     if (isDraft || !this.isValid()) { return; }
 
     updateTask(selectedTask, this.getFormFields());

@@ -15,7 +15,7 @@ const TaskSideView = ({
 
   const isHebrew = i18n.language === "he";
   const width = isMobile ? "90%" : isTablet? "60%" :"45%";
-  const isOpen = selectedTask || isDraft;
+  const isOpen = selectedTask !== undefined || isDraft;
   const classNames = classnames("task-side-view",
     { "is-mobile": isMobile,
       "right-menu": isHebrew,
