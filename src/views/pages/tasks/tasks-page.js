@@ -480,6 +480,10 @@ export class TasksPage extends Component {
     });
   };
 
+  onClearFilters = () => {
+    this.props.history.push({search: ''});
+  };
+
   render() {
     const { selectedTaskId } = this.state;
     const { filteredTasks, match, tasks, setMenuOpen } = this.props;
@@ -512,12 +516,14 @@ export class TasksPage extends Component {
           <div className='task-list-wrapper'>
 
             <TaskViewMiniList
+              shouldShowWizardOnNoResults={false}
               setTour={this.props.setTour}
               projectUrl={projectUrl}
               selectedTaskId={selectedTaskId}
               tasks={filteredTasks}
               onSelectTask={this.onSelectTask}
-              onLabelClick={this.onLabelClick}/>
+              onLabelClick={this.onLabelClick}
+              onClearFilters={this.onClearFilters}/>
             {/*<TaskList*/}
               {/*history={this.props.history}*/}
               {/*location={this.props.location}*/}
@@ -526,9 +532,6 @@ export class TasksPage extends Component {
               {/*selectedProject={selectedProject}*/}
               {/*projectUrl={projectUrl}/>*/}
           </div>
-
-          {selectedTaskId == null &&
-            <div className="task-view-bottom-loader">&nbsp;</div>}
         </div>
       </div>
     );
