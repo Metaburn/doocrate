@@ -70,6 +70,7 @@ class MyTasks extends Component {
           selectedTaskId={1000}
           projectUrl={projectUrl}
           setTour={setTour}
+          shouldShowWizardOnNoResults={true}
           /*
           TODO - This should be set in the store (Maybe in the ui store or tasks store)
           selectedTaskId={this.state.selectedTask? this.state.selectedTask.get("id") : ""}*/

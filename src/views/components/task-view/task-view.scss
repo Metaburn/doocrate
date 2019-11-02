@@ -65,10 +65,10 @@
 .task-view-container {
   background: $white;
   line-height: 1.1em;
-  margin-bottom: 1em;
+  margin-bottom: 0;
   z-index: 10;
   font-size: 18px;
-  padding-bottom: 3em;
+  padding-bottom: 0em;
 
   .button-save-wrapper {
     display: flex;
@@ -107,10 +107,6 @@
 
 .task-view-loader {
   min-height: 18.35em;
-}
-
-.task-view-bottom-loader {
-  min-height: 23.35em;
 }
 
 .task-view {

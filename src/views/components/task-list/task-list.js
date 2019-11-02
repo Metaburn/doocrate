@@ -7,6 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import i18n from '../../../i18n';
 import CompleteFilter from '../complete-filter';
 import './task-list.css';
+import EmptyPlaceholder from "../../molecules/emptyPlaceholder/emptyPlaceholder";
 
 class TaskList extends Component {
   constructor(props) {
@@ -65,23 +66,15 @@ class TaskList extends Component {
         </div>
 
         <div className="task-list">
-          {/* Suggest to remove filters */}
           {!isAnyTasks &&
-              <div className="no-tasks-placeholder">
-                <h3>
-                  {i18n.t('task.no-tasks-found')}
-                  <div>
-                    <button className={`click-here-${i18n.t('lang-float')}`} onClick={this.clearSearchQuery}>{i18n.t('task.click-here')}</button>
-                    {i18n.t('task.no-tasks-placeholder2')}
-                  </div>
-                </h3>
-              </div>}
+          <EmptyPlaceholder onClearFilters={this.clearSearchQuery}/>
+          }
 
           <InfiniteScroll
               pageStart={0}
               loadMore={this.loadMore}
               hasMore={hasMoreTasks}
-              useWindow={false}
+              useWindow={true}
               loader={<div className="loader">{i18n.t('general.loading')}</div>}>
               { taskItems }
           </InfiniteScroll>

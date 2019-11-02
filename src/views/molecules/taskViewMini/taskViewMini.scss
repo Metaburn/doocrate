@@ -18,7 +18,17 @@
   }
 
   &.active {
+    color: white;
     background: $primary-color;
+
+    .header {
+      color: white;
+    }
+
+    .label-wrapper {
+      background-color: white !important;
+      color: $primary-color !important;;
+    }
   }
 
   .header {

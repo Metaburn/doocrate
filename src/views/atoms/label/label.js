@@ -1,37 +1,33 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { I18n } from 'react-i18next';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
+import i18n from "src/i18n";
 
-import './label.css';
+import classNames from "classnames";
+
+import "./label.css";
 
 class Label extends React.Component {
   render() {
-    const labelClasses = classNames('label-wrapper', { 'clickable': this.props.onClick });
-    const backgroundColor = this.props.backgroundColor || '#999';
+    const labelClasses = classNames("label-wrapper", { "clickable": this.props.onClick });
+    const backgroundColor = this.props.backgroundColor || "#999";
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <div key={this.props.label}
-                 style={{'backgroundColor': `${backgroundColor}`}}
-                 className={labelClasses}
-                 onClick={()=> this.onClick()}>
-              <span className={`label-text label-text-${t('lang-float')}`}>
-                {this.props.label}
-              </span>
+      <div key={this.props.label}
+           style={{"backgroundColor": `${backgroundColor}`}}
+           className={labelClasses}
+           onClick={(e)=> this.onClick(e)}>
+        <span className={`label-text label-text-${i18n.t("lang-float")}`}>
+          {this.props.label}
+        </span>
 
-              {this.props.children}
-            </div>
-          )}
-      </I18n>
+        {this.props.children}
+      </div>
     );
   }
 
   // Optional if defined fires an onclick for that label
-  onClick() {
+  onClick = (event) => {
     if(!this.props.onClick) return;
-    this.props.onClick(this.props.label);
+    this.props.onClick(this.props.label, event);
   }
 }
 

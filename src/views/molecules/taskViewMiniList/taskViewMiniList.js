@@ -6,6 +6,7 @@ import i18n from 'src/i18n';
 import './taskViewMiniList.css';
 import TaskViewMini from "../taskViewMini/taskViewMini";
 import MeEmptyPlaceholder from "../meEmptyPlaceholder/meEmptyPlaceholder";
+import EmptyPlaceholder from "../emptyPlaceholder/emptyPlaceholder";
 
 class TaskViewMiniList extends Component {
   constructor(props) {
@@ -54,18 +55,24 @@ class TaskViewMiniList extends Component {
       <div className="task-view-mini-list">
         {(!isAnyTasks &&
           <div className={'me-empty-placeholder-wrapper'}>
-            <MeEmptyPlaceholder
-              projectUrl={projectUrl}
-              setTour={setTour}/>
+            {this.props.shouldShowWizardOnNoResults ?
+              <MeEmptyPlaceholder
+                projectUrl={projectUrl}
+                setTour={setTour}/>
+
+              :
+              <EmptyPlaceholder onClearFilters={this.props.onClearFilters}/>
+            }
           </div>
         )}
 
         {(isAnyTasks &&
           <InfiniteScroll
+            className={'task-view-mini-container'}
             pageStart={0}
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
-            useWindow={false}
+            useWindow={true}
             loader={<div className="loader">{i18n.t('general.loading')}</div>}>
             {taskItems}
           </InfiniteScroll>
@@ -77,9 +84,11 @@ class TaskViewMiniList extends Component {
 TaskViewMiniList.propTypes = {
   tasks: PropTypes.array.isRequired,
   onSelectTask: PropTypes.func.isRequired,
+  onClearFilters: PropTypes.func,
   onLabelClick: PropTypes.func.isRequired,
   setTour: PropTypes.func.isRequired,
   selectedTaskId: PropTypes.number,
+  shouldShowWizardOnNoResults: PropTypes.bool.isRequired,
   projectUrl: PropTypes.string.isRequired,
 };
 

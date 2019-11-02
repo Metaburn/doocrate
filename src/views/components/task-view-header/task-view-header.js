@@ -92,14 +92,15 @@ export class TaskViewHeader extends Component {
           </div>
 
           <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
-            <TaskHeaderTooltip
-              isShowMarkAsDoneButton={isShowMarkAsDoneButton}
-              isIconDoneUndone={task && task.isDone}
-              isShowDeleteButton={isShowDeleteButton}
-              isShowUnassignButton={isShowUnassignButton}
-              onSetAsDoneUndone={() => markAsDoneUndone(task)}
-              onDeleteTask={() => onDeleteTask(task)}
-              onUnassignTask={() => onUnassignTask(task)}/>
+            { !isDraft &&
+              <TaskHeaderTooltip
+                isShowMarkAsDoneButton={isShowMarkAsDoneButton}
+                isIconDoneUndone={task && task.isDone}
+                isShowDeleteButton={isShowDeleteButton}
+                isShowUnassignButton={isShowUnassignButton}
+                onSetAsDoneUndone={() => markAsDoneUndone(task)}
+                onDeleteTask={() => onDeleteTask(task)}
+                onUnassignTask={() => onUnassignTask(task)}/> }
           </div>
 
         </div>
