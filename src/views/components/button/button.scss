@@ -26,7 +26,6 @@ $primary-color: #eb1478;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
   justify-content: center;
-  line-height: 1;
   min-width: 50px;
   text-align: center;
   -webkit-transition-duration: .2s;
@@ -51,11 +50,10 @@ $primary-color: #eb1478;
   border-color: $primary-color;
   fill: $primary-color;
   height: 30px;
-  line-height: 30px;
 
   &:hover,
   &:focus {
-    border-color: none;
+    border-color: transparent;
     box-shadow: 0 0 0 2px $primary-color;
     color: $primary-color;
   }

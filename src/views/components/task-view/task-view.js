@@ -661,7 +661,7 @@ export class TaskView extends Component {
         { isDraft && showSaveButton &&
         <div className={'button-save-wrapper'}>
           <Button
-          className='button button-small action-button'
+          className={"save-button"}
           onClick={this.handleSave}
           type='button'>{i18n.t('task.save')}</Button>
         </div>
