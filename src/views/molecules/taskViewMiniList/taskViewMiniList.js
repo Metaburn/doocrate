@@ -62,10 +62,11 @@ class TaskViewMiniList extends Component {
 
         {(isAnyTasks &&
           <InfiniteScroll
+            className={'task-view-mini-container'}
             pageStart={0}
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
-            useWindow={false}
+            useWindow={true}
             loader={<div className="loader">{i18n.t('general.loading')}</div>}>
             {taskItems}
           </InfiniteScroll>

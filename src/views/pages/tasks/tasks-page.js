@@ -10,7 +10,6 @@ import { authActions } from 'src/auth';
 import { projectActions } from 'src/projects';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
-import TaskList from '../../components/task-list';
 import TaskSideView from '../../components/task-view/TaskSideView';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
 import { debounce } from 'lodash';
@@ -23,6 +22,7 @@ import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
 
 import './tasks-page.css';
+import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
 
 export class TasksPage extends Component {
   constructor(props) {
@@ -466,9 +466,23 @@ export class TasksPage extends Component {
     });
   };
 
+  onSelectTask = (task) => {
+    const projectUrl = this.props.match.params.projectUrl;
+    const search = this.props.location ? this.props.location.search : '';
+    const taskRoute = `/${projectUrl}/task/${task.id}${search}`;
+    this.props.history.push(taskRoute);
+  };
+
+  onLabelClick = (label, event) => {
+    if (event) { event.stopPropagation(); }
+    this.props.history.push({
+      search: setQueryParams(['labels=' + label])
+    });
+  };
+
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen, selectedProject } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -496,13 +510,21 @@ export class TasksPage extends Component {
           <LoaderUnicorn isShow={isLoading}/>
 
           <div className='task-list-wrapper'>
-            <TaskList
-              history={this.props.history}
-              location={this.props.location}
-              tasks={filteredTasks}
+
+            <TaskViewMiniList
+              setTour={this.props.setTour}
+              projectUrl={projectUrl}
               selectedTaskId={selectedTaskId}
-              selectedProject={selectedProject}
-              projectUrl={projectUrl}/>
+              tasks={filteredTasks}
+              onSelectTask={this.onSelectTask}
+              onLabelClick={this.onLabelClick}/>
+            {/*<TaskList*/}
+              {/*history={this.props.history}*/}
+              {/*location={this.props.location}*/}
+              {/*tasks={filteredTasks}*/}
+              {/*selectedTaskId={selectedTaskId}*/}
+              {/*selectedProject={selectedProject}*/}
+              {/*projectUrl={projectUrl}/>*/}
           </div>
 
           {selectedTaskId == null &&

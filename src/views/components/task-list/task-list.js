@@ -81,7 +81,7 @@ class TaskList extends Component {
               pageStart={0}
               loadMore={this.loadMore}
               hasMore={hasMoreTasks}
-              useWindow={false}
+              useWindow={true}
               loader={<div className="loader">{i18n.t('general.loading')}</div>}>
               { taskItems }
           </InfiniteScroll>
