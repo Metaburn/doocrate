@@ -1,0 +1,57 @@
+@import 'views/styles/shared';
+
+.Collapsible__trigger {
+  cursor: pointer;
+  -webkit-transition: all 0.3ms;
+  -moz-transition: all 0.3ms;
+  -ms-transition: all 0.3ms;
+  -o-transition: all 0.3ms;
+  transition: all 0.3ms;
+  display: block;
+  font-weight: 400;
+  text-decoration: none;
+  position: relative;
+  border: none;
+  padding: 10px;
+  background: $primary-color;
+  color: white;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+}
+
+.Collapsible__trigger:hover {
+  box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.40);
+}
+
+.Collapsible__trigger:after {
+  font-family: 'FontAwesome';
+  content: '\f107';
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  display: block;
+  transition: transform 300ms;
+}
+
+.Collapsible__contentInner {
+  padding: 10px;
+  border: 1px solid #ebebeb;
+  border-top: 0;
+}
+
+.Collapsible__contentInner p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 20px; }
+.Collapsible__contentInner p:last-child {
+  margin-bottom: 0; }
+
+.Collapsible__trigger.is-open:after {
+  transform: rotateZ(180deg);
+}
+
+.Collapsible__trigger.is-disabled {
+  opacity: 0.5;
+  background-color: grey;
+}

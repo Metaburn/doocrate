@@ -1,15 +1,18 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Textbox } from 'react-inputs-validation';
-import { I18n } from 'react-i18next';
-import { projectActions } from 'src/projects';
-import {notificationActions} from '../../../notification';
-import TagsInput from 'react-tagsinput';
-import i18n from '../../../i18n.js';
+import React, {Component, Fragment} from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Textbox } from "react-inputs-validation";
+import { I18n } from "react-i18next";
+import { projectActions } from "src/projects";
+import {notificationActions} from "../../../notification";
+import TagsInput from "react-tagsinput";
+import i18n from "src/i18n.js";
+import { appConfig } from "../../../config/app-config";
+import { firebaseConfig } from "../../../firebase/config";
+import Select from "react-select";
+import CollapsibleContainer from "../../atoms/collapsibleContainer/collapsibleContainer";
+
 import './set-project.css';
-import { appConfig } from '../../../config/app-config';
-import Select from 'react-select';
 
 class SetProject extends Component {
   constructor() {
@@ -31,7 +34,8 @@ class SetProject extends Component {
       defaultLanguages: [],
       language: '',
       canCreateTask: true,
-      canAssignTask: true
+      canAssignTask: true,
+      domainUrl: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -69,7 +73,12 @@ class SetProject extends Component {
         return;
       }
 
-      let { name, taskTypes, creator, isPublic, popularTags, extraFields, language, canCreateTask, canAssignTask } = existingProject;
+      const { name, taskTypes, creator,  extraFields,
+        language, canCreateTask, canAssignTask,
+        domainUrl} = existingProject;
+
+      let { popularTags, isPublic } = existingProject;
+
       popularTags = this.fromTagObject(popularTags);
 
       let type0,type1,type2,type3,type4;
@@ -99,6 +108,7 @@ class SetProject extends Component {
         name: name || '',
         canCreateTask: canCreateTask,
         canAssignTask: canAssignTask,
+        domainUrl: domainUrl,
         defaultLanguages: defaultLanguages,
         isPublic: isPublic,
         language: language,
@@ -117,6 +127,9 @@ class SetProject extends Component {
   }
 
   render() {
+    const { isExisting, projectUrl, domainUrl, defaultLanguages } = this.state;
+    const defaultDomain = domainUrl || firebaseConfig.defaultDomain;
+
     return (
       <I18n ns='translations'>
         {
@@ -124,12 +137,12 @@ class SetProject extends Component {
             <div className='g-row set-project'>
               <br/>
               {
-                this.state.isExisting ?
+                isExisting ?
                 <h1>{t('create-project.header-edit')}</h1>
                 :
                 <h1>{t('create-project.header')}</h1>
               }
-              { this.state.isExisting ?
+              { isExisting ?
                 <h3>{t('create-project.subtitle-edit')}</h3>
                 :
                 <h3>{t('create-project.subtitle')}</h3>
@@ -144,8 +157,8 @@ class SetProject extends Component {
                   <span>{t('create-project.project-url-placeholder')}</span>
                   { this.renderInput('projectUrl', t('create-project.project-url-placeholder'), t, true, '0', true)}
                   {
-                    this.state.projectUrl ?
-                      <span>{'doocrate.com/'+this.state.projectUrl}</span> :
+                    projectUrl ?
+                      <span>{`${defaultDomain}/${projectUrl}`}</span> :
                       <span>{t('create-project.project-url-explain')}</span>
                   }
                 </div>
@@ -167,8 +180,9 @@ class SetProject extends Component {
                 { this.renderExtraFields(t)}
 
                 <div>
-                  {this.renderSelect('language', t('create-project.select-language'), this.state.defaultLanguages, t,'0')}
+                  {this.renderSelect('language', t('create-project.select-language'), defaultLanguages, t,'0')}
                 </div>
+
                 <div className='form-input'>
                   <span>{t('create-project.visibility-placeholder')}</span>
                   <br/>
@@ -176,10 +190,25 @@ class SetProject extends Component {
                   <br/>
                   { this.renderCheckbox('isPublic', t('create-project.visibility'), t, true)}
                   <br/>
-                  { this.renderCheckbox('canCreateTask', t('create-project.can-create-task'), t, true)}
-                  <br/>
-                  { this.renderCheckbox('canAssignTask', t('create-project.can-assign-task'), t, true)}
                 </div>
+
+                <CollapsibleContainer trigger="Advanced - Click for more">
+                  <div className='form-input'>
+                    { this.renderCheckbox('canCreateTask', t('create-project.can-create-task'), t, true)}
+                    <br/>
+                    { this.renderCheckbox('canAssignTask', t('create-project.can-assign-task'), t, true)}
+                  </div>
+
+                  <div className='form-input'>
+                    <span>{i18n.t('create-project.custom-domain')}</span>
+                    { this.renderInput("domainUrl", i18n.t('create-project.custom-domain-placeholder'), t, true, "0", true)}
+                    <Fragment>
+                      <div dangerouslySetInnerHTML={
+                        {__html: i18n.t('create-project.custom-domain-explain', {interpolation: {escapeValue: false}})}
+                      }/>
+                    </Fragment>
+                  </div>
+                </CollapsibleContainer>
 
                 <br/>
                 { this.renderSubmit(t) }
@@ -333,6 +362,8 @@ class SetProject extends Component {
 
   isValid() {
     const englishRegex = /^[A-Za-z0-9_-]*$/;
+    // Allows http://domain.com https://domain.com AND www.domain.com (which may be problematic)
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
     let res = false;
     Object.values(this.state.validations).forEach( x => res = x || res);
     res = res || this.state.name.length === 0;
@@ -345,6 +376,12 @@ class SetProject extends Component {
     res = res || this.state.type4.length === 0;
     res = res || this.state.type4.length === 0;
     res = res || !this.state.language || this.state.language.value.length === 0;
+    // Only if domain url is supplied
+    if(this.state.domainUrl && this.state.domainUrl.length >= 0) {
+      res = res || (!this.state.domainUrl.startsWith("http") &&
+        !this.state.domainUrl.startsWith("https"));
+      res = res || this.state.domainUrl.match(urlRegex) === null;
+    }
 
     return !res;
   }
@@ -366,34 +403,40 @@ class SetProject extends Component {
   }
 
   getFormFields() {
+    const { auth } = this.props;
+
+    const { popularTags,projectUrl, name, language, isPublic, canCreateTask,
+      type0, type1,type2,type3,type4, canAssignTask, extraFields, domainUrl} = this.state;
+
     const creator = {
-      id: this.props.auth.id,
-      name: this.props.auth.name,
-      email: this.props.auth.updatedEmail || this.props.auth.email,
-      photoURL: this.props.auth.photoURL,
+      id: auth.id,
+      name: auth.name,
+      email: auth.updatedEmail || auth.email,
+      photoURL: auth.photoURL,
     };
 
     const taskTypes = [
-      this.state.type0,
-      this.state.type1,
-      this.state.type2,
-      this.state.type3,
-      this.state.type4];
+      type0,
+      type1,
+      type2,
+      type3,
+      type4];
 
     // TODO: add color support
-    const popularTagsAsMap = this.toTagObject(this.state.popularTags);
+    const popularTagsAsMap = this.toTagObject(popularTags);
 
     return {
-      url: this.state.projectUrl,
-      name: this.state.name,
+      url: projectUrl,
+      name: name,
       creator: creator,
       taskTypes: taskTypes,
-      language: this.state.language,
-      isPublic: this.state.isPublic,
-      canCreateTask: this.state.canCreateTask,
-      canAssignTask: this.state.canAssignTask,
+      language: language,
+      isPublic: isPublic,
+      canCreateTask: canCreateTask,
+      canAssignTask: canAssignTask,
       popularTags: popularTagsAsMap,
-      extraFields: this.state.extraFields,
+      extraFields: extraFields,
+      domainUrl: domainUrl,
       created: new Date()
     };
   }

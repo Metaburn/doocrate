@@ -10,7 +10,8 @@ export const Project = new Record({
   extraFields: null,
   canCreateTask: null,
   canAssignTask: null,
-  language: null
+  language: null,
+  domainUrl: null
 });
 
 
