@@ -38,7 +38,7 @@
     "can-assign-task": "🔏 האם הפרוייקט פתוח ללקיחת אחריות על משימות",
     "select-language": "בחר את שפת הפרוייקט",
     "custom-domain": "[אופציונלי] - כתובת אתר משלך (במידה וכבר יש לך אחד)",
-    "custom-domain-placeholder":"https://Yourdomain.com",
+    "custom-domain-placeholder":"https://yourdomain.com",
     "custom-domain-explain": "חייב להתחיל ב-<b>https://</b> או <b>http</b> לדוגמה https://burnerot.com<br/>ברגע שמשתמש יקבל אימיילים מהמערכת - זה יוביל אותו לכתובת הזאת במקום לכתובת doocrate.com",
     "submit-btn": "צור פרוייקט חדש!",
     "submit-btn-edit": "שמור שינויים!",
