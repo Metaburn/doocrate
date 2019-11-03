@@ -235,7 +235,7 @@ class SetProject extends Component {
       disabled = { !isEditable }
       autofocus = { isAutoFocus }
 
-      validationOption={{ required: true, msgOnError: t('task.errors.not-empty') }}
+      validationOption={{ required: false, msgOnError: t('task.errors.not-empty') }}
       validationCallback = {res=>this.setState({validations: {...this.state.validations, [fieldName]: res}})}
     />)
   }
