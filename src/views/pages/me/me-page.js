@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import { NavLink } from "react-router-dom";
 
 import { I18n } from "react-i18next";
@@ -111,19 +111,21 @@ export class MePage extends Component {
       return;
 
     return (
-      <div className={'projects'}>
-        {
-          auth.adminProjects.map(project => {
-            return (
-              <div className={'project'} key={project}>
-                <span>{project}</span>
-                <span><NavLink to={`/${project}/reports`}>{t('my-space.project-report')}</NavLink></span>
-                <span><NavLink to={`/${project}/edit`}>{t('my-space.edit-project')}</NavLink></span>
-              </div>
-            )
-          })
-        }
-      </div>
+      <Fragment>
+        <div className={'projects'}>
+          {
+            auth.adminProjects.map(project => {
+              return (
+                <div className={'project'} key={project}>
+                  <span>{project}</span>
+                  <span><NavLink to={`/${project}/reports`}>{t('my-space.project-report')}</NavLink></span>
+                  <span><NavLink to={`/${project}/edit`}>{t('my-space.edit-project')}</NavLink></span>
+                </div>
+              )
+            })
+          }
+        </div>
+      </Fragment>
     )
   };
 

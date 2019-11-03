@@ -45,7 +45,11 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
       return firestore.collection('users').doc(userId).get();
     }
 
-    function getEmailParams(toEmail, language) {
+    function getProjectInfo(projectId) {
+      return firestore.collection('projects').doc(projectId).get();
+    }
+
+    function getEmailParams(domain, toEmail, language) {
       console.log(`To: ${toEmail}`);
       const mailOptions = {
         from: comment.creator.email,
@@ -59,7 +63,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
         fromEmail: comment.creator.email,
         fromPhotoUrl: comment.creator.photoURL,
         body: comment.body,
-        link: `https://doocrate.com/${projectId}/task/${comment.taskId}`
+        link: `${domain}/${projectId}/task/${comment.taskId}`
       };
 
       const shortTitle = task.title.substr(0, 20);
@@ -76,14 +80,25 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
 
     // Go over listeners - Get their languages and send emails in the right language
     const userPromises = [];
-    task.listeners.forEach((listener)=> userPromises.push(getUserInfo(listener)) );
+    task.listeners.forEach((listener)=> userPromises.push(getUserInfo(listener)));
+
+    const project = await getProjectInfo(projectId);
+    const projectData = project.data();
+
+    let domain;
+    // If project has domain - set the target of the email to that domain
+    if(projectData.domainUrl && projectData.domainUrl !== "") {
+      domain = projectData.domainUrl;
+    }else {
+      domain = emailConfig.full_domain;
+    }
 
     const usersData = await Promise.all(userPromises);
 
     for (const currentUser of usersData) {
       const userData = currentUser.data();
       const languageRecipient = userData.language || 'he'; //Defaults to hebrew;
-      emailService.sendMessage(getEmailParams(userData.email, languageRecipient));
+      emailService.sendMessage(getEmailParams(domain, userData.email, languageRecipient));
     }
 
     try {

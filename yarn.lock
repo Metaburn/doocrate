@@ -10335,6 +10335,11 @@ react-burger-menu@2.6.11:
     prop-types "^15.7.2"
     snapsvg-cjs "0.0.6"
 
+react-collapsible@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.6.0.tgz#8cc18e8b88c46032b21c119833cd6922344636c9"
+  integrity sha512-r4JSoqh3C3sUIzEr9eXtDC4WPNZsOffO1EeA3ZvyS7JeDIOwmfov9p/380XyewFhqW2B8MHY8IHQ2x1HH5PTxQ==
+
 react-csv@1.0.18:
   version "1.0.18"
   resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.18.tgz#2c9e1ceda02da84fc9a6b12a54804ba5a08b8a0f"
