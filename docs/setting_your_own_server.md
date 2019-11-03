@@ -60,8 +60,9 @@ Run:
 ```
 firebase functions:config:set email.send_notifications='true'
 firebase functions:config:set email.from='<support@doocrate.com>'
-firebase functions:config:set email.domain='doocrate.com'
+firebase functions:config:set email.domain='yourdomain.com'
 firebase functions:config:set email.apikey="Your-MailGun-Api-Key"
+firebase functions:config:set email.full_domain='yourdomain.com' //Full domain is the one used in the links where the domain is used under mailgun
 
 Then in the future if you want to deploy only function - use this command (No need right now - better run deploy staging / production)
 firebase deploy --only functions
