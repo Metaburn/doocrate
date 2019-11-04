@@ -108,7 +108,8 @@ export class TasksPage extends Component {
         // No task selected - same as project page
         this.setState({
           isLoadedComments: false,
-          selectedTaskId: null
+          selectedTaskId: null,
+          newTask: null
         });
       } else {
         // Load selected task
