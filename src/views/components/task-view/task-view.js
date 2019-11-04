@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -6,7 +6,6 @@ import { getAuth } from 'src/auth';
 import {debounce} from 'lodash';
 import {includes} from "lodash/collection";
 import Icon from '../../atoms/icon';
-import Textarea from 'react-textarea-autosize';
 import { Textbox } from 'react-inputs-validation';
 import TagsInput from 'react-tagsinput';
 import { getCommentList } from 'src/comments';
@@ -20,6 +19,7 @@ import {notificationActions} from '../../../notification';
 import { TakeOwnershipModal }  from '../take-ownership-modal';
 import TaskCreator from "../task-creator/task-creator";
 import Button from "../button/button";
+import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation/textAreaAutoresizeValidation";
 
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
@@ -43,6 +43,7 @@ export class TaskView extends Component {
       shouldOpenTakeOwnerModal: false,
       extraFields: {},
       didDebounce: false, //TODO - not sure why it helps with debounced,
+      validate: false,
       shouldOpenAssignmentModal: false
     };
 
@@ -149,7 +150,7 @@ export class TaskView extends Component {
         defaultType: defaultType || [],
         popularTags: popularTags,
         extraFields: extraFields || {},
-        validation: {},
+        validations: {},
       });
 
       // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
@@ -252,6 +253,7 @@ export class TaskView extends Component {
     const classNames = isEditable ? ' editable' : '';
     const value = isExtra ? this.state.extraFields[fieldName] : this.state[fieldName];
     const onChangeHandler = isExtra ? this.handleExtraFieldChange : this.handleChange;
+    const { validate } = this.state;
 
     return(
       <Textbox
@@ -260,54 +262,80 @@ export class TaskView extends Component {
         tabIndex={tabIndex}
         name={fieldName}
         value={value}
+        validate={validate}
         placeholder={placeholder}
         ref={(e) => this[fieldName+'Input'] = e}
         onChange={onChangeHandler}
-        onBlur={this.handleSubmit} // here to trigger validation callback on Blur
+        // React validation requires even an empty function onBlur to validate on blur
+        onBlur={this.handleSubmit} // here to trigger validation callback on Blur.
         onKeyUp={() => {}} // here to trigger validation callback on Key up
         disabled={!isEditable}
         autofocus={isAutoFocus}
-        validationOption={{ required: isRequired, msgOnError: i18n.t('task.errors.not-empty') }}
-        validationCallback={(res) => this.setState({ validations: {...this.state.validations, title: res }})}/>
+        validationOption={{name: fieldName, check: true, required: isRequired, msgOnError: i18n.t('task.errors.not-empty') }}
+        validationCallback={(res) => this.setState({ validations: {...this.state.validations, [fieldName]: res }})}/>
     );
   }
 
-  renderTextArea(fieldName, isEditable, tabIndex, placeHolder) {
-    const classNames = isEditable ? ' editable' : '';
+  renderTextArea(fieldName, isEditable, placeHolder, isRequired) {
+    const { validate } = this.state;
 
-    return (
-        <Textarea
-          className={`changing-input${classNames}`}
-          name={fieldName}
-          tabIndex={tabIndex}
-          value={this.state[fieldName]}
-          placeholder={i18n.t(placeHolder)}
-          ref={(e) => this[fieldName+'Input'] = e}
-          onChange={this.handleTextBoxChange}
-          onBlur={this.handleSubmit} // here to trigger validation callback on Blur
-          onKeyUp={() => {}} // here to trigger validation callback on Key up
-          disabled={!isEditable}/>
-    );
+    return(<TextAreaAutoresizeValidation
+      validate={validate}
+      validations={{...this.state.validations}}
+      fieldName={fieldName}
+      isEditable={isEditable}
+      placeHolder={placeHolder}
+      isRequired={isRequired}
+      value={this.state[fieldName]}
+      onTextBoxChange={this.handleTextBoxChange}
+      onValidationChange={(fieldName, res) => {this.setState({validations: {...this.state.validations, [fieldName]: res }})}}
+    />);
   }
+
 
   renderTags(isEditable, tabIndex) {
-    const showPlaceholder = this.state.label.length === 0;
+    const { label, validate} = this.state;
+    const isShowPlaceholder = label.length === 0;
     const classNames = isEditable ? ' editable' : '';
+    const fieldName = 'label';
+    const msgOnError = i18n.t('task.errors.not-empty');
+
+    // Since we are using a custom control we need to perform our own validation method
+    const validateTags = () => {
+      const isValid = (label && label.length > 0);
+      this.setState({validations: {...this.state.validations, [fieldName]: isValid }})
+    };
 
     return (
-      <TagsInput
-        className={`react-tagsinput-changing ${classNames}`}
-        tabIndex={tabIndex}
-        value={this.state.label}
-        onChange={this.handleLabelChange}
-        onlyUnique={true}
-        addOnBlur={true}
-        inputProps={{ placeholder: showPlaceholder ? i18n.t('task.input-tags') : ''}}
-        onRemove={this.handleLabelChange}
-        disabled={!isEditable}
-        MaxTags={6}
-        validationOption={{ required: true, msgOnError: i18n.t('task.errors.not-empty') }}
-        validationCallback={(res) => this.setState({validations: {...this.state.validations, description: res }})}/>
+      <Fragment>
+        <TagsInput
+          className={`react-tagsinput-changing ${classNames}`}
+          tabIndex={tabIndex}
+          value={label}
+          onChange={this.handleLabelChange}
+          onlyUnique={true}
+          addOnBlur={true}
+          onBlur={e => {}} //react validation requires a function on blur even empty to validate
+          inputProps={{ placeholder: isShowPlaceholder ? i18n.t('task.input-tags') : ''}}
+          onRemove={this.handleLabelChange}
+          disabled={!isEditable}
+          MaxTags={6}
+          validationOption={{ required: true, msgOnError: msgOnError }}
+          validationCallback={(res) => this.setState({validations: {...this.state.validations, tags: res }})}/>
+
+        <Textbox
+          classNameInput={`hidden`}
+          type="text"
+          name={'tags'}
+          value={label? label.toString() : ''}
+          validate={validate}
+          onChange={() => {}}
+          onBlur={(e) => {}} // here to trigger validation callback on Key up
+          validationOption={{check: true, required: true, msgOnError: msgOnError }}
+          validationCallback={(res) => validateTags()} />
+
+
+      </Fragment>
     );
   }
 
@@ -423,6 +451,7 @@ export class TaskView extends Component {
   }
 
   isValid() {
+    this.toggleValidating(true); // This sets all the text messages below invalid fields
     let res = false;
 
     Object.values(this.state.validations).forEach( x => res = x || res);
@@ -433,7 +462,9 @@ export class TaskView extends Component {
     res = res || this.state.description.length === 0;
     res = res || (this.state.type && this.state.type.length === 0);
 
-    this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
+    // TODO - somehow the following line causes draft tasks to get reset while not valid
+
+    //this.props.isValidCallback(!res); // this says to parent if task is valid (mainly for showing warning thingy)
 
     return !res;
   }
@@ -459,7 +490,7 @@ export class TaskView extends Component {
   }
 
   handleSave() {
-    const { isDraft, submitNewTask, showSuccess, showError } = this.props;
+    const { isDraft, submitNewTask, showSuccess } = this.props;
 
     if (this.isValid()) {
       // Is task a draft and first time being saved
@@ -471,8 +502,6 @@ export class TaskView extends Component {
         this.handleSubmit();
         showSuccess(i18n.t('task.updated-successfully'));
       }
-    } else {
-      showError(i18n.t('task.mission-incomplete-short'));
     }
   }
 
@@ -496,7 +525,11 @@ export class TaskView extends Component {
       return;
     }
 
-    if (isDraft || !this.isValid()) { return; }
+    // On draft - we would call handleSubmit before the task has all fields complete
+    // This prevents it
+    if (isDraft || !this.isValid()) {
+      return;
+    }
 
     updateTask(selectedTask, this.getFormFields());
   }
@@ -579,6 +612,10 @@ export class TaskView extends Component {
     }
   };
 
+  toggleValidating = (validate) => {
+    this.setState({ validate });
+  };
+
   render() {
     const { selectedTask } = this.props;
     if (!selectedTask) return null;
@@ -595,7 +632,7 @@ export class TaskView extends Component {
       <div className="task-view-container" dir={i18n.t('lang-dir')}>
         <TaskViewHeader {...this.getTaskViewHeaderProps()}/>
         <div className="task-view">
-          <form noValidate>
+          <form>
             <div className="form-input">
               {canEditTask && isEditing ?
                 this.renderInput('title', i18n.t('task.name'), canEditTask, '0', true, true) :
@@ -603,12 +640,12 @@ export class TaskView extends Component {
             </div>
             <div className="form-input">
               {canEditTask && isEditing ?
-                this.renderTextArea('description', canEditTask, '0', 'task.description') :
+                this.renderTextArea('description', canEditTask, i18n.t('task.description'), true) :
                 <span>{selectedTask.description}</span>}
             </div>
             <div className="form-input">
               {canEditTask && isEditing ?
-                this.renderTextArea('requirements', canEditTask, '0', 'task.requirements') :
+                this.renderTextArea('requirements', canEditTask, i18n.t('task.requirements')) :
                 <span>{selectedTask.requirements}</span>}
             </div>
             <div className="form-input"><div className={`instruction instruction-${i18n.t('lang-float')}`}><span>{i18n.t('task.type')}</span></div>
@@ -689,7 +726,7 @@ TaskView.propTypes = {
   isValidCallback: PropTypes.func.isRequired,
   isDraft: PropTypes.bool.isRequired,
   submitNewTask: PropTypes.func.isRequired,
-  closeTaskView: PropTypes.func.isRequired
+  closeTaskView: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createSelector(

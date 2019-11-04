@@ -1,45 +1,5 @@
 @import 'views/styles/shared';
 
-.empty-placeholder {
-  padding: 10px 15px;
-  font-size: 14px;
+.textAreaAutoresizeValidation {
 
-
-
-  h3 {
-    color: rgba(197, 193, 193, 0.7);
-    font-size: 18px;
-    text-align: center;
-    margin: 35px 0;
-  }
-
-  div,
-  button {
-    font-size: 14px;
-  }
-
-  div {
-    padding-top: 20px;
-    color: #000;
-    font-weight: normal;
-  }
-
-  .click-here-left {
-    margin-right: 5px;
-  }
-
-  .click-here-right {
-    margin-left: 5px;
-  }
-
-  button {
-    background: transparent;
-    border: 0;
-    padding: 0;
-    color: $primary-color;
-
-    &:hover {
-      border-bottom: 1px solid $primary-color;
-    }
-  }
 }
