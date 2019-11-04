@@ -1,4 +1,6 @@
-const functions = require('firebase-functions');
+// This is commented out cause it's been firing those emails on random save events
+// There is a bug that needs to be addressed
+/*const functions = require('firebase-functions');
 
 const EmailService = require('./emailService');
 
@@ -19,7 +21,7 @@ const firestore = admin.firestore();
     TODO There is a race condition where a task was unassigned then deleted. 2 events would be fired.
   //TODO  Both of them current data would be unassigned and deleted leading to a 2 task was deleted messages
  */
-exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
+/*exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId}/tasks/{taskId}').onWrite(
   async (change, context) => {
 
     const emailService = new EmailService();
@@ -112,3 +114,4 @@ exports.onEditTaskSendEmail = functions.firestore.document('/projects/{projectId
       emailService.sendMessage(mailOptions);
     }
   });
+*/
