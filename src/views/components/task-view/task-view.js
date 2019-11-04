@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { getAuth } from 'src/auth';
-import {debounce} from 'lodash';
 import {includes} from "lodash/collection";
 import Icon from '../../atoms/icon';
 import { Textbox } from 'react-inputs-validation';
@@ -42,7 +41,6 @@ export class TaskView extends Component {
       validations: {},
       shouldOpenTakeOwnerModal: false,
       extraFields: {},
-      didDebounce: false, //TODO - not sure why it helps with debounced,
       validate: false,
       shouldOpenAssignmentModal: false
     };
@@ -58,7 +56,6 @@ export class TaskView extends Component {
     this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
 
-    this.debouncedHandleSubmit = debounce(this.handleSubmit, 300);
   }
 
   // TODO: Move to utils or use Lodash instead
@@ -78,13 +75,6 @@ export class TaskView extends Component {
 
   componentWillMount() {
     this.updateStateByProps(this.props);
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevState.didDebounce) {
-      this.debouncedHandleSubmit(); //This causes a refresh bug of many many many sends - not sure why its here
-      this.setState({didDebounce: true});
-    }
   }
 
   // We only want this shouldComponentUpdatecomponent to be shown if this is an existing task
@@ -454,12 +444,9 @@ export class TaskView extends Component {
     this.toggleValidating(true); // This sets all the text messages below invalid fields
     let res = false;
 
-    Object.values(this.state.validations).forEach( x => res = x || res);
-
-    // also check actual values...
-    res = res || this.state.label.length === 0; // check also there's at least one label
     res = res || this.state.title.length === 0;
     res = res || this.state.description.length === 0;
+
     res = res || (this.state.type && this.state.type.length === 0);
 
     // TODO - somehow the following line causes draft tasks to get reset while not valid

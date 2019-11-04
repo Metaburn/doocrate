@@ -67,6 +67,8 @@ class TaskViewMini extends Component {
         return l
       })) : [];
 
+    const {assignee} = task;
+
     return (
       <div className={containerClasses} dir={i18n.t('lang-dir')}
            onClick={() => this.props.onSelectTask(this.props.task)}>
@@ -74,8 +76,11 @@ class TaskViewMini extends Component {
           <div className={'title'}>{title}</div>
           <div className={`task-type`}>{type && type.label}</div>
         </div>
-        <div>{description}</div>
-        <div>{requirements}</div>
+        <div className={'description'}>{description}</div>
+
+        { !assignee &&
+          <div className={'requirements'}>{requirements}</div>
+        }
 
         { this.renderAssignee() }
 

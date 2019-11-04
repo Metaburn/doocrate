@@ -367,6 +367,7 @@ export class TasksPage extends Component {
       assignTask: this.assignTaskToSignedUser,
       followTask: this.followTaskToSignedUser,
       unfollowTask: this.unfollowTaskToSignedUser,
+      updateTask: this.props.updateTask,
       unassignTask: this.unassignTask,
       unloadComments: this.props.unloadComments,
       createComment: this.props.createComment,
