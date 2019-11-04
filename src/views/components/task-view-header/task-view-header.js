@@ -9,7 +9,6 @@ import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 import follow from './follow.png';
 import './task-view-header.css';
 import TaskHeaderTooltip from "../../molecules/TaskHeaderTooltip/taskHeaderTooltip";
-import EmptyAvatar from "../../atoms/emptyAvatar/emptyAvatar";
 
 export class TaskViewHeader extends Component {
   render() {
