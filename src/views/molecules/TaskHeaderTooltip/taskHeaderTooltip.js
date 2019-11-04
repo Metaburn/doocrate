@@ -15,6 +15,7 @@ class TaskHeaderTooltip extends Component {
       isTooltipActive: false
     }
   }
+
   render() {
     let tooltipStyle = {
       style: {
