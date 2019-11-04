@@ -384,7 +384,6 @@ export class TasksPage extends Component {
       return;
     }
 
-    this.props.showSuccess(i18n.t('task.creating-new'));
     // TODO project should be taken from store
     const project_url = this.props.match.params.projectUrl;
     this.props.history.push('/'+project_url+'/task/new-task?complete=false');

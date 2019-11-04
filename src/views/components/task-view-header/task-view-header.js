@@ -9,7 +9,6 @@ import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 import follow from './follow.png';
 import './task-view-header.css';
 import TaskHeaderTooltip from "../../molecules/TaskHeaderTooltip/taskHeaderTooltip";
-import EmptyAvatar from "../../atoms/emptyAvatar/emptyAvatar";
 
 export class TaskViewHeader extends Component {
   render() {
@@ -36,27 +35,6 @@ export class TaskViewHeader extends Component {
               <Icon name={"edit"} className={"header-icon grow"}/>
             </button>
             }
-
-
-            {isDraft ? '' : (!assignee) ?
-              <Fragment>
-                <Button
-                className='button button-small action-button assign_task'
-                onClick={()=>assignTask(task)}
-                type='button'>{t('task.take-responsibility')}
-                  <EmptyAvatar alt={'Assignee'} isShowText={false}/>
-                </Button>
-              </Fragment>
-                :
-
-              <div className='avatar-container'>
-                <UserInfoAvatar
-                  uniqueId={'task-header-assignee'}
-                  photoURL={assignee.photoURL}
-                  userId={assignee.id}
-                  alt={assignee.name}
-                  projectUrl={projectUrl} />
-              </div>}
 
             { isShowSaveButton && ! isDraft &&
             <Button
@@ -92,6 +70,29 @@ export class TaskViewHeader extends Component {
           </div>
 
           <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
+
+            {isDraft ? '' : (!assignee) ?
+              <Fragment>
+                <Button
+                  className={`button button-small action-button assign_task lang-${i18n.language}`}
+                  onClick={()=>assignTask(task)}
+                  type='button'>
+                  <span>
+                    {i18n.t('task.take-responsibility')}
+                  </span>
+                </Button>
+              </Fragment>
+              :
+
+              <div className='avatar-container'>
+                <UserInfoAvatar
+                  uniqueId={'task-header-assignee'}
+                  photoURL={assignee.photoURL}
+                  userId={assignee.id}
+                  alt={assignee.name}
+                  projectUrl={projectUrl} />
+              </div>}
+
             { !isDraft &&
               <TaskHeaderTooltip
                 isShowMarkAsDoneButton={isShowMarkAsDoneButton}
