@@ -100,7 +100,7 @@ export class TasksPage extends Component {
           this.setState({
             selectedTaskId: null,
             newTask: this.createNewTask(),
-            isLoadedComments: false
+            isLoadedComments: false,
           });
           this.props.unloadComments();
         }
@@ -108,7 +108,8 @@ export class TasksPage extends Component {
         // No task selected - same as project page
         this.setState({
           isLoadedComments: false,
-          selectedTaskId: null
+          selectedTaskId: null,
+          newTask: null,
         });
       } else {
         // Load selected task
@@ -223,7 +224,9 @@ export class TasksPage extends Component {
     // Remove this to keeps the user on the same page - allowing to create another new task
 
     // Navigate to newly created task
-    setTimeout(()=>{this.setState({newTask: null, selectedTaskId: task.id})}, 100);
+    const project_url = this.props.match.params.projectUrl;
+    setTimeout(()=>{this.props.history.push(`/${project_url}/task/${task.id}?complete=false`)}, 100);
+
   }
 
   createNewTask() {
@@ -358,7 +361,6 @@ export class TasksPage extends Component {
     return {
       selectedTask,
       onDeleteTask: this.props.deleteTask,
-      updateTask: this.props.updateTask,
       selectedProject: this.props.selectedProject,
       isAdmin: this.isAdmin(),
       isGuide: this.isGuide(),

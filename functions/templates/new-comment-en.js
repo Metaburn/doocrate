@@ -359,8 +359,8 @@ exports.newCommentEn = (args) => {
             <tr>
               <td align="center">
                 <p>
-                  <a href="${ link }"> Click here to open the task! &raquo;</a>	To remove notifications for this task - open it and click on Unfollow</p>
-                  <a href="emailto:support@doocrate.com"><unsubscribe>Send us an email to unsubscribe support@doocrate.com</unsubscribe></a>
+                  <a href="${ link }"><unsubscribe>Click here to open the task! &raquo;</unsubscribe></a>	To unsubscribe from notifications for this task - open it and click on Unfollow</p>
+                  <a href="emailto:support@doocrate.com">If all fails. send us an email to unsubscribe support@doocrate.com</a>
                 </p>
               </td>
             </tr>

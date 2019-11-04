@@ -182,6 +182,9 @@ body { top: 0px !important; }
   border-radius: 10px;
 }
 
+.hidden {
+  display: none;
+}
 
 @media (max-width: 767px) {
   body {

@@ -147,7 +147,7 @@
       "other": "אחר"
     },
     "errors": {
-      "not-empty": "שדה חובה לא יכול להיות ריק",
+      "not-empty": "שדה חובה לא יכול להיות ריק 🙄",
       "min-3": "שדה חייב להיות באורך לפחות שלושה תווים"
     },
     "no-assignee": "אין אחראי"

@@ -147,7 +147,7 @@
       "other": "Other"
     },
     "errors": {
-      "not-empty": "This field cannot be empty",
+      "not-empty": "This field cannot be empty 🙄",
       "min-3": "This field must have at least 3 characters"
     },
     "no-assignee": "No Owner yet"

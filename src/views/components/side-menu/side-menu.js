@@ -16,7 +16,7 @@ import './side-menu.css';
 class SideMenu extends Component {
   render() {
     const { menuIsOpen, setMenuOpen } = this.props;
-    const width = isMobile? '90%' :
+    const width = isMobile? '98%' :
       isTablet? '70%':
         '370px';
 

@@ -10,11 +10,11 @@ const TaskSideView = ({
   assignTask, selectedProject, isAdmin, isGuide,
   followTask, unfollowTask, unassignTask, unloadComments,
   createComment, updateComment, removeComment,
-  isValidCallback, isDraft, submitNewTask, resetSelectedTask
+  isValidCallback, isDraft, submitNewTask, resetSelectedTask, validations
 }) => {
 
   const isHebrew = i18n.language === "he";
-  const width = isMobile ? "90%" : isTablet? "60%" :"45%";
+  const width = isMobile ? "98%" : isTablet? "60%" :"45%";
   const isOpen = selectedTask !== undefined || isDraft;
   const classNames = classnames("task-side-view",
     { "is-mobile": isMobile,
@@ -49,7 +49,8 @@ const TaskSideView = ({
         isValidCallback={isValidCallback}
         isDraft={isDraft}
         submitNewTask={submitNewTask}
-        closeTaskView={resetSelectedTask}/>
+        closeTaskView={resetSelectedTask}
+        validations={validations}/>
     </Menu>
   );
 };
