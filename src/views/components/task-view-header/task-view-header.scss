@@ -36,7 +36,8 @@
       display: flex;
       max-width: 9em;
       flex-wrap: wrap;
-      padding: 1.9em 0.5em;
+      padding: 0.9em 0.5em;
+      height: auto;
 
       &:hover {
         -webkit-box-shadow: 0px 3px 6px rgba(103, 67, 155, 0.8);
