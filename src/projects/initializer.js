@@ -11,6 +11,17 @@ export function initProject(dispatch) {
     if (!projectUrl || projectUrl === 'sign-in' || projectUrl === 'me' || projectUrl === 'logout') {
       return resolve();
     }
+
+    // Listen for project changes
+    firebaseDb.collection('projects').doc(projectUrl).onSnapshot({
+        // Listen for document metadata changes
+        includeMetadataChanges: true
+      }, (doc) => {
+        const project = doc.data();
+        dispatch(selectProject(project));
+      }
+    );
+
     firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
         if(snapshot.exists) {
           const project = snapshot.data();

@@ -141,7 +141,7 @@ export function selectProjectFromUrl() {
         const project = snapshot.data();
         return dispatch(selectProject(project));
       }
-    })
+    });
   }
 }
 

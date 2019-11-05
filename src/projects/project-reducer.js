@@ -15,6 +15,7 @@ export const ProjectState = new Record({
   selectedProject: null,
 });
 
+
 export function projectsReducer(state = new ProjectState(), {payload, type}) {
   switch (type) {
     // When creating a new project we set the selected project
