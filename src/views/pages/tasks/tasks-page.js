@@ -40,7 +40,7 @@ export class TasksPage extends Component {
     };
 
     this.debouncedFilterTasksFromProps = debounce(this.filterTasksFromProps, 50);
-    this.createNewTask = this.createNewTask.bind(this);
+    this.getNewTask = this.getNewTask.bind(this);
     this.isAdmin = this.isAdmin.bind(this);
     this.isGuide = this.isGuide.bind(this);
     this.assignTaskToSignedUser = this.assignTaskToSignedUser.bind(this);
@@ -99,7 +99,7 @@ export class TasksPage extends Component {
         if (this.state.newTask == null) {
           this.setState({
             selectedTaskId: null,
-            newTask: this.createNewTask(),
+            newTask: this.getNewTask(),
             isLoadedComments: false,
           });
           this.props.unloadComments();
@@ -226,18 +226,19 @@ export class TasksPage extends Component {
     // Navigate to newly created task
     const project_url = this.props.match.params.projectUrl;
     setTimeout(()=>{this.props.history.push(`/${project_url}/task/${task.id}?complete=false`)}, 100);
-
   }
 
-  createNewTask() {
-    if (!this.props.auth || (this.props.selectedProject && !(this.props.selectedProject.canCreateTask))) {
-      this.props.showError(i18n.t('task.user-new-tasks-closed'));
-      const project_url = this.props.match.params.projectUrl;
-      this.props.history.push('/'+project_url+'/task/1?complete=false');
+  getAnyTasksCreatedAssignedToUser = () => {
+    const { auth, tasks} = this.props;
 
-      return;
-    }
+    const result = tasks.find((task) => {
+      return (task.creator.id === auth.id) ||
+        (task.assignee && task.assignee.id === auth.id)
+    });
+    return typeof result !== 'undefined';
+  };
 
+  getNewTask() {
     const creator = {
       id: this.props.auth.id,
       name: this.props.auth.name,
@@ -278,8 +279,10 @@ export class TasksPage extends Component {
 
   assignTaskToSignedUser(task) {
     if (!this.props.selectedProject.canAssignTask) {
-      this.props.showError(i18n.t('task.user-cannot-assign'));
-      return;
+      if(!this.getAnyTasksCreatedAssignedToUser()) {
+        this.props.showError(i18n.t('task.user-cannot-assign'));
+        return;
+      }
     }
 
     this.props.assignTask(task, this.props.auth);
@@ -382,9 +385,13 @@ export class TasksPage extends Component {
   }
 
   createTask = () => {
-    if (!this.props.auth || !(this.props.selectedProject.canCreateTask)) {
-      this.props.showError(i18n.t('task.user-new-tasks-closed'));
-      return;
+    const { auth } = this.props;
+    if (!auth || !(this.props.selectedProject.canCreateTask)) {
+        // Check if user has a task created / assigned already
+        if(!this.getAnyTasksCreatedAssignedToUser()) {
+          this.props.showError(i18n.t('task.user-new-tasks-closed'));
+          return;
+        }
     }
 
     // TODO project should be taken from store

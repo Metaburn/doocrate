@@ -129,8 +129,8 @@
     "only-managers-can-unassign": "Only managers can remove responsibility",
     "maximum-reached": "You've reached the max amount of tasks you can create",
     "new-tasks-closed": "New task creation is currently on hold",
-    "user-cannot-assign": "The project is closed now. You cannot take responsibility on a mission, only view them and edit missions that belong to you.",
-    "user-new-tasks-closed": "The project is closed now. You cannot create new tasks, just view and edit existing tasks.",
+    "user-cannot-assign": "The project is closed now. You cannot take responsibility on a task, only view tasks",
+    "user-new-tasks-closed": "The project is closed now. You cannot create new tasks, just view existing tasks",
 
     "automatic-tags": "Popular tags (Choose at least one):",
     "input-tags": "Input one Tag minimum",
