@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
 import { appConfig } from 'src/config/app-config'
-import { NavLink } from 'react-router-dom';
+import {NavLink, withRouter} from 'react-router-dom';
 import {updateUserData} from "../../../auth/auth";
 import getRandomImage from "../../../utils/unsplash";
 import {SetUserInfo} from "../set-user-info";
@@ -14,6 +14,7 @@ import i18n from "src/i18n";
 
 import "react-toastify/dist/ReactToastify.min.css";
 import "./header.css";
+import {connect} from "react-redux";
 
 class Header extends Component {
   constructor() {
@@ -106,6 +107,7 @@ class Header extends Component {
     const projectCookie = getCookie('project');
 
     const oldUserData = this.props.auth;
+    const dispatch = this.props.dispatch;
     const newUserData = {};
     newUserData.uid = oldUserData.id;
     newUserData.email = userInfo.email;
@@ -115,7 +117,7 @@ class Header extends Component {
     newUserData.bio = userInfo.bio;
     // Update the default project on first time setting user info
     newUserData.defaultProject = projectCookie || this.props.selectedProject;
-    updateUserData(newUserData);
+    updateUserData(newUserData, dispatch);
   }
 
 }
@@ -128,4 +130,5 @@ Header.props = {
   tour: PropTypes.object.isRequired,
 };
 
-export default Header;
+export default withRouter(connect(null, null)(Header));
+
