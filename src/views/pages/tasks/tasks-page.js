@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, is } from 'immutable';
+import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
@@ -86,7 +86,7 @@ export class TasksPage extends Component {
     const selectedTaskId = nextProps.match.params.id;
 
     const nextFilters = this.getFilterParams(nextProps);
-    const { selectedFilters, tasks } = this.props;
+    const { selectedFilters } = this.props;
     //todo: add after launch
    /* let prevSize = 0;
     let nextSize = 0;
