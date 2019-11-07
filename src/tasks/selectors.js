@@ -104,7 +104,6 @@ export const taskFilters = {
       return (
         taskTitle.includes(filterText) ||
         taskDescription.includes(filterText) ||
-        creatorName.includes(filterText) ||
         (creatorName && creatorName.includes(filterText)) ||
         (assigneeName && assigneeName.includes(filterText))
       )
