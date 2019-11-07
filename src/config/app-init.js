@@ -3,9 +3,9 @@ export function initializeApp() {
 }
 
 // Since we don't know how to solve firebase cache issues
-// we manually refresh the page every 24 hours like it's the 90's
+// we manually refresh the page every 6 hours like it's the 90's
 const checkIfNeedsRefresh = () => {
-  const oneDay = 60 * 60 * 24 * 1000;
+  const oneDay = 60 * 60 * 1000 * 6;
   try {
     const storage = window.localStorage;
     const lastRefreshStorage = storage.getItem('lastRefresh');
