@@ -50,8 +50,8 @@ service cloud.firestore {
     match /projects/{anyProject} {
       allow create: if request.auth != null;
       allow read: if true; //Allow all to read the existing project
-      allow update: if request.auth != null && isCreator();
-      allow delete: if request.auth != null && isCreator();
+      allow update: if request.auth != null && isCreator() || isSuperAdmin();
+      allow delete: if request.auth != null && isCreator() || isSuperAdmin();
 
       match /tasks/{anyTask} {
         allow read: if request.auth != null;
