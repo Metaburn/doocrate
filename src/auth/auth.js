@@ -91,7 +91,7 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
 }
 
 // TODO: perhaps should be in a better place and check if operation success
-export function updateUserData(authUser) {
+export function updateUserData(authUser, dispatch) {
   return new Promise((resolve, reject) => {
     if (!authUser || !authUser.uid) {
       return resolve(null);
@@ -144,6 +144,9 @@ export function updateUserData(authUser) {
           userDoc.set(fieldsToUpdate, {merge: true});
 
           updateAuthFields(authUser);
+
+          // Update local auth
+          dispatchUpdatedAuthUser(authUser, userSnapshot, fieldsToUpdate, dispatch);
         }else {
           // Simply update the user fields
           // Add any fields below
@@ -166,14 +169,18 @@ export function updateUserData(authUser) {
           updateAuthFields(authUser);
 
           // Update local auth
-          // TODO - ideally this would fire again an init auth so the local auth object would update
-          Object.assign(authUser, userSnapshot.data());
-          authActions.initAuth(newUserData);
+          dispatchUpdatedAuthUser(authUser, userSnapshot, newUserData, dispatch);
         }
         resolve(authUser);
       }
     })
   })
+}
+
+function dispatchUpdatedAuthUser(authUser, userSnapshot, updatedFields, dispatch ){
+  Object.assign(authUser, userSnapshot.data());
+  Object.assign(authUser, updatedFields);
+  dispatch(authActions.initAuth(authUser));
 }
 
 function updateAuthFields(authUser) {
