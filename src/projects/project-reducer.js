@@ -1,4 +1,5 @@
 import { List, Record } from 'immutable';
+import { showError } from "src/notification/actions"
 
 import {
   CREATE_PROJECT_SUCCESS,
@@ -6,6 +7,7 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_SUCCESS,
   NEW_PROJECT_CREATED,
+  CREATE_PROJECT_ERROR
 } from './action-types';
 import { SELECT_PROJECT } from './action-types';
 import { firebaseCollectionToList } from 'src/firebase/firebase-list';
@@ -44,6 +46,9 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
 
     case SELECT_PROJECT:
       return state.set('selectedProject', payload || null);
+
+    case CREATE_PROJECT_ERROR:
+      showError(payload);
 
     default:
       return state;
