@@ -61,8 +61,11 @@ export class TasksPage extends Component {
 
     let project_url = this.props.match.params.projectUrl;
 
-    this.props.loadTasks(project_url, INCOMPLETE_TASKS);
-    this.props.loadLabels(project_url);
+    // First time this page is loaded
+    if(!this.props.tasks || this.props.tasks.size <= 0) {
+      this.props.loadTasks(project_url, INCOMPLETE_TASKS);
+      this.props.loadLabels(project_url);
+    }
 
     // Sets the default loading page
     if (!this.props.filterType && firebaseConfig.defaultPageToLoad) {
