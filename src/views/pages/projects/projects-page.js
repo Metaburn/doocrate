@@ -44,7 +44,7 @@ export class ProjectsPage extends Component {
       this.props.history.push('/'+ project +'/task/1');
     }
     // Temporary fix for those who reached object object
-    else if (project && project === "[object Object]") {
+    else if (project && (project === "[object Object]" || project === "null")) {
       this.props.history.push('/burnerot19/task/1');
     }
 
