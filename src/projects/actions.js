@@ -21,7 +21,11 @@ export function createProject(projectId, project) {
       .then( () => {
         return dispatch(newProjectCreated(project))
       })
-      .catch(error => dispatch(createProjectError(error)));
+      .catch(error => {
+        console.error(error);
+        const errorMessage = (error && error.message) ? error.message : error;
+        return dispatch(createProjectError(errorMessage))
+      });
   };
 }
 
