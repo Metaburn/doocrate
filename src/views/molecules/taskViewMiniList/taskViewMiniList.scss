@@ -5,9 +5,11 @@
   flex-direction: row;
 
   .task-view-mini {
-    margin: 13px;
+    margin: 16px;
     min-width: 19em;
-    max-width: 19em;
+    margin: 16px;
+    flex: 1;
+    min-width: 19em;
   }
 
   .me-empty-placeholder-wrapper {
@@ -34,7 +36,7 @@
   }
 
   .task-view-mini-container {
-    width: 94%; //Fixes an issue with overflow and box-shadow being cut
+    width: 100%; //Fixes an issue with overflow and box-shadow being cut
     margin: 0 auto;
     display: flex;
     flex-direction: row;
@@ -43,21 +45,20 @@
   }
 }
 
-
 @media screen and (max-width: 767px) {
   .task-view-mini-list {
     .task-view-mini {
       min-width: 15em;
-      max-width: 15em;
+      width: 96%;
     }
   }
 }
 
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
   .task-view-mini-list {
     .task-view-mini {
       min-width: 100%;
-      max-width: 100%;
+      width: 96%;
     }
   }
 }

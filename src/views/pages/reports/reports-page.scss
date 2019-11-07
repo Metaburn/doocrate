@@ -10,27 +10,27 @@
       text-decoration: underline;
     }
   }
-  .report-table{
-      width: 90%;
-      margin: auto;
-      margin-top: 20px;
+  .report-table {
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
   }
 
   .report-table th {
-      border: 1px solid #bbb;
-      text-align: left;
-      padding: 2px 4px;
-      font-size: 13px;
-      font-weight: 400;
+    border: 1px solid #bbb;
+    text-align: left;
+    padding: 2px 4px;
+    font-size: 16px;
+    font-weight: 400;
   }
 
-  .report-table thead tr th{
-      font-weight: 600;
-      background: gray;
-      text-transform: capitalize;
+  .report-table thead tr th {
+    font-weight: 600;
+    background: gray;
+    text-transform: capitalize;
   }
 
-  .report-table tr:nth-child(odd) th{
-      background: #ddd;
+  .report-table tr:nth-child(odd) th {
+    background: #ddd;
   }
 }
