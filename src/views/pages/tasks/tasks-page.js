@@ -61,7 +61,7 @@ export class TasksPage extends Component {
 
     let project_url = this.props.match.params.projectUrl;
     // Hot fix for users who redirect here
-    if(project_url === "[object Object]") {
+    if(project_url === "[object Object]" || project_url === "null") {
       this.props.history.push('/burnerot19/task/1');
     }
 
