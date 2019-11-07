@@ -235,7 +235,7 @@
     "q7": "Where is the logout button?",
     "a7": "<a href='/logout'>Here Let's get you out of here</a>",
     "q8": "How can I help?",
-    "a8": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href={'https://www.facebook.com/groups/415274585770726/'}>Join our facebook here</a> and message us</span>",
+    "a8": "<span>We would love to hear your thoughts and ideas. Any feedback or new ways to use this product are welcome. <a href='https://www.facebook.com/groups/415274585770726/'>Join our facebook here</a> and message us</span>",
     "q9": "I'm a developer. How can I help?",
     "a9": "<span>You are welcome to join the development - <br/>here are the open tasks <a href='https://trello.com/b/u5o3nvXA/doocrate-%D7%93%D7%95%D7%90%D7%95%D7%A7%D7%A8%D7%98'>Our trello board</a><br/><a href='https://github.com/metaburn/doocrate'/>Here is the code</a> (Yes we're open source)<br/>If you are looking how to join - contact gal <br/>galbra@gmail.com</span>",
     "q10": "Who are you wonderful people who invest time in this?",

@@ -107,22 +107,28 @@ export class TaskView extends Component {
     }
   }
 
-  updateStateByProps(props) {
-    let nextSelectedTask = props.selectedTask || {};
+  updateStateByProps(nextProps) {
+    // If same id - don't update
+    // This helps to also fight general updates from the app where this view should not care about
+    // Otherwise on every update of the app - the fields are getting cleared
+    if(nextProps.selectedTask && this.props.selectedTask && nextProps.selectedTask.id === this.props.selectedTask.id) {
+      return;
+    }
+
+    let nextSelectedTask = nextProps.selectedTask || {};
     let { id, title, description, requirements, type,
       label, isCritical, listeners, dueDate, created, isDone, doneDate,
       extraFields,} = nextSelectedTask;
 
-    const { isDraft } = props;
+    const { isDraft } = nextProps;
 
     // this checks if we got another task, or we're updating the same one
       const labelAsArray = label ?
       (Object.keys(label).map( l => { return l })) : [];
 
       // Set default task types
-      let defaultType = this.getDefaultTaskTypes(props);
-
-      let popularTags = this.getPopularTags(props);
+      let defaultType = this.getDefaultTaskTypes(nextProps);
+      let popularTags = this.getPopularTags(nextProps);
 
       this.setState({
         id: id || '',
