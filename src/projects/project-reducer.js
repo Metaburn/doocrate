@@ -48,7 +48,7 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
       return state.set('selectedProject', payload || null);
 
     case CREATE_PROJECT_ERROR:
-      showError(payload);
+      return showError(payload);
 
     default:
       return state;
