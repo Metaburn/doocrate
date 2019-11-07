@@ -43,7 +43,7 @@ export class MePage extends Component {
   render() {
     const { auth, selectedProject} = this.props;
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
-      auth.defaultProject;
+      auth.defaultProject ? auth.defaultProject : "burnerot19";
 
     return (
       <I18n ns='translations'>

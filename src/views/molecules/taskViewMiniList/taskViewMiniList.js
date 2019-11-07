@@ -87,7 +87,7 @@ TaskViewMiniList.propTypes = {
   onClearFilters: PropTypes.func,
   onLabelClick: PropTypes.func.isRequired,
   setTour: PropTypes.func.isRequired,
-  selectedTaskId: PropTypes.number,
+  selectedTaskId: PropTypes.string,
   shouldShowWizardOnNoResults: PropTypes.bool.isRequired,
   projectUrl: PropTypes.string.isRequired,
 };

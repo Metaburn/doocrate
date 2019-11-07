@@ -40,8 +40,12 @@ export class ProjectsPage extends Component {
       return;
     }
     const project = getCookie('project');
-    if (project) {
+    if (project && project !== "[object Object]") {
       this.props.history.push('/'+ project +'/task/1');
+    }
+    // Temporary fix for those who reached object object
+    else if (project && project === "[object Object]") {
+      this.props.history.push('/burnerot19/task/1');
     }
 
     // Redirect user to default project

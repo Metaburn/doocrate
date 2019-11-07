@@ -124,7 +124,7 @@ TaskViewHeader.propTypes = {
   canDeleteTask: PropTypes.bool.isRequired,
   isShowEditButton: PropTypes.bool.isRequired,
   isShowSaveButton: PropTypes.bool.isRequired,
-  isShowUnassignButton: PropTypes.bool.isRequired,
+  isShowUnassignButton: PropTypes.bool,
   isShowMarkAsDoneButton: PropTypes.bool.isRequired,
   isShowDeleteButton: PropTypes.bool.isRequired,
   showButtonAsFollow: PropTypes.bool.isRequired,

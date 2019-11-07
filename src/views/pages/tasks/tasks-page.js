@@ -60,6 +60,10 @@ export class TasksPage extends Component {
     }
 
     let project_url = this.props.match.params.projectUrl;
+    // Hot fix for users who redirect here
+    if(project_url === "[object Object]") {
+      this.props.history.push('/burnerot19/task/1');
+    }
 
     // First time this page is loaded
     if(!this.props.tasks || this.props.tasks.size <= 0) {
@@ -151,7 +155,7 @@ export class TasksPage extends Component {
 
   setProjectCookie(projectUrl) {
     // Since we are parsing the url we might get undefined as a string
-    if(projectUrl && projectUrl !== 'undefined' && projectUrl !== 'me') {
+    if(projectUrl && projectUrl !== 'undefined' && projectUrl !== 'me' && projectUrl !== '[object Object]') {
       setCookie('project', projectUrl);
     }
   }
