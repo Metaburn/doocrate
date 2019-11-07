@@ -150,7 +150,8 @@
       "not-empty": "שדה חובה לא יכול להיות ריק 🙄",
       "min-3": "שדה חייב להיות באורך לפחות שלושה תווים"
     },
-    "no-assignee": "אין אחראי"
+    "no-assignee": "אין אחראי",
+    "confirm-exit": "היי, את בטוחה שאת רוצה לצאת מהמשימה בלי לשמור?"
   },
   "filter": {
     "header": "סינון משימות",
