@@ -27,7 +27,12 @@ const TaskSideView = ({
           isOpen={isOpen}
           className={classNames}
           overlayClassName={"task-side-view-overlay"}
-          disableOverlayClick={false}
+          disableOverlayClick={()=>{
+            if(isDraft){
+              return !window.confirm(i18n.t('task.confirm-exit'))
+            }
+            return false;
+          }}
           onStateChange={(state) => (!state.isOpen && resetSelectedTask())}
           width={ width }>
 
@@ -49,7 +54,16 @@ const TaskSideView = ({
         isValidCallback={isValidCallback}
         isDraft={isDraft}
         submitNewTask={submitNewTask}
-        closeTaskView={resetSelectedTask}
+        closeTaskView={()=>{
+          if(isDraft) {
+            if (window.confirm(i18n.t('task.confirm-exit'))) {
+              resetSelectedTask()
+            }else {
+              return;
+            }
+          }
+          resetSelectedTask()
+        }}
         validations={validations}/>
     </Menu>
   );
