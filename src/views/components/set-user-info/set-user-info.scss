@@ -100,13 +100,14 @@
 
 @media only screen and (max-width: 480px) {
   .set-user-info {
+    margin-bottom: 10em;
     .modal-body {
       .avatar-wrapper {
         flex-direction: column;
         align-items: center;
 
         .avatar {
-          margin-botto: 20px;
+          margin-bottom: 20px;
         }
       }
     }
