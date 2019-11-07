@@ -63,6 +63,9 @@ export class TasksPage extends Component {
     // Hot fix for users who redirect here
     if(project_url === "[object Object]" || project_url === "null") {
       this.props.history.push('/burnerot19/task/1');
+      this.props.loadTasks("burnerot19", INCOMPLETE_TASKS);
+      this.props.loadLabels("burnerot19");
+      return;
     }
 
     // First time this page is loaded
