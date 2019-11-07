@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List } from 'immutable';
+import { List, is } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
@@ -83,13 +83,21 @@ export class TasksPage extends Component {
     const selectedTaskId = nextProps.match.params.id;
 
     const nextFilters = this.getFilterParams(nextProps);
-    const { selectedFilters } = this.props;
+    const { selectedFilters, tasks } = this.props;
+    let prevSize = 0;
+    let nextSize = 0;
+    if(tasks && tasks.size){
+      prevSize = tasks.size;
+    }
+    if(nextProps.tasks && nextProps.tasks.size){
+      nextSize = nextProps.tasks.size;
+    }
 
     // ES compare
     // To prevent a race condition we want to make sure that only
     // when there are no tasks - we don't update those filters
     // This allows to have the user loads a page directly with filters
-    if(nextProps.tasks && nextProps.tasks.size > 0) {
+    if(nextSize && (nextSize !== prevSize || !is(nextProps.tasks, tasks))) {
       if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
         this.debouncedFilterTasksFromProps(nextProps);
       }
