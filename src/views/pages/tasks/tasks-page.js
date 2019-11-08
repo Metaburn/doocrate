@@ -524,7 +524,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -547,7 +547,7 @@ export class TasksPage extends Component {
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
             title={title}
-            query={this.props.selectedFilters.query || ''}
+            query={query || ''}
           />
         </div>
 
