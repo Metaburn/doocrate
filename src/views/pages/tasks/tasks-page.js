@@ -538,14 +538,17 @@ export class TasksPage extends Component {
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
-          <TopNav onQueryChange={this.onQueryChange}
+          <TopNav
+            onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
             setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
-            title={title}/>
+            title={title}
+            query={this.props.selectedFilters.query || ''}
+          />
         </div>
 
         <div className='task-page-wrapper'>
