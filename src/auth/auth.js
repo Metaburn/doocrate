@@ -3,6 +3,7 @@ import * as authActions from './actions';
 import {getCookie} from "../utils/browser-utils";
 import getRandomImage from 'src/utils/unsplash';
 import {initProject} from "../projects/initializer";
+import * as Sentry from '@sentry/browser';
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
@@ -12,6 +13,7 @@ export function initAuth(dispatch) {
           return resolve();
         }
 
+        updateUserContextSentry(authUser);
         // Call init project again after sigin-in
         initProject(dispatch);
 
@@ -37,6 +39,22 @@ export function initAuth(dispatch) {
       error => reject(error)
     );
   });
+}
+
+function updateUserContextSentry(authUser) {
+  try {
+    if (authUser) {
+      Sentry.configureScope((scope) => {
+        scope.setUser({
+          "email": authUser.email,
+          "name": authUser.displayName
+        });
+      });
+    }
+  }
+  catch (ex) {
+    console.error({ex});
+  }
 }
 
 function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
@@ -73,11 +91,14 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
 }
 
 // TODO: perhaps should be in a better place and check if operation success
-export function updateUserData(authUser) {
+export function updateUserData(authUser, dispatch) {
   return new Promise((resolve, reject) => {
     if (!authUser || !authUser.uid) {
       return resolve(null);
     }
+
+
+    updateUserContextSentry(authUser);
 
     const userDoc = firebaseDb.collection('users').doc(authUser.uid);
     userDoc.get().then(userSnapshot => {
@@ -123,6 +144,9 @@ export function updateUserData(authUser) {
           userDoc.set(fieldsToUpdate, {merge: true});
 
           updateAuthFields(authUser);
+
+          // Update local auth
+          dispatchUpdatedAuthUser(authUser, userSnapshot, fieldsToUpdate, dispatch);
         }else {
           // Simply update the user fields
           // Add any fields below
@@ -145,14 +169,18 @@ export function updateUserData(authUser) {
           updateAuthFields(authUser);
 
           // Update local auth
-          // TODO - ideally this would fire again an init auth so the local auth object would update
-          Object.assign(authUser, userSnapshot.data());
-          authActions.initAuth(newUserData);
+          dispatchUpdatedAuthUser(authUser, userSnapshot, newUserData, dispatch);
         }
         resolve(authUser);
       }
     })
   })
+}
+
+function dispatchUpdatedAuthUser(authUser, userSnapshot, updatedFields, dispatch ){
+  Object.assign(authUser, userSnapshot.data());
+  Object.assign(authUser, updatedFields);
+  dispatch(authActions.initAuth(authUser));
 }
 
 function updateAuthFields(authUser) {

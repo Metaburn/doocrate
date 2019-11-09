@@ -61,8 +61,11 @@ export class TasksPage extends Component {
 
     let project_url = this.props.match.params.projectUrl;
     // Hot fix for users who redirect here
-    if(project_url === "[object Object]") {
+    if(project_url === "[object Object]" || project_url === "null") {
       this.props.history.push('/burnerot19/task/1');
+      this.props.loadTasks("burnerot19", INCOMPLETE_TASKS);
+      this.props.loadLabels("burnerot19");
+      return;
     }
 
     // First time this page is loaded
@@ -84,6 +87,25 @@ export class TasksPage extends Component {
 
     const nextFilters = this.getFilterParams(nextProps);
     const { selectedFilters } = this.props;
+    //todo: add after launch
+   /* let prevSize = 0;
+    let nextSize = 0;
+    if(tasks && tasks.size){
+      prevSize = tasks.size;
+    }
+    if(nextProps.tasks && nextProps.tasks.size){
+      nextSize = nextProps.tasks.size;
+    }
+
+    // ES compare
+    // To prevent a race condition we want to make sure that only
+    // when there are no tasks - we don't update those filters
+    // This allows to have the user loads a page directly with filters
+    if(nextSize && (nextSize !== prevSize || !is(nextProps.tasks, tasks))) {
+      if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+        this.debouncedFilterTasksFromProps(nextProps);
+      }
+    }*/
 
     // ES compare
     // To prevent a race condition we want to make sure that only
@@ -502,7 +524,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -516,14 +538,17 @@ export class TasksPage extends Component {
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
-          <TopNav onQueryChange={this.onQueryChange}
+          <TopNav
+            onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
             setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
-            title={title}/>
+            title={title}
+            query={query || ''}
+          />
         </div>
 
         <div className='task-page-wrapper'>

@@ -24,6 +24,11 @@ Node v8.11.0
 Quick Start
 -----------
 
+#### Install
+```
+source ./intall.sh
+```
+or
 ```shell
 git clone https://github.com/metaburn/doocrate.git
 cd doocrate
@@ -32,13 +37,13 @@ cd functions
 npm install
 cd ..
 yarn run copy-staging
-yarn start
-```
-
-#### Install firebase-tools:
-```shell
 yarn global add firebase-tools
 ```
+
+#### Run Locally
+```
+yarn run
+``` 
 
 ## Deploy command
 `yarn run deploy:staging`

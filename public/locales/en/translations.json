@@ -150,7 +150,8 @@
       "not-empty": "This field cannot be empty 🙄",
       "min-3": "This field must have at least 3 characters"
     },
-    "no-assignee": "No Owner yet"
+    "no-assignee": "No Owner yet",
+    "confirm-exit": "Are you sure you want to navigate away? unsaved changes will be destructed"
   },
   "filter": {
     "header": "FILTERS",
