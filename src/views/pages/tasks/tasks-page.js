@@ -524,7 +524,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -538,14 +538,17 @@ export class TasksPage extends Component {
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
-          <TopNav onQueryChange={this.onQueryChange}
+          <TopNav
+            onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
             setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
-            title={title}/>
+            title={title}
+            query={query || ''}
+          />
         </div>
 
         <div className='task-page-wrapper'>
