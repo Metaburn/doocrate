@@ -42,7 +42,7 @@ export class ReportsPage extends Component {
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
-    addEditorUsers: PropTypes.func.isRequired,
+    addEditorUsersEmails: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
     selectProjectFromUrl: PropTypes.func.isRequired,
@@ -131,8 +131,8 @@ export class ReportsPage extends Component {
 
   handleSave = () => {
     const {validEmails} = this.state;
-    const {addEditorUsers, showSuccess} = this.props;
-    addEditorUsers(validEmails);
+    const {addEditorUsersEmails, showSuccess} = this.props;
+    addEditorUsersEmails(validEmails);
     showSuccess(i18n.t('reports.emails-updated-successfully'));
   }
 

@@ -1,0 +1,3 @@
+export const ADD_EMAILS = 'ADD_EMAILS';
+export const ADD_EMAIL_ERROR = 'ADD_EMAIL_ERROR';
+export const ADD_EMAIL_SUCCESS = 'ADD_EMAIL_SUCCESS';
