@@ -41,9 +41,10 @@ export class ReportsPage extends Component {
     }
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
+      
       const contributors = {};
       const usersWhoDidntBuy = {};
-      querySnapshot.forEach(function(doc) {
+      querySnapshot.forEach(function(doc) {        
         let contributor = doc.data();
         contributors[doc.id] = contributor;
         if(contributor.didntBuy) {
@@ -64,19 +65,25 @@ export class ReportsPage extends Component {
       const query = [];
 
       this.props.tasks.forEach((task) =>  {
-        if (task.assignee !=null) {
-          collaborators[task.assignee.id] = task.id;
+        if (task.assignee != null) {
+          // assign earliest task for this user
+          const prevTask = collaborators[task.assignee.id];
+          if (prevTask == null) {
+            collaborators[task.assignee.id] = task;
+          } else if (prevTask.created > task.created){
+            collaborators[task.assignee.id] = task;
+          }
         }
       });
 
       let counter = 1;
       Object.entries(collaborators).forEach(entry => {
-        const [collaboratorId, taskId] = entry;
+        const [collaboratorId, task] = entry;
         if (this.state.users.has(collaboratorId)) {
           const collaborator = this.state.users.get(collaboratorId);
           // Filter out the didntBuy people
           if(!collaborator.didntBuy) {
-            query.push([counter++, collaborator.name, collaboratorId, collaborator.email, taskId])
+            query.push([counter++, collaborator.name, collaboratorId, collaborator.email, task.id, `${task.created.toDate().toLocaleDateString("he-IL")} ${task.created.toDate().toLocaleTimeString("he-IL")}`])
           }
         }
       }
@@ -116,12 +123,13 @@ export class ReportsPage extends Component {
             <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
             {this.state.query.length}
 
-            <br/>
+            <br/>            
               <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
             <table className="report-table" >
               <thead>
               <tr className={`dir-${t('lang-float-reverse')}`}>
+                <th>First task timestamp</th>
                 <th>#</th>
                 <th>Name</th>
                 <th>Id</th>
@@ -131,7 +139,15 @@ export class ReportsPage extends Component {
               </thead>
                 <tbody>
                 {
-                  this.state.query.map( (r) => (<tr key={r[0]}><th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th><th>{r[3]}</th><th>{r[2]}</th><th>{r[1]}</th><th>{r[0]}</th></tr>))
+                  this.state.query.map( (r) => (
+                    <tr key={r[0]}>
+                      <th>{r[5]}</th>
+                      <th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th>                      
+                      <th>{r[3]}</th>
+                      <th>{r[2]}</th>
+                      <th>{r[1]}</th>
+                      <th>{r[0]}</th>                      
+                    </tr>))
                 }
                 </tbody>
               </table>
