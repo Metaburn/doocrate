@@ -248,5 +248,12 @@
     "opensource": "בקוד פתוח",
     "server-with-love": "ומוגשת ב ❤ מאת",
     "people": "האנשים שיצרו את המערכת"
+  },
+  "reports": {
+    "validate": "בדקי",
+    "save": "שמרי",
+    "emails-updated-successfully": "￿רשימת הכתובות נשמרה בהצלחה",
+    "invitations-header": "הוספת משתמשים עם הרשאת עריכה לפרוייקט",
+    "emails-placeholder": "הזיני כתובות אימייל מופרדות ב-;"
   }
 }

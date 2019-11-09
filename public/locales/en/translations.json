@@ -248,5 +248,12 @@
     "opensource": "Open source",
     "server-with-love": "And served with ❤ by",
     "people": "the humans who crafted this system"
+  },
+  "reports": {
+    "validate": "Validate",
+    "save": "Delete",
+    "emails-updated-successfully": "Emails were saved successfully",
+    "invitations-header": "Add new emails for users with editing permission",
+    "emails-placeholder": "Add semicolon (;) separated email addresses"
   }
 }
