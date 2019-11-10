@@ -17,6 +17,7 @@ import i18n from "../../../i18n";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
 import Button from "../../components/button";
 import {MePage} from "../me/me-page";
+import Icon from "../../atoms/icon";
 
 export class ReportsPage extends Component {
   constructor() {
@@ -42,7 +43,8 @@ export class ReportsPage extends Component {
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
-    addEditorUsersEmails: PropTypes.func.isRequired,
+    addInvitations: PropTypes.func.isRequired,
+    removeInvitation: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
     selectProjectFromUrl: PropTypes.func.isRequired,
@@ -131,8 +133,8 @@ export class ReportsPage extends Component {
 
   handleSave = () => {
     const {validEmails} = this.state;
-    const {addEditorUsersEmails, showSuccess} = this.props;
-    addEditorUsersEmails(validEmails);
+    const {addInvitations, showSuccess} = this.props;
+    addInvitations(validEmails);
     showSuccess(i18n.t('reports.emails-updated-successfully'));
   }
 
@@ -163,6 +165,10 @@ export class ReportsPage extends Component {
       return (true)
     }
     return (false)
+  }
+
+  deleteInvitation = (invitation) => {
+    this.props.removeInvitation(invitation.id);
   }
 
   renderValidations() {
@@ -266,13 +272,19 @@ export class ReportsPage extends Component {
                     this.state.validEmails.length > 0
                     && <Button
                     className={"save-button"}
-                    onClick={this.handleSave}
+                    onClick={() => {
+                      if (!window.confirm(i18n.t("reports.sure-add-invitations", {emailsCount: this.state.validEmails.length}))) {
+                        return;
+                      }
+                      this.handleSave();
+                    }}
                     type='button'>{i18n.t('reports.save')}</Button>
                   }
                 </div>
                 <table className="report-table">
                   <thead>
                   <tr className={`dir-${t('lang-float-reverse')}`}>
+                    <th></th>
                     <th>Status</th>
                     <th>Created</th>
                     <th>Email</th>
@@ -282,12 +294,26 @@ export class ReportsPage extends Component {
                   <tbody>
                   {
                     this.state.invitations.map((invitation, index) => (
-                      <tr key={invitation.id}>
-                        <th>{invitation.status}</th>
-                        <th>{invitation.created}</th>
-                        <th>{invitation.email}</th>
-                        <th>{index}</th>
-                      </tr>))
+                        <tr key={invitation.id}>
+                          <th>
+                            <Button
+                              className="button button-small action-button"
+                              onClick={() => {
+                                if (!window.confirm(i18n.t("reports.sure-delete-invitation", {email: invitation.email}))) {
+                                  return;
+                                }
+                                this.deleteInvitation(invitation);
+                              }}
+                              type="button">
+                              <Icon name="delete" className="grow delete"/>
+                            </Button>
+                          </th>
+                          <th>{invitation.status}</th>
+                          <th>{invitation.created}</th>
+                          <th>{invitation.email}</th>
+                          <th>{index}</th>
+                        </tr>
+                      ))
                   }
                   </tbody>
                 </table>

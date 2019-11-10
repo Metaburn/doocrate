@@ -254,6 +254,9 @@
     "save": "Delete",
     "emails-updated-successfully": "Emails were saved successfully",
     "invitations-header": "Add new emails for users with editing permission",
-    "emails-placeholder": "Add semicolon (;) separated email addresses"
+    "emails-placeholder": "Add semicolon (;) separated email addresses",
+    "sure-delete-invitation": "Are you sure you want to delete invitation for {{email}}?",
+    "sure-add-invitations": "Are you sure you want to add {{emailsCount}} users?"
+
   }
 }
