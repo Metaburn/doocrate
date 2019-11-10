@@ -1,5 +1,4 @@
-import { firebaseDb } from './firebase';
-
+import { firebaseDb } from "./firebase";
 
 /*
  Represent a Firebase collection.
@@ -10,7 +9,15 @@ import { firebaseDb } from './firebase';
  path = tasks
  */
 export class FirebaseList {
-  constructor(actions, modelClass, path = null, query = null, orderBy = null, rootPath = null, rootDocId = null) {
+  constructor(
+    actions,
+    modelClass,
+    path = null,
+    query = null,
+    orderBy = null,
+    rootPath = null,
+    rootDocId = null
+  ) {
     this._actions = actions;
     this._modelClass = modelClass;
     this._path = path;
@@ -61,15 +68,29 @@ export class FirebaseList {
   }
 
   get collectionPath() {
-    if(this._rootPath && this._rootDocId) {
-      return firebaseDb.collection(this._rootPath).doc(this._rootDocId).collection(this._path);
-    }else {
+    if (this._rootPath && this._rootDocId) {
+      return firebaseDb
+        .collection(this._rootPath)
+        .doc(this._rootDocId)
+        .collection(this._path);
+    } else {
       return firebaseDb.collection(`${this._path}`);
     }
   }
 
   push(value) {
     return this.collectionPath.add(value);
+  }
+
+  pushBatch(values) {
+    const batch = firebaseDb.batch();
+
+    values.forEach(value => {
+      const ref = this.collectionPath.doc();
+      batch.set(ref, value);
+    });
+
+    return batch.commit();
   }
 
   remove(id) {
@@ -87,39 +108,48 @@ export class FirebaseList {
   subscribe(emit) {
     // This list might be under a root collection
     let collection = this.collectionPath;
-    if(this._query) {
+    if (this._query) {
       collection = collection.where(
-        this._query[0],this._query[1],this._query[2]);
+        this._query[0],
+        this._query[1],
+        this._query[2]
+      );
     }
-    if(this._orderBy) {
-      collection = collection.orderBy(this._orderBy.name,
-        this._orderBy.direction);
+    if (this._orderBy) {
+      collection = collection.orderBy(
+        this._orderBy.name,
+        this._orderBy.direction
+      );
     }
     let initialized = false;
     let list = [];
 
     let unsubscribe = collection.onSnapshot(snapshot => {
-      if(!initialized) {
+      if (!initialized) {
         emit(this._actions.onLoad(snapshot.docs));
         initialized = true;
         return;
       }
       const isLocalChange = snapshot.metadata.hasPendingWrites;
       snapshot.docChanges().forEach(change => {
-          if (change.type === "added") {
-            if (initialized) {
-              emit(this._actions.onAdd(this.unwrapSnapshot(change.doc), isLocalChange));
-            }
-            else {
-              list.push(this.unwrapSnapshot(change.doc));
-            }
+        if (change.type === "added") {
+          if (initialized) {
+            emit(
+              this._actions.onAdd(
+                this.unwrapSnapshot(change.doc),
+                isLocalChange
+              )
+            );
+          } else {
+            list.push(this.unwrapSnapshot(change.doc));
           }
-          if (change.type === "modified") {
-              emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
-          }
-          if (change.type === "removed") {
-              emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
-          }
+        }
+        if (change.type === "modified") {
+          emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
+        }
+        if (change.type === "removed") {
+          emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
+        }
       });
     });
 
@@ -127,7 +157,7 @@ export class FirebaseList {
   }
 
   unsubscribe() {
-    if(this._unsubscribe) {
+    if (this._unsubscribe) {
       this._unsubscribe();
     }
   }
@@ -145,6 +175,9 @@ export class FirebaseList {
  */
 export function firebaseCollectionToList(collection) {
   return collection.map(document => {
-    return Object.assign(document.data(),{get: (object)=>document[object], id: document.id});
+    return Object.assign(document.data(), {
+      get: object => document[object],
+      id: document.id
+    });
   });
 }

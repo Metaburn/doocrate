@@ -2,7 +2,7 @@ import { FirebaseList } from "src/firebase";
 import * as InvitationActions from "./actions";
 import { Record } from "immutable";
 
-export const INVITATION_STATUS = {
+export const InvitationStatus = {
   INVITED: "INVITED",
   RECEIVED: "RECEIVED",
   PENDING_REGISTRATION: "PENDING_REGISTRATION",

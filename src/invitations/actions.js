@@ -72,10 +72,32 @@ export function createInvitation(invitation) {
   };
 }
 
+export function createInvitations(invitations) {
+  return dispatch => {
+    invitationFirebaseList
+      .pushBatch(invitations)
+      .then(createdInvitations => {
+        return dispatch(createMultipleInvitationSuccess(createdInvitations));
+      })
+      .catch(error => {
+        //TODO: Log error to sentry
+        const errorMessage = error && error.message ? error.message : error;
+        return dispatch(createInvitationListError(errorMessage));
+      });
+  };
+}
+
 export function createInvitationSuccess(invitation) {
   return {
     type: CREATE_INVITATION_SUCCESS,
     payload: invitation
+  };
+}
+
+export function createMultipleInvitationSuccess(invitations) {
+  return {
+    type: CREATE_INVITATION_SUCCESS,
+    payload: invitations
   };
 }
 
