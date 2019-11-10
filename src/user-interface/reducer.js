@@ -24,6 +24,6 @@ export function userInterfaceReducer(state = new UserInterfaceState(), action) {
       });
 
     default:
-      return new UserInterfaceState();
+      return state;
   }
 }
