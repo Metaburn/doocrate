@@ -30,7 +30,7 @@ exports.onNewProjectMakeAdmin = functions.firestore
     }
 
     // Create an url and check if already exists
-    const projectUrl = proejct.name.replace(/([^a-z0-9א-ת ]+)/gi, "-");
+    const projectUrl = project.name.replace(/([^a-z0-9א-ת ]+)/gi, "-");
 
     let result = await firestore
       .collection("projects")
