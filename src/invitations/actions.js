@@ -8,7 +8,9 @@ import {
   CREATE_INVITATION_LIST_ERROR,
   CREATE_INVITATION_SUCCESS,
   CREATE_INVITATION_ERROR,
-  LOAD_INVITATION_LIST_SUCCESS
+  LOAD_INVITATION_LIST_SUCCESS,
+  UPDATE_INVITATION_SUCCESS,
+  UPDATE_INVITATION_ERROR
 } from "./action-types";
 
 //#region Invitation List
@@ -57,6 +59,8 @@ export function loadInvitationListSuccess(invitationList) {
 //#endregion
 
 //#region Invitation
+
+/** Creating */
 export function createInvitation(invitation) {
   return dispatch => {
     invitationFirebaseList
@@ -108,7 +112,8 @@ export function createInvitationError(error) {
   };
 }
 
-export function loadInvitatiosForInvitationList(invitationListId) {
+/** Loading */
+export function loadInvitationsForInvitationList(invitationListId) {
   return dispatch => {
     invitationFirebaseList.query = ["invitationListId", "==", invitationListId];
     invitationFirebaseList.subscribe(dispatch);
@@ -119,6 +124,34 @@ export function loadInvitationsSuccess(invitations) {
   return {
     type: LOAD_INVITATION_LIST_SUCCESS,
     payload: invitations
+  };
+}
+
+/** Updating */
+export function updateInvitation(invitation) {
+  return dispatch => {
+    invitationFirebaseList
+      .set(invitation.id, invitation)
+      .then(updatedInvitation => {
+        dispatch(updateInvitationSuccess(updatedInvitation));
+      })
+      .catch(error => {
+        dispatch(updateInvitationError(error));
+      });
+  };
+}
+
+export function updateInvitationSuccess(invitation) {
+  return {
+    type: UPDATE_INVITATION_SUCCESS,
+    payload: invitation
+  };
+}
+
+export function updateInvitationError(error) {
+  return {
+    type: UPDATE_INVITATION_ERROR,
+    payload: error
   };
 }
 //#endregion
