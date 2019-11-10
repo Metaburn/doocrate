@@ -254,6 +254,8 @@
     "save": "שמרי",
     "emails-updated-successfully": "￿רשימת הכתובות נשמרה בהצלחה",
     "invitations-header": "הוספת משתמשים עם הרשאת עריכה לפרוייקט",
-    "emails-placeholder": "הזיני כתובות אימייל מופרדות ב-;"
+    "emails-placeholder": "הזיני כתובות אימייל מופרדות ב-;",
+    "sure-delete-invitation": "האם אתה בטוח שתרצה למחוק הזמנה ל {{email}}?",
+    "sure-add-invitations": "האם אתה בטוח שתרצה להוסיף {{emailsCount}} משתמשים?"
   }
 }
