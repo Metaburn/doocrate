@@ -155,6 +155,7 @@
   },
   "filter": {
     "header": "FILTERS",
+    "apply": "Apply",
     "category": "Category",
     "task-type": "Task Type",
     "popular-tags": "Popular Tags",

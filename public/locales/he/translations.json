@@ -155,6 +155,7 @@
   },
   "filter": {
     "header": "סינון משימות",
+    "apply": "אישור",
     "category": "קטגוריה",
     "task-type": "סוג המשימה",
     "popular-tags": "תגיות פופולריות",

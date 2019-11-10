@@ -48,6 +48,6 @@ export function notificationReducer(state = new NotificationState(), action) {
       return new NotificationState();
 
     default:
-      return new NotificationState();
+      return state;
   }
 }
