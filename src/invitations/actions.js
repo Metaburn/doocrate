@@ -1,68 +1,102 @@
-import { invitationsList } from './invitations-list';
-import { INVITATION_STATUS } from './invitation';
-import firebase from 'firebase/app';
+import { invitationListFirebaseList } from "./invitations-list";
+import { invitationFirebaseList } from "./invitation";
+import { INVITATION_STATUS } from "./invitation";
+import firebase from "firebase/app";
 
 import {
-  ADD_EMAILS,
-  ADD_EMAIL_ERROR, ADD_EMAIL_SUCCESS
-} from './action-types';
-import {CREATE_COMMENT_SUCCESS} from "../comments";
-import {firebaseDb} from "../firebase";
+  CREATE_INVITATION_LIST_SUCCESS,
+  CREATE_INVITATION_LIST_ERROR,
+  CREATE_INVITATION_SUCCESS,
+  CREATE_INVITATION_ERROR,
+  LOAD_INVITATION_LIST_SUCCESS
+} from "./action-types";
 
-
-export function addEditorUsersEmails(emails, cb) {
-
-  if (!isUserAdmin(user)){
-    return dispatch => { (dispatch(addEmailError('User is not an admin'))) }
-  }
-
-  emails.forEach(email => {
-
-    if (!verifyEmailIsNotAssignedToEditorUser(email)){
-      return;
-    }
-
-    const invitation = {
-      id: null,
-      invitationListId: null,
-      email: email,
-      created: new Date,
-      status: INVITATION_STATUS.PENDING,
-      userId: null
-    };
-
-    return dispatch => {
-      invitationsList.push(invitation)
-        .then(cb)
-        .catch(error => dispatch(addEmailError(error)));
-    };
-  })
+//#region Invitation List
+export function createInvitationList(invitationList) {
+  return dispatch => {
+    invitationListFirebaseList
+      .push(invitationList)
+      .then(createdInvitationList => {
+        return dispatch(createInvitationListSuccess(createdInvitationList));
+      })
+      .catch(error => {
+        //TODO: Log error to sentry
+        const errorMessage = error && error.message ? error.message : error;
+        return dispatch(createInvitationListError(errorMessage));
+      });
+  };
 }
 
-function getIsAdmin(authUser) {
-  if(!authUser) {
-    return new Promise( (resolve, reject) => {
-      resolve('guest');
-    })
-  }
-  return firebaseDb.collection('admins').doc(authUser.uid).get();
-}
-
-function verifyEmailIsNotAssignedToEditorUser(email){
-  return true;
-}
-
-export function addEmailSuccess(invitation) {
+export function createInvitationListSuccess(invitationList) {
   return {
-    type: ADD_EMAIL_SUCCESS,
+    type: CREATE_INVITATION_LIST_SUCCESS,
+    payload: invitationList
+  };
+}
+
+export function createInvitationListError(error) {
+  return {
+    type: CREATE_INVITATION_LIST_ERROR,
+    payload: error
+  };
+}
+
+export function loadInvitationListForProject(projectId) {
+  return dispatch => {
+    invitationListFirebaseList.query = ["projectId", "==", projectId];
+    invitationListFirebaseList.subscribe(dispatch);
+  };
+}
+
+export function loadInvitationListSuccess(invitationList) {
+  return {
+    type: LOAD_INVITATION_LIST_SUCCESS,
+    payload: invitationList
+  };
+}
+//#endregion
+
+//#region Invitation
+export function createInvitation(invitation) {
+  return dispatch => {
+    invitationFirebaseList
+      .push(invitation)
+      .then(createdInvitation => {
+        return dispatch(createInvitationSuccess(createdInvitation));
+      })
+      .catch(error => {
+        //TODO: Log error to sentry
+        const errorMessage = error && error.message ? error.message : error;
+        return dispatch(createInvitationListError(errorMessage));
+      });
+  };
+}
+
+export function createInvitationSuccess(invitation) {
+  return {
+    type: CREATE_INVITATION_SUCCESS,
     payload: invitation
   };
 }
 
-export function addEmailError(error) {
-  console.warn(`Failed to save email: ${error}`);
+export function createInvitationError(error) {
   return {
-    type: ADD_EMAIL_ERROR,
+    type: CREATE_INVITATION_ERROR,
     payload: error
   };
 }
+
+export function loadInvitatiosForInvitationList(invitationListId) {
+  return dispatch => {
+    invitationFirebaseList.query = ["invitationListId", "==", invitationListId];
+    invitationFirebaseList.subscribe(dispatch);
+  };
+}
+
+export function loadInvitationsSuccess(invitations) {
+  return {
+    type: LOAD_INVITATION_LIST_SUCCESS,
+    payload: invitations
+  };
+}
+//#endregion
