@@ -135,8 +135,7 @@ class SetProject extends Component {
   }
 
   render() {
-    const { isExisting, projectUrl, domainUrl, defaultLanguages } = this.state;
-    const defaultDomain = domainUrl || firebaseConfig.defaultDomain;
+    const { isExisting, defaultLanguages } = this.state;
 
     return (
       <I18n ns="translations">
