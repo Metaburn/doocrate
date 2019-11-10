@@ -1,20 +1,43 @@
-import { List, Record } from 'immutable';
-import { ADD_EMAIL_SUCCESS } from './action-types';
+import { List, Record } from "immutable";
+import { showError } from "src/notification/actions";
+import {
+  CREATE_INVITATION_LIST_SUCCESS,
+  LOAD_INVITATION_LIST_SUCCESS,
+  CREATE_INVITATION_SUCCESS,
+  CREATE_INVITATION_ERROR,
+  CREATE_INVITATION_LIST_ERROR
+} from "./action-types";
 
-import { firebaseCollectionToList } from 'src/firebase/firebase-list';
+import { firebaseCollectionToList } from "src/firebase/firebase-list";
+import { loadInvitatiosForInvitationList } from "./actions";
 
 export const InvitationsState = new Record({
-  deleted: null,
-  list: new List(),
-  previous: null,
-  auth: null
+  invitations: new List(),
+  selectedInvitationList: null
 });
 
-
-export function commentsReducer(state = new InvitationsState(), {payload, type}) {
+export function invitationsReducer(
+  state = new InvitationsState(),
+  { payload, type }
+) {
   switch (type) {
-    case ADD_EMAIL_SUCCESS:
-        break;
+    case (CREATE_INVITATION_LIST_SUCCESS, LOAD_INVITATION_LIST_SUCCESS):
+      return state.set("selectedInvitationList", payload);
+
+    case CREATE_INVITATION_SUCCESS:
+      return state.merge({
+        invitations: state.invitations.unshift(payload)
+      });
+
+    case LOAD_INVITATION_LIST_SUCCESS:
+      return state.set(
+        "invitations",
+        new List(firebaseCollectionToList(payload.reverse()))
+      );
+
+    case (CREATE_INVITATION_ERROR, CREATE_INVITATION_LIST_ERROR):
+      return showError(payload);
+
     default:
       return state;
   }
