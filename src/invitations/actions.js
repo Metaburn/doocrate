@@ -63,7 +63,7 @@ export function loadInvitationListSuccess(invitationList) {
 /** Creating */
 export function createInvitation(invitation) {
   return dispatch => {
-    invitationFirebaseList
+    return invitationFirebaseList
       .push(invitation)
       .then(createdInvitation => {
         return dispatch(createInvitationSuccess(createdInvitation));
@@ -78,7 +78,7 @@ export function createInvitation(invitation) {
 
 export function createInvitations(invitations) {
   return dispatch => {
-    invitationFirebaseList
+    return invitationFirebaseList
       .pushBatch(invitations)
       .then(createdInvitations => {
         return dispatch(createMultipleInvitationSuccess(createdInvitations));

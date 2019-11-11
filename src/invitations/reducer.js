@@ -8,7 +8,7 @@ import {
   CREATE_INVITATION_LIST_ERROR
 } from "./action-types";
 
-import { firebaseCollectionToList } from "src/firebase/firebase-list";
+import { fireb } from "src/firebase/firebase-list";
 import { loadInvitatiosForInvitationList } from "./actions";
 
 export const InvitationsState = new Record({

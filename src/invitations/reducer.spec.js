@@ -1,6 +1,5 @@
 import { Invitation, InvitationStatus } from "./invitation";
 import { invitationsReducer, InvitationsState } from "./reducer";
-import { italic } from "ansi-colors";
 import { List } from "immutable";
 import { CREATE_INVITATION_SUCCESS } from "./action-types";
 
@@ -60,8 +59,8 @@ describe("Invitation Reducer", () => {
         payload: invitation2
       });
 
-      expect(nextState.list.get(0)).toBe(invitation2);
-      expect(nextState.list.get(1)).toBe(invitation1);
+      expect(nextState.invitations.get(0)).toBe(invitation2);
+      expect(nextState.invitations.get(1)).toBe(invitation1);
     });
   });
 });
