@@ -6,18 +6,20 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 import {tasksActions} from 'src/tasks';
 import {projectActions} from 'src/projects';
+import {invitationsActions} from 'src/invitations';
+import {notificationActions} from "../../../notification";
+
 
 import {firebaseDb} from 'src/firebase';
 import {CSVLink} from 'react-csv';
 
 import {I18n} from 'react-i18next';
 import './reports-page.css';
-import {Textbox} from "react-inputs-validation";
 import i18n from "../../../i18n";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
 import Button from "../../components/button";
-import {MePage} from "../me/me-page";
 import Icon from "../../atoms/icon";
+import { InvitationStatus } from "../../../invitations/invitation";
 
 export class ReportsPage extends Component {
   constructor() {
@@ -43,7 +45,7 @@ export class ReportsPage extends Component {
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
-    addInvitations: PropTypes.func.isRequired,
+    createInvitations: PropTypes.func.isRequired,
     removeInvitation: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
@@ -133,9 +135,23 @@ export class ReportsPage extends Component {
 
   handleSave = () => {
     const {validEmails} = this.state;
-    const {addInvitations, showSuccess} = this.props;
-    addInvitations(validEmails);
+    const {createInvitations, showSuccess} = this.props;
+
+    const invitations = this.prepareInvitations(validEmails);
+    createInvitations(invitations);
     showSuccess(i18n.t('reports.emails-updated-successfully'));
+  }
+
+  prepareInvitations(validEmails) {
+    return validEmails.map(email => {
+     return {
+        invitationListId: null,
+        email: email,
+        created: new Date(),
+        status: InvitationStatus.INVITED,
+        userId: null
+      }}
+    )
   }
 
   validateEmails= () => {
@@ -341,6 +357,8 @@ const mapDispatchToProps = Object.assign(
   {},
   tasksActions,
   projectActions,
+  invitationsActions,
+  notificationActions
 );
 
 export default connect(
