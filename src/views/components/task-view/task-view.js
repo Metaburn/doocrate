@@ -259,7 +259,7 @@ export class TaskView extends Component {
         name={fieldName}
         value={value}
         validate={validate}
-        placeholder={placeholder}
+        placeholder={`${placeholder} ${isRequired ? '*' : ''}`}
         ref={(e) => this[fieldName+'Input'] = e}
         onChange={onChangeHandler}
         // React validation requires even an empty function onBlur to validate on blur
@@ -280,7 +280,7 @@ export class TaskView extends Component {
       validations={{...this.state.validations}}
       fieldName={fieldName}
       isEditable={isEditable}
-      placeHolder={placeHolder}
+      placeHolder={`${placeHolder} ${isRequired ? '*' : ''}`}
       isRequired={isRequired}
       value={this.state[fieldName]}
       onTextBoxChange={this.handleTextBoxChange}
