@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Textbox } from "react-inputs-validation";
 import { I18n } from "react-i18next";
 import { projectActions } from "src/projects";
+import { invitationsActions } from "src/invitations";
 import { notificationActions } from "../../../notification";
 import TagsInput from "react-tagsinput";
 import i18n from "src/i18n.js";
@@ -456,7 +457,10 @@ class SetProject extends Component {
     this.props.createProject(this.state.projectUrl, this.getFormFields());
     if (this.state.isExisting) {
       this.props.showSuccess(i18n.t("create-project.success-edit"));
+      this.props.loadInvitationListForProject(this.state.name)
     } else {
+      const invitationList = this.createInvitationListForNewProject(this.state.name, this.props.auth);
+      this.props.createInvitationList(invitationList)
       this.props.showSuccess(i18n.t("create-project.success"));
     }
     this.props.history.push("/" + this.state.projectUrl + "/task/1");
@@ -556,10 +560,27 @@ class SetProject extends Component {
       created: new Date()
     };
   }
+
+  createInvitationListForNewProject(projectName, auth) {
+    return {
+      created: new Date(),
+      updated: new Date(),
+      projectId: projectName,
+      name: projectName,
+      creatorId: auth.id,
+      creator: auth.name,
+      url: null,
+      canAdd: [auth.id],
+      canView: [auth.id],
+      canDelete: [auth.id]
+    };
+  }
 }
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
+  loadInvitationListForProject: PropTypes.func.isRequired,
+  createInvitationList: PropTypes.func.isRequired,
   selectProjectFromUrl: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired
 };
@@ -577,7 +598,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = Object.assign(
   {},
   notificationActions,
-  projectActions
+  projectActions,
+  invitationsActions
 );
 
 export default connect(

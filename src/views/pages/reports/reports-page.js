@@ -29,23 +29,19 @@ export class ReportsPage extends Component {
       users: Map(),
       usersWhoDidntBuy: Map(),
       query: [],
-      addedEmailsStr:'',
+      addedEmailsStr: '',
       validEmails: [],
       invalidEmails: [],
-      invitations: [
-        {
-          id: "1",
-          email: "aa.bb",
-          created: new Date().toDateString(),
-          status: false
-        }
-      ]
-    }
+      invitations: []
+    };
+
+    this.props.loadInvitationsForInvitationList(this.props.selectedInvitationList);
   }
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
     createInvitations: PropTypes.func.isRequired,
+    loadInvitationsForInvitationList: PropTypes.func.isRequired,
     removeInvitation: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
@@ -349,7 +345,8 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
-    selectedProject: state.projects.selectedProject
+    selectedProject: state.projects.selectedProject,
+    selectedInvitationList: state.selectedInvitationList
   }
 };
 
