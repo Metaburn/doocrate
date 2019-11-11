@@ -37,6 +37,7 @@ export function createInvitationListSuccess(invitationList) {
 }
 
 export function createInvitationListError(error) {
+  console.warn(`createInvitationListError error: ${error}`);
   return {
     type: CREATE_INVITATION_LIST_ERROR,
     payload: error
@@ -106,6 +107,7 @@ export function createMultipleInvitationSuccess(invitations) {
 }
 
 export function createInvitationError(error) {
+  console.warn(`createInvitationError error: ${error}`);
   return {
     type: CREATE_INVITATION_ERROR,
     payload: error
@@ -149,6 +151,7 @@ export function updateInvitationSuccess(invitation) {
 }
 
 export function updateInvitationError(error) {
+  console.warn(`updateInvitationError error: ${error}`);
   return {
     type: UPDATE_INVITATION_ERROR,
     payload: error

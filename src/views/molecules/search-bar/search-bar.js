@@ -9,7 +9,7 @@ import './search-bar.css';
 class SearchBar extends Component {
   constructor(props){
     super(props)
-    this.debouncedOnQueryChange = debounce(this.props.onQueryChange, 50);
+    this.debouncedOnQueryChange = debounce(this.props.onQueryChange, 0);
   }
 
   render() {

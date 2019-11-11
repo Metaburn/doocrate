@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { Redirect } from 'react-router';
 import { firebaseDb } from 'src/firebase';
+import {CSVLink} from 'react-csv';
 
 import './admin-dashboard.css';
 import Button from "../../components/button/button";
@@ -22,7 +23,8 @@ export class AdminDashboard extends Component {
       isButtonsUnlocked: false,
       usersWhoDidntBuy: [],
       usersToAllowToRegisterCount: 0,
-      successEmails: []
+      successEmails: [],
+      CSVLink: undefined,
     };
     this.setAllUsersToHaveCreateTaskAssignPermissions = this.setAllUsersToHaveCreateTaskAssignPermissions.bind(this);
     this.unlockDashboard = this.unlockDashboard.bind(this);
@@ -50,6 +52,13 @@ export class AdminDashboard extends Component {
   });
   }
 
+  onCSVLink() {
+    this.setState({
+      CSVLink: <span>
+        <CSVLink className={'button-as-link'} data={this.generateUsersCSV()} >הורדת דוח משתמשים</CSVLink>
+      </span>});
+  };
+
   componentWillReceiveProps(nextProps) {
 
   }
@@ -64,6 +73,20 @@ export class AdminDashboard extends Component {
     return this.props.auth.role === 'admin';
   }
 
+  generateUsersCSV = () => {
+    const { users } = this.state;
+    const result = [["Id", "Created", "Email", "Name", "Default Project",
+      "Language", "Photo Url", "Bio", "Updated"]];
+
+    users.forEach((user) => {
+      let row = [user.id, user.created, user.email, user.name, user.defaultProject,
+        user.language, user.photoURL, user.bio, user.updated];
+      result.push(row);
+    });
+
+    return result;
+  };
+
   render() {
     if (!this.isAdmin()) {
       return (
@@ -77,6 +100,12 @@ export class AdminDashboard extends Component {
         <br/>
         <br/>
         <span> מספר משתמשים במערכת סך הכל {this.state.users.size}</span>
+        <br/>
+        {
+          this.state.CSVLink ?
+          this.state.CSVLink :
+            <button className={'button-as-link'} onClick={this.onCSVLink.bind(this)}>הכן הורדה של רשימת המשתמשים</button>
+        }
         <br/>
         <Button onClick={this.unlockDashboard}>אפשר את כל הכפתורים הבאים - מנגנון אזהרה</Button>
         <hr/>

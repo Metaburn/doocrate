@@ -7,6 +7,7 @@ import {CSVLink} from 'react-csv';
 import i18n from '../../../i18n';
 import { setQueryParams } from '../../../utils/browser-utils';
 import LabelsList from '../../molecules/labelsList/labelsList';
+
 import './task-filters.css';
 
 class TaskFilters extends Component {
@@ -136,6 +137,7 @@ class TaskFilters extends Component {
           placeholder={i18n.t('task.search-by-tags')}
           onChange={this.handleLabelChange}/>
 
+        <button onClick={this.props.onApply} className={"apply-btn"}>{i18n.t("filter.apply")}</button>
         {downloadCSV}
       </nav>
     );
@@ -149,6 +151,7 @@ class TaskFilters extends Component {
 
 TaskFilters.propTypes = {
   onLabelChange: PropTypes.func.isRequired,
+  onApply: PropTypes.func.isRequired,
   selectedProject: PropTypes.object,
   popularLabels: PropTypes.array,
   labelsPool: PropTypes.object.isRequired,

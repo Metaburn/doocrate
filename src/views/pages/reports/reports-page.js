@@ -6,18 +6,20 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 import {tasksActions} from 'src/tasks';
 import {projectActions} from 'src/projects';
+import {invitationsActions} from 'src/invitations';
+import {notificationActions} from "../../../notification";
+
 
 import {firebaseDb} from 'src/firebase';
 import {CSVLink} from 'react-csv';
 
 import {I18n} from 'react-i18next';
 import './reports-page.css';
-import {Textbox} from "react-inputs-validation";
 import i18n from "../../../i18n";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
 import Button from "../../components/button";
-import {MePage} from "../me/me-page";
 import Icon from "../../atoms/icon";
+import { InvitationStatus } from "../../../invitations/invitation";
 
 export class ReportsPage extends Component {
   constructor() {
@@ -27,23 +29,19 @@ export class ReportsPage extends Component {
       users: Map(),
       usersWhoDidntBuy: Map(),
       query: [],
-      addedEmailsStr:'',
+      addedEmailsStr: '',
       validEmails: [],
       invalidEmails: [],
-      invitations: [
-        {
-          id: "1",
-          email: "aa.bb",
-          created: new Date().toDateString(),
-          status: false
-        }
-      ]
-    }
+      invitations: []
+    };
+    this.props.loadInvitationListForProject(this.props.selectedProject.name);
   }
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
-    addInvitations: PropTypes.func.isRequired,
+    createInvitations: PropTypes.func.isRequired,
+    loadInvitationsForInvitationList: PropTypes.func.isRequired,
+    loadInvitationListForProject: PropTypes.func.isRequired,
     removeInvitation: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
@@ -56,6 +54,11 @@ export class ReportsPage extends Component {
   componentWillMount() {
     const projectUrl = this.props.match.params.projectUrl;
     this.props.loadTasks(projectUrl);
+    if (this.state.invitations.selectedInvitationList) {
+      this.props.loadInvitationsForInvitationList(this.state.invitations.selectedInvitationList);
+    } else {
+      window.alert("Failed to load invitations for project");
+    }
     if (!this.props.selectedProject) {
       // Load the project
       this.props.selectProjectFromUrl();
@@ -133,9 +136,23 @@ export class ReportsPage extends Component {
 
   handleSave = () => {
     const {validEmails} = this.state;
-    const {addInvitations, showSuccess} = this.props;
-    addInvitations(validEmails);
+    const {createInvitations, showSuccess} = this.props;
+
+    const invitations = this.prepareInvitations(validEmails);
+    createInvitations(invitations);
     showSuccess(i18n.t('reports.emails-updated-successfully'));
+  }
+
+  prepareInvitations(validEmails) {
+    return validEmails.map(email => {
+     return {
+        invitationListId: this.props.selectedInvitationList,
+        email: email,
+        created: new Date(),
+        status: InvitationStatus.INVITED,
+        userId: null
+      }}
+    )
   }
 
   validateEmails= () => {
@@ -333,7 +350,9 @@ const mapStateToProps = (state) => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
-    selectedProject: state.projects.selectedProject
+    selectedProject: state.projects.selectedProject,
+    selectedInvitationList: state.selectedInvitationList,
+    invitations: state.invitations
   }
 };
 
@@ -341,6 +360,8 @@ const mapDispatchToProps = Object.assign(
   {},
   tasksActions,
   projectActions,
+  invitationsActions,
+  notificationActions
 );
 
 export default connect(
