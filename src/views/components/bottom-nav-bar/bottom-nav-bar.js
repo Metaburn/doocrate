@@ -1,48 +1,70 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import {withRouter} from "react-router-dom"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { noop } from "lodash";
+import { connect } from "react-redux";
+import { compose } from "recompose";
 
-import BottomNavTile from "./bottom-nav-bar-tile"
-import {nav} from "./_nav"
-import "./bottom-nav-bar.scss"
+import BottomNavTile from "./bottom-nav-bar-tile";
+import { nav } from "./_nav";
+import { setSearchQuery } from "../../../tasks/actions";
 
+import "./bottom-nav-bar.scss";
 
 class BottomNavBar extends Component {
-
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    selectedProject: PropTypes.object,
+    selectedProject: PropTypes.object
   };
 
-  activeRoute = (routeName, pathIncludes)  =>{
-    if(pathIncludes) {
+  activeRoute = (routeName, pathIncludes) => {
+    if (pathIncludes) {
       return this.props.location.pathname.includes(pathIncludes);
-    }else{
+    } else {
       return this.props.location.pathname === routeName;
     }
   };
 
   render() {
-    const {auth, selectedProject, location} = this.props;
+    const { auth, selectedProject, location, clearSearchQuery } = this.props;
 
     // Hide on sign in page
-    if (location.pathname.match("/sign-in/")){
+    if (location.pathname.match("/sign-in/")) {
       return null;
     }
 
-    const projectUrl = (selectedProject &&
+    const projectUrl =
+      selectedProject &&
       selectedProject.url &&
-      selectedProject.url !== 'undefined')?
-      selectedProject.url : auth.defaultProject;
+      selectedProject.url !== "undefined"
+        ? selectedProject.url
+        : auth.defaultProject;
 
-    const routes = nav(auth, projectUrl);
+    const routes = nav(auth, projectUrl, clearSearchQuery);
 
     return (
       <div className={"bottom-nav"}>
-          {routes.map(r => (<BottomNavTile key={r.path} icon={r.icon} path={r.path} dataTour={r.dataTour} active={this.activeRoute(r.path, r.pathIncludes)}/>))}
+        {routes.map(r => (
+          <BottomNavTile
+            key={r.path}
+            icon={r.icon}
+            path={r.path}
+            dataTour={r.dataTour}
+            active={this.activeRoute(r.path, r.pathIncludes)}
+            onClick={r.onClick || noop}
+          />
+        ))}
       </div>
-    )
+    );
   }
 }
 
-export default withRouter(BottomNavBar);
+export default compose(
+  withRouter,
+  connect(
+    null,
+    dispatch => ({
+      clearSearchQuery: () => dispatch(setSearchQuery(""))
+    })
+  )
+)(BottomNavBar);

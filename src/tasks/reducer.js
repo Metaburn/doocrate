@@ -8,7 +8,8 @@ import {
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
   SET_FILTERED_TASKS,
-  SET_SELECTED_FILTERS
+  SET_SELECTED_FILTERS,
+  SET_SEARCH_QUERY,
 } from './action-types';
 
 
@@ -20,7 +21,8 @@ export const TasksState = new Record({
   selectedFilters: {}, //Selected filters such as query
   labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
-  created: null
+  created: null,
+  searchQuery: '',
 });
 
 
@@ -68,6 +70,9 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
 
     case SET_SELECTED_FILTERS:
       return state.set('selectedFilters', payload);
+
+    case SET_SEARCH_QUERY:
+      return state.set('searchQuery', payload);
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({
