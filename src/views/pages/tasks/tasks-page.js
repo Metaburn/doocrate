@@ -6,7 +6,7 @@ import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 import { commentsActions } from 'src/comments';
-import { authActions } from 'src/auth';
+import { authActions, getAuth } from 'src/auth';
 import { projectActions } from 'src/projects';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
@@ -55,16 +55,16 @@ export class TasksPage extends Component {
   }
 
   componentWillMount() {
+
     if(!this.props.selectedProject) {
-      this.props.selectProjectFromUrl();
+      this.props.initProject();
     }
 
-    let project_url = this.props.match.params.projectUrl;
+    let project_url = this.props.selectedProject.url;
+
     // Hot fix for users who redirect here
     if(project_url === "[object Object]" || project_url === "null") {
-      this.props.history.push('/burnerot19/task/1');
-      this.props.loadTasks("burnerot19", INCOMPLETE_TASKS);
-      this.props.loadLabels("burnerot19");
+      this.props.history.push('/');
       return;
     }
 
@@ -603,12 +603,14 @@ TasksPage.propTypes = {
 //  CONNECT
 //-------------------------------------
 const mapStateToProps = (state) => {
+  const auth = getAuth(state);
+  const selectedProject =  state.projects.selectedProject || (auth && auth.defaultProject);
   return {
     tasks: state.tasks.list,
     filteredTasks: state.tasks.filteredList,
-    auth: state.auth,
-    selectedProject: state.projects.selectedProject,
-    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
+    auth: auth,
+    selectedProject: selectedProject,
+    labels: (selectedProject && selectedProject.popularTags)? Object.keys(selectedProject.popularTags) : null,
     filters: taskFilters,
     selectedFilters: state.tasks.selectedFilters,
     setFilters: tasksActions.setFilters,

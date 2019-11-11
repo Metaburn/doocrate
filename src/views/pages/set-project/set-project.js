@@ -8,7 +8,6 @@ import { notificationActions } from "../../../notification";
 import TagsInput from "react-tagsinput";
 import i18n from "src/i18n.js";
 import { appConfig } from "../../../config/app-config";
-import { firebaseConfig } from "../../../firebase/config";
 import Select from "react-select";
 import CollapsibleContainer from "../../atoms/collapsibleContainer/collapsibleContainer";
 
@@ -48,7 +47,9 @@ class SetProject extends Component {
   }
 
   componentWillMount() {
-    this.props.selectProjectFromUrl();
+    if(!this.props.selectedProject){
+      this.props.initProject()
+    }
     this.updateStateByProps(this.props);
   }
 

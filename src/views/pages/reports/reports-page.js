@@ -37,14 +37,14 @@ export class ReportsPage extends Component {
     this.props.loadTasks(projectUrl);
     if (!this.props.selectedProject) {
       // Load the project
-      this.props.selectProjectFromUrl();
+      this.props.initProject()
     }
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
-      
+
       const contributors = {};
       const usersWhoDidntBuy = {};
-      querySnapshot.forEach(function(doc) {        
+      querySnapshot.forEach(function(doc) {
         let contributor = doc.data();
         contributors[doc.id] = contributor;
         if(contributor.didntBuy) {
@@ -123,7 +123,7 @@ export class ReportsPage extends Component {
             <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
             {this.state.query.length}
 
-            <br/>            
+            <br/>
               <CSVLink data={this.state.query} >הורדת הדוח</CSVLink>
 
             <table className="report-table" >
@@ -142,11 +142,11 @@ export class ReportsPage extends Component {
                   this.state.query.map( (r) => (
                     <tr key={r[0]}>
                       <th>{r[5]}</th>
-                      <th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th>                      
+                      <th><a href={'/' + this.props.selectedProject.url + '/task/'+r[4]}>{r[4]}</a></th>
                       <th>{r[3]}</th>
                       <th>{r[2]}</th>
                       <th>{r[1]}</th>
-                      <th>{r[0]}</th>                      
+                      <th>{r[0]}</th>
                     </tr>))
                 }
                 </tbody>

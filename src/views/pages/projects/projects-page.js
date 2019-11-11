@@ -7,8 +7,7 @@ import { projectActions } from 'src/projects';
 
 import './projects-page.css';
 import {I18n} from 'react-i18next';
-import { getCookie } from 'src/utils/browser-utils';
-import {getUrlSearchParams} from "../../../utils/browser-utils";
+import {  getAuth } from 'src/auth';
 
 export class ProjectsPage extends Component {
   constructor() {
@@ -27,31 +26,7 @@ export class ProjectsPage extends Component {
 
   componentWillMount() {
     // Check if need to redirect to the project the user got from when he first received the link
-    this.checkIfRedirectByProjectCookie();
     this.props.loadProjects();
-  }
-
-  // A user may have receive a link with a redirect request - We do that only once
-  checkIfRedirectByProjectCookie() {
-    const params = getUrlSearchParams();
-    const isShowAllProjects = params['show'];
-    // Dont redirect when a user presses on the show all projects
-    if(isShowAllProjects) {
-      return;
-    }
-    const project = getCookie('project');
-    if (project && project !== "[object Object]") {
-      this.props.history.push('/'+ project +'/task/1');
-    }
-    // Temporary fix for those who reached object object
-    else if (project && (project === "[object Object]" || project === "null")) {
-      this.props.history.push('/burnerot19/task/1');
-    }
-
-    // Redirect user to default project
-    if(this.props.auth.defaultProject) {
-      this.props.history.push('/'+ this.props.auth.defaultProject +'/task/1');
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -115,7 +90,7 @@ export class ProjectsPage extends Component {
 const mapStateToProps = (state) => {
   return {
     projects: state.projects.list,
-    auth: state.auth,
+    auth: getAuth(state),
   }
 };
 
