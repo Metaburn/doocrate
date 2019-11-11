@@ -34,14 +34,14 @@ export class ReportsPage extends Component {
       invalidEmails: [],
       invitations: []
     };
-
-    this.props.loadInvitationsForInvitationList(this.props.selectedInvitationList);
+    this.props.loadInvitationListForProject(this.props.selectedProject.name);
   }
 
   static propTypes = {
     loadTasks: PropTypes.func.isRequired,
     createInvitations: PropTypes.func.isRequired,
     loadInvitationsForInvitationList: PropTypes.func.isRequired,
+    loadInvitationListForProject: PropTypes.func.isRequired,
     removeInvitation: PropTypes.func.isRequired,
     tasks: PropTypes.instanceOf(List).isRequired,
     selectedProject: PropTypes.object,
@@ -54,6 +54,11 @@ export class ReportsPage extends Component {
   componentWillMount() {
     const projectUrl = this.props.match.params.projectUrl;
     this.props.loadTasks(projectUrl);
+    if (this.state.invitations.selectedInvitationList) {
+      this.props.loadInvitationsForInvitationList(this.state.invitations.selectedInvitationList);
+    } else {
+      window.alert("Failed to load invitations for project");
+    }
     if (!this.props.selectedProject) {
       // Load the project
       this.props.selectProjectFromUrl();
@@ -141,7 +146,7 @@ export class ReportsPage extends Component {
   prepareInvitations(validEmails) {
     return validEmails.map(email => {
      return {
-        invitationListId: null,
+        invitationListId: this.props.selectedInvitationList,
         email: email,
         created: new Date(),
         status: InvitationStatus.INVITED,
@@ -346,7 +351,8 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    selectedInvitationList: state.selectedInvitationList
+    selectedInvitationList: state.selectedInvitationList,
+    invitations: state.invitations
   }
 };
 

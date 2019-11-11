@@ -355,7 +355,6 @@ class SetProject extends Component {
     this.props.createProject(this.state.projectUrl, this.getFormFields());
     if(this.state.isExisting) {
       this.props.showSuccess(i18n.t('create-project.success-edit'));
-      this.props.loadInvitationListForProject(this.state.name)
     }else {
       const invitationList = this.createInvitationListForNewProject(this.state.name, this.props.auth);
       this.props.createInvitationList(invitationList)
@@ -463,7 +462,6 @@ class SetProject extends Component {
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  loadInvitationListForProject: PropTypes.func.isRequired,
   createInvitationList: PropTypes.func.isRequired,
   selectProjectFromUrl: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
