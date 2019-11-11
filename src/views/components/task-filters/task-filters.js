@@ -7,7 +7,6 @@ import {CSVLink} from 'react-csv';
 import i18n from '../../../i18n';
 import { setQueryParams } from '../../../utils/browser-utils';
 import LabelsList from '../../molecules/labelsList/labelsList';
-import Button from "../button/button";
 
 import './task-filters.css';
 
