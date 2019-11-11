@@ -8,8 +8,7 @@ import {
   CREATE_INVITATION_LIST_ERROR
 } from "./action-types";
 
-import { fireb } from "src/firebase/firebase-list";
-import { loadInvitatiosForInvitationList } from "./actions";
+import { firebaseCollectionToList } from "src/firebase/firebase-list";
 
 export const InvitationsState = new Record({
   invitations: new List(),
@@ -21,7 +20,8 @@ export function invitationsReducer(
   { payload, type }
 ) {
   switch (type) {
-    case (CREATE_INVITATION_LIST_SUCCESS, LOAD_INVITATION_LIST_SUCCESS):
+    case CREATE_INVITATION_LIST_SUCCESS:
+    case LOAD_INVITATION_LIST_SUCCESS:
       return state.set("selectedInvitationList", payload);
 
     case CREATE_INVITATION_SUCCESS:
@@ -35,7 +35,8 @@ export function invitationsReducer(
         new List(firebaseCollectionToList(payload.reverse()))
       );
 
-    case (CREATE_INVITATION_ERROR, CREATE_INVITATION_LIST_ERROR):
+    case CREATE_INVITATION_ERROR:
+    case CREATE_INVITATION_LIST_ERROR:
       return showError(payload);
 
     default:

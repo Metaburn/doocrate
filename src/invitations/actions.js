@@ -1,7 +1,5 @@
 import { invitationListFirebaseList } from "./invitations-list";
 import { invitationFirebaseList } from "./invitation";
-import { INVITATION_STATUS } from "./invitation";
-import firebase from "firebase/app";
 
 import {
   CREATE_INVITATION_LIST_SUCCESS,
@@ -18,8 +16,8 @@ export function createInvitationList(invitationList) {
   return dispatch => {
     invitationListFirebaseList
       .push(invitationList)
-      .then(createdInvitationList => {
-        return dispatch(createInvitationListSuccess(createdInvitationList));
+      .then(() => {
+        return dispatch(createInvitationListSuccess(invitationList));
       })
       .catch(error => {
         //TODO: Log error to sentry
@@ -66,8 +64,8 @@ export function createInvitation(invitation) {
   return dispatch => {
     return invitationFirebaseList
       .push(invitation)
-      .then(createdInvitation => {
-        return dispatch(createInvitationSuccess(createdInvitation));
+      .then(() => {
+        return dispatch(createInvitationSuccess(invitation));
       })
       .catch(error => {
         //TODO: Log error to sentry
@@ -81,8 +79,8 @@ export function createInvitations(invitations) {
   return dispatch => {
     return invitationFirebaseList
       .pushBatch(invitations)
-      .then(createdInvitations => {
-        return dispatch(createMultipleInvitationSuccess(createdInvitations));
+      .then(() => {
+        return dispatch(createMultipleInvitationSuccess(invitations));
       })
       .catch(error => {
         //TODO: Log error to sentry
