@@ -28,10 +28,15 @@ class FilterMenu extends Component {
           generateCSV={this.generateCSV}
           userDefaultProject={auth.defaultProject}
           isAdmin={this.isAdmin()}
-          popularLabels={popularLabels}/>
+          popularLabels={popularLabels}
+          onApply={this.onApply}/>
       </div>
     );
   }
+
+  onApply = () => {
+    this.props.setMenuOpen(false);
+  };
 
   // Check if admin of that project
   isAdmin = () => {
