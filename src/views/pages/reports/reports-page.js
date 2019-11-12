@@ -182,7 +182,7 @@ export class ReportsPage extends Component {
   }
 
   deleteInvitation = invitation => {
-    this.props.removeInvitation(invitation.id);
+    this.props.removeInvitation(invitation);
   };
 
   renderValidations() {
@@ -349,15 +349,14 @@ export class ReportsPage extends Component {
                               className="button button-small action-button"
                               onClick={() => {
                                 if (
-                                  !window.confirm(
+                                  window.confirm(
                                     i18n.t("reports.sure-delete-invitation", {
                                       email: invitation.email
                                     })
                                   )
                                 ) {
-                                  return;
+                                  this.deleteInvitation(invitation);
                                 }
-                                this.setState({ emailArr: [] });
                               }}
                               type="button"
                             >

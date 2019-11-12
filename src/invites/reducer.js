@@ -6,7 +6,8 @@ import {
   LOAD_INVITATIONS_SUCCESS,
   CREATE_INVITATION_SUCCESS,
   CREATE_INVITATION_ERROR,
-  CREATE_INVITATION_LIST_ERROR
+  CREATE_INVITATION_LIST_ERROR,
+  UPDATE_INVITATION_SUCCESS
 } from "./action-types";
 
 import { firebaseCollectionToList } from "src/firebase/firebase-list";
@@ -33,6 +34,17 @@ export function invitesReducer(state = new InvitesState(), { payload, type }) {
         new List(firebaseCollectionToList(payload))
       );
 
+    case UPDATE_INVITATION_SUCCESS:
+      debugger;
+      console.log(payload);
+      // const newState = {
+      //   ...state,
+      //   invitations: state.invitations.map(invite => {
+      //     return invite.id === invite.id ? payload : invite;
+      //   })
+      // };
+      return;
+    // return state.merge(newState);
     case CREATE_INVITATION_ERROR:
     case CREATE_INVITATION_LIST_ERROR:
       return showError(payload);

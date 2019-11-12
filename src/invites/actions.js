@@ -176,7 +176,7 @@ export function loadInvitationsSuccess(invitations) {
 export function updateInvitation(invitation) {
   return dispatch => {
     invitationFirebaseList
-      .set(invitation.id, invitation)
+      .update(invitation.id, invitation)
       .then(updatedInvitation => {
         dispatch(updateInvitationSuccess(updatedInvitation));
       })
