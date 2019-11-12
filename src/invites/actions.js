@@ -1,7 +1,6 @@
 import { invitationListFirebaseList } from "./invitations-list";
 import {
   invitationFirebaseList,
-  Invitation,
   InvitationStatus
 } from "./invitation";
 
@@ -17,23 +16,6 @@ import {
 } from "./action-types";
 
 //#region Invitation List
-
-export function createInvitationListForProject(projectId, auth) {
-  const invitationList = {
-    created: new Date(),
-    updated: new Date(),
-    name: "Invitations",
-    creatorId: auth.id,
-    creator: auth.name,
-    url: null,
-    canAdd: true,
-    canAssign: true,
-    canComment: true,
-    canView: true
-  };
-  //we use main so we can call it from other places
-  return createInvitationList(projectId, invitationList, "main");
-}
 
 export function createInvitationList(
   projectId,

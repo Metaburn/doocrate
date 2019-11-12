@@ -56,7 +56,6 @@ export class TasksPage extends Component {
   }
 
   componentWillMount() {
-
     if(!this.props.selectedProject) {
       this.props.history.push('/');
       return;

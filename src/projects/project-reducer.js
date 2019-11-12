@@ -16,7 +16,11 @@ import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
-  selectedProjectUserPermissions: {},
+  selectedProjectUserPermissions: {
+    canAdd: true,
+    canComment: true,
+    canAssign: true
+  },
 });
 
 

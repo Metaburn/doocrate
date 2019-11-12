@@ -355,9 +355,10 @@ class SetProject extends Component {
     if(this.state.isExisting) {
       this.props.showSuccess(i18n.t('create-project.success-edit'));
     }else {
-      this.props.createInvitationListForProject(this.state.projectUrl, this.props.auth);
       this.props.showSuccess(i18n.t('create-project.success'));
     }
+    // might need to set selected project
+    this.props.selectProjectFromProjectUrl(this.state.projectUrl);
     this.props.history.push('/' + this.state.projectUrl + '/task/1');
   }
 
@@ -445,8 +446,7 @@ class SetProject extends Component {
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  createInvitationListForProject: PropTypes.func.isRequired,
-  selectProjectFromUrl: PropTypes.func.isRequired,
+  selectProjectFromProjectUrl: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
 };
 

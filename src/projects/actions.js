@@ -196,6 +196,21 @@ export function getProjectFromUrl() {
   return null;
 }
 
+function selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl) {
+  firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
+    if (snapshot.exists) {
+      const project = snapshot.data();
+      return dispatch(selectProject(project));
+    }
+  });
+}
+
+export function selectProjectFromProjectUrl(projectUrl) {
+  return dispatch => {
+    return selectProjectFromProjectUrl(dispatch, projectUrl);
+  }
+}
+
 // Use the browser url to get the project id and then get the actual project and select it
 export function selectProjectFromUrl() {
   return dispatch => {
@@ -204,14 +219,10 @@ export function selectProjectFromUrl() {
     if (!projectUrl) {
       return;
     }
-    firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
-      if (snapshot.exists) {
-        const project = snapshot.data();
-        return dispatch(selectProject(project));
-      }
-    });
+    return selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl)
   }
 }
+
 
 export function selectProject(project) {
   // When someone selects a project - check if user has access
