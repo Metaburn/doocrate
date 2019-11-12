@@ -1,5 +1,4 @@
 import { firebaseDb } from "./firebase";
-
 /*
  Represent a Firebase collection.
  If given a rootPath and rootDocId then this might be under a sub collection.
@@ -78,6 +77,15 @@ export class FirebaseList {
     }
   }
 
+  cleanObjectBeforeSend(obj) {
+    const stringified = JSON.stringify(obj);
+
+    // We need to parse string back to object and return it
+    const parsed = JSON.parse(stringified);
+
+    return parsed;
+  }
+
   push(value) {
     return this.collectionPath.add(value);
   }
@@ -98,11 +106,13 @@ export class FirebaseList {
   }
 
   set(id, value) {
-    return this.collectionPath.doc(id).set(value);
+    return this.collectionPath.doc(id).set(this.cleanObjectBeforeSend(value));
   }
 
   update(id, value) {
-    return this.collectionPath.doc(id).update(value);
+    return this.collectionPath
+      .doc(id)
+      .update(this.cleanObjectBeforeSend(value));
   }
 
   subscribe(emit) {
@@ -174,7 +184,7 @@ export class FirebaseList {
  We are adding the id and a function that allow to perform object.get
  */
 export function firebaseCollectionToList(collection) {
-  if(collection) {
+  if (collection) {
     return collection.map(document => {
       return Object.assign(document.data(), {
         get: object => document[object],

@@ -23,7 +23,8 @@ export const Invitation = new Record({
 export const invitationFirebaseList = new FirebaseList(
   {
     onAdd: InvitationActions.createInvitationSuccess,
-    onLoad: InvitationActions.loadInvitationsSuccess
+    onLoad: InvitationActions.loadInvitationsSuccess,
+    onChange: InvitationActions.updateInvitationSuccess
   },
   Invitation,
   "invitations"
