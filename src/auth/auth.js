@@ -1,9 +1,9 @@
-import { firebaseAuth, firebaseDb } from 'src/firebase';
-import * as authActions from './actions';
-import {getCookie} from "../utils/browser-utils";
-import getRandomImage from 'src/utils/unsplash';
-import {initProject} from "../projects/actions";
-import * as Sentry from '@sentry/browser';
+import { firebaseAuth, firebaseDb } from "src/firebase";
+import * as authActions from "./actions";
+import { getCookie } from "../utils/browser-utils";
+import getRandomImage from "src/utils/unsplash";
+import { initProject } from "../projects/actions";
+import * as Sentry from "@sentry/browser";
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
@@ -15,24 +15,34 @@ export function initAuth(dispatch) {
 
         updateUserContextSentry(authUser);
 
-        authUser.role = 'user';
+        authUser.role = "user";
         getIsAdmin(authUser).then(adminRef => {
           // if admin
-          if(authUser) {
-            authUser.role = adminRef.exists? 'admin': authUser.role;
+          if (authUser) {
+            authUser.role = adminRef.exists ? "admin" : authUser.role;
             authUser.adminProjects = [];
-            if(adminRef.exists) {
+            if (adminRef.exists) {
               getAdminProjects(authUser).then(res => {
                 authUser.adminProjects = res;
-                getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
-              })
-            }else {
-              getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
+                getUserInfoAndUpdateData(
+                  authUser,
+                  dispatch,
+                  unsubscribe,
+                  resolve
+                );
+              });
+            } else {
+              getUserInfoAndUpdateData(
+                authUser,
+                dispatch,
+                unsubscribe,
+                resolve
+              );
             }
-          }else {
+          } else {
             getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
           }
-        })
+        });
         // Call init project again after sigin-in
         dispatch(initProject());
       },
@@ -44,16 +54,15 @@ export function initAuth(dispatch) {
 function updateUserContextSentry(authUser) {
   try {
     if (authUser) {
-      Sentry.configureScope((scope) => {
+      Sentry.configureScope(scope => {
         scope.setUser({
-          "email": authUser.email,
-          "name": authUser.displayName
+          email: authUser.email,
+          name: authUser.displayName
         });
       });
     }
-  }
-  catch (ex) {
-    console.error({ex});
+  } catch (ex) {
+    console.error({ ex });
   }
 }
 
@@ -72,16 +81,16 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
       unsubscribe();
       resolve();
     } else {
-      const project = getCookie('project');
-      if(authUser && authUser.uid && project) {
+      const project = getCookie("project");
+      if (authUser && authUser.uid && project) {
         authUser.project = project;
       }
       // Only update the fields if no user data exists
-      if(!authUser) {
+      if (!authUser) {
         resolve();
         return;
       }
-      updateUserData(authUser).then(authUserResult => {
+      updateUserData(authUser, dispatch).then(authUserResult => {
         dispatch(authActions.initAuth(authUserResult));
         unsubscribe();
         resolve();
@@ -97,10 +106,9 @@ export function updateUserData(authUser, dispatch) {
       return resolve(null);
     }
 
-
     updateUserContextSentry(authUser);
 
-    const userDoc = firebaseDb.collection('users').doc(authUser.uid);
+    const userDoc = firebaseDb.collection("users").doc(authUser.uid);
     userDoc.get().then(userSnapshot => {
       if (!userSnapshot.exists) {
         // Create it for the first time
@@ -109,7 +117,7 @@ export function updateUserData(authUser, dispatch) {
           email: authUser.email,
           photoURL: authUser.photoURL || getRandomImage(),
           created: new Date(),
-          language: 'he' //Hebrew is default lang
+          language: "he" //Hebrew is default lang
         };
 
         if (authUser.defaultProject) {
@@ -130,54 +138,68 @@ export function updateUserData(authUser, dispatch) {
             email: authUser.email,
             isEmailConfigured: true,
             updated: new Date(),
-            language: authUser.language || 'he' // Hebrew is default lang
+            language: authUser.language || "he" // Hebrew is default lang
           };
 
-          if(authUser.defaultProject){
+          if (authUser.defaultProject) {
             fieldsToUpdate.defaultProject = authUser.defaultProject;
           }
 
-          if(authUser.bio){
-            fieldsToUpdate.bio = authUser.bio
+          if (authUser.bio) {
+            fieldsToUpdate.bio = authUser.bio;
           }
 
-          userDoc.set(fieldsToUpdate, {merge: true});
+          userDoc.set(fieldsToUpdate, { merge: true });
 
           updateAuthFields(authUser);
 
           // Update local auth
-          dispatchUpdatedAuthUser(authUser, userSnapshot, fieldsToUpdate, dispatch);
-        }else {
+          dispatchUpdatedAuthUser(
+            authUser,
+            userSnapshot,
+            fieldsToUpdate,
+            dispatch
+          );
+        } else {
           // Simply update the user fields
           // Add any fields below
-          const newUserData = {updated: new Date()};
+          const newUserData = { updated: new Date() };
           if (authUser.language) {
-            newUserData.language = authUser.language
+            newUserData.language = authUser.language;
           }
           if (authUser.email) {
-            newUserData.email = authUser.email
+            newUserData.email = authUser.email;
           }
           if (authUser.name) {
-            newUserData.name = authUser.name
+            newUserData.name = authUser.name;
           }
           if (authUser.bio) {
-            newUserData.bio = authUser.bio
+            newUserData.bio = authUser.bio;
           }
-          userDoc.set(newUserData,
-            {merge: true});
+          userDoc.set(newUserData, { merge: true });
 
           updateAuthFields(authUser);
 
           // Update local auth
-          dispatchUpdatedAuthUser(authUser, userSnapshot, newUserData, dispatch);
+          dispatchUpdatedAuthUser(
+            authUser,
+            userSnapshot,
+            newUserData,
+            dispatch
+          );
         }
         resolve(authUser);
       }
-    })
-  })
+    });
+  });
 }
 
-function dispatchUpdatedAuthUser(authUser, userSnapshot, updatedFields, dispatch ){
+function dispatchUpdatedAuthUser(
+  authUser,
+  userSnapshot,
+  updatedFields,
+  dispatch
+) {
   Object.assign(authUser, userSnapshot.data());
   Object.assign(authUser, updatedFields);
   dispatch(authActions.initAuth(authUser));
@@ -196,7 +218,7 @@ function updateAuthFields(authUser) {
     firebaseAuth.currentUser.updateProfile(newUserAuthFields);
   }
 
-  if(authUser.email && (authUser.email !== firebaseAuth.currentUser.email)) {
+  if (authUser.email && authUser.email !== firebaseAuth.currentUser.email) {
     firebaseAuth.currentUser.updateEmail(authUser.email);
   }
 }
@@ -204,33 +226,43 @@ function updateAuthFields(authUser) {
 // TODO - instead of await that waits for all users
 // We should load the interface and then make another call - for faster loading
 function getIsAdmin(authUser) {
-  if(!authUser) {
-    return new Promise( (resolve, reject) => {
-      resolve('guest');
-    })
+  if (!authUser) {
+    return new Promise((resolve, reject) => {
+      resolve("guest");
+    });
   }
-  return firebaseDb.collection('admins').doc(authUser.uid).get();
+  return firebaseDb
+    .collection("admins")
+    .doc(authUser.uid)
+    .get();
 }
 
 function getAdminProjects(authUser) {
-  return new Promise( (resolve, reject) => {
-    firebaseDb.collection('admins').doc(authUser.uid).collection('projects').onSnapshot(snapshot => {
-      let projects = [];
-      snapshot.docs.forEach(doc => {
-        projects.push(doc.id);
+  return new Promise((resolve, reject) => {
+    firebaseDb
+      .collection("admins")
+      .doc(authUser.uid)
+      .collection("projects")
+      .onSnapshot(snapshot => {
+        let projects = [];
+        snapshot.docs.forEach(doc => {
+          projects.push(doc.id);
+        });
+        resolve(projects);
       });
-      resolve(projects);
-    })
-  })
+  });
 }
 
 // TODO - instead of await that waits for all users
 // We should load the interface and then make another call - for faster loading
 function getUserInfo(authUser) {
-  if(!authUser) {
-    return new Promise( (resolve, reject) => {
+  if (!authUser) {
+    return new Promise((resolve, reject) => {
       resolve(null);
-    })
+    });
   }
-  return firebaseDb.collection('users').doc(authUser.uid).get();
+  return firebaseDb
+    .collection("users")
+    .doc(authUser.uid)
+    .get();
 }
