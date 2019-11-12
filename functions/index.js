@@ -5,7 +5,7 @@ const functions = require('firebase-functions');
 exports.onNewProjectMakeAdminFunctions = require('./firestore_hooks/on-new-project-make-admin');
 exports.onNewCommentSendEmail = require('./firestore_hooks/on-new-comment-send-email');
 exports.onEditTaskSendEmail = require('./firestore_hooks/on-edit-task-send-email');
-exports.api = require('./doocrateApi');
+exports.api = require('./doocrateApi').app;
 
 const MAX_TASK_PER_CREATOR = 80;
 // Limit the number of tasks by creator
