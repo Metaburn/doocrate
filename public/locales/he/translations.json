@@ -19,7 +19,7 @@
     "disconnect": "התנתקי",
     "me": "🧝",
     "all-projects": "כל הפרוייקטים בעולם",
-    "update-my-profile":"עדכון הפרופיל שלי",
+    "update-my-profile": "עדכון הפרופיל שלי",
     "create-project": "צור פרוייקט משלך"
   },
   "create-project": {
@@ -38,7 +38,7 @@
     "can-assign-task": "🔏 האם הפרוייקט פתוח ללקיחת אחריות על משימות",
     "select-language": "בחר את שפת הפרוייקט",
     "custom-domain": "[אופציונלי] - כתובת אתר משלך (במידה וכבר יש לך אחד)",
-    "custom-domain-placeholder":"https://yourdomain.com",
+    "custom-domain-placeholder": "https://yourdomain.com",
     "custom-domain-explain": "חייב להתחיל ב-<b>https://</b> או <b>http</b> לדוגמה https://burnerot.com<br/>ברגע שמשתמש יקבל אימיילים מהמערכת - זה יוביל אותו לכתובת הזאת במקום לכתובת doocrate.com",
     "submit-btn": "צור פרוייקט חדש!",
     "submit-btn-edit": "שמור שינויים!",
@@ -72,8 +72,8 @@
     "title": "מחפש.ת מה לעשות?",
     "start-tour": "התחילי את הסיור",
     "start-tour-desc": "ותלמדי איך לעשות דברים בקלות",
-    "create-task":"צרי לעצמך משימה",
-    "create-task-desc":"מרגישה השראה? צרי משימה",
+    "create-task": "צרי לעצמך משימה",
+    "create-task-desc": "מרגישה השראה? צרי משימה",
     "search-free-task": "חפש לעצמך משימה פנויה",
     "search-free-task-desc": "בערימת המשימות",
     "search-humans": "חפש בני אדם",
@@ -91,8 +91,8 @@
     "free-tasks": "משימות פנויות",
     "all-tasks": "כל המשימות בעולם",
     "take-responsibility": "קחי אחריות",
-    "remove-responsibility" :"הסר אחריות",
-    "delete" :"מחק משימה",
+    "remove-responsibility": "הסר אחריות",
+    "delete": "מחק משימה",
     "sure-delete": "האם אתה בטוח שברצונך למחוק משימה זו?",
     "sure-unassign": "האם אתה בטוח שברצונך להסיר אחריות?",
     "critical": "משימה קריטית לקיום הארוע",
@@ -169,7 +169,7 @@
     "set-my-name-description": "השם שלי:",
     "set-my-name": "איך נקרא לך:",
     "bio-description": "מי אתה? שתף את כוחות העל שלך עם הקהילה",
-    "submit" : "שמור והמשך"
+    "submit": "שמור והמשך"
   },
   "admin": {
     "download-csv": "הורד CSV"
@@ -199,7 +199,7 @@
     "of": "{{start}} מתוך {{end}}",
     "last-step-btn": "נפלא",
     "welcome": "ברוכה הבאה לדואוקרט!\r\nהכפתור הזה - הבא הוא בטח חשוב. תלחצי עליו",
-    "create-task":  "ככה את יוצרת משימה חדשה",
+    "create-task": "ככה את יוצרת משימה חדשה",
     "search-humans": "כאן את מחפשת משימות ובני אדם",
     "filter": "ככה מפלטרים - את יכולה לראות משימות לפי קטגוריה או לפי תגית מסויימת",
     "personal-space": "זהו האזור האישי שלך - כאן נמצאות המשימות שיצרת ושלקחת עליהן אחריות.",
@@ -253,10 +253,13 @@
   "reports": {
     "validate": "בדקי",
     "save": "שמרי",
+    "delete": "מחקי",
     "emails-updated-successfully": "רשימת הכתובות נשמרה בהצלחה",
     "invitations-header": "הוספת משתמשים עם הרשאת עריכה לפרוייקט",
     "emails-placeholder": "הזיני כתובות אימייל מופרדות ב-;",
     "sure-delete-invitation": "האם אתה בטוח שתרצה למחוק הזמנה ל {{email}}?",
-    "sure-add-invitations": "האם אתה בטוח שתרצה להוסיף {{emailsCount}} משתמשים?"
+    "sure-add-invitations": "האם אתה בטוח שתרצה להוסיף {{emailsCount}} משתמשים?",
+    "invalid-email-address": "הכתובות מייל הבאות אינן חוקיות",
+    "valid-email-address": "כל כתובות המייל חוקיות"
   }
 }

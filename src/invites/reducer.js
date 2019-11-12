@@ -16,11 +16,7 @@ export const InvitesState = new Record({
   selectedInvitationList: null
 });
 
-export function invitesReducer(
-  state = new InvitesState(),
-  { payload, type }
-) {
-
+export function invitesReducer(state = new InvitesState(), { payload, type }) {
   switch (type) {
     case CREATE_INVITATION_LIST_SUCCESS:
     case LOAD_INVITATION_LIST_SUCCESS:
@@ -35,7 +31,7 @@ export function invitesReducer(
       return state.set(
         "invitations",
         new List(firebaseCollectionToList(payload))
-     );
+      );
 
     case CREATE_INVITATION_ERROR:
     case CREATE_INVITATION_LIST_ERROR:
