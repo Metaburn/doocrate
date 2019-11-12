@@ -1,8 +1,9 @@
-export const nav = (auth, projectUrl) => [
+export const nav = (auth, projectUrl, clearSearchQuery) => [
   {
     path: "/" + projectUrl + "/task/1",
     pathIncludes: "/" + projectUrl + "/task/", //To support only being active with /project/test/anything?anyquery
     icon: "home",
+    onClick: () => clearSearchQuery(),
   },
   {
     path: "/about",

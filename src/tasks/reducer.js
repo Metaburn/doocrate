@@ -8,7 +8,8 @@ import {
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
   SET_FILTERED_TASKS,
-  SET_SELECTED_FILTERS
+  SET_SELECTED_FILTERS,
+  SET_SEARCH_QUERY,
 } from './action-types';
 
 
@@ -20,7 +21,8 @@ export const TasksState = new Record({
   selectedFilters: {}, //Selected filters such as query
   labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
-  created: null
+  created: null,
+  searchQuery: '',
 });
 
 
@@ -42,8 +44,8 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       return state.merge({
         deleted: null,
         created: payload,
-        list: state.list.unshift(payload),
-        filteredList: state.list.unshift(payload),
+        list: state.list.push(payload),
+        filteredList: state.list.push(payload),
         // Adds all the labels from the task into the labels pool
         labelsPool: state.labelsPool.union(Object.keys(payload.label || {})),
       });
@@ -58,16 +60,19 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
       });
 
     case LOAD_TASKS_SUCCESS:
-      const defaultTasks = new List(firebaseCollectionToList(payload.reverse()));
+      const defaultTasks = new List(firebaseCollectionToList(payload));
       return state.set('list', defaultTasks)
         .set('labelsPool',new Set(extractLabels((payload))))
         .set('filteredList', defaultTasks);
 
     case SET_FILTERED_TASKS:
-      return state.set('filteredList', new List(payload.reverse()));
+      return state.set('filteredList', new List(payload));
 
     case SET_SELECTED_FILTERS:
       return state.set('selectedFilters', payload);
+
+    case SET_SEARCH_QUERY:
+      return state.set('searchQuery', payload);
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

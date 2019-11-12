@@ -6,9 +6,9 @@ import { I18n } from "react-i18next";
 import { projectActions } from "src/projects";
 import {notificationActions} from "../../../notification";
 import TagsInput from "react-tagsinput";
+import {firebaseConfig} from "src/firebase/config";
 import i18n from "src/i18n.js";
 import { appConfig } from "../../../config/app-config";
-import { firebaseConfig } from "../../../firebase/config";
 import Select from "react-select";
 import CollapsibleContainer from "../../atoms/collapsibleContainer/collapsibleContainer";
 

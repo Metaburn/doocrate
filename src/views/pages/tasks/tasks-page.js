@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { List, is } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { debounce } from 'lodash';
+
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
@@ -12,7 +14,6 @@ import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
 import TaskSideView from '../../components/task-view/TaskSideView';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
-import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
 import i18n from 'src/i18n.js';
@@ -20,9 +21,10 @@ import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
+import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
+import { setSearchQuery } from "../../../tasks/actions";
 
 import './tasks-page.css';
-import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
 
 export class TasksPage extends Component {
   constructor(props) {
@@ -152,7 +154,6 @@ export class TasksPage extends Component {
     }
   }
 
-
   // Update the filter in the store from the current url.
   // TODO This should probable moved to the store location listen to history.listen
   updateFilter(nextFilters) {
@@ -238,6 +239,8 @@ export class TasksPage extends Component {
 
   onNewTaskAdded(task) {
     // Remove this to keeps the user on the same page - allowing to create another new task
+    // Probably should only show on real success
+    this.props.showSuccess(i18n.t('task.created-successfully'));
 
     // Navigate to newly created task
     const project_url = this.props.match.params.projectUrl;
@@ -277,9 +280,6 @@ export class TasksPage extends Component {
       {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
       this.props.auth,
       this.onNewTaskAdded);
-
-    // Probably should only show on real success
-    this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
   // Check if admin of that project
@@ -347,6 +347,7 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
+    this.props.setSearchQuery(query);
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
@@ -511,7 +512,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen, searchQuery } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -525,14 +526,17 @@ export class TasksPage extends Component {
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
-          <TopNav onQueryChange={this.onQueryChange}
+          <TopNav
+            onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
             setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
-            title={title}/>
+            title={title}
+            query={searchQuery || ''}
+          />
         </div>
 
         <div className='task-page-wrapper'>
@@ -586,22 +590,22 @@ TasksPage.propTypes = {
 //=====================================
 //  CONNECT
 //-------------------------------------
-const mapStateToProps = (state) => {
-  return {
-    tasks: state.tasks.list,
-    filteredTasks: state.tasks.filteredList,
-    auth: state.auth,
-    selectedProject: state.projects.selectedProject,
-    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
-    filters: taskFilters,
-    selectedFilters: state.tasks.selectedFilters,
-    setFilters: tasksActions.setFilters,
-    setFilteredTasks: tasksActions.setFilteredTasks,
-    buildFilter: buildFilter,
-    setTour: userInterfaceActions.setTour,
-    tour: state.userInterface.tour
-  }
-};
+const mapStateToProps = (state) => ({
+  tasks: state.tasks.list,
+  filteredTasks: state.tasks.filteredList,
+  auth: state.auth,
+  selectedProject: state.projects.selectedProject,
+  labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
+  filters: taskFilters,
+  selectedFilters: state.tasks.selectedFilters,
+  setFilters: tasksActions.setFilters,
+  setFilteredTasks: tasksActions.setFilteredTasks,
+  buildFilter: buildFilter,
+  setTour: userInterfaceActions.setTour,
+  tour: state.userInterface.tour,
+  searchQuery: state.tasks.searchQuery,
+  setSearchQuery,
+});
 
 
 
@@ -613,7 +617,7 @@ const mapDispatchToProps = Object.assign(
   labelActions,
   projectActions,
   authActions,
-  userInterfaceActions
+  userInterfaceActions,
 );
 
 export default connect(

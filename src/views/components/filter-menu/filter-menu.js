@@ -25,41 +25,38 @@ class FilterMenu extends Component {
           selectedProject={selectedProject} //TODO does this work with this.state.selectedProject
           labelsPool={labelsPool || []}
           onLabelChange={this.onLabelChanged}
-          generateCSV={this.generateCSV.bind(this)}
+          generateCSV={this.generateCSV}
           userDefaultProject={auth.defaultProject}
           isAdmin={this.isAdmin()}
-          popularLabels={popularLabels}/>
+          popularLabels={popularLabels}
+          onApply={this.onApply}/>
       </div>
     );
   }
 
+  onApply = () => {
+    this.props.setMenuOpen(false);
+  };
+
   // Check if admin of that project
   isAdmin = () => {
-    const projectUrl = (this.props.selectedProject? this.props.selectedProject.projectUrl : null);
-    return this.props.auth.role === 'admin' &&
-      this.props.auth.adminProjects.includes(projectUrl);
+    const { auth, selectedProject } = this.props;
+    const projectUrl = (selectedProject? selectedProject.url : null);
+    return auth.role === 'admin' && auth.adminProjects.includes(projectUrl);
   };
 
   // TODO - Get this code out of here
   generateCSV = () => {
-    console.log("Generating csv...");
     if (!this.isAdmin()) return;
 
-    const csv = [["TaskId", "Task Name", "Type", "CreatorId", "Creator Name" , "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
+    const { tasks, selectedProject } = this.props;
+    const csv = [["TaskId", "Task Name", "Type", "Created", "Description", "CreatorId", "Creator Name" ,
+      "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
 
-    this.state.tasks.forEach((t) => {
-
-      const defaultTypes = [
-        i18n.t('task.types.planning'),
-        i18n.t('task.types.shifts'),
-        i18n.t('task.types.camps'),
-        i18n.t('task.types.art'),
-        i18n.t('task.types.other')
-      ];
-
-
-      const taskTypeString = t.type? defaultTypes[t.type - 1] : 'None';
-      let tcsv = [t.id, t.title, taskTypeString, t.creator.id, t.creator.name];
+    tasks.forEach((t) => {
+      const taskTypes = selectedProject.taskTypes;
+      const taskTypeString = t.type? taskTypes[t.type - 1] : 'None';
+      let tcsv = [t.id, t.title, taskTypeString, t.created, t.description, t.creator.id, t.creator.name];
 
       let labels = [];
       Object.keys(t.label).forEach((label) => {
@@ -70,8 +67,10 @@ class FilterMenu extends Component {
       if (t.assignee != null) {
         tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
       }
-      csv.push(tcsv);
 
+      tcsv = tcsv.concat([labels]);
+
+      csv.push(tcsv);
     });
 
     return csv;
