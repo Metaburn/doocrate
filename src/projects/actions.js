@@ -13,6 +13,7 @@ import {
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
 
+
 export function createProject(projectId, project) {
   projectList.path = `projects`;
   return dispatch => {
@@ -150,6 +151,10 @@ export function selectProjectFromUrl() {
 }
 
 export function selectProject(project) {
+  // When someone selects a project - check if user has access
+  // TODO -> call invitesActions.getUserAccessToProject() which would check for permissions
+  // Then set them somewhere
+
   return {
     type: SELECT_PROJECT,
     payload: project
