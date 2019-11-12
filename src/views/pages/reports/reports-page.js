@@ -184,7 +184,7 @@ export class ReportsPage extends Component {
     if (invalidEmails.length > 0) {
       return (
         <div>
-          <p>הכתובות הבאות אינן חוקיות:</p>
+          <p>{i18n.t("reports.invalid-email-address")}:</p>
           {invalidEmails.map(email => (
             <p>{email}</p>
           ))}
@@ -194,7 +194,7 @@ export class ReportsPage extends Component {
     if (validEmails.length > 0) {
       return (
         <div>
-          <p>כל הכתובות חוקיות</p>
+          <p>{i18n.t("reports.valid-email-address")}</p>
         </div>
       );
     }
