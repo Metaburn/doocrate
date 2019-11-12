@@ -8,7 +8,9 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UNLOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_ERROR,
-  UPDATE_PROJECT_SUCCESS, NEW_PROJECT_CREATED,
+  UPDATE_PROJECT_SUCCESS,
+  NEW_PROJECT_CREATED,
+  SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
@@ -155,8 +157,17 @@ export function selectProject(project) {
   // TODO -> call invitesActions.getUserAccessToProject() which would check for permissions
   // Then set them somewhere
 
+
+  setUserPermissionsForSelectedProject(project) //this is just a temp call from here... should be remoed
   return {
     type: SELECT_PROJECT,
     payload: project
+  };
+}
+
+export function setUserPermissionsForSelectedProject(userPermissions) {
+  return {
+    type: SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT,
+    payload: userPermissions
   };
 }

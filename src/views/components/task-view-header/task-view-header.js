@@ -15,7 +15,7 @@ export class TaskViewHeader extends Component {
     const { task, isDraft, isShowDeleteButton, isShowMarkAsDoneButton,
       isShowUnassignButton, showButtonAsFollow, isShowSaveButton,
       closeTaskView,assignTask, onUnassignTask, saveTask, projectUrl,
-      isShowEditButton, onEditTask, markAsDoneUndone, onDeleteTask} = this.props;
+      isShowEditButton, onEditTask, markAsDoneUndone, onDeleteTask, userPermissions} = this.props;
     const assignee = task? task.assignee : {};
 
     return(
@@ -71,7 +71,7 @@ export class TaskViewHeader extends Component {
 
           <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
 
-            {isDraft ? '' : (!assignee) ?
+            {isDraft || userPermissions.canAssign === false ? '' : (!assignee) ?
               <Fragment>
                 <Button
                   className={`button button-small action-button assign_task lang-${i18n.language}`}

@@ -379,7 +379,7 @@ export class TasksPage extends Component {
 
   getTaskViewProps() {
     const { selectedTaskId, newTask } = this.state;
-    const { tasks } = this.props;
+    const { tasks, selectedProjectUserPermissions } = this.props;
 
     // TODO - is this the right place to make this decision?
     let selectedTask;
@@ -408,7 +408,8 @@ export class TasksPage extends Component {
       isDraft: this.state.newTask != null,
       submitNewTask: this.submitNewTask,
       isTaskVisible: !!this.state.selectedTask,
-      resetSelectedTask: this.resetSelectedTask
+      resetSelectedTask: this.resetSelectedTask,
+      userPermissions: selectedProjectUserPermissions
     };
   }
 
@@ -523,7 +524,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
+    const { selectedProjectUserPermissions, filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -547,6 +548,7 @@ export class TasksPage extends Component {
             tasksCount={tasksCount}
             title={title}
             query={query || ''}
+            userPermissions={selectedProjectUserPermissions}
           />
         </div>
 
@@ -607,6 +609,7 @@ const mapStateToProps = (state) => {
     filteredTasks: state.tasks.filteredList,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
+    selectedProjectUserPermissions: state.projects.selectedProjectUserPermissions,
     labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
     filters: taskFilters,
     selectedFilters: state.tasks.selectedFilters,

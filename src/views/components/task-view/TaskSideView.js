@@ -10,7 +10,7 @@ const TaskSideView = ({
   assignTask, selectedProject, isAdmin, isGuide,
   followTask, unfollowTask, unassignTask, unloadComments,
   createComment, updateComment, removeComment,
-  isValidCallback, isDraft, submitNewTask, resetSelectedTask, validations
+  isValidCallback, isDraft, submitNewTask, resetSelectedTask, validations, userPermissions
 }) => {
 
   const isHebrew = i18n.language === "he";
@@ -64,7 +64,8 @@ const TaskSideView = ({
           }*/
           resetSelectedTask()
         }}
-        validations={validations}/>
+        validations={validations}
+        userPermissions={userPermissions}/>
     </Menu>
   );
 };

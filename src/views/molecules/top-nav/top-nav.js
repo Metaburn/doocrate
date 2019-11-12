@@ -11,19 +11,21 @@ import Icon from "../../atoms/icon/icon";
 class TopNav extends Component {
 
   render() {
+    const {userPermissions} = this.props;
     return (
       <I18n ns='translations'>
         {
           (t, {i18n}) => (
             <div className={'top-nav'} data-tour={"two"}>
-              <Button
+              {userPermissions.canAdd === true && <Button
                 className='button button-small add-task-button'
                 onClick={this.props.createTask}
                 dataTour={"one"}
               >
                 <Icon name={'add'} className={`add-task-icon add-task-icon-${t('lang-float')}`}
-                      />
+                />
               </Button>
+              }
               <SearchBar
                 query={this.props.query}
                 onQueryChange={this.props.onQueryChange}
@@ -51,7 +53,8 @@ TopNav.propTypes = {
   removeQueryByLabel: PropTypes.func,
   selectedFilters: PropTypes.array,
   isFilterActive: PropTypes.bool,
-  createTask: PropTypes.func
+  createTask: PropTypes.func,
+  userPermissions: PropTypes.object.isRequired
 };
 
 export default TopNav;
