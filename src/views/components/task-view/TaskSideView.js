@@ -42,7 +42,13 @@ class TaskSideView extends Component{
               }
               return false;
             }}
-            onStateChange={(state) => (!state.isOpen && resetSelectedTask())}
+            onStateChange={(state) => {
+              if(state.isOpen && this.isSaved){
+                // reset isSaved on open
+                this.isSaved = false;
+              }
+              return  !state.isOpen && resetSelectedTask()
+            }}
             width={ width }>
 
         <TaskView
