@@ -15,6 +15,7 @@ import {
   SELECT_TASK,
   SET_FILTERED_TASKS,
   SET_SELECTED_FILTERS,
+  SET_SEARCH_QUERY,
 } from './action-types';
 
 
@@ -197,6 +198,13 @@ export function setFilters(filters) {
   };
 }
 
+export function setSearchQuery(query) {
+  return {
+    type: SET_SEARCH_QUERY,
+    payload: query,
+  };
+}
+
 export function filterTasks(filterType) {
   return {
     type: FILTER_TASKS,
@@ -206,7 +214,7 @@ export function filterTasks(filterType) {
 
 /* Loads all the tasks for a given project */
 export function loadTasks(projectId) {
-  return (dispatch, getState) => {
+  return dispatch => {
     taskList.rootPath = 'projects';
     taskList.rootDocId = projectId;
     taskList.path = 'tasks';

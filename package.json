@@ -88,10 +88,12 @@
     "react-tooltip": "3.3.1",
     "react-transition-group": "1.2.1",
     "reactour": "1.7.1",
+    "recompose": "0.30.0",
     "redux": "^3.7.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "2.3.0",
     "reselect": "^3.0.1",
+    "sentry": "0.1.2",
     "styled-components": "^4.0.0",
     "url-search-params-polyfill": "7.0.0"
   },
