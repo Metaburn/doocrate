@@ -96,8 +96,10 @@ export class TasksPage extends Component {
     // To prevent a race condition we want to make sure that only
     // when there are no tasks - we don't update those filters
     // This allows to have the user loads a page directly with filters
-    if(nextSize && (nextSize !== prevSize || !is(nextProps.tasks, tasks)) && JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+    if(nextProps.tasks && nextProps.tasks.size > 0) {
+      if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
         this.debouncedFilterTasksFromProps(nextProps);
+      }
     }
 
     //if url has a task id - select it
