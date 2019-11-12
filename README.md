@@ -111,6 +111,12 @@ In order to create labels colors you need to create a collection called 'labels'
 Set for `Document Id` - The actual tag name - for example - "art"
 Then inside have a field "name" with value "art" and another field "colorInHex" with color value. For example "EB1478" - This will color all label of type "art" with color "EB1478"
 
+# Schema
+![Schema](./docs/firestore_schema.png)
+
+To update the schema, you can load the [Schema.xml](./docs/firestore_schema.xml) file into [draw.io](https://draw.io)
+[Docs](/docs)
+
 # Labels
 Under `src/config/app-config` you have the popular labels that would appear when someone creates a task
 

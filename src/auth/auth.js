@@ -2,7 +2,7 @@ import { firebaseAuth, firebaseDb } from 'src/firebase';
 import * as authActions from './actions';
 import {getCookie} from "../utils/browser-utils";
 import getRandomImage from 'src/utils/unsplash';
-import {initProject} from "../projects/initializer";
+import {initProject} from "../projects/actions";
 import * as Sentry from '@sentry/browser';
 
 export function initAuth(dispatch) {
@@ -14,8 +14,6 @@ export function initAuth(dispatch) {
         }
 
         updateUserContextSentry(authUser);
-        // Call init project again after sigin-in
-        initProject(dispatch);
 
         authUser.role = 'user';
         getIsAdmin(authUser).then(adminRef => {
@@ -35,6 +33,8 @@ export function initAuth(dispatch) {
             getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve);
           }
         })
+        // Call init project again after sigin-in
+        dispatch(initProject());
       },
       error => reject(error)
     );

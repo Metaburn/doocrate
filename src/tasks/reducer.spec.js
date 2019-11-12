@@ -36,14 +36,13 @@ describe('Tasks reducer', () => {
   describe('CREATE_TASK_SUCCESS', () => {
     it('should prepend new task to list', () => {
       let state = new TasksState({list: new List([task1])});
-
       let nextState = tasksReducer(state, {
         type: CREATE_TASK_SUCCESS,
         payload: task2
       });
 
-      expect(nextState.list.get(0)).toBe(task2);
-      expect(nextState.list.get(1)).toBe(task1);
+      expect(nextState.list.get(0)).toBe(task1);
+      expect(nextState.list.get(1)).toBe(task2);
     });
   });
 

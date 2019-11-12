@@ -64,7 +64,7 @@ service cloud.firestore {
         allow read: if request.auth != null;
         // Allow create: if authenticated
         // Uncommment the canCreateTask will not allow users who already have tasks to create new tasks
-        allow create: if request.auth != null && isUserInvited(anyProject);
+        allow create: if request.auth != null && isUserInvited(anyProject) || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
         // Uncomment the following to allow unassigned task to be assigned by all
         allow update: if request.auth != null && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && (isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners())) || isSuperAdmin();
         allow delete: if request.auth != null && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && isCreator()) || isSuperAdmin();

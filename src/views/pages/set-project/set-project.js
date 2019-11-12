@@ -49,7 +49,6 @@ class SetProject extends Component {
   }
 
   componentWillMount() {
-    this.props.selectProjectFromUrl();
     this.updateStateByProps(this.props);
   }
 

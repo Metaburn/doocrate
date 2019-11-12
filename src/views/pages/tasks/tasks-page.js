@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
-import { List } from 'immutable';
+import { List, is } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { debounce, get } from 'lodash';
+
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
 import { INCOMPLETE_TASKS } from 'src/tasks';
 import { commentsActions } from 'src/comments';
-import { authActions } from 'src/auth';
+import { authActions, getAuth } from 'src/auth';
 import { projectActions } from 'src/projects';
 import { userInterfaceActions } from 'src/user-interface';
 import { notificationActions } from 'src/notification';
 import TaskSideView from '../../components/task-view/TaskSideView';
 import LoaderUnicorn from '../../components/loader-unicorn/loader-unicorn';
-import { debounce } from 'lodash';
 import { firebaseConfig } from 'src/firebase/config';
 import { getUrlSearchParams, setQueryParams } from 'src/utils/browser-utils.js';
 import i18n from 'src/i18n.js';
@@ -20,9 +21,9 @@ import { updateUserData } from "src/auth/auth";
 import { setCookie } from "../../../utils/browser-utils";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
+import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
 
 import './tasks-page.css';
-import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
 
 export class TasksPage extends Component {
   constructor(props) {
@@ -55,18 +56,13 @@ export class TasksPage extends Component {
   }
 
   componentWillMount() {
-    if(!this.props.selectedProject) {
-      this.props.selectProjectFromUrl();
-    }
 
-    let project_url = this.props.match.params.projectUrl;
-    // Hot fix for users who redirect here
-    if(project_url === "[object Object]" || project_url === "null") {
-      this.props.history.push('/burnerot19/task/1');
-      this.props.loadTasks("burnerot19", INCOMPLETE_TASKS);
-      this.props.loadLabels("burnerot19");
+    if(!this.props.selectedProject) {
+      this.props.history.push('/');
       return;
     }
+
+    let project_url = this.props.selectedProject.url;
 
     // First time this page is loaded
     if(!this.props.tasks || this.props.tasks.size <= 0) {
@@ -86,9 +82,8 @@ export class TasksPage extends Component {
     const selectedTaskId = nextProps.match.params.id;
 
     const nextFilters = this.getFilterParams(nextProps);
-    const { selectedFilters } = this.props;
-    //todo: add after launch
-   /* let prevSize = 0;
+    const { selectedFilters, tasks } = this.props;
+    let prevSize = 0;
     let nextSize = 0;
     if(tasks && tasks.size){
       prevSize = tasks.size;
@@ -101,20 +96,8 @@ export class TasksPage extends Component {
     // To prevent a race condition we want to make sure that only
     // when there are no tasks - we don't update those filters
     // This allows to have the user loads a page directly with filters
-    if(nextSize && (nextSize !== prevSize || !is(nextProps.tasks, tasks))) {
-      if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
+    if(nextSize && (nextSize !== prevSize || !is(nextProps.tasks, tasks)) && JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
         this.debouncedFilterTasksFromProps(nextProps);
-      }
-    }*/
-
-    // ES compare
-    // To prevent a race condition we want to make sure that only
-    // when there are no tasks - we don't update those filters
-    // This allows to have the user loads a page directly with filters
-    if(nextProps.tasks && nextProps.tasks.size > 0) {
-      if(JSON.stringify(nextFilters) !== JSON.stringify(selectedFilters)) {
-        this.debouncedFilterTasksFromProps(nextProps);
-      }
     }
 
     //if url has a task id - select it
@@ -164,7 +147,6 @@ export class TasksPage extends Component {
         selectedTaskId: null });
     }
   }
-
 
   // Update the filter in the store from the current url.
   // TODO This should probable moved to the store location listen to history.listen
@@ -270,11 +252,12 @@ export class TasksPage extends Component {
   };
 
   getNewTask() {
+    const {auth} = this.props;
     const creator = {
-      id: this.props.auth.id,
-      name: this.props.auth.name,
-      email: this.props.auth.updatedEmail || this.props.auth.email,
-      photoURL: this.props.auth.photoURL,
+      id: auth.id,
+      name: auth.name,
+      email: auth.updatedEmail || auth.email,
+      photoURL: auth.photoURL,
     };
 
     return {id: null, creator: creator, created: new Date()}
@@ -296,9 +279,10 @@ export class TasksPage extends Component {
 
   // Check if admin of that project
   isAdmin() {
+    const {auth} = this.props;
     const project_url = this.props.match.params.projectUrl;
-    return this.props.auth.role === 'admin' &&
-      this.props.auth.adminProjects.includes(project_url);
+    return auth.role === 'admin' &&
+      auth.adminProjects.includes(project_url);
   }
 
   isGuide() {
@@ -534,6 +518,10 @@ export class TasksPage extends Component {
     const tasksCount = filteredTasks.size;
     const title = this.getSelectedFilterTitle();
 
+    // todo: a better implementation is to calculate the filters from params with reselect, cause now every render cycle
+    // here sends <TopNav> a new object for 'query' param
+    const searchQuery = get(this.getFilterParams(this.props), 'query') || '';
+
     return (
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
@@ -547,8 +535,8 @@ export class TasksPage extends Component {
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
             title={title}
-            query={query || ''}
             userPermissions={selectedProjectUserPermissions}
+            query={searchQuery}
           />
         </div>
 
@@ -604,20 +592,21 @@ TasksPage.propTypes = {
 //  CONNECT
 //-------------------------------------
 const mapStateToProps = (state) => {
-  return {
+  const selectedProject =  state.projects.selectedProject;
+  return{
+    auth: state.auth,
     tasks: state.tasks.list,
     filteredTasks: state.tasks.filteredList,
-    auth: state.auth,
-    selectedProject: state.projects.selectedProject,
     selectedProjectUserPermissions: state.projects.selectedProjectUserPermissions,
-    labels: (state.projects.selectedProject && state.projects.selectedProject.popularTags)? Object.keys(state.projects.selectedProject.popularTags) : null,
+    selectedProject: selectedProject,
+    labels: (selectedProject && selectedProject.popularTags)? Object.keys(selectedProject.popularTags) : null,
     filters: taskFilters,
     selectedFilters: state.tasks.selectedFilters,
     setFilters: tasksActions.setFilters,
     setFilteredTasks: tasksActions.setFilteredTasks,
     buildFilter: buildFilter,
     setTour: userInterfaceActions.setTour,
-    tour: state.userInterface.tour
+    tour: state.userInterface.tour,
   }
 };
 

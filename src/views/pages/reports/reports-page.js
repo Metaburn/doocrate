@@ -47,7 +47,7 @@ export class ReportsPage extends Component {
 
       const contributors = {};
       const usersWhoDidntBuy = {};
-      querySnapshot.forEach(function (doc) {
+      querySnapshot.forEach(function(doc) {
         let contributor = doc.data();
         contributors[doc.id] = contributor;
         if (contributor.didntBuy) {
