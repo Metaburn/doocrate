@@ -162,8 +162,7 @@ export class ReportsPage extends Component {
       }
     });
 
-    this.setState({ validEmails });
-    this.setState({ invalidEmails });
+    this.setState({ validEmails, invalidEmails });
 
     return invalidEmails.length > 0;
   };
@@ -286,18 +285,21 @@ export class ReportsPage extends Component {
                 {this.state.invalidEmails.length === 0 &&
                   this.state.validEmails.length > 0 && (
                     <Button
-                      className={"save-button"}
+                      className={"delete-button"}
                       onClick={() => {
                         if (
-                          !window.confirm(
+                          window.confirm(
                             i18n.t("reports.sure-add-invitations", {
                               emailsCount: this.state.validEmails.length
                             })
                           )
                         ) {
+                          this.setState({
+                            validEmails: [],
+                            addedEmailsStr: ""
+                          });
                           return;
                         }
-                        this.handleSave();
                       }}
                       type="button"
                     >
@@ -332,7 +334,7 @@ export class ReportsPage extends Component {
                               ) {
                                 return;
                               }
-                              this.deleteInvitation(invitation);
+                              this.setState({ emailArr: [] });
                             }}
                             type="button"
                           >
