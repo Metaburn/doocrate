@@ -1,5 +1,9 @@
 import { invitationListFirebaseList } from "./invitations-list";
-import { invitationFirebaseList } from "./invitation";
+import {
+  invitationFirebaseList,
+  Invitation,
+  InvitationStatus
+} from "./invitation";
 
 import {
   CREATE_INVITATION_LIST_SUCCESS,
@@ -11,13 +15,11 @@ import {
   UPDATE_INVITATION_SUCCESS,
   UPDATE_INVITATION_ERROR
 } from "./action-types";
-import {taskList} from "../tasks/task-list";
-import {firebaseDb} from "../firebase";
 
 //#region Invitation List
 
 export function createInvitationListForProject(projectId, auth) {
-  const invitationList =  {
+  const invitationList = {
     created: new Date(),
     updated: new Date(),
     name: "Invitations",
@@ -33,7 +35,11 @@ export function createInvitationListForProject(projectId, auth) {
   return createInvitationList(projectId, invitationList, "main");
 }
 
-export function createInvitationList(projectId, invitationList, invitationListId) {
+export function createInvitationList(
+  projectId,
+  invitationList,
+  invitationListId
+) {
   return dispatch => {
     invitationListFirebaseList.rootPath = "projects";
     invitationListFirebaseList.rootDocId = projectId;
@@ -194,8 +200,14 @@ export function updateInvitationError(error) {
     payload: error
   };
 }
-//#endregion
 
+/** Removing using Update */
+export function removeInvitation(invitation) {
+  invitation.status = InvitationStatus.REMOVED;
+
+  return updateInvitation(invitation);
+}
+//#endregion
 
 /** We use the invites to see if a certain user has access to a project */
 export function getUserAccessToProject(projectUrl) {
