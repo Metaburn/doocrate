@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { Link } from "react-router-dom";
 import Icon from "../../atoms/icon";
 
-export default ({ icon, path, active, dataTour, onClick }) => {
+export default ({ icon, path, active, dataTour }) => {
   const activeClass = active ? "active" : "";
   return (
     <Fragment>
@@ -10,7 +10,6 @@ export default ({ icon, path, active, dataTour, onClick }) => {
         className={`bottom-nav-tile ${activeClass}`}
         to={path}
         data-tour={dataTour}
-        onClick={onClick}
       >
         <Icon className={"bottom-nav-icon"} name={icon} />
       </Link>

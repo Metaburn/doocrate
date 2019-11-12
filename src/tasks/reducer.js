@@ -9,7 +9,6 @@ import {
   UPDATE_TASK_SUCCESS,
   SET_FILTERED_TASKS,
   SET_SELECTED_FILTERS,
-  SET_SEARCH_QUERY,
 } from './action-types';
 
 
@@ -70,9 +69,6 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
 
     case SET_SELECTED_FILTERS:
       return state.set('selectedFilters', payload);
-
-    case SET_SEARCH_QUERY:
-      return state.set('searchQuery', payload);
 
     case UPDATE_TASK_SUCCESS:
       return state.merge({

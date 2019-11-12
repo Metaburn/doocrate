@@ -9,7 +9,6 @@ import SelectedFiltersLabels from "../selected-filters-labels/selected-filters-l
 import Icon from "../../atoms/icon/icon";
 
 class TopNav extends Component {
-
   render() {
     return (
       <I18n ns='translations'>
