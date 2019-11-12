@@ -45,6 +45,13 @@ service cloud.firestore {
       return request.resource.data.keys().hasAll(['listeners']) && request.resource.size() == resource.size()
     }
 
+    // Check if project is public
+    // or if user has an email under the invites
+    function isUserInvited(anyProject) {
+    	//return get(/databases/$(database)/documents/projects/$(anyProject)).data.isPublic ||
+      return request.auth.token.email in get(/databases/$(database)/documents/projects/$(anyProject)/invitation_lists/main).data.invites;
+    }
+
     // Allow create for anyone who is auth
     // Allow to update it the user is the project creator
     match /projects/{anyProject} {
@@ -56,19 +63,16 @@ service cloud.firestore {
       match /tasks/{anyTask} {
         allow read: if request.auth != null;
         // Allow create: if authenticated
-        // DONT EXPORT THE NEXT SENTENCE TO A FUNCTION - FIREBASE HAS A BUG THAT DOESNT ALLOW THAT TO WORK -
-        // KEEP IT LIKE SO
-        // Actually it just need to be passed the argument anyProject as a variable
         // Uncommment the canCreateTask will not allow users who already have tasks to create new tasks
-        allow create: if request.auth != null // && ((get(/databases/$(database)/documents/projects/$(anyProject)).data.canCreateTask == true)
+        allow create: if request.auth != null && isUserInvited(anyProject);
         // Uncomment the following to allow unassigned task to be assigned by all
-        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners() || isSuperAdmin());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isCreator() || isSuperAdmin());
+        allow update: if request.auth != null && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && (isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners())) || isSuperAdmin();
+        allow delete: if request.auth != null && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && isCreator()) || isSuperAdmin();
       }
 
       match /comments/{anyComment} {
         allow read: if request.auth != null;
-        allow create: if request.auth != null;
+        allow create: if request.auth != null && isUserInvited(anyProject) || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
         allow update: if request.auth != null && isCreator();
         allow delete: if request.auth != null && isCreator();
       }

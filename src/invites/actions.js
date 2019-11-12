@@ -28,17 +28,18 @@ export function createInvitationListForProject(projectId, auth) {
     canComment: true,
     canView: true
   };
-  return createInvitationList(projectId, invitationList);
+  //we use main so we can call it from other places
+  return createInvitationList(projectId, invitationList, "main");
 }
 
-export function createInvitationList(projectId, invitationList) {
+export function createInvitationList(projectId, invitationList, invitationListId) {
   return dispatch => {
     invitationListFirebaseList.rootPath = "projects";
     invitationListFirebaseList.rootDocId = projectId;
     invitationListFirebaseList.path = "invitation_lists";
     invitationListFirebaseList.subscribe(dispatch);
     invitationListFirebaseList
-      .push(invitationList)
+      .set(invitationListId, invitationList)
       .then(() => {
         return dispatch(createInvitationListSuccess(invitationList));
       })
