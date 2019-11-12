@@ -57,16 +57,11 @@ export class TasksPage extends Component {
   componentWillMount() {
 
     if(!this.props.selectedProject) {
-      this.props.initProject();
-    }
-
-    let project_url = this.props.selectedProject.url;
-
-    // Hot fix for users who redirect here
-    if(project_url === "[object Object]" || project_url === "null") {
       this.props.history.push('/');
       return;
     }
+
+    let project_url = this.props.selectedProject.url;
 
     // First time this page is loaded
     if(!this.props.tasks || this.props.tasks.size <= 0) {

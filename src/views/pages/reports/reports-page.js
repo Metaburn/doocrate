@@ -33,12 +33,12 @@ export class ReportsPage extends Component {
   };
 
   componentWillMount() {
-    const projectUrl = this.props.match.params.projectUrl;
-    this.props.loadTasks(projectUrl);
     if (!this.props.selectedProject) {
-      // Load the project
-      this.props.initProject()
+      this.props.history.push('/');
+      return;
     }
+    const projectUrl = this.props.selectedProject.url;
+    this.props.loadTasks(projectUrl);
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
 

@@ -25,7 +25,6 @@ export class ProjectsPage extends Component {
   };
 
   componentWillMount() {
-    // Check if need to redirect to the project the user got from when he first received the link
     this.props.loadProjects();
   }
 

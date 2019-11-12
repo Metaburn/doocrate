@@ -43,6 +43,7 @@ export const initProject = () => (dispatch, getState) => {
       const selectedProject = getCookie('project');
       // not found or corrupted project - need to select
       if (!selectedProject || invalidProjectValues.includes(projectUrl)) {
+        history.push('/');
         return;
       }
     }
@@ -64,12 +65,13 @@ export const initProject = () => (dispatch, getState) => {
           const project = snapshot.data();
           dispatch(selectProject(project));
           history.push('/'+ selectedProject +'/task/1');
+        }else {
+          history.push('/');
         }
       })
+    }else {
+      history.push('/');
     }
-
-
-
 };
 
 export function createProject(projectId, project) {
