@@ -82,7 +82,7 @@ export class TasksPage extends Component {
     const selectedTaskId = nextProps.match.params.id;
 
     const nextFilters = this.getFilterParams(nextProps);
-    const { selectedFilters, tasks } = this.props;
+    const { selectedFilters } = this.props;
     // let prevSize = 0;
     // let nextSize = 0;
     // if(tasks && tasks.size){
