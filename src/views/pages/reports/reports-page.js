@@ -275,13 +275,24 @@ export class ReportsPage extends Component {
               </form>
               <div>{this.renderValidations()}</div>
               <div className={"button-save-wrapper"}>
-                <Button
-                  className={"save-button"}
-                  onClick={this.validateEmails}
-                  type="button"
-                >
-                  {i18n.t("reports.validate")}
-                </Button>
+                {(this.state.validEmails.length === 0 && (
+                  <Button
+                    className={"save-button"}
+                    onClick={this.validateEmails}
+                    type="button"
+                  >
+                    {i18n.t("reports.validate")}
+                  </Button>
+                )) || (
+                  <Button
+                    className={"save-button"}
+                    onClick={this.handleSave}
+                    type="button"
+                  >
+                    {i18n.t("reports.save")}
+                  </Button>
+                )}
+
                 {this.state.invalidEmails.length === 0 &&
                   this.state.validEmails.length > 0 && (
                     <Button
@@ -303,7 +314,7 @@ export class ReportsPage extends Component {
                       }}
                       type="button"
                     >
-                      {i18n.t("reports.save")}
+                      {i18n.t("reports.delete")}
                     </Button>
                   )}
               </div>
@@ -319,36 +330,38 @@ export class ReportsPage extends Component {
                 </thead>
                 <tbody>
                   {invites.invitations &&
-                    invites.invitations.map((invitation, index) => (
-                      <tr key={invitation.id}>
-                        <th>
-                          <Button
-                            className="button button-small action-button"
-                            onClick={() => {
-                              if (
-                                !window.confirm(
-                                  i18n.t("reports.sure-delete-invitation", {
-                                    email: invitation.email
-                                  })
-                                )
-                              ) {
-                                return;
-                              }
-                              this.setState({ emailArr: [] });
-                            }}
-                            type="button"
-                          >
-                            <Icon name="delete" className="grow delete" />
-                          </Button>
-                        </th>
-                        <th>{invitation.status}</th>
-                        <th>
-                          {invitation.created && invitation.created.seconds}
-                        </th>
-                        <th>{invitation.email}</th>
-                        <th>{index}</th>
-                      </tr>
-                    ))}
+                    invites.invitations
+                      .filter(invite => invite.id)
+                      .map((invitation, index) => (
+                        <tr key={invitation.id}>
+                          <th>
+                            <Button
+                              className="button button-small action-button"
+                              onClick={() => {
+                                if (
+                                  !window.confirm(
+                                    i18n.t("reports.sure-delete-invitation", {
+                                      email: invitation.email
+                                    })
+                                  )
+                                ) {
+                                  return;
+                                }
+                                this.setState({ emailArr: [] });
+                              }}
+                              type="button"
+                            >
+                              <Icon name="delete" className="grow delete" />
+                            </Button>
+                          </th>
+                          <th>{invitation.status}</th>
+                          <th>
+                            {invitation.created && invitation.created.seconds}
+                          </th>
+                          <th>{invitation.email}</th>
+                          <th>{index}</th>
+                        </tr>
+                      ))}
                 </tbody>
               </table>
             </div>
@@ -371,7 +384,7 @@ ReportsPage.propTypes = {
   selectedProject: PropTypes.object,
   selectProjectFromUrl: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  invites: PropTypes.instanceOf(List).isRequired,
+  invites: PropTypes.object,
   showSuccess: PropTypes.func.isRequired
 };
 
@@ -383,7 +396,7 @@ const mapStateToProps = state => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    invites: state.invites.invitations
+    invites: state.invites
   };
 };
 

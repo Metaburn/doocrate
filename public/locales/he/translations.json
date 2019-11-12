@@ -253,6 +253,7 @@
   "reports": {
     "validate": "בדקי",
     "save": "שמרי",
+    "delete": "מחקי",
     "emails-updated-successfully": "רשימת הכתובות נשמרה בהצלחה",
     "invitations-header": "הוספת משתמשים עם הרשאת עריכה לפרוייקט",
     "emails-placeholder": "הזיני כתובות אימייל מופרדות ב-;",
