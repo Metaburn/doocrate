@@ -166,8 +166,17 @@ export function selectProject(project) {
 }
 
 export function setUserPermissionsForSelectedProject(userPermissions) {
+
+  //TODO remove this mock data
+  const payload = {
+    canAdd: true,
+    canAssign: true,
+    canComment: true,
+    canView: false
+  };
+
   return {
     type: SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT,
-    payload: userPermissions
+    payload: payload
   };
 }

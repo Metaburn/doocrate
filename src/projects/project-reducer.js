@@ -52,14 +52,7 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
     case CREATE_PROJECT_ERROR:
       return showError(payload);
     case SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT:
-      //TODO remove this mock payload
-      const payload2 = {
-        canAdd: true,
-        canAssign: true,
-        canComment: true,
-        canView: false
-      };
-      return state.set('selectedProjectUserPermissions', payload2);
+      return state.set('selectedProjectUserPermissions', payload);
 
     default:
       return state;
