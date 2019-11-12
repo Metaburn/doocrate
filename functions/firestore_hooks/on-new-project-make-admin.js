@@ -70,5 +70,6 @@ const createInvitationListForProject = async(projectId, creator) => {
     .collection("projects")
     .doc(projectId)
     .collection("invitation_lists")
-    .set("main", invitationList);
+    .doc("main")
+    .set(invitationList);
 }
