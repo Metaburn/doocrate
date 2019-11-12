@@ -2,9 +2,10 @@
 
 // Max number of tasks per creator
 const functions = require('firebase-functions');
-exports.onNewProjectMakeAdminFunctions = require('./on-new-project-make-admin');
-exports.onNewCommentSendEmail = require('./on-new-comment-send-email');
-exports.onEditTaskSendEmail = require('./on-edit-task-send-email');
+exports.onNewProjectMakeAdminFunctions = require('./firestore_hooks/on-new-project-make-admin');
+exports.onNewCommentSendEmail = require('./firestore_hooks/on-new-comment-send-email');
+exports.onEditTaskSendEmail = require('./firestore_hooks/on-edit-task-send-email');
+exports.doocrateApi = require('./doocrateApi');
 
 const MAX_TASK_PER_CREATOR = 80;
 // Limit the number of tasks by creator

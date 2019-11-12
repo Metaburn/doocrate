@@ -2,6 +2,9 @@
 Here we keep all the server side code
 We store our function as firebase functions (Similar to AWS Lambda - aka cloud functions)
 
+# Where are the functions locations?
+You can see them under `index.js`
+
 # Local development
 ```
 npm install
