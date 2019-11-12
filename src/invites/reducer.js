@@ -23,7 +23,7 @@ export function invitesReducer(state = new InvitesState(), { payload, type }) {
       return state.set("selectedInvitationList", payload);
 
     case CREATE_INVITATION_SUCCESS:
-      return state.set({
+      return state.merge({
         invitations: state.invitations.unshift(payload)
       });
 

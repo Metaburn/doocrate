@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Map, List } from "immutable";
+import Moment from "react-moment";
+
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Redirect } from "react-router";
@@ -133,6 +135,11 @@ export class ReportsPage extends Component {
 
     const invitations = this.prepareInvitations(validEmails);
     createInvitations(invitations);
+
+    this.setState({
+      validEmails: [],
+      addedEmailsStr: ""
+    });
     showSuccess(i18n.t("reports.emails-updated-successfully"));
   };
 
@@ -318,7 +325,7 @@ export class ReportsPage extends Component {
                     </Button>
                   )}
               </div>
-              <table className="report-table">
+              <table className="report-table invites-table">
                 <thead>
                   <tr className={`dir-${t("lang-float-reverse")}`}>
                     <th></th>
@@ -332,6 +339,9 @@ export class ReportsPage extends Component {
                   {invites.invitations &&
                     invites.invitations
                       .filter(invite => invite.id)
+                      .sort((a, b) =>
+                        a.created.seconds < b.created.seconds ? 1 : -1
+                      )
                       .map((invitation, index) => (
                         <tr key={invitation.id}>
                           <th>
@@ -356,7 +366,11 @@ export class ReportsPage extends Component {
                           </th>
                           <th>{invitation.status}</th>
                           <th>
-                            {invitation.created && invitation.created.seconds}
+                            {invitation.created && (
+                              <Moment locale={t("lang")} unix fromNow>
+                                {invitation.created.seconds}
+                              </Moment>
+                            )}
                           </th>
                           <th>{invitation.email}</th>
                           <th>{index}</th>
