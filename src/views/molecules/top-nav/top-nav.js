@@ -10,7 +10,12 @@ import Icon from "../../atoms/icon/icon";
 
 class TopNav extends Component {
 
+  componentWillReceiveProps(nextProps, nextContext) {
+    // console.log(nextProps, '*** ')
+  }
+
   render() {
+    console.log( ' render TopNav *** ', this.props)
     return (
       <I18n ns='translations'>
         {

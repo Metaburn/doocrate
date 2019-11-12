@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { List, is } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { debounce } from 'lodash';
+import { debounce, get } from 'lodash';
 
 import { labelActions, setLabelWithRandomColor } from 'src/labels';
 import { buildFilter, tasksActions, taskFilters} from 'src/tasks';
@@ -22,7 +22,6 @@ import { setCookie } from "../../../utils/browser-utils";
 import { removeQueryParamAndGo } from 'src/utils/react-router-query-utils';
 import TopNav from "../../molecules/top-nav/top-nav";
 import TaskViewMiniList from "../../molecules/taskViewMiniList/taskViewMiniList";
-import { setSearchQuery } from "../../../tasks/actions";
 
 import './tasks-page.css';
 
@@ -342,7 +341,6 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = (query) => {
-    this.props.setSearchQuery(query);
     this.props.history.push({
       search: setQueryParams(['query='+query])
     });
@@ -507,7 +505,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen, searchQuery } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -516,6 +514,10 @@ export class TasksPage extends Component {
     const isFiltersActive = selectedFilters.length > 0;
     const tasksCount = filteredTasks.size;
     const title = this.getSelectedFilterTitle();
+
+    // todo: a better implementation is to calculate the filters from params with reselect, cause now every render cycle
+    // here sends <TopNav> a new object for 'query' param
+    const searchQuery = get(this.getFilterParams(this.props), 'query') || '';
 
     return (
       <div className="task-page-root-wrapper">
@@ -530,7 +532,7 @@ export class TasksPage extends Component {
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
             title={title}
-            query={searchQuery || ''}
+            query={searchQuery}
           />
         </div>
 
@@ -601,8 +603,6 @@ const mapStateToProps = (state) => {
     buildFilter: buildFilter,
     setTour: userInterfaceActions.setTour,
     tour: state.userInterface.tour,
-    searchQuery: state.tasks.searchQuery,
-    setSearchQuery
   }
 };
 

@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import { noop } from "lodash";
-import { connect } from "react-redux";
 import { compose } from "recompose";
 
 import BottomNavTile from "./bottom-nav-bar-tile";
 import { nav } from "./_nav";
-import { setSearchQuery } from "../../../tasks/actions";
 
 import "./bottom-nav-bar.scss";
 
@@ -26,7 +23,7 @@ class BottomNavBar extends Component {
   };
 
   render() {
-    const { auth, selectedProject, location, clearSearchQuery } = this.props;
+    const { auth, selectedProject, location } = this.props;
 
     // Hide on sign in page
     if (location.pathname.match("/sign-in/")) {
@@ -40,7 +37,7 @@ class BottomNavBar extends Component {
         ? selectedProject.url
         : auth.defaultProject;
 
-    const routes = nav(auth, projectUrl, clearSearchQuery);
+    const routes = nav(auth, projectUrl);
 
     return (
       <div className={"bottom-nav"}>
@@ -51,7 +48,6 @@ class BottomNavBar extends Component {
             path={r.path}
             dataTour={r.dataTour}
             active={this.activeRoute(r.path, r.pathIncludes)}
-            onClick={r.onClick || noop}
           />
         ))}
       </div>
@@ -61,10 +57,4 @@ class BottomNavBar extends Component {
 
 export default compose(
   withRouter,
-  connect(
-    null,
-    dispatch => ({
-      clearSearchQuery: () => dispatch(setSearchQuery(""))
-    })
-  )
 )(BottomNavBar);

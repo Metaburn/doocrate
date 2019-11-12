@@ -15,7 +15,6 @@ import {
   SELECT_TASK,
   SET_FILTERED_TASKS,
   SET_SELECTED_FILTERS,
-  SET_SEARCH_QUERY,
 } from './action-types';
 
 
@@ -195,13 +194,6 @@ export function setFilters(filters) {
   return {
     type: SET_SELECTED_FILTERS,
     payload: filters
-  };
-}
-
-export function setSearchQuery(query) {
-  return {
-    type: SET_SEARCH_QUERY,
-    payload: query,
   };
 }
 
