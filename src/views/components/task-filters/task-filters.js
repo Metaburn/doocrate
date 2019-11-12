@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { getUrlSearchParams, removeQueryParam} from 'src/utils/browser-utils.js';
@@ -40,7 +40,7 @@ class TaskFilters extends Component {
   }
 
   onCSVLink() {
-    this.setState({CSVLink: <li><CSVLink data={this.props.generateCSV()}>Download CSV</CSVLink></li>});
+    this.setState({CSVLink: <span><CSVLink className={'button-as-link'} data={this.props.generateCSV()}>Download Tasks as CSV (Admin)</CSVLink></span>});
   }
 
   getTaskTypeFromProject(index) {
@@ -91,7 +91,7 @@ class TaskFilters extends Component {
     let downloadCSV = null;
 
     if (this.props.isAdmin) {
-      downloadCSV = this.state.CSVLink ? this.state.CSVLink : <li onClick={this.onCSVLink.bind(this)}>Make CSV</li>;
+      downloadCSV = this.state.CSVLink ? this.state.CSVLink : <button className={'button-as-link'} onClick={this.onCSVLink.bind(this)}>Prepare tasks as CSV (Admin)</button>;
     }
 
     const project = (this.props.selectedProject && this.props.selectedProject.url !== 'undefined') ?
@@ -125,8 +125,6 @@ class TaskFilters extends Component {
           </NavLink>
         </div>
 
-        {downloadCSV}
-
         <div className="heading">{i18n.t('filter.popular-tags')}</div>
         <LabelsList
           labels={this.props.popularLabels}
@@ -137,8 +135,10 @@ class TaskFilters extends Component {
           value={this.state.label}
           labels={this.labelsPoolToTags()}
           placeholder={i18n.t('task.search-by-tags')}
-          onChange={this.handleLabelChange}
-        />
+          onChange={this.handleLabelChange}/>
+
+        <button onClick={this.props.onApply} className={"apply-btn"}>{i18n.t("filter.apply")}</button>
+        {downloadCSV}
       </nav>
     );
   }
@@ -151,6 +151,7 @@ class TaskFilters extends Component {
 
 TaskFilters.propTypes = {
   onLabelChange: PropTypes.func.isRequired,
+  onApply: PropTypes.func.isRequired,
   selectedProject: PropTypes.object,
   popularLabels: PropTypes.array,
   labelsPool: PropTypes.object.isRequired,

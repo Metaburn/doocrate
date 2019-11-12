@@ -251,6 +251,8 @@ export class TasksPage extends Component {
 
   onNewTaskAdded(task) {
     // Remove this to keeps the user on the same page - allowing to create another new task
+    // Probably should only show on real success
+    this.props.showSuccess(i18n.t('task.created-successfully'));
 
     // Navigate to newly created task
     const project_url = this.props.match.params.projectUrl;
@@ -290,9 +292,6 @@ export class TasksPage extends Component {
       {title: task.title, creator, created: new Date(), description: task.description, requirements: task.requirements, type: task.type, label: task.label},
       this.props.auth,
       this.onNewTaskAdded);
-
-    // Probably should only show on real success
-    this.props.showSuccess(i18n.t('task.created-successfully'));
   }
 
   // Check if admin of that project
@@ -524,7 +523,7 @@ export class TasksPage extends Component {
 
   render() {
     const { selectedTaskId } = this.state;
-    const { filteredTasks, match, tasks, setMenuOpen } = this.props;
+    const { filteredTasks, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const isLoading = tasks.size <= 0;
@@ -538,14 +537,17 @@ export class TasksPage extends Component {
       <div className="task-page-root-wrapper">
         <TaskSideView {...this.getTaskViewProps()}/>
         <div className="top-nav-wrapper">
-          <TopNav onQueryChange={this.onQueryChange}
+          <TopNav
+            onQueryChange={this.onQueryChange}
             isFilterActive={isFiltersActive}
             setMenuOpen={setMenuOpen}
             selectedFilters={selectedFilters}
             createTask={this.createTask}
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
-            title={title}/>
+            title={title}
+            query={query || ''}
+          />
         </div>
 
         <div className='task-page-wrapper'>

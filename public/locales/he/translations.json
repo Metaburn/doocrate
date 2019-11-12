@@ -90,7 +90,7 @@
     "my-tasks": "המשימות שלי",
     "free-tasks": "משימות פנויות",
     "all-tasks": "כל המשימות בעולם",
-    "take-responsibility": "קחי אחראיות",
+    "take-responsibility": "קחי אחריות",
     "remove-responsibility" :"הסר אחריות",
     "delete" :"מחק משימה",
     "sure-delete": "האם אתה בטוח שברצונך למחוק משימה זו?",
@@ -155,6 +155,7 @@
   },
   "filter": {
     "header": "סינון משימות",
+    "apply": "אישור",
     "category": "קטגוריה",
     "task-type": "סוג המשימה",
     "popular-tags": "תגיות פופולריות",

@@ -14,6 +14,7 @@ import i18n from "src/i18n";
 import './side-menu.css';
 
 class SideMenu extends Component {
+
   render() {
     const { menuIsOpen, setMenuOpen } = this.props;
     const width = isMobile? '98%' :
