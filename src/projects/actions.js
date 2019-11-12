@@ -12,6 +12,67 @@ import {
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
+import { getCookie, getUrlSearchParams } from "../utils/browser-utils";
+import { getAuth } from "../auth";
+import history from "../history";
+
+
+export const initProject = () => (dispatch, getState) => {
+    const projectUrl = getProjectFromUrl();
+    const params = getUrlSearchParams();
+    const isShowAllProjects = params['show'];
+    // User url might be /sign-in in the case of sign in (Before user auth)
+    // Dont redirect when a user presses on the show all projects
+    if (projectUrl === 'sign-in' || projectUrl === 'me' || projectUrl === 'logout' || isShowAllProjects) {
+      return;
+    }
+
+    const invalidProjectValues = ["[object Object]", "null"];
+
+    let selectedProject = null;
+    let auth = null;
+    if(getState){
+      auth = getAuth(getState());
+    }
+    if(projectUrl && !invalidProjectValues.includes(projectUrl)){
+      selectedProject = projectUrl;
+    } else if(auth && auth.defaultProject) {
+      // select user to default project
+      selectedProject = auth.defaultProject;
+    }else {
+      const selectedProject = getCookie('project');
+      // not found or corrupted project - need to select
+      if (!selectedProject || invalidProjectValues.includes(projectUrl)) {
+        history.push('/');
+        return;
+      }
+    }
+
+    if(selectedProject){
+      // Listen for project changes
+      firebaseDb.collection('projects').doc(selectedProject).onSnapshot({
+          // Listen for document metadata changes
+          includeMetadataChanges: true
+        }, (doc) => {
+          const project = doc.data();
+          dispatch(selectProject(project));
+        }
+      );
+
+
+      firebaseDb.collection('projects').doc(selectedProject).get().then(snapshot => {
+        if(snapshot.exists) {
+          const project = snapshot.data();
+          dispatch(selectProject(project));
+          history.push('/'+ selectedProject +'/task/1');
+        }else {
+          history.push('/');
+        }
+      })
+    }else {
+      history.push('/');
+    }
+};
 
 export function createProject(projectId, project) {
   projectList.path = `projects`;
