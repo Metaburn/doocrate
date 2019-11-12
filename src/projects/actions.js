@@ -23,7 +23,7 @@ export const initProject = () => (dispatch, getState) => {
     const isShowAllProjects = params['show'];
     // User url might be /sign-in in the case of sign in (Before user auth)
     // Dont redirect when a user presses on the show all projects
-    if (projectUrl === 'sign-in' || projectUrl === 'me' || projectUrl === 'logout' || isShowAllProjects) {
+    if (projectUrl === 'sign-in' || projectUrl === 'me' || projectUrl === 'logout' || isShowAllProjects || projectUrl === "create-project") {
       return;
     }
 

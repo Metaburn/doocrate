@@ -48,9 +48,6 @@ class SetProject extends Component {
   }
 
   componentWillMount() {
-    if(!this.props.selectedProject){
-      this.props.initProject()
-    }
     this.updateStateByProps(this.props);
   }
 
