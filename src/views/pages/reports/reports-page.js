@@ -2,24 +2,20 @@ import React, {Component} from 'react';
 import {Map, List} from 'immutable';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-
 import {Redirect} from 'react-router';
 import {tasksActions} from 'src/tasks';
 import {projectActions} from 'src/projects';
-import {invitationsActions} from 'src/invitations';
+import {invitationsActions} from 'src/invites';
 import {notificationActions} from "../../../notification";
-
-
 import {firebaseDb} from 'src/firebase';
 import {CSVLink} from 'react-csv';
-
 import {I18n} from 'react-i18next';
-import './reports-page.css';
 import i18n from "../../../i18n";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
 import Button from "../../components/button";
 import Icon from "../../atoms/icon";
-import { InvitationStatus } from "../../../invitations/invitation";
+import { InvitationStatus } from "../../../invites/invitation";
+import './reports-page.css';
 
 export class ReportsPage extends Component {
   constructor() {
@@ -34,35 +30,18 @@ export class ReportsPage extends Component {
       invalidEmails: [],
       invitations: []
     };
-    this.props.loadInvitationListForProject(this.props.selectedProject.name);
+
   }
 
-  static propTypes = {
-    loadTasks: PropTypes.func.isRequired,
-    createInvitations: PropTypes.func.isRequired,
-    loadInvitationsForInvitationList: PropTypes.func.isRequired,
-    loadInvitationListForProject: PropTypes.func.isRequired,
-    removeInvitation: PropTypes.func.isRequired,
-    tasks: PropTypes.instanceOf(List).isRequired,
-    selectedProject: PropTypes.object,
-    selectProjectFromUrl: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-    invitations: PropTypes.instanceOf(List).isRequired,
-    showSuccess: PropTypes.func.isRequired
-};
-
   componentWillMount() {
-    const projectUrl = this.props.match.params.projectUrl;
+    const {auth,match,selectedProject,invites} = this.props;
+
+    const projectUrl = match.params.projectUrl;
+
     this.props.loadTasks(projectUrl);
-    if (this.state.invitations.selectedInvitationList) {
-      this.props.loadInvitationsForInvitationList(this.state.invitations.selectedInvitationList);
-    } else {
-      window.alert("Failed to load invitations for project");
-    }
-    if (!this.props.selectedProject) {
-      // Load the project
-      this.props.selectProjectFromUrl();
-    }
+    this.props.loadInvitationListByProject(projectUrl);
+    this.props.loadInvitationsByProject(projectUrl);
+
 
     firebaseDb.collection('users').get().then((querySnapshot) => {
 
@@ -132,7 +111,7 @@ export class ReportsPage extends Component {
       validEmails: []
     });
 
-  }
+  };
 
   handleSave = () => {
     const {validEmails} = this.state;
@@ -141,12 +120,13 @@ export class ReportsPage extends Component {
     const invitations = this.prepareInvitations(validEmails);
     createInvitations(invitations);
     showSuccess(i18n.t('reports.emails-updated-successfully'));
-  }
+  };
 
   prepareInvitations(validEmails) {
+    const {invites} = this.props;
     return validEmails.map(email => {
      return {
-        invitationListId: this.props.selectedInvitationList,
+        invitationListId: invites.selectedInvitationList.id,
         email: email,
         created: new Date(),
         status: InvitationStatus.INVITED,
@@ -216,7 +196,10 @@ export class ReportsPage extends Component {
       )
     }
 
-    if (!this.props.selectedProject) {
+    const {selectedProject,invites} = this.props;
+    const {query} = this.state;
+
+    if (!selectedProject) {
       return <div></div>;
     }
     return (
@@ -225,15 +208,15 @@ export class ReportsPage extends Component {
           (t) => (
             <div className='reports-page'>
               <div>
-                <h2>{this.props.selectedProject.name} ({this.props.selectedProject.url})</h2>
+                <h2>{selectedProject.name} ({selectedProject.url})</h2>
                 <br/>
               </div>
               <div>
                 <h3> אנשים שלקחו על עצמם לפחות משימה אחת</h3>
-                {this.state.query.length}
+                {query.length}
 
                 <br/>
-                <CSVLink data={this.state.query}>הורדת הדוח</CSVLink>
+                <CSVLink data={query}>הורדת הדוח</CSVLink>
 
                 <table className="report-table">
                   <thead>
@@ -248,10 +231,10 @@ export class ReportsPage extends Component {
                   </thead>
                   <tbody>
                   {
-                    this.state.query.map((r) => (
+                    query.map((r) => (
                       <tr key={r[0]}>
                         <th>{r[5]}</th>
-                        <th><a href={'/' + this.props.selectedProject.url + '/task/' + r[4]}>{r[4]}</a></th>
+                        <th><a href={'/' + selectedProject.url + '/task/' + r[4]}>{r[4]}</a></th>
                         <th>{r[3]}</th>
                         <th>{r[2]}</th>
                         <th>{r[1]}</th>
@@ -285,7 +268,7 @@ export class ReportsPage extends Component {
                       onClick={this.validateEmails}
                       type='button'>{i18n.t('reports.validate')}</Button>
                   {
-                    this.state.invalidEmails.length == 0 &&
+                    this.state.invalidEmails.length === 0 &&
                     this.state.validEmails.length > 0
                     && <Button
                     className={"save-button"}
@@ -310,7 +293,7 @@ export class ReportsPage extends Component {
                   </thead>
                   <tbody>
                   {
-                    this.state.invitations.map((invitation, index) => (
+                    invites.invitations && invites.invitations.map((invitation, index) => (
                         <tr key={invitation.id}>
                           <th>
                             <Button
@@ -326,7 +309,7 @@ export class ReportsPage extends Component {
                             </Button>
                           </th>
                           <th>{invitation.status}</th>
-                          <th>{invitation.created}</th>
+                          <th>{invitation.created && invitation.created.seconds}</th>
                           <th>{invitation.email}</th>
                           <th>{index}</th>
                         </tr>
@@ -342,6 +325,21 @@ export class ReportsPage extends Component {
   }
 }
 
+ReportsPage.propTypes = {
+  loadTasks: PropTypes.func.isRequired,
+  createInvitation: PropTypes.func.isRequired,
+  createInvitations: PropTypes.func.isRequired,
+  createInvitationList: PropTypes.func.isRequired,
+  loadInvitationsByProject: PropTypes.func.isRequired,
+  loadInvitationListByProject: PropTypes.func.isRequired,
+  removeInvitation: PropTypes.func.isRequired,
+  tasks: PropTypes.instanceOf(List).isRequired,
+  selectedProject: PropTypes.object,
+  selectProjectFromUrl: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  invites: PropTypes.instanceOf(List).isRequired,
+  showSuccess: PropTypes.func.isRequired
+};
 
 //=====================================
 //  CONNECT
@@ -351,8 +349,7 @@ const mapStateToProps = (state) => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    selectedInvitationList: state.selectedInvitationList,
-    invitations: state.invitations
+    invites: state.invites
   }
 };
 

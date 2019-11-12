@@ -11,9 +11,10 @@ export const InvitationList = new Record({
   creatorId: null,
   creator: null,
   url: null,
-  canAdd: [],
-  canView: [],
-  canDelete: []
+  canAdd: false,
+  canAssign: false,
+  canComment: false,
+  canView: false
 });
 
 export const invitationListFirebaseList = new FirebaseList(
@@ -22,5 +23,5 @@ export const invitationListFirebaseList = new FirebaseList(
     onLoad: InvitationActions.loadInvitationListSuccess
   },
   InvitationList,
-  "invitation_lists"
+  "invitation_lists",
 );

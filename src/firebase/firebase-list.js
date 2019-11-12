@@ -174,10 +174,12 @@ export class FirebaseList {
  We are adding the id and a function that allow to perform object.get
  */
 export function firebaseCollectionToList(collection) {
-  return collection.map(document => {
-    return Object.assign(document.data(), {
-      get: object => document[object],
-      id: document.id
+  if(collection) {
+    return collection.map(document => {
+      return Object.assign(document.data(), {
+        get: object => document[object],
+        id: document.id
+      });
     });
-  });
+  }
 }

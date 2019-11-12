@@ -33,19 +33,19 @@
   .report-table tr:nth-child(odd) th {
     background: #ddd;
   }
-}
 
-.changing-input {
-  width: 100%;
-  transition: border-color 100ms;
-  font-size: 18px;
-  height: 35px;
-  padding: 5px;
-  border: none;
-  text-rendering: optimizeSpeed;
-  vertical-align: top;
-  border-color: white;
-  overflow: hidden;
+  .changing-input {
+    width: 100%;
+    transition: border-color 100ms;
+    font-size: 18px;
+    height: 35px;
+    padding: 5px;
+    border: none;
+    text-rendering: optimizeSpeed;
+    vertical-align: top;
+    border-color: white;
+    overflow: hidden;
+  }
 }
 
 .invitations-form-wrapper .button-save-wrapper {

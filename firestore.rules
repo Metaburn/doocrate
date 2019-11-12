@@ -6,7 +6,7 @@ service cloud.firestore {
       return exists(/databases/$(database)/documents/super_admins/$(request.auth.uid));
     }
 
-    function isSpecificProjectAdmin() {
+    function isSpecificProjectAdmin(anyProject) {
       return exists(/databases/$(database)/documents/admins/$(request.auth.uid)/projects/$(anyProject))
     }
 
@@ -58,11 +58,12 @@ service cloud.firestore {
         // Allow create: if authenticated
         // DONT EXPORT THE NEXT SENTENCE TO A FUNCTION - FIREBASE HAS A BUG THAT DOESNT ALLOW THAT TO WORK -
         // KEEP IT LIKE SO
+        // Actually it just need to be passed the argument anyProject as a variable
         // Uncommment the canCreateTask will not allow users who already have tasks to create new tasks
         allow create: if request.auth != null // && ((get(/databases/$(database)/documents/projects/$(anyProject)).data.canCreateTask == true)
         // Uncomment the following to allow unassigned task to be assigned by all
-        allow update: if request.auth != null && (isSpecificProjectAdmin() || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners() || isSuperAdmin());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isCreator() || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isUserOnlySendingListeners() || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isCreator() || isSuperAdmin());
       }
 
       match /comments/{anyComment} {
@@ -72,21 +73,35 @@ service cloud.firestore {
         allow delete: if request.auth != null && isCreator();
       }
 
+      match /invitation_lists/{anyInvitationList} {
+        allow create: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow read: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+     }
+
+     match /invitations/{anyInvitation} {
+        allow create: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        // TODO perhaps I need to set that for the create tasks
+        allow read: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+      }
+
       match /colors/{anyColor} {
         allow create: if request.auth != null;
         allow read: if request.auth != null;
-        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
       }
 
       match /labels/{anyLabel} {
         allow create: if request.auth != null;
         allow read: if request.auth != null;
-        allow update: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
-        allow delete: if request.auth != null && (isSpecificProjectAdmin() || isSuperAdmin());
+        allow update: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if request.auth != null && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
       }
-     }
-
+    }
 
     match /users/{userId} {
       allow read: if request.auth != null; // Auth users can read

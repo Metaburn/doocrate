@@ -1,5 +1,5 @@
 import { Invitation, InvitationStatus } from "./invitation";
-import { invitationsReducer, InvitationsState } from "./reducer";
+import { invitesReducer, InvitesState } from "./reducer";
 import { List } from "immutable";
 import { CREATE_INVITATION_SUCCESS } from "./action-types";
 
@@ -50,11 +50,11 @@ describe("Invitation Reducer", () => {
 
   describe("CREATE_INVITATION_SUCCESS", () => {
     it("should add new invitation to the invitations list", () => {
-      let state = new InvitationsState({
+      let state = new InvitesState({
         invitations: new List([invitation1])
       });
 
-      let nextState = invitationsReducer(state, {
+      let nextState = invitesReducer(state, {
         type: CREATE_INVITATION_SUCCESS,
         payload: invitation2
       });

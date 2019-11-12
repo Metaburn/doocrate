@@ -6,14 +6,37 @@ import {
   CREATE_INVITATION_LIST_ERROR,
   CREATE_INVITATION_SUCCESS,
   CREATE_INVITATION_ERROR,
+  LOAD_INVITATIONS_SUCCESS,
   LOAD_INVITATION_LIST_SUCCESS,
   UPDATE_INVITATION_SUCCESS,
   UPDATE_INVITATION_ERROR
 } from "./action-types";
+import {taskList} from "../tasks/task-list";
 
 //#region Invitation List
-export function createInvitationList(invitationList) {
+
+export function createInvitationListForProject(projectId, auth) {
+  const invitationList =  {
+    created: new Date(),
+    updated: new Date(),
+    name: "Invitations",
+    creatorId: auth.id,
+    creator: auth.name,
+    url: null,
+    canAdd: true,
+    canAssign: true,
+    canComment: true,
+    canView: true
+  };
+  return createInvitationList(projectId, invitationList);
+}
+
+export function createInvitationList(projectId, invitationList) {
   return dispatch => {
+    invitationListFirebaseList.rootPath = "projects";
+    invitationListFirebaseList.rootDocId = projectId;
+    invitationListFirebaseList.path = "invitation_lists";
+    invitationListFirebaseList.subscribe(dispatch);
     invitationListFirebaseList
       .push(invitationList)
       .then(() => {
@@ -30,7 +53,7 @@ export function createInvitationList(invitationList) {
 export function createInvitationListSuccess(invitationList) {
   return {
     type: CREATE_INVITATION_LIST_SUCCESS,
-    payload: invitationList
+    payload: invitationList[0] //TODO For now we only load the first one
   };
 }
 
@@ -42,17 +65,39 @@ export function createInvitationListError(error) {
   };
 }
 
-export function loadInvitationListForProject(projectId) {
+export function loadInvitationListByProject(projectId) {
   return dispatch => {
-    invitationListFirebaseList.query = ["projectId", "==", projectId];
+    invitationListFirebaseList.rootPath = "projects";
+    invitationListFirebaseList.rootDocId = projectId;
+    invitationListFirebaseList.path = "invitation_lists";
     invitationListFirebaseList.subscribe(dispatch);
   };
 }
 
+export function loadInvitationsByProject(projectId) {
+  return dispatch => {
+    invitationFirebaseList.rootPath = "projects";
+    invitationFirebaseList.rootDocId = projectId;
+    invitationFirebaseList.path = "invitations";
+    invitationFirebaseList.subscribe(dispatch);
+  };
+}
+
+/** Loading */
+/*export function loadInvitationListById(invitationListId) {
+  return dispatch => {
+    invitationFirebaseList.rootPath = "projects";
+    invitationFirebaseList.rootDocId = projectId;
+    invitationFirebaseList.path = "invitation_lists";
+    invitationFirebaseList.query = ["invitationListId", "==", invitationListId];
+    invitationFirebaseList.subscribe(dispatch);
+  };
+}*/
+
 export function loadInvitationListSuccess(invitationList) {
   return {
     type: LOAD_INVITATION_LIST_SUCCESS,
-    payload: invitationList
+    payload: invitationList[0] //TODO For now we only load the first one
   };
 }
 //#endregion
@@ -70,7 +115,7 @@ export function createInvitation(invitation) {
       .catch(error => {
         //TODO: Log error to sentry
         const errorMessage = error && error.message ? error.message : error;
-        return dispatch(createInvitationListError(errorMessage));
+        return dispatch(createInvitationError(errorMessage));
       });
   };
 }
@@ -85,7 +130,7 @@ export function createInvitations(invitations) {
       .catch(error => {
         //TODO: Log error to sentry
         const errorMessage = error && error.message ? error.message : error;
-        return dispatch(createInvitationListError(errorMessage));
+        return dispatch(createInvitationError(errorMessage));
       });
   };
 }
@@ -112,18 +157,10 @@ export function createInvitationError(error) {
   };
 }
 
-/** Loading */
-export function loadInvitationsForInvitationList(invitationListId) {
-  return dispatch => {
-    invitationFirebaseList.query = ["invitationListId", "==", invitationListId];
-    invitationFirebaseList.subscribe(dispatch);
-  };
-}
-
 export function loadInvitationsSuccess(invitations) {
   return {
-    type: LOAD_INVITATION_LIST_SUCCESS,
-    payload: invitations
+    type: LOAD_INVITATIONS_SUCCESS,
+    payload: invitations //TODO: we only support one invitation list for now
   };
 }
 

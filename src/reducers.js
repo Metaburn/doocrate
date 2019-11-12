@@ -7,7 +7,7 @@ import { commentsReducer } from "./comments";
 import { labelsReducer } from "./labels";
 import { projectsReducer } from "./projects";
 import { userInterfaceReducer } from "./user-interface";
-import { invitationsReducer } from "./invitations";
+import { invitesReducer } from "./invites";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,5 +18,5 @@ export default combineReducers({
   labels: labelsReducer,
   projects: projectsReducer,
   userInterface: userInterfaceReducer,
-  invitations: invitationsReducer
+  invites: invitesReducer
 });
