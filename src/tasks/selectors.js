@@ -54,7 +54,9 @@ export const taskFilters = {
 
   label: (tasks, filter) => {
     return tasks.filter(task => {
-      return task.label && task.label[filter.text];
+      return task.label &&
+        ((!Array.isArray(filter.text) && task.label[filter.text]) ||
+        (Array.isArray(filter.text) && filter.text.filter(x => task.label[x]).length > 0));
     });
   },
 

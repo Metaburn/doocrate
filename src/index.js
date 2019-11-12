@@ -7,12 +7,13 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
 
 import { initAuth } from './auth';
-import { initProject } from './projects/initializer';
+import { initProject } from './projects/actions';
 import history from './history';
 import configureStore from './store';
 import /*registerServiceWorker, */{ unregister } from './utils/register-service-worker';
 import App from './views/app';
 import { initializeApp } from './config/app-init';
+
 
 Sentry.init({dsn: "https://dcb14dd1c19444679e850734ccac2ca1@sentry.io/1811465"});
 
@@ -48,11 +49,12 @@ unregister();
 
 
 
+console.log("store", store, store.getState())
 
-initAuth(store.dispatch)
+initAuth(store.dispatch, store.getState)
   .then(() => {
       render(App);
-      initProject(store.dispatch);
+      store.dispatch(initProject());
     }
   )
   .catch(error => console.error(error));

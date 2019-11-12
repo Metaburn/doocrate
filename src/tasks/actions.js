@@ -206,7 +206,7 @@ export function filterTasks(filterType) {
 
 /* Loads all the tasks for a given project */
 export function loadTasks(projectId) {
-  return (dispatch, getState) => {
+  return dispatch => {
     taskList.rootPath = 'projects';
     taskList.rootDocId = projectId;
     taskList.path = 'tasks';

@@ -7,8 +7,8 @@ import {CSVLink} from 'react-csv';
 import i18n from '../../../i18n';
 import { setQueryParams } from '../../../utils/browser-utils';
 import LabelsList from '../../molecules/labelsList/labelsList';
-
 import './task-filters.css';
+import { uniq } from 'lodash';
 
 class TaskFilters extends Component {
   constructor(props) {
@@ -84,7 +84,7 @@ class TaskFilters extends Component {
   };
 
   onPopularLabelClick = (label) => {
-    this.handleLabelChange([label]);
+    this.handleLabelChange(uniq(this.state.label.concat([label])));
   };
 
   render() {

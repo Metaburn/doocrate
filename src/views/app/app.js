@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {Route, withRouter, Switch } from 'react-router-dom';
 import { I18n } from 'react-i18next';
+import  { compose } from 'recompose';
+
 import { authActions, getAuth } from 'src/auth';
 import { userInterfaceActions, getTour } from 'src/user-interface';
 import { getProject } from 'src/projects';
@@ -97,9 +99,10 @@ const mapDispatchToProps = {
   setTour: userInterfaceActions.setTour
 };
 
-export default withRouter(
+export default compose(
+  withRouter,
   connect(
     mapStateToProps,
     mapDispatchToProps
-  )(App)
-);
+  ),
+)(App);

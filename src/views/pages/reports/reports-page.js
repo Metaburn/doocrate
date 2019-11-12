@@ -35,7 +35,7 @@ export class ReportsPage extends Component {
   }
 
   componentWillMount() {
-    const { auth, match, selectedProject, invites } = this.props;
+    const {auth, match, selectedProject, invites} = this.props;
 
     const projectUrl = match.params.projectUrl;
 
@@ -49,7 +49,7 @@ export class ReportsPage extends Component {
       .then(querySnapshot => {
         const contributors = {};
         const usersWhoDidntBuy = {};
-        querySnapshot.forEach(function(doc) {
+        querySnapshot.forEach(function (doc) {
           let contributor = doc.data();
           contributors[doc.id] = contributor;
           if (contributor.didntBuy) {
@@ -57,10 +57,23 @@ export class ReportsPage extends Component {
           }
         });
 
-        this.setState({
-          users: Map(contributors),
-          usersWhoDidntBuy: Map(usersWhoDidntBuy)
-        });
+        firebaseDb.collection('users').get().then((querySnapshot) => {
+
+          const contributors = {};
+          const usersWhoDidntBuy = {};
+          querySnapshot.forEach(function (doc) {
+            let contributor = doc.data();
+            contributors[doc.id] = contributor;
+            if (contributor.didntBuy) {
+              usersWhoDidntBuy[doc.id] = contributor;
+            }
+          });
+
+          this.setState({
+            users: Map(contributors),
+            usersWhoDidntBuy: Map(usersWhoDidntBuy)
+          });
+        })
       });
   }
 

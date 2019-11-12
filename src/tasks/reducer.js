@@ -8,7 +8,7 @@ import {
   LOAD_TASKS_SUCCESS,
   UPDATE_TASK_SUCCESS,
   SET_FILTERED_TASKS,
-  SET_SELECTED_FILTERS
+  SET_SELECTED_FILTERS,
 } from './action-types';
 
 
@@ -20,7 +20,8 @@ export const TasksState = new Record({
   selectedFilters: {}, //Selected filters such as query
   labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
-  created: null
+  created: null,
+  searchQuery: '',
 });
 
 
