@@ -60,6 +60,11 @@
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      // The following rewrites helps to match function to hosting site
+      {
+        "source": "/api",
+        "function": "api-app"
       }
     ]
   }
