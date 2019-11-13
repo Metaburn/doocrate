@@ -253,6 +253,7 @@ export function fetchUserPermissions(project) {
     fetch(`/api/auth/project_permissions?project=${project.url}`, request)
       .then((response) => {
         if (response.ok) {
+          // TODO The next code doesn't called dispatch
           return setUserPermissions(response.json());
         } else {
           return setUserPermissionsError(response)
