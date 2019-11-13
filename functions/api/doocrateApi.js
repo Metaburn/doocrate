@@ -23,9 +23,9 @@ app.use(FirebaseAuthMiddleware);
 const firestore = admin.firestore();
 app.set('firestore', firestore);
 
-app.get('/auth/user', auth.user);
-app.get('/auth/project_permissions', auth.project_permissions);
-app.get('/', (req, res) => {
+app.get('/api/auth/user', auth.user);
+app.get('/api/auth/project_permissions', auth.project_permissions);
+app.get('/api/', (req, res) => {
   res.send("Doocrate is alive 🦄");
 });
 

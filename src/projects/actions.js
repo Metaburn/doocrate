@@ -240,32 +240,42 @@ export function selectProject(project) {
 }
 
 export function fetchUserPermissions(project) {
-  firebaseApp.auth().currentUser.getIdToken().then((token) => {
-    const request = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      }
-    };
+  // firebaseApp.auth().currentUser.getIdToken().then((token) => {
+  //   const request = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //       'Authorization': 'Bearer ' + token,
+  //     }
+  //   };
+  //
+  //   fetch(`/api/auth/project_permissions?project=${project.url}`, request)
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         setUserPermissions(response.json());
+  //       } else {
+  //         setUserPermissionsError(response)
+  //       }
+  //     })
+  // });
 
-    fetch(`/api/auth/project_permissions?project=${project.url}`, request)
-      .then((response) => {
-        if (response.ok) {
-          setUserPermissions(response.json());
-        } else {
-          setUserPermissionsError(response)
-        }
-      })
-  });
+  const payload = {
+    canAdd: true,
+    canAssign: true,
+    canComment: true,
+    canView: true
+  };
+  return payload;
 }
 
 export function setUserPermissions(permissions) {
-  return {
-    type: SET_USER_PERMISSIONS,
-    payload: permissions
-  };
+  return dispatch => {
+    return(dispatch({
+      type: SET_USER_PERMISSIONS,
+      payload: permissions
+    }))
+  }
 }
 
 export function setUserPermissionsError(error) {

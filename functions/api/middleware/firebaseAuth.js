@@ -3,8 +3,8 @@
 // `Authorization: Bearer <Firebase ID Token>`.
 // when decoded successfully, the ID Token content will be added as `req.user`.
 exports.FirebaseAuthMiddleware = async (req, res, next) =>{
+  console.log(req.path);
   if ( req.path === "/") return next();
-  console.log(req.headers);
   if ((!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) &&
     !(req.cookies && req.cookies.__session)) {
     console.error('No Firebase ID token was passed as a Bearer token in the Authorization header.',
