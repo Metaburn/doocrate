@@ -155,10 +155,10 @@ export class FirebaseList {
           }
         }
         if (change.type === "modified") {
-          emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
+          this._actions.onChange && emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
         }
         if (change.type === "removed") {
-          emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
+          this._actions.onRemove && emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
         }
       });
     });

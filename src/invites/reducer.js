@@ -7,7 +7,8 @@ import {
   CREATE_INVITATION_SUCCESS,
   CREATE_INVITATION_ERROR,
   CREATE_INVITATION_LIST_ERROR,
-  UPDATE_INVITATION_SUCCESS
+  UPDATE_INVITATION_LIST_ERROR,
+  UPDATE_INVITATION_LIST_SUCCESS,
 } from "./action-types";
 
 import { firebaseCollectionToList } from "src/firebase/firebase-list";
@@ -28,6 +29,10 @@ export function invitesReducer(state = new InvitesState(), { payload, type }) {
         invitations: state.invitations.unshift(payload)
       });
 
+    case UPDATE_INVITATION_LIST_SUCCESS:
+      // TODO
+      return state;
+
     case LOAD_INVITATIONS_SUCCESS:
       return state.set(
         "invitations",
@@ -37,6 +42,7 @@ export function invitesReducer(state = new InvitesState(), { payload, type }) {
     // return state.merge(newState);
     case CREATE_INVITATION_ERROR:
     case CREATE_INVITATION_LIST_ERROR:
+    case UPDATE_INVITATION_LIST_ERROR:
       return showError(payload);
 
     default:

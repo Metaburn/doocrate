@@ -17,6 +17,8 @@ import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeVali
 import Button from "../../components/button";
 import Icon from "../../atoms/icon";
 import { InvitationStatus } from "../../../invites/invitation";
+import { uniq } from "lodash";
+
 import "./reports-page.css";
 
 export class ReportsPage extends Component {
@@ -41,7 +43,6 @@ export class ReportsPage extends Component {
 
     this.props.loadTasks(projectUrl);
     this.props.loadInvitationListByProject(projectUrl);
-    this.props.loadInvitationsByProject(projectUrl);
 
     firebaseDb
       .collection("users")
@@ -144,10 +145,13 @@ export class ReportsPage extends Component {
 
   handleSave = () => {
     const { validEmails } = this.state;
-    const { createInvitations, showSuccess } = this.props;
+    const { updateInvitationListMembers, showSuccess, match, invites } = this.props;
 
-    const invitations = this.prepareInvitations(validEmails);
-    createInvitations(invitations);
+    const projectUrl = match.params.projectUrl;
+
+    const allUniqueInvites = uniq(validEmails.concat(invites.selectedInvitationList.get("invites")));
+
+    updateInvitationListMembers(projectUrl, allUniqueInvites);
 
     this.setState({
       validEmails: [],
@@ -155,19 +159,6 @@ export class ReportsPage extends Component {
     });
     showSuccess(i18n.t("reports.emails-updated-successfully"));
   };
-
-  prepareInvitations(validEmails) {
-    const { invites } = this.props;
-    return validEmails.map(email => {
-      return {
-        invitationListId: invites.selectedInvitationList.id,
-        email: email,
-        created: new Date(),
-        status: InvitationStatus.INVITED,
-        userId: null
-      };
-    });
-  }
 
   validateEmails = () => {
     const emailArr = this.state.addedEmailsStr.split(";");
@@ -313,78 +304,27 @@ export class ReportsPage extends Component {
                   </Button>
                 )}
 
+
                 {this.state.invalidEmails.length === 0 &&
-                  this.state.validEmails.length > 0 && (
-                    <Button
-                      className={"delete-button"}
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            i18n.t("reports.sure-add-invitations", {
-                              emailsCount: this.state.validEmails.length
-                            })
-                          )
-                        ) {
-                          this.setState({
-                            validEmails: [],
-                            addedEmailsStr: ""
-                          });
-                          return;
-                        }
-                      }}
-                      type="button"
-                    >
-                      {i18n.t("reports.delete")}
-                    </Button>
-                  )}
+                  this.state.validEmails.length > 0 && this.renderDeleteButton()}
               </div>
               <table className="report-table invites-table">
                 <thead>
                   <tr className={`dir-${t("lang-float-reverse")}`}>
                     <th></th>
-                    <th>Status</th>
-                    <th>Created</th>
                     <th>Email</th>
                     <th>#</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {invites.invitations &&
-                    invites.invitations
-                      .filter(invite => invite.id)
-                      .sort((a, b) =>
-                        a.created.seconds < b.created.seconds ? 1 : -1
-                      )
+                  {invites.selectedInvitationList &&
+                    invites.selectedInvitationList.get("invites")
                       .map((invitation, index) => (
-                        <tr key={invitation.id}>
+                        <tr key={invitation}>
                           <th>
-                            <Button
-                              className="button button-small action-button"
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    i18n.t("reports.sure-delete-invitation", {
-                                      email: invitation.email
-                                    })
-                                  )
-                                ) {
-                                  this.deleteInvitation(invitation);
-                                }
-                              }}
-                              type="button"
-                            >
-                              <Icon name="delete" className="grow delete" />
-                            </Button>
+                            { this.renderDeleteInvitationButton(invitation)}
                           </th>
-                          <th>{invitation.status}</th>
-                          <th>
-                            {invitation.created && (
-                              <Moment locale={t("lang")} unix fromNow>
-                                {invitation.created.seconds}
-                              </Moment>
-                            )}
-                          </th>
-                          <th>{invitation.email}</th>
+                          <th>{invitation}</th>
                           <th>{index}</th>
                         </tr>
                       ))}
@@ -396,14 +336,59 @@ export class ReportsPage extends Component {
       </I18n>
     );
   }
+
+  renderDeleteButton = () => {
+    return (
+      <Button
+        className={"delete-button"}
+        onClick={() => {
+          if (
+            window.confirm(
+              i18n.t("reports.sure-add-invitations", {
+                emailsCount: this.state.validEmails.length
+              })
+            )
+          ) {
+            this.setState({
+              validEmails: [],
+              addedEmailsStr: ""
+            });
+            return;
+          }
+        }}
+        type="button"
+      >
+        {i18n.t("reports.delete")}
+      </Button>
+    )
+  }
+
+  renderDeleteInvitationButton = (invitation) => {
+    // return(
+    //   <Button
+    //     className="button button-small action-button"
+    //     onClick={() => {
+    //       if (
+    //         window.confirm(
+    //           i18n.t("reports.sure-delete-invitation", {
+    //             email: invitation
+    //           })
+    //         )
+    //       ) {
+    //         this.deleteInvitation(invitation);
+    //       }
+    //     }}
+    //     type="button"
+    //   >
+    //     <Icon name="delete" className="grow delete" />
+    //   </Button>
+    // );
+  }
 }
 
 ReportsPage.propTypes = {
   loadTasks: PropTypes.func.isRequired,
-  createInvitation: PropTypes.func.isRequired,
-  createInvitations: PropTypes.func.isRequired,
-  createInvitationList: PropTypes.func.isRequired,
-  loadInvitationsByProject: PropTypes.func.isRequired,
+  updateInvitationListMembers: PropTypes.func.isRequired,
   loadInvitationListByProject: PropTypes.func.isRequired,
   removeInvitation: PropTypes.func.isRequired,
   tasks: PropTypes.instanceOf(List).isRequired,

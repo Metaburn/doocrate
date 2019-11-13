@@ -7,13 +7,17 @@ import {
 import {
   CREATE_INVITATION_LIST_SUCCESS,
   CREATE_INVITATION_LIST_ERROR,
+  UPDATE_INVITATION_LIST_ERROR,
   CREATE_INVITATION_SUCCESS,
   CREATE_INVITATION_ERROR,
+  UPDATE_INVITATION_LIST_SUCCESS,
   LOAD_INVITATIONS_SUCCESS,
   LOAD_INVITATION_LIST_SUCCESS,
   UPDATE_INVITATION_SUCCESS,
   UPDATE_INVITATION_ERROR
 } from "./action-types";
+import {firebaseDb} from "src/firebase";
+import firebase from "firebase/app";
 
 //#region Invitation List
 
@@ -73,28 +77,59 @@ export function loadInvitationsByProject(projectId) {
   };
 }
 
-/** Loading */
-/*export function loadInvitationListById(invitationListId) {
-  return dispatch => {
-    invitationFirebaseList.rootPath = "projects";
-    invitationFirebaseList.rootDocId = projectId;
-    invitationFirebaseList.path = "invitation_lists";
-    invitationFirebaseList.query = ["invitationListId", "==", invitationListId];
-    invitationFirebaseList.subscribe(dispatch);
-  };
-}*/
-
 export function loadInvitationListSuccess(invitationList) {
   return {
     type: LOAD_INVITATION_LIST_SUCCESS,
     payload: invitationList[0] //TODO For now we only load the first one
   };
 }
+
+/** Update Invitation List
+ * Currently we store the invites in the members field of that list
+ * */
+export function updateInvitationListMembers(projectId, invites) {
+
+  return dispatch => {
+    firebaseDb
+      .collection("projects")
+      .doc(projectId)
+      .collection("invitation_lists")
+      .doc("main")
+      .set({"invites": invites}, { merge: true })
+      .then(updatedInvitation => {
+        dispatch(updateInvitationListSuccess(updatedInvitation));
+      })
+      .catch(error => {
+        dispatch(updateInvitationListError(error));
+      });
+  };
+}
+
+export function removeInvitation(invitation) {
+  // TODO: remove it from array
+}
+
+export function updateInvitationListSuccess(invitationList) {
+  return {
+    type: UPDATE_INVITATION_LIST_SUCCESS,
+    payload: invitationList
+  };
+}
+
+export function updateInvitationListError(error) {
+  return {
+    type: UPDATE_INVITATION_LIST_ERROR,
+    payload: error
+  };
+}
+
+
 //#endregion
 
 //#region Invitation
 
-/** Creating */
+/** Creating
+ * */
 export function createInvitation(invitation) {
   return dispatch => {
     return invitationFirebaseList
@@ -110,7 +145,11 @@ export function createInvitation(invitation) {
   };
 }
 
-export function createInvitations(invitations) {
+/**
+ * We need to create 2 objects - one is the invitation the admin manage
+ * And the other is the defacto one that firebase rules used to manage access
+ */
+export function createInvitations(projectId, invitations) {
   return dispatch => {
     return invitationFirebaseList
       .pushBatch(invitations)
@@ -183,12 +222,6 @@ export function updateInvitationError(error) {
   };
 }
 
-/** Removing using Update */
-export function removeInvitation(invitation) {
-  invitation.status = InvitationStatus.REMOVED;
-
-  return updateInvitation(invitation);
-}
 //#endregion
 
 /** We use the invites to see if a certain user has access to a project */
