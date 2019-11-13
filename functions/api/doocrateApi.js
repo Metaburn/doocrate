@@ -12,14 +12,21 @@ const express = require('express');
 const cookieParser = require('cookie-parser')();
 const cors = require('cors')({origin: false}); //TODO maybe true?
 const app = express();
-const {validateFirebaseIdToken} = require('./server_auth');
+const {FirebaseAuthMiddleware} = require('./middleware/firebaseAuth');
 
+const auth = require('./auth/auth');
 
 app.use(cors);
 app.use(cookieParser);
-app.use(validateFirebaseIdToken);
-app.get('/hello', (req, res) => {
-  res.send(`Hello ${req.user.name}`);
+app.use(FirebaseAuthMiddleware);
+
+const firestore = admin.firestore();
+app.set('firestore', firestore);
+
+app.get('/auth/user', auth.user);
+app.get('/auth/project_permissions', auth.project_permissions);
+app.get('/', (req, res) => {
+  res.send("Doocrate is alive 🦄");
 });
 
 // This HTTPS endpoint can only be accessed by your Firebase Users.

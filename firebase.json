@@ -52,7 +52,7 @@
     "rewrites": [
       // The following rewrites helps to match function to hosting site
       {
-        "source": "/api",
+        "source": "/api/**",
         "function": "api"
       },
       // Rewrites order is important as first rule followed first

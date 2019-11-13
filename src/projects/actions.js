@@ -10,10 +10,12 @@ import {
   UPDATE_PROJECT_ERROR,
   UPDATE_PROJECT_SUCCESS,
   NEW_PROJECT_CREATED,
-  SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT
+  SET_USER_PERMISSIONS,
+  SET_USER_PERMISSIONS_ERROR
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
+import {firebaseApp} from "../firebase";
 import { getCookie, getUrlSearchParams } from "../utils/browser-utils";
 import { getAuth } from "../auth";
 import history from "../history";
@@ -224,31 +226,51 @@ export function selectProjectFromUrl() {
 }
 
 
+/**
+ * When the user selects a project we check for permissions
+ */
 export function selectProject(project) {
-  // When someone selects a project - check if user has access
-  // TODO -> call invitesActions.getUserAccessToProject() which would check for permissions
-  // Then set them somewhere
-
-
-  setUserPermissionsForSelectedProject(project) //this is just a temp call from here... should be remoed
+  // TODO - not sure with dispatch twice - perhaps should be passed as an object
+  const permissions = fetchUserPermissions(project.url);
+  setUserPermissions(permissions);
   return {
     type: SELECT_PROJECT,
     payload: project
   };
 }
 
-export function setUserPermissionsForSelectedProject(userPermissions) {
+export function fetchUserPermissions(project) {
+  firebaseApp.auth().currentUser.getIdToken().then((token) => {
+    const request = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      }
+    };
 
-  //TODO remove this mock data
-  const payload = {
-    canAdd: true,
-    canAssign: true,
-    canComment: true,
-    canView: false
-  };
+    fetch(`/api/auth/project_permissions?project=${project.url}`, request)
+      .then((response) => {
+        if (response.ok) {
+          setUserPermissions(response.json());
+        } else {
+          setUserPermissionsError(response)
+        }
+      })
+  });
+}
 
+export function setUserPermissions(permissions) {
   return {
-    type: SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT,
-    payload: payload
+    type: SET_USER_PERMISSIONS,
+    payload: permissions
+  };
+}
+
+export function setUserPermissionsError(error) {
+  return {
+    type: SET_USER_PERMISSIONS_ERROR,
+    payload: error
   };
 }
