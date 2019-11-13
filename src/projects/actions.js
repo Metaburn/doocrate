@@ -8,7 +8,9 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UNLOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_ERROR,
-  UPDATE_PROJECT_SUCCESS, NEW_PROJECT_CREATED,
+  UPDATE_PROJECT_SUCCESS,
+  NEW_PROJECT_CREATED,
+  SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
@@ -73,6 +75,7 @@ export const initProject = () => (dispatch, getState) => {
       history.push('/');
     }
 };
+
 
 export function createProject(projectId, project) {
   projectList.path = `projects`;
@@ -193,6 +196,21 @@ export function getProjectFromUrl() {
   return null;
 }
 
+function selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl) {
+  firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
+    if (snapshot.exists) {
+      const project = snapshot.data();
+      return dispatch(selectProject(project));
+    }
+  });
+}
+
+export function selectProjectFromProjectUrl(projectUrl) {
+  return dispatch => {
+    return selectProjectFromProjectUrl(dispatch, projectUrl);
+  }
+}
+
 // Use the browser url to get the project id and then get the actual project and select it
 export function selectProjectFromUrl() {
   return dispatch => {
@@ -201,18 +219,36 @@ export function selectProjectFromUrl() {
     if (!projectUrl) {
       return;
     }
-    firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
-      if (snapshot.exists) {
-        const project = snapshot.data();
-        return dispatch(selectProject(project));
-      }
-    });
+    return selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl)
   }
 }
 
+
 export function selectProject(project) {
+  // When someone selects a project - check if user has access
+  // TODO -> call invitesActions.getUserAccessToProject() which would check for permissions
+  // Then set them somewhere
+
+
+  setUserPermissionsForSelectedProject(project) //this is just a temp call from here... should be remoed
   return {
     type: SELECT_PROJECT,
     payload: project
+  };
+}
+
+export function setUserPermissionsForSelectedProject(userPermissions) {
+
+  //TODO remove this mock data
+  const payload = {
+    canAdd: true,
+    canAssign: true,
+    canComment: true,
+    canView: false
+  };
+
+  return {
+    type: SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT,
+    payload: payload
   };
 }

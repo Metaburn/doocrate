@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { List } from "immutable";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { debounce, get } from "lodash";
-
 import { labelActions, setLabelWithRandomColor } from "src/labels";
 import { buildFilter, tasksActions, taskFilters } from "src/tasks";
 import { INCOMPLETE_TASKS } from "src/tasks";
 import { commentsActions } from "src/comments";
-import { authActions, getAuth } from "src/auth";
+import { authActions } from "src/auth";
 import { projectActions } from "src/projects";
 import { userInterfaceActions } from "src/user-interface";
 import { notificationActions } from "src/notification";
@@ -248,11 +246,12 @@ export class TasksPage extends Component {
   };
 
   getNewTask() {
+    const {auth} = this.props;
     const creator = {
-      id: this.props.auth.id,
-      name: this.props.auth.name,
-      email: this.props.auth.updatedEmail || this.props.auth.email,
-      photoURL: this.props.auth.photoURL
+      id: auth.id,
+      name: auth.name,
+      email: auth.updatedEmail || auth.email,
+      photoURL: auth.photoURL,
     };
 
     return { id: null, creator: creator, created: new Date() };
@@ -283,11 +282,10 @@ export class TasksPage extends Component {
 
   // Check if admin of that project
   isAdmin() {
+    const {auth} = this.props;
     const project_url = this.props.match.params.projectUrl;
-    return (
-      this.props.auth.role === "admin" &&
-      this.props.auth.adminProjects.includes(project_url)
-    );
+    return auth.role === "admin" &&
+      auth.adminProjects.includes(project_url);
   }
 
   isGuide() {
@@ -367,7 +365,7 @@ export class TasksPage extends Component {
 
   getTaskViewProps() {
     const { selectedTaskId, newTask } = this.state;
-    const { tasks } = this.props;
+    const { tasks, selectedProjectUserPermissions } = this.props;
 
     // TODO - is this the right place to make this decision?
     let selectedTask;
@@ -396,7 +394,8 @@ export class TasksPage extends Component {
       isDraft: this.state.newTask != null,
       submitNewTask: this.submitNewTask,
       isTaskVisible: !!this.state.selectedTask,
-      resetSelectedTask: this.resetSelectedTask
+      resetSelectedTask: this.resetSelectedTask,
+      userPermissions: selectedProjectUserPermissions
     };
   }
 
@@ -517,8 +516,8 @@ export class TasksPage extends Component {
   };
 
   render() {
+    const { selectedProjectUserPermissions, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
     const { selectedTaskId, searchQuery, filterParams } = this.state;
-    const { match, tasks, setMenuOpen } = this.props;
     const selectedFilters = this.getSelectedFilters();
 
     const filteredTasks =
@@ -548,6 +547,7 @@ export class TasksPage extends Component {
             removeQueryByLabel={this.removeQueryByLabel}
             tasksCount={tasksCount}
             title={title}
+            userPermissions={selectedProjectUserPermissions}
             query={searchQuery}
           />
         </div>
@@ -602,13 +602,13 @@ TasksPage.propTypes = {
 //=====================================
 //  CONNECT
 //-------------------------------------
-const mapStateToProps = state => {
-  const auth = getAuth(state);
-  const selectedProject =
-    state.projects.selectedProject || (auth && auth.defaultProject);
-  return {
+const mapStateToProps = (state) => {
+  const selectedProject =  state.projects.selectedProject;
+  return{
+    auth: state.auth,
     tasks: state.tasks.list,
-    auth: auth,
+    filteredTasks: state.tasks.filteredList,
+    selectedProjectUserPermissions: state.projects.selectedProjectUserPermissions,
     selectedProject: selectedProject,
     labels:
       selectedProject && selectedProject.popularTags

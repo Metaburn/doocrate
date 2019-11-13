@@ -1,4 +1,4 @@
-@import 'views/styles/shared';
+@import "views/styles/shared";
 
 .reports-page {
   padding: 1em 2em 0 2em;
@@ -14,6 +14,10 @@
     width: 90%;
     margin: auto;
     margin-top: 20px;
+  }
+
+  .invites-table {
+    margin-bottom: 100px;
   }
 
   .report-table th {
@@ -32,5 +36,57 @@
 
   .report-table tr:nth-child(odd) th {
     background: #ddd;
+  }
+
+  .changing-input {
+    width: 100%;
+    transition: border-color 100ms;
+    font-size: 18px;
+    height: 35px;
+    padding: 5px;
+    border: none;
+    text-rendering: optimizeSpeed;
+    vertical-align: top;
+    border-color: white;
+    overflow: hidden;
+  }
+}
+
+.invitations-form-wrapper .button-save-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.invitations-form-wrapper .button-save-wrapper {
+  .save-button,
+  .delete-button {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    display: flex;
+    font-size: 1.5em;
+    padding: 1em;
+    color: white;
+    background: #eb1478;
+    margin: 0.5em 0.3em;
+    height: 3em;
+    align-content: center;
+    justify-content: center;
+    border: none;
+    -webkit-border-radius: 28px;
+    -moz-border-radius: 28px;
+    border-radius: 28px;
+    -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
+    -moz-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
+    box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
+  }
+}
+.invitations-form-wrapper .button-save-wrapper {
+  .save-button:hover,
+  .delete-button:hover {
+    -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
+    -moz-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
+    box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
   }
 }

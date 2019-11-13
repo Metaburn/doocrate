@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Textbox } from "react-inputs-validation";
 import { I18n } from "react-i18next";
 import { projectActions } from "src/projects";
+import { invitationsActions } from "src/invites";
 import {notificationActions} from "../../../notification";
 import TagsInput from "react-tagsinput";
 import {firebaseConfig} from "src/firebase/config";
@@ -356,6 +357,8 @@ class SetProject extends Component {
     }else {
       this.props.showSuccess(i18n.t('create-project.success'));
     }
+    // might need to set selected project
+    this.props.selectProjectFromProjectUrl(this.state.projectUrl);
     this.props.history.push('/' + this.state.projectUrl + '/task/1');
   }
 
@@ -443,7 +446,7 @@ class SetProject extends Component {
 
 SetProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  selectProjectFromUrl: PropTypes.func.isRequired,
+  selectProjectFromProjectUrl: PropTypes.func.isRequired,
   loadProjects: PropTypes.func.isRequired,
 };
 
@@ -462,6 +465,7 @@ const mapDispatchToProps = Object.assign(
   {},
   notificationActions,
   projectActions,
+  invitationsActions
 );
 
 export default connect(

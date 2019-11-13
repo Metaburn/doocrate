@@ -7,7 +7,8 @@ import {
   LOAD_PROJECTS_SUCCESS,
   UPDATE_PROJECT_SUCCESS,
   NEW_PROJECT_CREATED,
-  CREATE_PROJECT_ERROR
+  CREATE_PROJECT_ERROR,
+  SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT
 } from './action-types';
 import { SELECT_PROJECT } from './action-types';
 import { firebaseCollectionToList } from 'src/firebase/firebase-list';
@@ -15,6 +16,11 @@ import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
+  selectedProjectUserPermissions: {
+    canAdd: true,
+    canComment: true,
+    canAssign: true
+  },
 });
 
 
@@ -49,6 +55,8 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
 
     case CREATE_PROJECT_ERROR:
       return showError(payload);
+    case SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT:
+      return state.set('selectedProjectUserPermissions', payload);
 
     default:
       return state;

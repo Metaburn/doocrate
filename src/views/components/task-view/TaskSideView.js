@@ -5,9 +5,9 @@ import { isMobile, isTablet } from "../../../utils/browser-utils";
 import classnames from "classnames";
 import i18n from "src/i18n";
 
-class TaskSideView extends Component{
+class TaskSideView extends Component {
 
-  constructor(){
+  constructor() {
     super();
     this.isSaved = false;
   }
@@ -18,16 +18,19 @@ class TaskSideView extends Component{
       assignTask, selectedProject, isAdmin, isGuide,
       followTask, unfollowTask, unassignTask, unloadComments,
       createComment, updateComment, removeComment,
-      isValidCallback, isDraft, submitNewTask, resetSelectedTask, validations
+      isValidCallback, isDraft, submitNewTask, resetSelectedTask, validations,
+      userPermissions
     } = this.props;
 
     const isHebrew = i18n.language === "he";
-    const width = isMobile ? "98%" : isTablet? "60%" :"45%";
+    const width = isMobile ? "98%" : isTablet ? "60%" : "45%";
     const isOpen = selectedTask !== undefined || isDraft;
     const classNames = classnames("task-side-view",
-      { "is-mobile": isMobile,
+      {
+        "is-mobile": isMobile,
         "right-menu": isHebrew,
-        "left-menu": !isHebrew});
+        "left-menu": !isHebrew
+      });
 
     return (
 
@@ -35,21 +38,21 @@ class TaskSideView extends Component{
             isOpen={isOpen}
             className={classNames}
             overlayClassName={"task-side-view-overlay"}
-            disableOverlayClick={()=>{
-              if(isDraft && !this.isSaved){
+            disableOverlayClick={() => {
+              if (isDraft && !this.isSaved) {
                 this.isSaved = false;
                 return !window.confirm(i18n.t('task.confirm-exit'))
               }
               return false;
             }}
             onStateChange={(state) => {
-              if(state.isOpen && this.isSaved){
+              if (state.isOpen && this.isSaved) {
                 // reset isSaved on open
                 this.isSaved = false;
               }
-              return  !state.isOpen && resetSelectedTask()
+              return !state.isOpen && resetSelectedTask()
             }}
-            width={ width }>
+            width={width}>
 
         <TaskView
           onDeleteTask={onDeleteTask}
@@ -68,25 +71,25 @@ class TaskSideView extends Component{
           removeComment={removeComment}
           isValidCallback={isValidCallback}
           isDraft={isDraft}
-          submitNewTask={(task)=>{
+          submitNewTask={(task) => {
             this.isSaved = true;
             submitNewTask(task)
           }}
-          closeTaskView={()=>{
-            if(isDraft && !this.isSaved) {
+          closeTaskView={() => {
+            if (isDraft && !this.isSaved) {
               if (window.confirm(i18n.t('task.confirm-exit'))) {
                 resetSelectedTask()
                 this.isSaved = false
-              }else {
+              } else {
                 return;
               }
             }
             resetSelectedTask()
           }}
-          validations={validations}/>
+          validations={validations}
+          userPermissions={userPermissions}/>
       </Menu>
     );
-
-  }
+  };
 }
 export default TaskSideView;

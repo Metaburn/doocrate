@@ -548,7 +548,7 @@ export class TaskView extends Component {
 
   getTaskViewHeaderProps = () => {
     const { selectedTask, isAdmin ,isDraft, selectTask, followTask,
-      unfollowTask,  unassignTask, onDeleteTask, selectedProject, auth } = this.props;
+      unfollowTask,  unassignTask, onDeleteTask, selectedProject, auth, userPermissions } = this.props;
     const { isEditing, description } = this.state;
 
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
@@ -602,6 +602,7 @@ export class TaskView extends Component {
       auth: auth,
       projectUrl: projectUrl,
       closeTaskView: this.props.closeTaskView,
+      userPermissions: userPermissions
     }
   };
 
@@ -613,12 +614,13 @@ export class TaskView extends Component {
     const { selectedTask } = this.props;
     if (!selectedTask) return null;
 
-    const { isDraft, selectedProject, auth, isAdmin } = this.props;
+    const { isDraft, selectedProject, auth, isAdmin, userPermissions } = this.props;
     const { defaultType, popularTags, isEditing } = this.state;
     const projectUrl = (selectedProject && selectedProject.url) ? selectedProject.url:
       auth.defaultProject;
 
-    const canEditTask = this.isUserCreator() || this.isUserAssignee() || isAdmin;
+    const canEditTask = (this.isUserCreator() || this.isUserAssignee() || isAdmin)
+      && userPermissions.canAdd === true;
     const showSaveButton = isEditing && canEditTask;
 
     return (
@@ -686,7 +688,7 @@ export class TaskView extends Component {
           removeComment={this.props.removeComment}
           projectUrl={projectUrl}/> }
 
-        { !isDraft && this.renderAddComment() }
+        { !isDraft && userPermissions.canComment === true && this.renderAddComment() }
 
         { isDraft && showSaveButton &&
         <div className={'button-save-wrapper'}>
@@ -720,6 +722,7 @@ TaskView.propTypes = {
   isDraft: PropTypes.bool.isRequired,
   submitNewTask: PropTypes.func.isRequired,
   closeTaskView: PropTypes.func.isRequired,
+  userPermissions: PropTypes.object.isRequired
 };
 
 const mapStateToProps = createSelector(

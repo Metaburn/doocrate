@@ -20,7 +20,7 @@
     "disconnect": "Sign out ",
     "me": "🧝",
     "all-projects": "All projects",
-    "update-my-profile":"Update my profile",
+    "update-my-profile": "Update my profile",
     "create-project": "Start your own project"
   },
   "create-project": {
@@ -39,7 +39,7 @@
     "can-assign-task": "Is the project open for assigning existing tasks 🔏",
     "select-language": "Select the project language",
     "custom-domain": "[Optional] - Custom domain (If you already bought one)",
-    "custom-domain-placeholder":"https://yourdomain.com",
+    "custom-domain-placeholder": "https://yourdomain.com",
     "custom-domain-explain": "Must start with <b>https://</b> or <b>http</b> for example - https://burnerot.com<br/>Once users are receiving emails - this would allows us to call your website instead of doocrate.com",
     "submit-btn": "Create project!",
     "submit-btn-edit": "Save changes!",
@@ -73,8 +73,8 @@
     "title": "Looking what to do next?",
     "start-tour": "Start the tour",
     "start-tour-desc": "Learn how to do things",
-    "create-task":"Create yourself a task",
-    "create-task-desc":"Feeling creative? create a task",
+    "create-task": "Create yourself a task",
+    "create-task-desc": "Feeling creative? create a task",
     "search-free-task": "Search yourself a free task",
     "search-free-task-desc": "See what tasks exists",
     "search-humans": "Search for humans",
@@ -169,7 +169,7 @@
     "set-my-name-description": "My name",
     "set-my-name": "How shall we call you",
     "bio-description": "Who are you? Share with the community what are your super powers",
-    "submit" : "Save & Continue"
+    "submit": "Save & Continue"
   },
   "admin": {
     "download-csv": "Download CSV"
@@ -233,7 +233,7 @@
     "q5": "I can't do something. Technical support?",
     "a5": "<span>Sure. Email support@doocrate.com</span>",
     "q6": "This is amazing. I want to create my own project",
-    "a6": "<span><a href='https://doocrate.com/create-project'>Click here to create your own project</a></span>",
+    "a6": "<span><a href='/create-project'>Click here to create your own project</a></span>",
     "q7": "Where is the logout button?",
     "a7": "<a href='/logout'>Here Let's get you out of here</a>",
     "q8": "How can I help?",
@@ -249,5 +249,17 @@
     "opensource": "Open source",
     "server-with-love": "And served with ❤ by",
     "people": "the humans who crafted this system"
+  },
+  "reports": {
+    "validate": "Validate",
+    "save": "Save",
+    "delete": "Delete",
+    "emails-updated-successfully": "Emails were saved successfully",
+    "invitations-header": "Add new emails for users with editing permission",
+    "emails-placeholder": "Add semicolon (;) separated email addresses",
+    "sure-delete-invitation": "Are you sure you want to delete invitation for {{email}}?",
+    "sure-add-invitations": "Are you sure you want to add {{emailsCount}} users?",
+    "invalid-email-address": "The following email addresses are invalid",
+    "valid-email-address": "Valid email addresses"
   }
 }
