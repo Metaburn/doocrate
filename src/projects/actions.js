@@ -240,33 +240,26 @@ export function selectProject(project) {
 }
 
 export function fetchUserPermissions(project) {
-  // firebaseApp.auth().currentUser.getIdToken().then((token) => {
-  //   const request = {
-  //     method: 'GET',
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'Bearer ' + token,
-  //     }
-  //   };
-  //
-  //   fetch(`/api/auth/project_permissions?project=${project.url}`, request)
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         setUserPermissions(response.json());
-  //       } else {
-  //         setUserPermissionsError(response)
-  //       }
-  //     })
-  // });
+  firebaseApp.auth().currentUser.getIdToken().then((token) => {
+    const request = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      }
+    };
 
-  const payload = {
-    canAdd: true,
-    canAssign: true,
-    canComment: true,
-    canView: true
-  };
-  return payload;
+    fetch(`/api/auth/project_permissions?project=${project.url}`, request)
+      .then((response) => {
+        if (response.ok) {
+          return setUserPermissions(response.json());
+        } else {
+          return setUserPermissionsError(response)
+        }
+      })
+  });
+
 }
 
 export function setUserPermissions(permissions) {

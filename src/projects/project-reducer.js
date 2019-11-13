@@ -17,8 +17,12 @@ import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
+  // TODO - This should be set from the server
   selectedProjectUserPermissions: {
-
+      canAdd: true,
+      canAssign: true,
+      canComment: true,
+      canView: true
   },
 });
 

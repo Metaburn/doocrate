@@ -21,6 +21,10 @@ npm run build && firebase deploy
 ```
 firebase deploy --only functions
 ```
+####For specific function
+```
+firebase deploy --only functions:api
+```
 
 # Testing Locally
 Start the shell

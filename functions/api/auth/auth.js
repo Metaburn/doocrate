@@ -8,28 +8,31 @@ exports.user = (req, res) => {
  * @returns returns user permission
  */
 exports.project_permissions = async (req, res) => {
-  console.log(req.params);
+  console.log(req.query);
   console.log(req.user);
 
-  const {firestore} = res.app.get("firestore");
-  const {project} = req.params;
+  const {firestore} = req.app.locals;
+  const {project} = req.query;
+  const {user} = req;
+
   // TODO - Sanitize project to protect against bad characters
+
+  if(project === undefined) {
+    return res.status(400).send(JSON.stringify({error:"Project is invalid"}))
+  }
 
   const inviteList = await firestore
     .collection("projects")
     .doc(project)
-    .collection("invitation_lists")
-    .doc("main");
+    .collection("invitation_lists");
 
   const inviteListResponse = await inviteList
-    .where("invites", "array-contains", req.user.token.email).get();
+    .where("invites", "array-contains", user.email).get();
 
-  console.log(inviteListResponse);
-  const inviteListResult = inviteListResponse.data();
-  console.log(inviteListResult);
+  const inviteListResultSize = inviteListResponse.size;
 
   // TODO - Right now there is only one write permissions enabled
-  const haveAccess = inviteListResult.length > 0;
+  const haveAccess = inviteListResultSize > 0;
   const payload = {
     canAdd: haveAccess,
     canAssign: haveAccess,
