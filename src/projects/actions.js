@@ -42,7 +42,7 @@ export const initProject = () => (dispatch, getState) => {
       // select user to default project
       selectedProject = auth.defaultProject;
     }else {
-      const selectedProject = getCookie('project');
+      selectedProject = getCookie('project');
       // not found or corrupted project - need to select
       if (!selectedProject || invalidProjectValues.includes(projectUrl)) {
         history.push('/');
