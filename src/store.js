@@ -12,12 +12,12 @@ let middleware = [
 ];
 
 // add redux logger for non production env
-if(process.env.NODE_ENV !== "production"){
-  middleware.push(createLogger({
-    collapsed: true,
-    diff: true //this is alpha - might slow down the app
-  }))
-}
+// if(process.env.NODE_ENV !== "production"){
+//   middleware.push(createLogger({
+//     collapsed: true,
+//     diff: false // TODO!! WARNING - DO NOT LEAVE THIS ON - THIS REALLY SLOWS DOWN THE APP
+//   }))
+// }
 
 export default (initialState = {}) => {
    middleware = applyMiddleware(...middleware, routerMiddleware(history));
