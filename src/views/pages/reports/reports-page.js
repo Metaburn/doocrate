@@ -364,6 +364,9 @@ export class ReportsPage extends Component {
   }
 
   renderDeleteInvitationButton = (invitation) => {
+    // TODO Removed for now till we add support for it
+    // Probably would be simple to call the same function as handleSave with filtering that specific invites
+
     // return(
     //   <Button
     //     className="button button-small action-button"
