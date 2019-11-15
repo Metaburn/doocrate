@@ -10,7 +10,7 @@ try {
 
 const express = require("express");
 const cookieParser = require("cookie-parser")();
-const cors = require("cors")({origin: false}); //TODO maybe true?
+const cors = require("cors")();
 const app = express();
 const {FirebaseAuthMiddleware} = require("./middleware/firebaseAuth");
 
