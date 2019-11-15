@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { List } from "immutable";
+import _ from "lodash";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { labelActions, setLabelWithRandomColor } from "src/labels";
@@ -80,7 +81,9 @@ export class TasksPage extends Component {
   componentWillReceiveProps(nextProps) {
     const selectedTaskId = nextProps.match.params.id;
 
-    this.getFilterParams(nextProps);
+    if(_.get(this.props, "location.search") !== _.get(nextProps, "location.search")){
+      this.getFilterParams(nextProps);
+    }
 
     //if url has a task id - select it
     if (
@@ -145,7 +148,7 @@ export class TasksPage extends Component {
     }
   }
 
-  getFilterParams = props => {
+  getFilterParams = (props) => {
     const urlParams = getUrlSearchParams(props.location.search);
     this.setState({
       filterParams: {
@@ -153,7 +156,7 @@ export class TasksPage extends Component {
         typeText: urlParams["text"] || null,
         complete: urlParams["complete"] || null,
         labels: urlParams["labels"] || null,
-        query: urlParams["query"] || null
+        query: urlParams["query"] || this.state.searchQuery || null
       }
     });
   };
@@ -164,6 +167,7 @@ export class TasksPage extends Component {
     filteredTasks = this.filterByComplete(nextFilters, filteredTasks);
     filteredTasks = this.filterTaskFromLabel(nextFilters, filteredTasks);
     filteredTasks = this.filterTaskFromQuery(nextFilters, filteredTasks);
+
 
     return filteredTasks;
     // this.setState({ filteredTasks });
