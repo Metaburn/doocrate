@@ -17,12 +17,7 @@ import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
-  // TODO - This should be set from the server
   selectedProjectUserPermissions: {
-      canAdd: true,
-      canAssign: true,
-      canComment: true,
-      canView: true
   },
 });
 
@@ -57,14 +52,16 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
       return state.set('selectedProject', payload || null);
 
     case CREATE_PROJECT_ERROR:
-      return showError(payload);
+      showError(payload);
+      return state;
 
     case SET_USER_PERMISSIONS:
       return state.set('selectedProjectUserPermissions', payload);
 
     case SET_USER_PERMISSIONS_ERROR:
-      console.error({payload});
-      return showError(payload.statusText);
+      state.set('selectedProjectUserPermissions', {});
+      showError(payload.statusText);
+      return state;
 
     default:
       return state;

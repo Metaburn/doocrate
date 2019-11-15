@@ -59,20 +59,18 @@ export const initProject = () => (dispatch, getState) => {
           includeMetadataChanges: true
         }, (doc) => {
           const project = doc.data();
-          selectProject(dispatch, project);
+          // Project doesn't exists
+          if(project === undefined) {
+            history.push('/');
+          }else {
+            selectProject(dispatch, project);
+            // We only navigates if this is root. Otherwise we keep the url
+            if(window.location.pathname === "/") {
+              history.push('/' + selectedProject + '/task/1');
+            }
+          }
         }
       );
-
-
-      firebaseDb.collection('projects').doc(selectedProject).get().then(snapshot => {
-        if(snapshot.exists) {
-          const project = snapshot.data();
-          selectProject(dispatch, project);
-          history.push('/'+ selectedProject +'/task/1');
-        }else {
-          history.push('/');
-        }
-      })
     }else {
       history.push('/');
     }
@@ -229,8 +227,9 @@ export function selectProjectFromUrl() {
  * When the user selects a project we check for permissions
  */
 export function selectProject(dispatch, project) {
+  if(!project) { return }
   fetchUserPermissions(project.url).then( (userPermissions) => {
-    dispatch(setUserPermissions(userPermissions));
+    dispatch(userPermissions);
   });
 
   dispatch(
@@ -241,31 +240,30 @@ export function selectProject(dispatch, project) {
   );
 }
 
-export function fetchUserPermissions(projectUrl) {
+export async function fetchUserPermissions(projectUrl) {
   let serverUrl = '';
   // To support local and dev we set this to staging
   if (process.env.NODE_ENV !== 'production') {
     serverUrl = `https://${firebaseConfig.defaultDomain}`;
   }
-  return firebaseApp.auth().currentUser.getIdToken().then((token) => {
-    const request = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      }
-    };
 
-    return fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request)
-      .then((response) => {
-        if (response.ok) {
-          return setUserPermissions(response.json());
-        } else {
-          return setUserPermissionsError(response);
-        }
-      })
-  });
+  const token = await firebaseApp.auth().currentUser.getIdToken();
+  const request = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+      "Host": "staging.doocrate.com",
+    }
+  };
+
+  const response = await fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request);
+  if (response.ok) {
+    return setUserPermissions(await response.json());
+  } else {
+    return setUserPermissionsError(response);
+  }
 }
 
 export function setUserPermissions(payload) {
