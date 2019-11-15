@@ -76,6 +76,17 @@ export class TasksPage extends Component {
         search: firebaseConfig.defaultPageToLoad
       });
     }
+
+    this.getFilterParams(this.props);
+
+    const selectedTaskId = this.props.match.params.id;
+
+    if (selectedTaskId === "new-task") {
+      // New task
+      if (this.state.newTask == null) {
+        this.createTask();
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
