@@ -1,7 +1,6 @@
 import { invitationListFirebaseList } from "./invitations-list";
 import {
   invitationFirebaseList,
-  InvitationStatus
 } from "./invitation";
 
 import {
@@ -17,7 +16,6 @@ import {
   UPDATE_INVITATION_ERROR
 } from "./action-types";
 import {firebaseDb} from "src/firebase";
-import firebase from "firebase/app";
 
 //#region Invitation List
 

@@ -520,7 +520,7 @@ export class TasksPage extends Component {
   };
 
   render() {
-    const { selectedProjectUserPermissions, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
+    const { selectedProjectUserPermissions, match, tasks, setMenuOpen } = this.props;
     const { selectedTaskId, searchQuery, filterParams } = this.state;
     const selectedFilters = this.getSelectedFilters();
 
