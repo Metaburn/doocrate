@@ -19,7 +19,7 @@ import {firebaseApp} from "../firebase";
 import { getCookie, getUrlSearchParams } from "../utils/browser-utils";
 import { getAuth } from "../auth";
 import history from "../history";
-
+import {firebaseConfig} from "src/firebase/config";
 
 export const initProject = () => (dispatch, getState) => {
     const projectUrl = getProjectFromUrl();
@@ -59,7 +59,7 @@ export const initProject = () => (dispatch, getState) => {
           includeMetadataChanges: true
         }, (doc) => {
           const project = doc.data();
-          dispatch(selectProject(project));
+          selectProject(dispatch, project);
         }
       );
 
@@ -67,7 +67,7 @@ export const initProject = () => (dispatch, getState) => {
       firebaseDb.collection('projects').doc(selectedProject).get().then(snapshot => {
         if(snapshot.exists) {
           const project = snapshot.data();
-          dispatch(selectProject(project));
+          selectProject(dispatch, project);
           history.push('/'+ selectedProject +'/task/1');
         }else {
           history.push('/');
@@ -202,7 +202,7 @@ function selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl) {
   firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
     if (snapshot.exists) {
       const project = snapshot.data();
-      return dispatch(selectProject(project));
+      return selectProject(dispatch, project);
     }
   });
 }
@@ -217,7 +217,6 @@ export function selectProjectFromProjectUrl(projectUrl) {
 export function selectProjectFromUrl() {
   return dispatch => {
     const projectUrl = getProjectFromUrl();
-
     if (!projectUrl) {
       return;
     }
@@ -229,17 +228,25 @@ export function selectProjectFromUrl() {
 /**
  * When the user selects a project we check for permissions
  */
-export function selectProject(project) {
-  // TODO - not sure with dispatch twice - perhaps should be passed as an object
-  const permissions = fetchUserPermissions(project.url);
-  setUserPermissions(permissions);
-  return {
-    type: SELECT_PROJECT,
-    payload: project
-  };
+export function selectProject(dispatch, project) {
+  fetchUserPermissions(project.url).then( (userPermissions) => {
+    dispatch(setUserPermissions(userPermissions));
+  });
+
+  dispatch(
+    {
+      type: SELECT_PROJECT,
+      payload: project
+    }
+  );
 }
 
-export function fetchUserPermissions(project) {
+export function fetchUserPermissions(projectUrl) {
+  let serverUrl = '';
+  // To support local and dev we set this to staging
+  if (process.env.NODE_ENV !== 'production') {
+    serverUrl = firebaseConfig.defaultDomain
+  }
   firebaseApp.auth().currentUser.getIdToken().then((token) => {
     const request = {
       method: 'GET',
@@ -250,25 +257,21 @@ export function fetchUserPermissions(project) {
       }
     };
 
-    fetch(`/api/auth/project_permissions?project=${project.url}`, request)
+    fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request)
       .then((response) => {
         if (response.ok) {
-          // TODO The next code doesn't called dispatch
           return setUserPermissions(response.json());
         } else {
-          return setUserPermissionsError(response)
+          return setUserPermissionsError(response);
         }
       })
   });
-
 }
 
-export function setUserPermissions(permissions) {
-  return dispatch => {
-    return(dispatch({
-      type: SET_USER_PERMISSIONS,
-      payload: permissions
-    }))
+export function setUserPermissions(payload) {
+  return{
+    type: SET_USER_PERMISSIONS,
+    payload: payload
   }
 }
 
