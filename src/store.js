@@ -1,7 +1,6 @@
 import { routerMiddleware } from 'react-router-redux';
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger'
 import history from './history';
 import reducers from './reducers';
 import {projectMiddleware} from "./projects/project-middleware"
@@ -11,11 +10,13 @@ let middleware = [
   projectMiddleware
 ];
 
+// TODO!! WARNING - UNCOMMENT THIS BUT DONT COMMIT THIS - THIS REALLY SLOWS DOWN THE APP FOR DEVELOPERS
 // add redux logger for non production env
 // if(process.env.NODE_ENV !== "production"){
+//   import { createLogger } from 'redux-logger'
 //   middleware.push(createLogger({
 //     collapsed: true,
-//     diff: false // TODO!! WARNING - DO NOT LEAVE THIS ON - THIS REALLY SLOWS DOWN THE APP
+//     diff: true
 //   }))
 // }
 

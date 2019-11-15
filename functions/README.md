@@ -21,6 +21,10 @@ npm run build && firebase deploy
 ```
 firebase deploy --only functions
 ```
+####For specific function
+```
+firebase deploy --only functions:api
+```
 
 # Testing Locally
 Start the shell
@@ -41,6 +45,15 @@ This part should be deployed to the firebase server
 
 To deploy this functions use
 `firebase deploy`
+
+# API
+We also have an `api` stored under the api folder
+To test the api locally:
+```
+firebase functions:shell
+api("/")
+api("/hello",{headers: {"bearer":"sample token"}})
+```
 
 # Deploy
 ## Firebase plans
