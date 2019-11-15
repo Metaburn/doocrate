@@ -41,6 +41,9 @@
       font-size: 24px;
       font-weight: bold;
       margin-bottom: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .task-type {
@@ -51,6 +54,9 @@
   .description, .requirements {
     max-height: 17.5em;
     overflow: hidden;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .avatar-container, .empty-avatar-container {

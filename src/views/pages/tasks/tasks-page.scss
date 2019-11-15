@@ -26,6 +26,7 @@
   flex-wrap: nowrap;
   flex-direction: row-reverse;
   justify-content: flex-end;
+  width: 100%;
 }
 
 .task-page-child {
@@ -37,6 +38,7 @@
   flex: 5500 1 605px;
   -webkit-box-flex: 5500;
   -ms-flex: 5500 1 605px;
+  width: 100%;
 }
 
 @media (max-width: 767px) {
@@ -46,6 +48,7 @@
   }
   .task-page-wrapper {
     flex-wrap: wrap;
+    width: 100%;
   }
 
   .search-bar {
@@ -77,6 +80,7 @@
   .task-list-wrapper {
     padding-left: 16px;
     padding-right: 16px;
+    width: 100%;
   }
 
 }
