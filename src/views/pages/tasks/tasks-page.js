@@ -77,6 +77,8 @@ export class TasksPage extends Component {
         search: firebaseConfig.defaultPageToLoad
       });
     }
+
+    this.getFilterParams(this.props);
   }
 
   componentWillReceiveProps(nextProps) {
