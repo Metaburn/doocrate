@@ -245,9 +245,9 @@ export function fetchUserPermissions(projectUrl) {
   let serverUrl = '';
   // To support local and dev we set this to staging
   if (process.env.NODE_ENV !== 'production') {
-    serverUrl = firebaseConfig.defaultDomain
+    serverUrl = `https://${firebaseConfig.defaultDomain}`;
   }
-  firebaseApp.auth().currentUser.getIdToken().then((token) => {
+  return firebaseApp.auth().currentUser.getIdToken().then((token) => {
     const request = {
       method: 'GET',
       headers: {
@@ -257,7 +257,7 @@ export function fetchUserPermissions(projectUrl) {
       }
     };
 
-    fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request)
+    return fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request)
       .then((response) => {
         if (response.ok) {
           return setUserPermissions(response.json());

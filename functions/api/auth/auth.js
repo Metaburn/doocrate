@@ -1,5 +1,8 @@
+/**
+ * Returns the logged in user
+ */
 exports.user = (req, res) => {
-  res.send(`Hello ${req.user.name}`);
+  res.send(JSON.stringify(req.user));
 };
 
 /**
