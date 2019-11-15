@@ -221,12 +221,3 @@ export function updateInvitationError(error) {
 }
 
 //#endregion
-
-/** We use the invites to see if a certain user has access to a project */
-export function getUserAccessToProject(projectUrl) {
-  return dispatch => {
-    // TODO
-    // make a call to our server to fetch the access a given user has to the server
-    // then set it on the auth object in some way
-  };
-}
