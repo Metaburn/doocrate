@@ -28,6 +28,10 @@
     .label-wrapper {
       background-color: white !important;
       color: $primary-color !important;;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: break-word;
     }
   }
 
@@ -44,6 +48,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      overflow-wrap: break-word;
     }
 
     .task-type {
@@ -57,6 +62,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    overflow-wrap: break-word;
   }
 
   .avatar-container, .empty-avatar-container {
