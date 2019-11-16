@@ -20,8 +20,8 @@ import TaskCreator from "../task-creator/task-creator";
 import Button from "../button/button";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation/textAreaAutoresizeValidation";
 
+import './task-view.css';
 import "react-tagsinput/react-tagsinput.css";
-import "./task-view.css";
 
 export class TaskView extends Component {
   constructor(props) {
@@ -60,6 +60,8 @@ export class TaskView extends Component {
     this.renderSelect = this.renderSelect.bind(this);
     this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
+    this.updateStateFromSelectedTask = this.updateStateFromSelectedTask.bind(this);
+
   }
 
   // TODO: Move to utils or use Lodash instead
@@ -248,17 +250,26 @@ export class TaskView extends Component {
   }
 
   renderAddComment() {
-    const { selectedTask, createComment, auth } = this.props;
+    const { selectedTask, auth } = this.props;
 
     return (
       <AddComment
-        task={selectedTask}
-        createComment={createComment}
+        task={selectedTask }
+        createComment={this.onAddComment}
         auth={auth}
         key="addComment"
       />
     );
   }
+
+  /**
+   * Upon adding a comment we want to make sure the user also listens for updates
+   */
+  onAddComment = (comment) => {
+    const {selectedTask, createComment, auth, followTask} = this.props;
+    followTask(selectedTask, auth);
+    createComment(comment);
+  };
 
   renderValidationErrorMessage = () => {
     return (
@@ -271,7 +282,7 @@ export class TaskView extends Component {
     );
   }
 
-  renderSelect = (fieldName, placeholder, options, tabIndex) => {
+  renderSelect(fieldName, placeholder, options, tabIndex) {
     const { validate } = this.state;
     return (
       <Fragment>
