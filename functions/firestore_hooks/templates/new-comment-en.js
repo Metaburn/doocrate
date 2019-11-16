@@ -270,7 +270,8 @@ exports.newCommentEn = (args) => {
           <table>
             <tr>
               <td>
-                <p><img src="https://firebasestorage.googleapis.com/v0/b/doocrate-production.appspot.com/o/assets%2Femails%2Funicorn.png?alt=media&token=ecea6c4d-3bc7-4f26-b759-b9ff27205380" /></p>
+                <p><img style="width:130px" src="https://firebasestorage.googleapis.com/v0/b/doocrate-production.appspot.com/o/assets%2Femails%2Funicorn.png?alt=media&token=8187206a-858e-47e7-a337-ef32fa045f89">
+                </p>
                 <h2>Someone commented on your task</h2>
               </td>
             </tr>

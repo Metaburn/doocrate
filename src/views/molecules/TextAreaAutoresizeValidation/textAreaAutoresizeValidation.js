@@ -16,7 +16,7 @@ class TextAreaAutoresizeValidation extends Component {
     // Since we are using a custom control we need to perform our own validation method
     const validateTextArea = (value) => {
       if(isRequired) {
-        const isValid = (value && value.length > 0);
+        const isValid = (value !== undefined && value !== "" && value.length > 0);
         onValidationChange(fieldName, !isValid);
       }
     };
@@ -47,9 +47,7 @@ class TextAreaAutoresizeValidation extends Component {
           validate={validate}
           validationOption={{check: true, required: isRequired, msgOnError: msgOnError }}
           validationCallback={(res) => validateTextArea(this.props.value)}
-
         />
-        {validations && validations[fieldName] && <span>{msgOnError}</span>}
 
 
       </Fragment>
