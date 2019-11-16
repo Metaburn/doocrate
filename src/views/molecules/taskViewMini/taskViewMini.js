@@ -8,6 +8,7 @@ import EmptyAvatar from "../../atoms/emptyAvatar/emptyAvatar";
 
 import 'react-tagsinput/react-tagsinput.css';
 import './taskViewMini.css';
+import CriticalIcon from "../../atoms/criticalIcon/criticalIcon";
 
 class TaskViewMini extends Component {
 
@@ -47,7 +48,7 @@ class TaskViewMini extends Component {
   }
 
   render() {
-    const {task} = this.props;
+    const {task, isActive} = this.props;
 
     if (!task) {
       return (
@@ -59,7 +60,7 @@ class TaskViewMini extends Component {
 
     const {title, description, label, requirements, type} = task;
     let containerClasses = classNames('task-view-mini',
-      {'active': this.props.isActive},
+      {'active': isActive},
       `lang-${i18n.language}`);
 
     const labelAsArray = label ?
@@ -71,9 +72,14 @@ class TaskViewMini extends Component {
 
     return (
       <div className={containerClasses} dir={i18n.t('lang-dir')}
-           onClick={() => this.props.onSelectTask(this.props.task)}>
+           onClick={() => this.props.onSelectTask(task)}>
         <div className={'header'}>
-          <div className={'title'}>{title}</div>
+          <div className={`title-wrapper lang-${i18n.language}`}>
+            {task && task.isCritical &&
+            <CriticalIcon showText={false}/>
+            }
+            <span className={'title'}>{title}</span>
+          </div>
           <div className={`task-type`}>{type && type.label}</div>
         </div>
         <div className={'description'}>{description}</div>
