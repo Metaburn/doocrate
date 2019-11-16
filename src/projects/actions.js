@@ -10,14 +10,16 @@ import {
   UPDATE_PROJECT_ERROR,
   UPDATE_PROJECT_SUCCESS,
   NEW_PROJECT_CREATED,
-  SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT
+  SET_USER_PERMISSIONS,
+  SET_USER_PERMISSIONS_ERROR
 } from './action-types';
 import { SELECT_PROJECT } from "./action-types";
 import {firebaseDb} from "../firebase";
+import {firebaseApp} from "../firebase";
 import { getCookie, getUrlSearchParams } from "../utils/browser-utils";
 import { getAuth } from "../auth";
 import history from "../history";
-
+import {firebaseConfig} from "src/firebase/config";
 
 export const initProject = () => (dispatch, getState) => {
     const projectUrl = getProjectFromUrl();
@@ -57,20 +59,18 @@ export const initProject = () => (dispatch, getState) => {
           includeMetadataChanges: true
         }, (doc) => {
           const project = doc.data();
-          dispatch(selectProject(project));
+          // Project doesn't exists
+          if(project === undefined) {
+            history.push('/');
+          }else {
+            selectProject(dispatch, project);
+            // We only navigates if this is root. Otherwise we keep the url
+            if(window.location.pathname === "/") {
+              history.push('/' + selectedProject + '/task/1');
+            }
+          }
         }
       );
-
-
-      firebaseDb.collection('projects').doc(selectedProject).get().then(snapshot => {
-        if(snapshot.exists) {
-          const project = snapshot.data();
-          dispatch(selectProject(project));
-          history.push('/'+ selectedProject +'/task/1');
-        }else {
-          history.push('/');
-        }
-      })
     }else {
       history.push('/');
     }
@@ -200,7 +200,7 @@ function selectProjectFromProjectUrlAndDispatch(dispatch, projectUrl) {
   firebaseDb.collection('projects').doc(projectUrl).get().then(snapshot => {
     if (snapshot.exists) {
       const project = snapshot.data();
-      return dispatch(selectProject(project));
+      return selectProject(dispatch, project);
     }
   });
 }
@@ -215,7 +215,6 @@ export function selectProjectFromProjectUrl(projectUrl) {
 export function selectProjectFromUrl() {
   return dispatch => {
     const projectUrl = getProjectFromUrl();
-
     if (!projectUrl) {
       return;
     }
@@ -224,31 +223,59 @@ export function selectProjectFromUrl() {
 }
 
 
-export function selectProject(project) {
-  // When someone selects a project - check if user has access
-  // TODO -> call invitesActions.getUserAccessToProject() which would check for permissions
-  // Then set them somewhere
+/**
+ * When the user selects a project we check for permissions
+ */
+export function selectProject(dispatch, project) {
+  if(!project) { return }
+  fetchUserPermissions(project.url).then( (userPermissions) => {
+    dispatch(userPermissions);
+  });
 
-
-  setUserPermissionsForSelectedProject(project) //this is just a temp call from here... should be remoed
-  return {
-    type: SELECT_PROJECT,
-    payload: project
-  };
+  dispatch(
+    {
+      type: SELECT_PROJECT,
+      payload: project
+    }
+  );
 }
 
-export function setUserPermissionsForSelectedProject(userPermissions) {
+export async function fetchUserPermissions(projectUrl) {
+  let serverUrl = '';
+  // To support local and dev we set this to staging
+  if (process.env.NODE_ENV !== 'production') {
+    serverUrl = `https://${firebaseConfig.defaultDomain}`;
+  }
 
-  //TODO remove this mock data
-  const payload = {
-    canAdd: true,
-    canAssign: true,
-    canComment: true,
-    canView: false
+  const token = await firebaseApp.auth().currentUser.getIdToken();
+  const request = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+      "Host": "staging.doocrate.com",
+    }
   };
 
-  return {
-    type: SET_USER_PERMISSIONS_FOR_SELECTED_PROJECT,
+  const response = await fetch(`${serverUrl}/api/auth/project_permissions?project=${projectUrl}`, request);
+  if (response.ok) {
+    return setUserPermissions(await response.json());
+  } else {
+    return setUserPermissionsError(response);
+  }
+}
+
+export function setUserPermissions(payload) {
+  return{
+    type: SET_USER_PERMISSIONS,
     payload: payload
+  }
+}
+
+export function setUserPermissionsError(error) {
+  return {
+    type: SET_USER_PERMISSIONS_ERROR,
+    payload: error
   };
 }

@@ -130,7 +130,9 @@ export class MePage extends Component {
   };
 
   onSelectTask = (task) =>{
-    this.props.history.push('/' + this.props.selectedProject.url + '/task/' + task.id);
+    // We open the tasks and show my tasks filter so it would allow the task to be shown on page
+    // Otherwise it opens 1000 of tasks and it won't really show it among tasks
+    this.props.history.push('/' + this.props.selectedProject.url + '/task/' + task.id + '?filter=mine');
   }
 }
 

@@ -1,7 +1,6 @@
 import { invitationListFirebaseList } from "./invitations-list";
 import {
   invitationFirebaseList,
-  InvitationStatus
 } from "./invitation";
 
 import {
@@ -17,7 +16,6 @@ import {
   UPDATE_INVITATION_ERROR
 } from "./action-types";
 import {firebaseDb} from "src/firebase";
-import firebase from "firebase/app";
 
 //#region Invitation List
 
@@ -223,12 +221,3 @@ export function updateInvitationError(error) {
 }
 
 //#endregion
-
-/** We use the invites to see if a certain user has access to a project */
-export function getUserAccessToProject(projectUrl) {
-  return dispatch => {
-    // TODO
-    // make a call to our server to fetch the access a given user has to the server
-    // then set it on the auth object in some way
-  };
-}

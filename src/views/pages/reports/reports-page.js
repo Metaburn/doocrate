@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Map, List } from "immutable";
-import Moment from "react-moment";
 
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -15,8 +14,6 @@ import { I18n } from "react-i18next";
 import i18n from "../../../i18n";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
 import Button from "../../components/button";
-import Icon from "../../atoms/icon";
-import { InvitationStatus } from "../../../invites/invitation";
 import { uniq } from "lodash";
 
 import "./reports-page.css";
@@ -37,7 +34,7 @@ export class ReportsPage extends Component {
   }
 
   componentWillMount() {
-    const {auth, match, selectedProject, invites} = this.props;
+    const {match} = this.props;
 
     const projectUrl = match.params.projectUrl;
 
@@ -179,7 +176,7 @@ export class ReportsPage extends Component {
   };
 
   validateEmail(email) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return true;
     }
     return false;
