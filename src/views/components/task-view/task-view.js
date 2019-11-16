@@ -124,41 +124,41 @@ export class TaskView extends Component {
     const { isDraft } = nextProps;
 
     // this checks if we got another task, or we're updating the same one
-    const labelAsArray = label ?
+      const labelAsArray = label ?
       (Object.keys(label).map( l => { return l })) : [];
 
-    // Set default task types
-    let defaultType = this.getDefaultTaskTypes(nextProps);
-    let popularTags = this.getPopularTags(nextProps);
+      // Set default task types
+      let defaultType = this.getDefaultTaskTypes(nextProps);
+      let popularTags = this.getPopularTags(nextProps);
 
-    this.setState({
-      id: id || '',
-      title: title || '',
-      description:description || '',
-      requirements:requirements || '',
-      label: labelAsArray || [],
-      listeners: listeners || [],
-      isCritical: isCritical || false,
-      isDone: isDone || false,
-      created: created || null,
-      doneDate: doneDate || null,
-      dueDate: dueDate || null,
-      type: type || null,
-      defaultType: defaultType || [],
-      popularTags: popularTags,
-      extraFields: extraFields || {},
-      validations: {},
-    });
+      this.setState({
+        id: id || '',
+        title: title || '',
+        description:description || '',
+        requirements:requirements || '',
+        label: labelAsArray || [],
+        listeners: listeners || [],
+        isCritical: isCritical || false,
+        isDone: isDone || false,
+        created: created || null,
+        doneDate: doneDate || null,
+        dueDate: dueDate || null,
+        type: type || null,
+        defaultType: defaultType || [],
+        popularTags: popularTags,
+        extraFields: extraFields || {},
+        validations: {},
+      });
 
-    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
-    if ((nextSelectedTask && nextSelectedTask.id !== null) &&
-      (nextSelectedTask.id !== this.state.id)) {
-      this.setState({isEditing: false});
-    }else {
-      if (nextSelectedTask && nextSelectedTask.id === null) {
-        this.setState({isEditing: isDraft || false});
+      // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
+      if ((nextSelectedTask && nextSelectedTask.id !== null) &&
+        (nextSelectedTask.id !== this.state.id)) {
+        this.setState({isEditing: false});
+      }else {
+        if (nextSelectedTask && nextSelectedTask.id === null) {
+          this.setState({isEditing: isDraft || false});
+        }
       }
-    }
   }
 
   getDefaultTaskTypes(props) {
@@ -262,7 +262,6 @@ export class TaskView extends Component {
         {this.state.type == null || this.state.type.length === 0 && this.renderValidationErrorMessage()}
       </Fragment>
     );
-
   }
 
   renderInput(fieldName, placeholder, isEditable, tabIndex, isAutoFocus, isRequired = false, isExtra = false) {
@@ -287,7 +286,7 @@ export class TaskView extends Component {
         onKeyUp={() => {}} // here to trigger validation callback on Key up
         disabled={!isEditable}
         autofocus={isAutoFocus}
-        validationOption={{name: fieldName, check: true, required: isRequired, msgOnError: i18n.t('task.errors.not-empty')}}
+        validationOption={{name: fieldName, check: true, required: isRequired, msgOnError: i18n.t('task.errors.not-empty') }}
         validationCallback={(res) => this.setState({ validations: {...this.state.validations, [fieldName]: res }})}/>
     );
   }
@@ -667,27 +666,27 @@ export class TaskView extends Component {
             </div>
 
             {(canEditTask && isEditing && popularTags) &&
-            <div>
-              <div className="instruction-label">
-                <span>{i18n.t('task.automatic-tags')}</span>
-              </div>
               <div>
-                <TagsSuggestions
-                  tags={popularTags}
-                  onTagSelected={(tag) => {
-                    this.handleAddLabel(tag);
-                  }}/>
-              </div>
-            </div>}
+                <div className="instruction-label">
+                  <span>{i18n.t('task.automatic-tags')}</span>
+                </div>
+                <div>
+                  <TagsSuggestions
+                    tags={popularTags}
+                    onTagSelected={(tag) => {
+                      this.handleAddLabel(tag);
+                    }}/>
+                </div>
+              </div>}
 
             {canEditTask && isEditing && this.state.extraFields && this.renderExtraFields(i18n.t, selectedTask, canEditTask)}
 
             {canEditTask && isEditing &&
-            <div className="is-critical">
-              {this.renderCheckbox(selectedTask, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
-            </div>}
+              <div className="is-critical">
+                {this.renderCheckbox(selectedTask, 'isCritical', i18n.t('task.is-critical'), canEditTask)}
+              </div>}
             {!isDraft &&
-            <TaskCreator creator={selectedTask ? selectedTask.creator : null} projectUrl={projectUrl}/>
+              <TaskCreator creator={selectedTask ? selectedTask.creator : null} projectUrl={projectUrl}/>
             }
           </form>
         </div>
@@ -705,9 +704,9 @@ export class TaskView extends Component {
         { isDraft && showSaveButton &&
         <div className={'button-save-wrapper'}>
           <Button
-            className={"save-button"}
-            onClick={this.handleSave}
-            type='button'>{i18n.t('task.save')}</Button>
+          className={"save-button"}
+          onClick={this.handleSave}
+          type='button'>{i18n.t('task.save')}</Button>
         </div>
         }
 
