@@ -22,6 +22,7 @@ import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeVali
 
 import 'react-tagsinput/react-tagsinput.css';
 import './task-view.css';
+import {followTask} from "../../../tasks/actions";
 
 export class TaskView extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ export class TaskView extends Component {
     this.selectedTaskType = this.selectedTaskType.bind(this);
     this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
+    this.updateStateFromSelectedTask = this.updateStateFromSelectedTask.bind(this);
 
   }
 
@@ -228,16 +230,25 @@ export class TaskView extends Component {
   }
 
   renderAddComment() {
-    const { selectedTask, createComment, auth } = this.props;
+    const { selectedTask, auth } = this.props;
 
     return (
       <AddComment
         task={selectedTask }
-        createComment={createComment }
+        createComment={this.onAddComment}
         auth={auth}
         key="addComment"/>
     );
   }
+
+  /**
+   * Upon adding a comment we want to make sure the user also listens for updates
+   */
+  onAddComment = (comment) => {
+    const {selectedTask, createComment, auth} = this.props;
+    followTask(selectedTask, auth);
+    createComment(comment);
+  };
 
   renderSelect(fieldName, placeholder, options, tabIndex) {
     return (
