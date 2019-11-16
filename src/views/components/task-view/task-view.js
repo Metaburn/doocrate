@@ -452,8 +452,8 @@ export class TaskView extends Component {
 
     res = res || this.state.title.length === 0;
     res = res || this.state.description.length === 0;
-
-    res = res || (this.state.type && this.state.type.length === 0);
+    res = res || this.state.type == null || this.state.type.length === 0;
+    res = res || this.state.label == null || this.state.label.length === 0;
 
     // TODO - somehow the following line causes draft tasks to get reset while not valid
 
