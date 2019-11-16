@@ -9,6 +9,7 @@ import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
 import follow from './follow.png';
 import './task-view-header.css';
 import TaskHeaderTooltip from "../../molecules/TaskHeaderTooltip/taskHeaderTooltip";
+import CriticalIcon from "../../atoms/criticalIcon/criticalIcon";
 
 export class TaskViewHeader extends Component {
   render() {
@@ -60,16 +61,13 @@ export class TaskViewHeader extends Component {
                 </Button>
               ): ''
             }
-
-            { task && task.isCritical &&
-              <span>
-                <Icon name='warning' className='header-icon grow' />
-                {t('task.critical')}
-              </span>
-            }
           </div>
 
           <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
+
+            { task && task.isCritical &&
+              <CriticalIcon showText={true}/>
+            }
 
             {isDraft || userPermissions.canAssign === false ? '' : (!assignee) ?
               <Fragment>
