@@ -2,10 +2,13 @@
 
 .labels-list-wrapper {
   display: flex;
+  width: 100%;
+
 
   .labels-list {
     display: flex;
     flex-flow: row wrap;
+    width: 100%;
 
     .label-wrapper {
 

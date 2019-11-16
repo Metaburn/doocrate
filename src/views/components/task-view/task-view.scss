@@ -268,6 +268,12 @@
   width: 100%;
   display: inline-block;
 
+  .react-tagsinput-tag {
+    align-self: baseline;
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
   input {
     font-size: 18px;
     font-family: $base-font-family;
@@ -285,6 +291,7 @@
 
 .form-input{
   margin:0.4em 0;
+  overflow-wrap: break-word;
 }
 
 
