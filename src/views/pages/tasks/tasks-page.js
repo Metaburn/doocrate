@@ -76,6 +76,17 @@ export class TasksPage extends Component {
         search: firebaseConfig.defaultPageToLoad
       });
     }
+
+    this.getFilterParams(this.props);
+
+    const selectedTaskId = this.props.match.params.id;
+
+    if (selectedTaskId === "new-task") {
+      // New task
+      if (this.state.newTask == null) {
+        this.createTask();
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -520,7 +531,7 @@ export class TasksPage extends Component {
   };
 
   render() {
-    const { selectedProjectUserPermissions, match, tasks, setMenuOpen, selectedFilters: { query} } = this.props;
+    const { selectedProjectUserPermissions, match, tasks, setMenuOpen } = this.props;
     const { selectedTaskId, searchQuery, filterParams } = this.state;
     const selectedFilters = this.getSelectedFilters();
 
