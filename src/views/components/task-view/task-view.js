@@ -228,7 +228,7 @@ export class TaskView extends Component {
     const extraFieldItems = extraFields.map((extraField, index) => {
       return (
         <div className="form-input" key={index}>
-          {canEditTask ? (g
+          {canEditTask ? (
             this.renderInput(
               "extra-field-" + extraField,
               extraField,
@@ -266,7 +266,7 @@ export class TaskView extends Component {
    * Upon adding a comment we want to make sure the user also listens for updates
    */
   onAddComment = (comment) => {
-    const {selectedTask, createComment, auth} = this.props;
+    const {selectedTask, createComment, auth, followTask} = this.props;
     followTask(selectedTask, auth);
     createComment(comment);
   };
