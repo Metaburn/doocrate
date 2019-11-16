@@ -42,7 +42,8 @@ export class TaskView extends Component {
       shouldOpenTakeOwnerModal: false,
       extraFields: {},
       validate: false,
-      shouldOpenAssignmentModal: false
+      shouldOpenAssignmentModal: false,
+      labelsWereChanged: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -229,20 +230,39 @@ export class TaskView extends Component {
     );
   }
 
-  renderSelect(fieldName, placeholder, options, tabIndex) {
+  renderValidationErrorMessage = () => {
     return (
-      <Select
-        type="text"
-        name={fieldName}
-        value={this.state[fieldName]}
-        tabIndex={tabIndex}
-        onChange={(e) => { this.selectedTaskType(e, fieldName)}}
-        options={options}
-        isSearchable={false}
-        placeholder={placeholder }
-        noResultsText={i18n.t('general.no-results-found')}
-        searchable={false}/>
+      <div>
+          <span
+            key="typeValidations">
+            {i18n.t('task.errors.not-empty')}
+          </span>
+      </div>
     );
+  }
+
+  renderSelect(fieldName, placeholder, options, tabIndex, msgOnError) {
+    const { validate } = this.state;
+    return (
+      <Fragment>
+        <Select
+          type="text"
+          name={fieldName}
+          value={this.state[fieldName]}
+          tabIndex={tabIndex}
+          onChange={(e) => {
+            this.selectedTaskType(e, fieldName)
+          }}
+          options={options}
+          isSearchable={false}
+          placeholder={placeholder}
+          noResultsText={i18n.t('general.no-results-found')}
+          searchable={false}
+        />
+        {this.state.type == null || this.state.type.length === 0 && this.renderValidationErrorMessage()}
+      </Fragment>
+  );
+
   }
 
   renderInput(fieldName, placeholder, isEditable, tabIndex, isAutoFocus, isRequired = false, isExtra = false) {
@@ -267,7 +287,7 @@ export class TaskView extends Component {
         onKeyUp={() => {}} // here to trigger validation callback on Key up
         disabled={!isEditable}
         autofocus={isAutoFocus}
-        validationOption={{name: fieldName, check: true, required: isRequired, msgOnError: i18n.t('task.errors.not-empty') }}
+        validationOption={{name: fieldName, check: true, required: isRequired, msgOnError: i18n.t('task.errors.not-empty')}}
         validationCallback={(res) => this.setState({ validations: {...this.state.validations, [fieldName]: res }})}/>
     );
   }
@@ -317,20 +337,12 @@ export class TaskView extends Component {
           disabled={!isEditable}
           MaxTags={6}
           validationOption={{ required: true, msgOnError: msgOnError }}
-          validationCallback={(res) => this.setState({validations: {...this.state.validations, tags: res }})}/>
+          validationCallback={(res) => this.setState({validations: {...this.state.validations, label: res }})}/>
 
-        <Textbox
-          classNameInput={`hidden`}
-          type="text"
-          name={'tags'}
-          value={label? label.toString() : ''}
-          validate={validate}
-          onChange={() => {}}
-          onBlur={(e) => {}} // here to trigger validation callback on Key up
-          validationOption={{check: true, required: true, msgOnError: msgOnError }}
-          validationCallback={(res) => validateTags()} />
-
-
+        {
+          this.state.labelsWereChanged &&
+          (this.state.label == null || this.state.label.length === 0)
+          && this.renderValidationErrorMessage()}
       </Fragment>
     );
   }
@@ -443,7 +455,7 @@ export class TaskView extends Component {
       label[i] = label[i].trim();
     }
 
-    this.setState({ label });
+    this.setState({ labelsWereChanged: true, label });
   }
 
   isValid() {
