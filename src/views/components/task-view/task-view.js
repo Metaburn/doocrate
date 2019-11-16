@@ -113,53 +113,54 @@ export class TaskView extends Component {
     }
   }
 
+  /**
+   * If same id - don't update
+   * This helps to also fight general updates from the app where this view should not care about
+   * Otherwise on every update of the app - the fields are getting cleared
+   */
   updateStateByProps(nextProps) {
-    // If same id - don't update
-    // This helps to also fight general updates from the app where this view should not care about
-    // Otherwise on every update of the app - the fields are getting cleared
-    if (
-      nextProps.selectedTask &&
+    if (nextProps.selectedTask &&
       this.props.selectedTask &&
       nextProps.selectedTask.id === this.props.selectedTask.id
     ) {
       return;
     }
+    const {isDraft} = nextProps;
+    let nextSelectedTask = this.updateStateFromSelectedTask(nextProps);
 
-    let nextSelectedTask = nextProps.selectedTask || {};
+    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
+    if ((nextSelectedTask && nextSelectedTask.id !== null) &&
+      (nextSelectedTask.id !== this.state.id)) {
+      this.setState({isEditing: false});
+    } else {
+      if (nextSelectedTask && nextSelectedTask.id === null) {
+        this.setState({isEditing: isDraft || false});
+      }
+    }
+  }
+
+  updateStateFromSelectedTask(props) {
+    let nextSelectedTask = props.selectedTask || {};
     let {
-      id,
-      title,
-      description,
-      requirements,
-      type,
-      label,
-      isCritical,
-      listeners,
-      dueDate,
-      created,
-      isDone,
-      doneDate,
-      extraFields
+      id, title, description, requirements, type,
+      label, isCritical, listeners, dueDate, created, isDone, doneDate,
+      extraFields,
     } = nextSelectedTask;
 
-    const { isDraft } = nextProps;
-
-    // this checks if we got another task, or we're updating the same one
-    const labelAsArray = label
-      ? Object.keys(label).map(l => {
-          return l;
-        })
-      : [];
+    const labelAsArray = label ?
+      (Object.keys(label).map(l => {
+        return l
+      })) : [];
 
     // Set default task types
-    let defaultType = this.getDefaultTaskTypes(nextProps);
-    let popularTags = this.getPopularTags(nextProps);
+    let defaultType = this.getDefaultTaskTypes(props);
+    let popularTags = this.getPopularTags(props);
 
     this.setState({
-      id: id || "",
-      title: title || "",
-      description: description || "",
-      requirements: requirements || "",
+      id: id || '',
+      title: title || '',
+      description: description || '',
+      requirements: requirements || '',
       label: labelAsArray || [],
       listeners: listeners || [],
       isCritical: isCritical || false,
@@ -171,24 +172,12 @@ export class TaskView extends Component {
       defaultType: defaultType || [],
       popularTags: popularTags,
       extraFields: extraFields || {},
+      validations: {},
       taskTypeWereChanged: false,
       labelsWereChanged: false,
-      validations: {},
       isProcessingSave: false
     });
-
-    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
-    if (
-      nextSelectedTask &&
-      nextSelectedTask.id !== null &&
-      nextSelectedTask.id !== this.state.id
-    ) {
-      this.setState({ isEditing: false });
-    } else {
-      if (nextSelectedTask && nextSelectedTask.id === null) {
-        this.setState({ isEditing: isDraft || false });
-      }
-    }
+    return nextSelectedTask;
   }
 
   getDefaultTaskTypes(props) {
@@ -647,6 +636,7 @@ export class TaskView extends Component {
   };
 
   onEditTask = () => {
+    this.updateStateFromSelectedTask(this.props);
     this.setState({ isEditing: !this.state.isEditing });
   };
 
