@@ -107,49 +107,20 @@ export class TaskView extends Component {
     }
   }
 
+  /**
+   * If same id - don't update
+   * This helps to also fight general updates from the app where this view should not care about
+   * Otherwise on every update of the app - the fields are getting cleared
+   */
   updateStateByProps(nextProps) {
-    // If same id - don't update
-    // This helps to also fight general updates from the app where this view should not care about
-    // Otherwise on every update of the app - the fields are getting cleared
     if(nextProps.selectedTask && this.props.selectedTask && nextProps.selectedTask.id === this.props.selectedTask.id) {
       return;
     }
 
-    let nextSelectedTask = nextProps.selectedTask || {};
-    let { id, title, description, requirements, type,
-      label, isCritical, listeners, dueDate, created, isDone, doneDate,
-      extraFields,} = nextSelectedTask;
+    const {isDraft} = nextProps;
+    let nextSelectedTask = this.updateStateFromSelectedTask(nextProps);
 
-    const { isDraft } = nextProps;
-
-    // this checks if we got another task, or we're updating the same one
-      const labelAsArray = label ?
-      (Object.keys(label).map( l => { return l })) : [];
-
-      // Set default task types
-      let defaultType = this.getDefaultTaskTypes(nextProps);
-      let popularTags = this.getPopularTags(nextProps);
-
-      this.setState({
-        id: id || '',
-        title: title || '',
-        description:description || '',
-        requirements:requirements || '',
-        label: labelAsArray || [],
-        listeners: listeners || [],
-        isCritical: isCritical || false,
-        isDone: isDone || false,
-        created: created || null,
-        doneDate: doneDate || null,
-        dueDate: dueDate || null,
-        type: type || null,
-        defaultType: defaultType || [],
-        popularTags: popularTags,
-        extraFields: extraFields || {},
-        validations: {},
-      });
-
-      // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
+    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
       if ((nextSelectedTask && nextSelectedTask.id !== null) &&
         (nextSelectedTask.id !== this.state.id)) {
         this.setState({isEditing: false});
@@ -158,6 +129,45 @@ export class TaskView extends Component {
           this.setState({isEditing: isDraft || false});
         }
       }
+  }
+
+
+  updateStateFromSelectedTask(props) {
+    let nextSelectedTask = props.selectedTask || {};
+    let {
+      id, title, description, requirements, type,
+      label, isCritical, listeners, dueDate, created, isDone, doneDate,
+      extraFields,
+    } = nextSelectedTask;
+
+    const labelAsArray = label ?
+      (Object.keys(label).map(l => {
+        return l
+      })) : [];
+
+    // Set default task types
+    let defaultType = this.getDefaultTaskTypes(props);
+    let popularTags = this.getPopularTags(props);
+
+    this.setState({
+      id: id || '',
+      title: title || '',
+      description: description || '',
+      requirements: requirements || '',
+      label: labelAsArray || [],
+      listeners: listeners || [],
+      isCritical: isCritical || false,
+      isDone: isDone || false,
+      created: created || null,
+      doneDate: doneDate || null,
+      dueDate: dueDate || null,
+      type: type || null,
+      defaultType: defaultType || [],
+      popularTags: popularTags,
+      extraFields: extraFields || {},
+      validations: {},
+    });
+    return nextSelectedTask;
   }
 
   getDefaultTaskTypes(props) {
@@ -543,6 +553,7 @@ export class TaskView extends Component {
   };
 
   onEditTask = () => {
+    this.updateStateFromSelectedTask(this.props);
     this.setState({isEditing: !this.state.isEditing});
   };
 
