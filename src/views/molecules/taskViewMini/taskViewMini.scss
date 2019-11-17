@@ -32,6 +32,14 @@
     }
   }
 
+  .label-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+  }
+
   .header {
     display: flex;
     justify-content: space-between;
@@ -46,6 +54,10 @@
 
     .title-wrapper {
       display: flex;
+      max-height: 4em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: break-word;
       &.lang-en {
         .critical-icon {
           margin-right: 6px;
@@ -61,12 +73,22 @@
 
     .task-type {
       color:$base-font-greyed;
+
+      &.lang-en {
+        margin-left: 6px;
+      }
+
+      &.lang-he {
+        margin-right: 6px;
+      }
     }
   }
 
   .description, .requirements {
-    max-height: 17.5em;
+    max-height: 9.2em;
     overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
   }
 
   .avatar-container, .empty-avatar-container {

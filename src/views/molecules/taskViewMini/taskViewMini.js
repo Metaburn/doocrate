@@ -80,7 +80,7 @@ class TaskViewMini extends Component {
             }
             <span className={'title'}>{title}</span>
           </div>
-          <div className={`task-type`}>{type && type.label}</div>
+          <div className={`task-type lang-${i18n.language}`}>{type && type.label}</div>
         </div>
         <div className={'description'}>{description}</div>
 
