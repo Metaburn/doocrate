@@ -20,8 +20,8 @@ import TaskCreator from "../task-creator/task-creator";
 import Button from "../button/button";
 import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation/textAreaAutoresizeValidation";
 
-import './task-view.css';
 import "react-tagsinput/react-tagsinput.css";
+import "./task-view.css";
 
 export class TaskView extends Component {
   constructor(props) {
@@ -44,7 +44,6 @@ export class TaskView extends Component {
       validate: false,
       shouldOpenAssignmentModal: false,
       labelsWereChanged: false,
-      taskTypeWereChanged: false,
       isProcessingSave: false
     };
 
@@ -56,12 +55,8 @@ export class TaskView extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSave = this.handleSave.bind(this);
     this.selectedTaskType = this.selectedTaskType.bind(this);
-    this.renderTextArea = this.renderTextArea.bind(this);
-    this.renderSelect = this.renderSelect.bind(this);
     this.handleMarkAsDoneUndone = this.handleMarkAsDoneUndone.bind(this);
     this.isValid = this.isValid.bind(this);
-    this.updateStateFromSelectedTask = this.updateStateFromSelectedTask.bind(this);
-
   }
 
   // TODO: Move to utils or use Lodash instead
@@ -115,54 +110,53 @@ export class TaskView extends Component {
     }
   }
 
-  /**
-   * If same id - don't update
-   * This helps to also fight general updates from the app where this view should not care about
-   * Otherwise on every update of the app - the fields are getting cleared
-   */
   updateStateByProps(nextProps) {
-    if (nextProps.selectedTask &&
+    // If same id - don't update
+    // This helps to also fight general updates from the app where this view should not care about
+    // Otherwise on every update of the app - the fields are getting cleared
+    if (
+      nextProps.selectedTask &&
       this.props.selectedTask &&
       nextProps.selectedTask.id === this.props.selectedTask.id
     ) {
       return;
     }
-    const {isDraft} = nextProps;
-    let nextSelectedTask = this.updateStateFromSelectedTask(nextProps);
 
-    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
-    if ((nextSelectedTask && nextSelectedTask.id !== null) &&
-      (nextSelectedTask.id !== this.state.id)) {
-      this.setState({isEditing: false});
-    } else {
-      if (nextSelectedTask && nextSelectedTask.id === null) {
-        this.setState({isEditing: isDraft || false});
-      }
-    }
-  }
-
-  updateStateFromSelectedTask(props) {
-    let nextSelectedTask = props.selectedTask || {};
+    let nextSelectedTask = nextProps.selectedTask || {};
     let {
-      id, title, description, requirements, type,
-      label, isCritical, listeners, dueDate, created, isDone, doneDate,
-      extraFields,
+      id,
+      title,
+      description,
+      requirements,
+      type,
+      label,
+      isCritical,
+      listeners,
+      dueDate,
+      created,
+      isDone,
+      doneDate,
+      extraFields
     } = nextSelectedTask;
 
-    const labelAsArray = label ?
-      (Object.keys(label).map(l => {
-        return l
-      })) : [];
+    const { isDraft } = nextProps;
+
+    // this checks if we got another task, or we're updating the same one
+    const labelAsArray = label
+      ? Object.keys(label).map(l => {
+          return l;
+        })
+      : [];
 
     // Set default task types
-    let defaultType = this.getDefaultTaskTypes(props);
-    let popularTags = this.getPopularTags(props);
+    let defaultType = this.getDefaultTaskTypes(nextProps);
+    let popularTags = this.getPopularTags(nextProps);
 
     this.setState({
-      id: id || '',
-      title: title || '',
-      description: description || '',
-      requirements: requirements || '',
+      id: id || "",
+      title: title || "",
+      description: description || "",
+      requirements: requirements || "",
       label: labelAsArray || [],
       listeners: listeners || [],
       isCritical: isCritical || false,
@@ -174,12 +168,21 @@ export class TaskView extends Component {
       defaultType: defaultType || [],
       popularTags: popularTags,
       extraFields: extraFields || {},
-      validations: {},
-      taskTypeWereChanged: false,
-      labelsWereChanged: false,
-      isProcessingSave: false
+      validations: {}
     });
-    return nextSelectedTask;
+
+    // If user opens with a new existing task (that is not a draft, aka new task) - clear editing
+    if (
+      nextSelectedTask &&
+      nextSelectedTask.id !== null &&
+      nextSelectedTask.id !== this.state.id
+    ) {
+      this.setState({ isEditing: false });
+    } else {
+      if (nextSelectedTask && nextSelectedTask.id === null) {
+        this.setState({ isEditing: isDraft || false });
+      }
+    }
   }
 
   getDefaultTaskTypes(props) {
@@ -213,9 +216,9 @@ export class TaskView extends Component {
 
     if (selected) {
       val = selected;
-    };
+    }
 
-    this.setState({ [fieldName]: val , taskTypeWereChanged: true});
+    this.setState({ [fieldName]: val });
   }
 
   renderExtraFields(t, task, canEditTask) {
@@ -250,26 +253,17 @@ export class TaskView extends Component {
   }
 
   renderAddComment() {
-    const { selectedTask, auth } = this.props;
+    const { selectedTask, createComment, auth } = this.props;
 
     return (
       <AddComment
-        task={selectedTask }
-        createComment={this.onAddComment}
+        task={selectedTask}
+        createComment={createComment}
         auth={auth}
         key="addComment"
       />
     );
   }
-
-  /**
-   * Upon adding a comment we want to make sure the user also listens for updates
-   */
-  onAddComment = (comment) => {
-    const {selectedTask, createComment, auth, followTask} = this.props;
-    followTask(selectedTask, auth);
-    createComment(comment);
-  };
 
   renderValidationErrorMessage = () => {
     return (
@@ -282,7 +276,7 @@ export class TaskView extends Component {
     );
   }
 
-  renderSelect(fieldName, placeholder, options, tabIndex) {
+  renderSelect(fieldName, placeholder, options, tabIndex, msgOnError) {
     const { validate } = this.state;
     return (
       <Fragment>
@@ -300,13 +294,10 @@ export class TaskView extends Component {
           noResultsText={i18n.t('general.no-results-found')}
           searchable={false}
         />
-
-        {this.state.taskTypeWereChanged &&
-        (this.state[fieldName] == null || this.state[fieldName].length === 0)
-        && this.renderValidationErrorMessage()}
+        {this.state.type == null || this.state.type.length === 0 && this.renderValidationErrorMessage()}
       </Fragment>
     );
-  };
+  }
 
   renderInput(
     fieldName,
@@ -370,23 +361,29 @@ export class TaskView extends Component {
         isRequired={isRequired}
         value={this.state[fieldName]}
         onTextBoxChange={this.handleTextBoxChange}
-        onValidationChange={this.onValidationChange}
+        onValidationChange={(fieldName, res) => {
+          this.setState({
+            validations: { ...this.state.validations, [fieldName]: res }
+          });
+        }}
       />
     );
   }
 
-  onValidationChange = (fieldName, res) => {
-    this.setState({
-      validations: {...this.state.validations, [fieldName]: res}
-    });
-  };
-
   renderTags(isEditable, tabIndex) {
-    const { label, validate} = this.state;
+    const { label, validate } = this.state;
     const isShowPlaceholder = label.length === 0;
-    const classNames = isEditable ? ' editable' : '';
-    const fieldName = 'label';
-    const msgOnError = i18n.t('task.errors.not-empty');
+    const classNames = isEditable ? " editable" : "";
+    const fieldName = "label";
+    const msgOnError = i18n.t("task.errors.not-empty");
+
+    // Since we are using a custom control we need to perform our own validation method
+    const validateTags = () => {
+      const isValid = label && label.length > 0;
+      this.setState({
+        validations: { ...this.state.validations, [fieldName]: isValid }
+      });
+    };
 
     return (
       <Fragment>
@@ -398,17 +395,43 @@ export class TaskView extends Component {
           onlyUnique={true}
           addOnBlur={true}
           onBlur={e => {}} //react validation requires a function on blur even empty to validate
-          inputProps={{ placeholder: isShowPlaceholder ? i18n.t('task.input-tags') : ''}}
+          inputProps={{
+            placeholder: isShowPlaceholder ? i18n.t("task.input-tags") : ""
+          }}
           onRemove={this.handleLabelChange}
           disabled={!isEditable}
           MaxTags={6}
           validationOption={{ required: true, msgOnError: msgOnError }}
-          validationCallback={this.onValidationChange}/>
+<<<<<<< HEAD
+          validationCallback={(res) => this.setState({validations: {...this.state.validations, label: res }})}/>
 
         {
           this.state.labelsWereChanged &&
           (this.state.label == null || this.state.label.length === 0)
           && this.renderValidationErrorMessage()}
+=======
+          validationCallback={res =>
+            this.setState({
+              validations: { ...this.state.validations, tags: res }
+            })
+          }
+        />
+
+        <Textbox
+          classNameInput={`hidden`}
+          type="text"
+          name={"tags"}
+          value={label ? label.toString() : ""}
+          validate={validate}
+          onChange={() => {}}
+          onBlur={e => {}} // here to trigger validation callback on Key up
+          validationOption={{
+            check: true,
+            required: true,
+            msgOnError: msgOnError
+          }}
+          validationCallback={res => validateTags()}
+        />
       </Fragment>
     );
   }
@@ -590,9 +613,6 @@ export class TaskView extends Component {
         this.handleSubmit();
         showSuccess(i18n.t("task.updated-successfully"));
       }
-    }else {
-      // This shows the label and task type validation message if needed on save
-      this.setState({labelsWereChanged: true, taskTypeWereChanged: true});
     }
   }
 
@@ -647,7 +667,6 @@ export class TaskView extends Component {
   };
 
   onEditTask = () => {
-    this.updateStateFromSelectedTask(this.props);
     this.setState({ isEditing: !this.state.isEditing });
   };
 

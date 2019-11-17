@@ -60,7 +60,6 @@
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-
   }
 
   .close-button {
@@ -76,8 +75,8 @@
   }
 
   .action-button {
-    margin: 0.5em 0.3em;
-    height: 3em;
+    margin: 0 0.3em;
+    height: 3.5em;
     display: flex;
     align-content: center;
     justify-content: center;
@@ -132,5 +131,16 @@
 
   .header-icon {
     color: $primary-color;
+  }
+}
+
+
+@media only screen and (max-width: 480px) {
+  .task-header-tooltip-wrapper {
+    .critical-icon {
+      .critical-text {
+        display: none;
+      }
+    }
   }
 }

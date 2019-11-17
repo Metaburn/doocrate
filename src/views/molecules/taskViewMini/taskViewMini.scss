@@ -9,6 +9,7 @@
   padding: 32px 25px;
 
   color: rgba(51, 33, 76, 0.64);
+
   &.lang-en {
     text-align: left;
   }
@@ -42,21 +43,44 @@
   .header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     color: $base-font-color2;
+    margin-bottom: 16px;
 
     .title {
       font-size: 24px;
       font-weight: bold;
-      margin-bottom: 16px;
-      max-height: 2.5em;
+    }
+
+    .title-wrapper {
+      display: flex;
+      max-height: 4em;
       overflow: hidden;
       text-overflow: ellipsis;
       overflow-wrap: break-word;
+      &.lang-en {
+        .critical-icon {
+          margin-right: 6px;
+        }
+      }
+
+      &.lang-he {
+        .critical-icon {
+          margin-left: 6px;
+        }
+      }
     }
 
     .task-type {
       color:$base-font-greyed;
+
+      &.lang-en {
+        margin-left: 6px;
+      }
+
+      &.lang-he {
+        margin-right: 6px;
+      }
     }
   }
 

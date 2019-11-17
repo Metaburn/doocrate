@@ -1,0 +1,28 @@
+@import 'views/styles/shared';
+
+.critical-icon {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: $primary-color;
+
+  &.lang-en {
+    .header-icon {
+      margin-right: 4px;
+    }
+  }
+
+  &.lang-he {
+    .header-icon {
+      margin-left: 4px;
+    }
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .critical-icon {
+    .critical-text {
+      display: none;
+    }
+  }
+}

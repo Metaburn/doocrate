@@ -48,9 +48,9 @@ export function createTaskSuccess(task) {
 export function followTask(task, user) {
   let listeners = task.listeners;
 
-  // Already exists
+  // User already listens
   if(listeners && listeners.includes(user.id)) {
-    return dispatch => { (dispatch(updateTaskError('One cannot listen more then once'))) }
+    return;
   }
 
   listeners = addUserToListeners(task, user);
