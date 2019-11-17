@@ -8,7 +8,11 @@
   .labels-list {
     display: flex;
     flex-flow: row wrap;
+    max-height: 4em;
     width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
 
     .label-wrapper {
 
