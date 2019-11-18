@@ -255,21 +255,12 @@ export class TaskView extends Component {
     return (
       <AddComment
         task={selectedTask }
-        createComment={this.onAddComment}
+        createComment={this.props.createComment}
         auth={auth}
         key="addComment"
       />
     );
   }
-
-  /**
-   * Upon adding a comment we want to make sure the user also listens for updates
-   */
-  onAddComment = (comment) => {
-    const {selectedTask, createComment, auth, followTask} = this.props;
-    followTask(selectedTask, auth);
-    createComment(comment);
-  };
 
   renderValidationErrorMessage = () => {
     return (
@@ -280,7 +271,7 @@ export class TaskView extends Component {
           </span>
       </div>
     );
-  }
+  };
 
   renderSelect(fieldName, placeholder, options, tabIndex) {
     const { validate } = this.state;

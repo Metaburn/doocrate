@@ -33,9 +33,8 @@ export const projectMiddleware = ({dispatch, getState}) => next => action => {
     }
   } catch (e) {
     console.error("projectMiddleware failed", e);
-
   }
 
-    return next(action);
+  return next(action);
 
-}
+};

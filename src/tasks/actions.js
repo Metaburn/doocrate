@@ -15,6 +15,7 @@ import {
   SELECT_TASK,
   SET_FILTERED_TASKS,
   SET_SELECTED_FILTERS,
+  ALREADY_FOLLOW_TASK,
 } from './action-types';
 
 
@@ -45,12 +46,20 @@ export function createTaskSuccess(task) {
   };
 }
 
+export function alreadyFollowTask(task) {
+  return {
+    type: ALREADY_FOLLOW_TASK,
+    payload: task
+  };
+}
+
+
 export function followTask(task, user) {
   let listeners = task.listeners;
 
   // User already listens
   if(listeners && listeners.includes(user.id)) {
-    return;
+    return dispatch=> {dispatch(alreadyFollowTask)};
   }
 
   listeners = addUserToListeners(task, user);

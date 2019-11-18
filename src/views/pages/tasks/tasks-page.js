@@ -378,17 +378,12 @@ export class TasksPage extends Component {
     updateUserData(newUserData);
   }
 
+
   getTaskViewProps() {
     const { selectedTaskId, newTask } = this.state;
     const { tasks, selectedProjectUserPermissions } = this.props;
 
-    // TODO - is this the right place to make this decision?
-    let selectedTask;
-    if (newTask) {
-      selectedTask = newTask;
-    } else {
-      selectedTask = tasks.find(task => task.get("id") === selectedTaskId);
-    }
+    let selectedTask = this.getSelectedTask();
 
     return {
       selectedTask,
@@ -402,7 +397,7 @@ export class TasksPage extends Component {
       updateTask: this.props.updateTask,
       unassignTask: this.unassignTask,
       unloadComments: this.props.unloadComments,
-      createComment: this.props.createComment,
+      createComment: this.createComment,
       updateComment: this.props.updateComment,
       removeComment: this.removeComment,
       isValidCallback: this.setCurrentTaskValid,
@@ -413,6 +408,29 @@ export class TasksPage extends Component {
       userPermissions: selectedProjectUserPermissions
     };
   }
+
+  getSelectedTask = () => {
+    const { selectedTaskId, newTask } = this.state;
+    const { tasks } = this.props;
+
+    let selectedTask;
+    if (newTask) {
+      selectedTask = newTask;
+    } else {
+      selectedTask = tasks.find(task => task.get("id") === selectedTaskId);
+    }
+    return selectedTask;
+  };
+
+  /**
+   * Upon adding a comment we want to make sure the user also listens for updates
+   */
+  createComment = (comment) => {
+    const { createComment, auth, followTask } = this.props;
+    let selectedTask = this.getSelectedTask();
+    followTask(selectedTask, auth);
+    createComment(comment);
+  };
 
   createTask = () => {
     const { auth } = this.props;
