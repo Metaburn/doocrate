@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {NavLink, withRouter} from 'react-router-dom';
 
 import { projectActions } from 'src/projects';
 
-import './projects-page.css';
 import {I18n} from 'react-i18next';
-import {  getAuth } from 'src/auth';
+import { getAuth } from 'src/auth';
+
+import './projects-page.css';
 
 export class ProjectsPage extends Component {
   constructor() {
@@ -54,6 +56,8 @@ export class ProjectsPage extends Component {
           (t) => (
           <div className='projects-page'>
             <h1>{t('projects.header')}</h1>
+
+            <NavLink className={'burnerot'} to={'burnerot19'}>ברנרות-Burnerot - לחץ כאן - Click here</NavLink>
             <br/>
 
             <table className='report-table'>
@@ -98,7 +102,9 @@ const mapDispatchToProps = Object.assign(
   projectActions
 );
 
-export default connect(
+export default withRouter(
+  connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProjectsPage);
+)(ProjectsPage)
+);
