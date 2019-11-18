@@ -129,7 +129,7 @@ export function unassignTask(task) {
   const filteredListeners = removeUserFromListeners(task, task.assignee);
   return dispatch => {
     taskList.update(task.id, {
-      assignee: firebase.firestore.FieldValue.delete(),
+      assignee: null,
       listeners: filteredListeners
     })
     .catch(error => dispatch(updateTaskError(error)));
