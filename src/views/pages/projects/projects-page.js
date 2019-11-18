@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {NavLink, withRouter} from 'react-router-dom';
 
 import { projectActions } from 'src/projects';
 
@@ -57,7 +56,7 @@ export class ProjectsPage extends Component {
           <div className='projects-page'>
             <h1>{t('projects.header')}</h1>
 
-            <NavLink className={'burnerot'} to={'burnerot19'}>ברנרות-Burnerot - לחץ כאן - Click here</NavLink>
+            <a className='burnerot' href={'/burnerot19/task/1'}>ברנרות-Burnerot - לחץ כאן - Click here</a>
             <br/>
 
             <table className='report-table'>
@@ -102,9 +101,7 @@ const mapDispatchToProps = Object.assign(
   projectActions
 );
 
-export default withRouter(
-  connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ProjectsPage)
-);
+)(ProjectsPage);
