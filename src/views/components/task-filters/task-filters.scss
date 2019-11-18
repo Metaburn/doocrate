@@ -95,8 +95,8 @@
     -ms-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
-    display: flex;
-    padding: 0.5em 1.1em;
+    height: 2em;
+    padding: 0 1.1em;
     color: white;
     background: $primary-color;
     font-size: 1.5em;
@@ -109,6 +109,7 @@
     -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
     -moz-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
     box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
+
 
     &:hover {
       -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
@@ -127,6 +128,12 @@
       font-size: 16px;
       text-decoration: none;
       padding: 8px 4px 5px 4px;
+    }
+
+    .apply-btn {
+      position: fixed;
+      bottom: 3.9em;
+      left: 20px;
     }
   }
 }

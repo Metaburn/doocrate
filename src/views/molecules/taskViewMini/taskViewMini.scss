@@ -119,6 +119,14 @@
     display: flex;
     clear: both;
 
+    .labels-list {
+      max-height: 4em;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: break-word;
+    }
+
     .label {
       padding: 0 0.5em;
     }
