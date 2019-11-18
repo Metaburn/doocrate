@@ -564,7 +564,7 @@ export class TasksPage extends Component {
 
     const isFiltersActive = selectedFilters.length > 0;
     const tasksCount =
-      (filteredTasks.length > 0 && filteredTasks.length) || tasks.length;
+      (filteredTasks.size > 0 && filteredTasks.size) || tasks.size;
     const title = this.getSelectedFilterTitle();
 
     // todo: a better implementation is to calculate the filters from params with reselect, cause now every render cycle
