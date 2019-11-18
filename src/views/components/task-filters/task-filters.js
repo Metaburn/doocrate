@@ -118,6 +118,11 @@ class TaskFilters extends Component {
             {i18n.t('task.free-tasks')}
           </NavLink>
 
+          <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'critical'} to={{ pathname: defaultTask,
+            search: setQueryParams(['filter=critical'])}}>
+            {i18n.t('task.critical-tasks')}
+          </NavLink>
+
           <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
             pathname: defaultTask,
             search: removeQueryParam(['filter']) }}>

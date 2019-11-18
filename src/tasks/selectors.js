@@ -6,6 +6,7 @@ const filters = {
   userOnlyAssignee: (auth, value) =>  ({type: "userOnlyAssignee", uid: value}),
   complete: (auth, value) => ({type: "complete", text: value}),
   unassigned: (auth, value) => ({type: "unassigned"}),
+  critical: (auth, value) => ({type: "critical"}),
   unassignedWithArtAndCamps: (auth, value) => ({type: "unassignedWithArtAndCamps"}),
   taskType: (auth, value) => ({type: "taskType", text: value}),
   label: (auth, value) => ({type: "label", text: value}),
@@ -88,6 +89,12 @@ export const taskFilters = {
     return tasks.filter(task =>
     {
       return (task.assignee && task.assignee.id === auth);
+    });
+  },
+
+  critical: (tasks, filter) => {
+    return tasks.filter(task => {
+      return task.isCritical === true;
     });
   },
 

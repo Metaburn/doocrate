@@ -89,6 +89,7 @@
     "showing-x-my-tasks": "My {{count}} Tasks",
     "showing-x-tasks": "Showing {{count}} Tasks",
     "my-tasks": "My Tasks",
+    "critical-tasks": "Critical Tasks",
     "free-tasks": "Free tasks",
     "all-tasks": "All Tasks",
     "take-responsibility": "Take Responsibility",

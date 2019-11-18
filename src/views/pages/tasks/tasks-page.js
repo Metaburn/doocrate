@@ -481,6 +481,9 @@ export class TasksPage extends Component {
     if (filter === "unassigned") {
       results.push({ type: "filter", value: i18n.t("task.free-tasks") });
     }
+    if (filter === "critical") {
+      results.push({ type: "filter", value: i18n.t("task.critical-tasks") });
+    }
     if (labels) {
       if (typeof labels === "string") {
         results.push({ type: "labels", value: labels });
