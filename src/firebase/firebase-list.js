@@ -1,4 +1,4 @@
-import { firebaseDb } from "./firebase";
+import { firebaseDb } from './firebase';
 /*
  Represent a Firebase collection.
  If given a rootPath and rootDocId then this might be under a sub collection.
@@ -142,7 +142,7 @@ export class FirebaseList {
       }
       const isLocalChange = snapshot.metadata.hasPendingWrites;
       snapshot.docChanges().forEach(change => {
-        if (change.type === "added") {
+        if (change.type === 'added') {
           if (initialized) {
             emit(
               this._actions.onAdd(
@@ -154,11 +154,13 @@ export class FirebaseList {
             list.push(this.unwrapSnapshot(change.doc));
           }
         }
-        if (change.type === "modified") {
-          this._actions.onChange && emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
+        if (change.type === 'modified') {
+          this._actions.onChange &&
+            emit(this._actions.onChange(this.unwrapSnapshot(change.doc)));
         }
-        if (change.type === "removed") {
-          this._actions.onRemove && emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
+        if (change.type === 'removed') {
+          this._actions.onRemove &&
+            emit(this._actions.onRemove(this.unwrapSnapshot(change.doc)));
         }
       });
     });
@@ -188,7 +190,7 @@ export function firebaseCollectionToList(collection) {
     return collection.map(document => {
       return Object.assign(document.data(), {
         get: object => document[object],
-        id: document.id
+        id: document.id,
       });
     });
   }

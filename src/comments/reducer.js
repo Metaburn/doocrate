@@ -18,30 +18,36 @@ export const CommentsState = new Record({
   selectedTask: null,
   list: new List(),
   previous: null,
-  auth: null
+  auth: null,
 });
 
-
-export function commentsReducer(state = new CommentsState(), {payload, type}) {
+export function commentsReducer(
+  state = new CommentsState(),
+  { payload, type }
+) {
   switch (type) {
     case CREATE_COMMENT_SUCCESS:
       return state.merge({
         deleted: null,
         previous: null,
-        list: state.deleted && state.deleted.id === payload.id ?
-              state.previous :
-              state.list.unshift(payload)
+        list:
+          state.deleted && state.deleted.id === payload.id
+            ? state.previous
+            : state.list.unshift(payload),
       });
 
     case REMOVE_COMMENT_SUCCESS:
       return state.merge({
         deleted: payload,
         previous: state.list,
-        list: state.list.filter(comment => comment.id !== payload.id)
+        list: state.list.filter(comment => comment.id !== payload.id),
       });
 
     case LOAD_COMMENTS_SUCCESS:
-      return state.set('list', new List(firebaseCollectionToList(payload.reverse())));
+      return state.set(
+        'list',
+        new List(firebaseCollectionToList(payload.reverse()))
+      );
 
     case UNLOAD_COMMENTS_SUCCESS:
       return state.set('list', new List());
@@ -52,7 +58,7 @@ export function commentsReducer(state = new CommentsState(), {payload, type}) {
         previous: null,
         list: state.list.map(comment => {
           return comment.id === payload.id ? payload : comment;
-        })
+        }),
       });
 
     case SIGN_OUT_SUCCESS:

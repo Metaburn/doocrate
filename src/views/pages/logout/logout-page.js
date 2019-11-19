@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -13,25 +13,17 @@ class LogoutPage extends Component {
   }
 
   render() {
-
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <div className="logout">
-              Logging out...
-            </div>
-          )}
+      <I18n ns="translations">
+        {(t, { i18n }) => <div className="logout">Logging out...</div>}
       </I18n>
     );
   }
-
 }
 
 LogoutPage.propTypes = {
   signOut: PropTypes.func.isRequired,
 };
-
 
 const mapDispatchToProps = Object.assign({}, authActions);
 export default withRouter(connect(null, mapDispatchToProps)(LogoutPage));

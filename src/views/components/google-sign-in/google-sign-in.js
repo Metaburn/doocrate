@@ -1,14 +1,18 @@
 import React from 'react';
 
 import './google-sign-in.css';
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-const GoogleSignIn = ({children, className, onClick, disabled}) => {
+const GoogleSignIn = ({ children, className, onClick, disabled }) => {
   return (
-    <button className='googleSignIn' onClick={onClick} disabled={disabled} tabIndex={0}>
+    <button
+      className="googleSignIn"
+      onClick={onClick}
+      disabled={disabled}
+      tabIndex={0}
+    >
       {children}
     </button>
-
   );
 };
 

@@ -11,10 +11,10 @@ import {
   UPDATE_COMMENT_SUCCESS,
 } from './action-types';
 
-
 export function createComment(comment) {
   return dispatch => {
-    commentList.push(comment)
+    commentList
+      .push(comment)
       .catch(error => dispatch(createCommentError(error)));
   };
 }
@@ -22,20 +22,21 @@ export function createComment(comment) {
 export function createCommentError(error) {
   return {
     type: CREATE_COMMENT_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function createCommentSuccess(comment) {
   return {
     type: CREATE_COMMENT_SUCCESS,
-    payload: comment
+    payload: comment,
   };
 }
 
 export function removeComment(comment) {
   return dispatch => {
-    commentList.remove(comment.id)
+    commentList
+      .remove(comment.id)
       .catch(error => dispatch(removeCommentError(error)));
   };
 }
@@ -43,27 +44,28 @@ export function removeComment(comment) {
 export function removeCommentError(error) {
   return {
     type: REMOVE_COMMENT_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function removeCommentSuccess(comment) {
   return {
     type: REMOVE_COMMENT_SUCCESS,
-    payload: comment
+    payload: comment,
   };
 }
 
 export function updateCommentError(error) {
   return {
     type: UPDATE_COMMENT_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function updateComment(comment, changes) {
   return dispatch => {
-    commentList.update(comment.id, changes)
+    commentList
+      .update(comment.id, changes)
       .catch(error => dispatch(updateCommentError(error)));
   };
 }
@@ -71,14 +73,14 @@ export function updateComment(comment, changes) {
 export function updateCommentSuccess(comment) {
   return {
     type: UPDATE_COMMENT_SUCCESS,
-    payload: comment
+    payload: comment,
   };
 }
 
 export function loadCommentsSuccess(comments) {
   return {
     type: LOAD_COMMENTS_SUCCESS,
-    payload: comments
+    payload: comments,
   };
 }
 
@@ -87,14 +89,14 @@ export function loadComments(projectId, selectedTaskId) {
     commentList.rootPath = 'projects';
     commentList.rootDocId = projectId;
     commentList.path = `comments`;
-    if(selectedTaskId) {
-      commentList.query = ['taskId','==', selectedTaskId];
-    }else {
+    if (selectedTaskId) {
+      commentList.query = ['taskId', '==', selectedTaskId];
+    } else {
       commentList.query = null;
     }
     commentList.orderBy = {
       name: 'created',
-      direction: 'asc'
+      direction: 'asc',
     };
 
     commentList.subscribe(dispatch);
@@ -104,6 +106,6 @@ export function loadComments(projectId, selectedTaskId) {
 export function unloadComments() {
   commentList.unsubscribe();
   return {
-    type: UNLOAD_COMMENTS_SUCCESS
+    type: UNLOAD_COMMENTS_SUCCESS,
   };
 }

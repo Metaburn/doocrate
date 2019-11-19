@@ -11,7 +11,6 @@ import {
   SET_SELECTED_FILTERS,
 } from './action-types';
 
-
 export const TasksState = new Record({
   deleted: null,
   previous: null,
@@ -24,19 +23,18 @@ export const TasksState = new Record({
   searchQuery: '',
 });
 
-
 function extractLabels(collection) {
   const result = [];
   for (const doc of collection) {
     const labels = doc.data().label;
-    if(labels) {
+    if (labels) {
       result.push(...Object.keys(labels));
     }
   }
   return result;
 }
 
-export function tasksReducer(state = new TasksState(), {payload, type}) {
+export function tasksReducer(state = new TasksState(), { payload, type }) {
   switch (type) {
     // This is fired when the user creates a task or when a remote user creates a task
     case CREATE_TASK_SUCCESS:
@@ -60,8 +58,9 @@ export function tasksReducer(state = new TasksState(), {payload, type}) {
 
     case LOAD_TASKS_SUCCESS:
       const defaultTasks = new List(firebaseCollectionToList(payload));
-      return state.set('list', defaultTasks)
-        .set('labelsPool',new Set(extractLabels((payload))))
+      return state
+        .set('list', defaultTasks)
+        .set('labelsPool', new Set(extractLabels(payload)))
         .set('filteredList', defaultTasks);
 
     case SET_FILTERED_TASKS:

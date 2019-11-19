@@ -1,9 +1,9 @@
-import { firebaseAuth, firebaseDb } from "src/firebase";
-import * as authActions from "./actions";
-import { getCookie } from "../utils/browser-utils";
-import getRandomImage from "src/utils/unsplash";
-import { initProject } from "../projects/actions";
-import * as Sentry from "@sentry/browser";
+import { firebaseAuth, firebaseDb } from 'src/firebase';
+import * as authActions from './actions';
+import { getCookie } from '../utils/browser-utils';
+import getRandomImage from 'src/utils/unsplash';
+import { initProject } from '../projects/actions';
+import * as Sentry from '@sentry/browser';
 
 export function initAuth(dispatch) {
   return new Promise((resolve, reject) => {
@@ -15,11 +15,11 @@ export function initAuth(dispatch) {
 
         updateUserContextSentry(authUser);
 
-        authUser.role = "user";
+        authUser.role = 'user';
         getIsAdmin(authUser).then(adminRef => {
           // if admin
           if (authUser) {
-            authUser.role = adminRef.exists ? "admin" : authUser.role;
+            authUser.role = adminRef.exists ? 'admin' : authUser.role;
             authUser.adminProjects = [];
             if (adminRef.exists) {
               getAdminProjects(authUser).then(res => {
@@ -57,7 +57,7 @@ function updateUserContextSentry(authUser) {
       Sentry.configureScope(scope => {
         scope.setUser({
           email: authUser.email,
-          name: authUser.displayName
+          name: authUser.displayName,
         });
       });
     }
@@ -81,7 +81,7 @@ function getUserInfoAndUpdateData(authUser, dispatch, unsubscribe, resolve) {
       unsubscribe();
       resolve();
     } else {
-      const project = getCookie("project");
+      const project = getCookie('project');
       if (authUser && authUser.uid && project) {
         authUser.project = project;
       }
@@ -108,7 +108,7 @@ export function updateUserData(authUser, dispatch) {
 
     updateUserContextSentry(authUser);
 
-    const userDoc = firebaseDb.collection("users").doc(authUser.uid);
+    const userDoc = firebaseDb.collection('users').doc(authUser.uid);
     userDoc.get().then(userSnapshot => {
       if (!userSnapshot.exists) {
         // Create it for the first time
@@ -117,7 +117,7 @@ export function updateUserData(authUser, dispatch) {
           email: authUser.email,
           photoURL: authUser.photoURL || getRandomImage(),
           created: new Date(),
-          language: "he" //Hebrew is default lang
+          language: 'he', //Hebrew is default lang
         };
 
         if (authUser.defaultProject) {
@@ -138,7 +138,7 @@ export function updateUserData(authUser, dispatch) {
             email: authUser.email,
             isEmailConfigured: true,
             updated: new Date(),
-            language: authUser.language || "he" // Hebrew is default lang
+            language: authUser.language || 'he', // Hebrew is default lang
           };
 
           if (authUser.defaultProject) {
@@ -228,11 +228,11 @@ function updateAuthFields(authUser) {
 function getIsAdmin(authUser) {
   if (!authUser) {
     return new Promise((resolve, reject) => {
-      resolve("guest");
+      resolve('guest');
     });
   }
   return firebaseDb
-    .collection("admins")
+    .collection('admins')
     .doc(authUser.uid)
     .get();
 }
@@ -240,9 +240,9 @@ function getIsAdmin(authUser) {
 function getAdminProjects(authUser) {
   return new Promise((resolve, reject) => {
     firebaseDb
-      .collection("admins")
+      .collection('admins')
       .doc(authUser.uid)
-      .collection("projects")
+      .collection('projects')
       .onSnapshot(snapshot => {
         let projects = [];
         snapshot.docs.forEach(doc => {
@@ -262,7 +262,7 @@ function getUserInfo(authUser) {
     });
   }
   return firebaseDb
-    .collection("users")
+    .collection('users')
     .doc(authUser.uid)
     .get();
 }

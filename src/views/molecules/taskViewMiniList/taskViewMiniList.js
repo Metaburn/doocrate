@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import i18n from 'src/i18n';
 
 import './taskViewMiniList.css';
-import TaskViewMini from "../taskViewMini/taskViewMini";
-import MeEmptyPlaceholder from "../meEmptyPlaceholder/meEmptyPlaceholder";
-import EmptyPlaceholder from "../emptyPlaceholder/emptyPlaceholder";
+import TaskViewMini from '../taskViewMini/taskViewMini';
+import MeEmptyPlaceholder from '../meEmptyPlaceholder/meEmptyPlaceholder';
+import EmptyPlaceholder from '../emptyPlaceholder/emptyPlaceholder';
 
 class TaskViewMiniList extends Component {
   constructor(props) {
@@ -21,19 +21,26 @@ class TaskViewMiniList extends Component {
   }
 
   loadMore(pageNumber) {
-    this.setState({pageNumber});
+    this.setState({ pageNumber });
   }
 
   render() {
-    const {tasks, selectedTaskId, onSelectTask, onLabelClick,
-      projectUrl, setTour} = this.props;
-    const {pageSize, pageNumber} = this.state;
+    const {
+      tasks,
+      selectedTaskId,
+      onSelectTask,
+      onLabelClick,
+      projectUrl,
+      setTour,
+    } = this.props;
+    const { pageSize, pageNumber } = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
 
     let taskItems = [];
 
     if (isAnyTasks) {
-      taskItems = tasks.slice(0, pageSize * (pageNumber + 1))
+      taskItems = tasks
+        .slice(0, pageSize * (pageNumber + 1))
         .map((task, index) => {
           const isActive = task.get('id') === selectedTaskId;
 
@@ -44,40 +51,40 @@ class TaskViewMiniList extends Component {
               onSelectTask={onSelectTask}
               onLabelClick={onLabelClick}
               isActive={isActive}
-              projectUrl={projectUrl}/>
+              projectUrl={projectUrl}
+            />
           );
         });
     }
 
-    const hasMoreTasks = tasks ? (pageSize * pageNumber) < tasks.size : true;
+    const hasMoreTasks = tasks ? pageSize * pageNumber < tasks.size : true;
 
     return (
       <div className="task-view-mini-list">
-        {(!isAnyTasks &&
+        {!isAnyTasks && (
           <div className={'me-empty-placeholder-wrapper'}>
-            {this.props.shouldShowWizardOnNoResults ?
-              <MeEmptyPlaceholder
-                projectUrl={projectUrl}
-                setTour={setTour}/>
-
-              :
-              <EmptyPlaceholder onClearFilters={this.props.onClearFilters}/>
-            }
+            {this.props.shouldShowWizardOnNoResults ? (
+              <MeEmptyPlaceholder projectUrl={projectUrl} setTour={setTour} />
+            ) : (
+              <EmptyPlaceholder onClearFilters={this.props.onClearFilters} />
+            )}
           </div>
         )}
 
-        {(isAnyTasks &&
+        {isAnyTasks && (
           <InfiniteScroll
             className={'task-view-mini-container'}
             pageStart={0}
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
             useWindow={true}
-            loader={<div className="loader">{i18n.t('general.loading')}</div>}>
+            loader={<div className="loader">{i18n.t('general.loading')}</div>}
+          >
             {taskItems}
           </InfiniteScroll>
         )}
-      </div>)
+      </div>
+    );
   }
 }
 

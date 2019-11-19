@@ -1,6 +1,10 @@
 import { Record } from 'immutable';
-import { INIT_AUTH, SIGN_IN_SUCCESS, SIGN_OUT_SUCCESS, UPDATE_PROFILE } from './action-types';
-
+import {
+  INIT_AUTH,
+  SIGN_IN_SUCCESS,
+  SIGN_OUT_SUCCESS,
+  UPDATE_PROFILE,
+} from './action-types';
 
 export const AuthState = new Record({
   authenticated: false,
@@ -16,34 +20,33 @@ export const AuthState = new Record({
   canCreateTask: false,
   canAssignTask: false,
   didntBuy: false,
-  shouldShowUpdateProfile: {show: false, includingBio:false},
+  shouldShowUpdateProfile: { show: false, includingBio: false },
   adminProjects: [],
   defaultProject: null,
-  language: null
+  language: null,
 });
 
-
-export function authReducer(state = new AuthState(), {payload, type}) {
+export function authReducer(state = new AuthState(), { payload, type }) {
   switch (type) {
     case INIT_AUTH:
     case SIGN_IN_SUCCESS:
       return state.merge({
         authenticated: !!payload,
         id: payload ? payload.uid : null,
-        name: payload? payload.displayName : null,
-        email: payload? payload.email : null,
-        bio: payload? payload.bio : null,
-        updatedEmail: payload? payload.updatedEmail : null,
-        photoURL: payload? payload.photoURL : null,
-        phoneNumber: payload? payload.phoneNumber : null,
-        role: payload? payload.role : null,
-        isEmailConfigured: payload? payload.isEmailConfigured: null,
-        canCreateTask: payload? payload.canCreateTask: null,
-        canAssignTask: payload? payload.canAssignTask: null,
-        didntBuy: payload? payload.didntBuy: null,
-        adminProjects: payload? payload.adminProjects: [],
-        defaultProject: payload? payload.defaultProject: null,
-        language: payload? payload.language: null,
+        name: payload ? payload.displayName : null,
+        email: payload ? payload.email : null,
+        bio: payload ? payload.bio : null,
+        updatedEmail: payload ? payload.updatedEmail : null,
+        photoURL: payload ? payload.photoURL : null,
+        phoneNumber: payload ? payload.phoneNumber : null,
+        role: payload ? payload.role : null,
+        isEmailConfigured: payload ? payload.isEmailConfigured : null,
+        canCreateTask: payload ? payload.canCreateTask : null,
+        canAssignTask: payload ? payload.canAssignTask : null,
+        didntBuy: payload ? payload.didntBuy : null,
+        adminProjects: payload ? payload.adminProjects : [],
+        defaultProject: payload ? payload.defaultProject : null,
+        language: payload ? payload.language : null,
       });
 
     case SIGN_OUT_SUCCESS:
@@ -51,8 +54,8 @@ export function authReducer(state = new AuthState(), {payload, type}) {
 
     case UPDATE_PROFILE:
       return state.merge({
-        shouldShowUpdateProfile: payload
-  });
+        shouldShowUpdateProfile: payload,
+      });
 
     default:
       return state;

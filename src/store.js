@@ -3,12 +3,9 @@ import { applyMiddleware, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import history from './history';
 import reducers from './reducers';
-import {projectMiddleware} from "./projects/project-middleware"
+import { projectMiddleware } from './projects/project-middleware';
 
-let middleware = [
-  thunk,
-  projectMiddleware
-];
+let middleware = [thunk, projectMiddleware];
 
 // TODO!! WARNING - UNCOMMENT THIS BUT DONT COMMIT THIS - THIS REALLY SLOWS DOWN THE APP FOR DEVELOPERS
 // add redux logger for non production env
@@ -21,7 +18,7 @@ let middleware = [
 // }
 
 export default (initialState = {}) => {
-   middleware = applyMiddleware(...middleware, routerMiddleware(history));
+  middleware = applyMiddleware(...middleware, routerMiddleware(history));
 
   if (process.env.NODE_ENV !== 'production') {
     const devToolsExtension = window.devToolsExtension;

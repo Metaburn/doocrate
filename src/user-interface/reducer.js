@@ -6,16 +6,15 @@ export const UserInterfaceState = new Record({
   // Set the walkthrough. aka tour
   tour: {
     isShow: false,
-    step: 0
-  }
+    step: 0,
+  },
 });
 
 export function userInterfaceReducer(state = new UserInterfaceState(), action) {
   switch (action.type) {
-
     case SET_MENU_OPEN:
       return state.merge({
-        isMenuOpen: action.payload
+        isMenuOpen: action.payload,
       });
 
     case SET_TOUR:

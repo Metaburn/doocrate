@@ -8,7 +8,7 @@ i18n
   .use(LanguageDetector)
   .use(reactI18nextModule)
   .init({
-    fallbackLng: ['he','en'],
+    fallbackLng: ['he', 'en'],
 
     ns: ['translations'],
     defaultNS: 'translations',
@@ -20,9 +20,8 @@ i18n
     },
 
     react: {
-      wait: true
-    }
+      wait: true,
+    },
   });
-
 
 export default i18n;
