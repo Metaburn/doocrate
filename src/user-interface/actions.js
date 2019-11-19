@@ -4,13 +4,13 @@ import { SET_MENU_OPEN, SET_TOUR } from './action-types';
 export function setMenuOpen(isOpen) {
   return {
     type: SET_MENU_OPEN,
-    payload: isOpen
+    payload: isOpen,
   };
 }
 
 export function setTour(isShow, step) {
   return {
     type: SET_TOUR,
-    payload: {isShow, step}
+    payload: { isShow, step },
   };
 }

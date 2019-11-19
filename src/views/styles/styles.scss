@@ -1,16 +1,11 @@
-@import
-'./shared',
-'minx/src/reset',
-'minx/src/elements',
-'./grid';
-
+@import './shared', 'minx/src/reset', 'minx/src/elements', './grid';
 
 html {
   overflow-y: scroll;
 }
 
 body {
-  padding: 0 122px 4em 122px
+  padding: 0 122px 4em 122px;
 }
 
 a {
@@ -23,7 +18,7 @@ a {
 }
 
 ::selection {
-  background: rgba(200,200,255,.1);
+  background: rgba(200, 200, 255, 0.1);
 }
 
 button {
@@ -35,12 +30,12 @@ button {
 }
 
 div:focus {
-  outline:0;
+  outline: 0;
 }
 
 .label-default {
   display: inline;
-  padding: .2em .6em .2em;
+  padding: 0.2em 0.6em 0.2em;
   font-size: 67%;
   font-weight: 700;
   line-height: 1;
@@ -48,33 +43,36 @@ div:focus {
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
-  border-radius: .25em;
+  border-radius: 0.25em;
   border-color: lightgreen;
 
   // background-color: #999;
 }
 .label-default li {
-  border-color:red;
+  border-color: red;
 }
 
-::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
   color: #c0c1c1;
 }
-::-moz-placeholder { /* Firefox 19+ */
+::-moz-placeholder {
+  /* Firefox 19+ */
   color: #c0c1c1;
 }
-:-ms-input-placeholder { /* IE 10+ */
+:-ms-input-placeholder {
+  /* IE 10+ */
   color: #c0c1c1;
 }
-:-moz-placeholder { /* Firefox 18- */
+:-moz-placeholder {
+  /* Firefox 18- */
   color: #c0c1c1;
 }
 
 .grow {
   transition: all 0.3s ease;
 }
-.grow:hover
-{
+.grow:hover {
   -webkit-transform: scale(1.1);
   -ms-transform: scale(1.1);
   transform: scale(1.1);
@@ -98,24 +96,21 @@ button:active,
 button:hover,
 label:focus,
 .btn:active,
-.btn.active
-{
-    outline:0px !important;
-    -webkit-appearance:none;
-    -moz-appearance:none;
-    appearance:none;
+.btn.active {
+  outline: 0px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-input[type='checkbox']
-{
-  -webkit-appearance:checkbox !important;
-  -moz-appearance:checkbox !important;
-  appearance:checkbox !important;
+input[type='checkbox'] {
+  -webkit-appearance: checkbox !important;
+  -moz-appearance: checkbox !important;
+  appearance: checkbox !important;
 }
 
-input[type='button']
-{
-  font-family: "aktiv-grotesk-std", Helvetica Neue, Arial, sans-serif;
+input[type='button'] {
+  font-family: 'aktiv-grotesk-std', Helvetica Neue, Arial, sans-serif;
 }
 
 // Languages alignment
@@ -143,12 +138,12 @@ input[type='button']
   align-self: end;
 }
 
-.flex-left{
+.flex-left {
   flex-direction: row;
   justify-content: flex-start;
 }
 
-.flex-right{
+.flex-right {
   flex-direction: row-reverse;
   justify-content: flex-end;
 }
@@ -158,14 +153,17 @@ input[type='button']
   text-decoration: underline;
   border: none !important;
   background: none !important;
-  color:#eb1478;
+  color: #eb1478;
   padding: 0;
 }
 
 // Hide google translate on safari browsers
-.goog-te-banner-frame.skiptranslate {display: none !important;}
-body { top: 0px !important; }
-
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+}
 
 // Rich text editor - limit height
 .ck-editor__editable_inline {
@@ -173,7 +171,9 @@ body { top: 0px !important; }
 }
 
 // Fixes react tooltip not clickable
-.__react_component_tooltip { pointer-events: auto !important; }
+.__react_component_tooltip {
+  pointer-events: auto !important;
+}
 
 // Adds border radius to react tooltip
 .__react_component_tooltip {

@@ -31,7 +31,6 @@
 
     .edit-email {
       margin-left: 8px;
-
     }
   }
 
@@ -87,13 +86,11 @@
   }
 }
 
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
   .me {
     .avatar-wrapper {
       max-width: 90px;
       max-height: 90px;
     }
   }
-
 }
-

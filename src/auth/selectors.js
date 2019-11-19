@@ -1,10 +1,8 @@
 import { createSelector } from 'reselect';
 
-
 export function isAuthenticated(state) {
   return getAuth(state).authenticated;
 }
-
 
 //=====================================
 //  MEMOIZED SELECTORS
@@ -12,5 +10,5 @@ export function isAuthenticated(state) {
 
 export const getAuth = createSelector(
   state => state.auth,
-  auth => auth.toJS()
+  auth => auth.toJS(),
 );

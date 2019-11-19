@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -14,7 +14,7 @@ class MagicLink extends Component {
 
     this.state = {
       isShowRedirect: false,
-      timer: null
+      timer: null,
     };
 
     this.magicLogin = this.magicLogin.bind(this);
@@ -38,27 +38,30 @@ class MagicLink extends Component {
       });
       clearInterval(this.state.timer);
     }, 3000);
-    this.setState({timer})
+    this.setState({ timer });
   }
 
   render() {
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <div className="g-row sign-in">
-              <LoaderUnicorn isShow={true}/>
-              <div className="g-col">
-                <h1>
-                  {t('signin.redirecting')}
-                  <br/>
-                  { (this.state.isShowRedirect) ?
-                    <NavLink to={{ pathname: '/'}} >{t('signin.try-again')}</NavLink>: ''
-                  }
-                </h1>
-              </div>
+      <I18n ns="translations">
+        {(t, { i18n }) => (
+          <div className="g-row sign-in">
+            <LoaderUnicorn isShow={true} />
+            <div className="g-col">
+              <h1>
+                {t('signin.redirecting')}
+                <br />
+                {this.state.isShowRedirect ? (
+                  <NavLink to={{ pathname: '/' }}>
+                    {t('signin.try-again')}
+                  </NavLink>
+                ) : (
+                  ''
+                )}
+              </h1>
             </div>
-          )}
+          </div>
+        )}
       </I18n>
     );
   }
@@ -68,20 +71,15 @@ MagicLink.propTypes = {
   signInMagic: PropTypes.func.isRequired,
 };
 
-
 //=====================================
 //  CONNECTREAD
 //-------------------------------------
 
-const mapDispatchToProps = Object.assign(
-  {},
-  authActions,
-  notificationActions
-);
+const mapDispatchToProps = Object.assign({}, authActions, notificationActions);
 
 export default withRouter(
   connect(
     null,
-    mapDispatchToProps
-  )(MagicLink)
+    mapDispatchToProps,
+  )(MagicLink),
 );

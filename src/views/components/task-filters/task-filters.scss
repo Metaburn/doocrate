@@ -24,7 +24,7 @@
     margin-bottom: 2px;
     border: 0;
     border-radius: 3px;
-    transition: all .2s ease;
+    transition: all 0.2s ease;
 
     &:hover {
       color: $white;
@@ -55,7 +55,7 @@
     padding: 4px 0 0 0;
 
     input {
-      font-size: 1.0em;
+      font-size: 1em;
       font-family: $base-font-family;
       width: 10em;
       background: none;
@@ -110,7 +110,6 @@
     -moz-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
     box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
 
-
     &:hover {
       -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
       -moz-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.7);
@@ -118,7 +117,6 @@
     }
   }
 }
-
 
 @media only screen and (max-width: 480px) {
   .task-filters {

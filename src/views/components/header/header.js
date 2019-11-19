@@ -1,20 +1,20 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer } from 'react-toastify';
-import { appConfig } from 'src/config/app-config'
-import {NavLink, withRouter} from 'react-router-dom';
-import {updateUserData} from "../../../auth/auth";
-import getRandomImage from "../../../utils/unsplash";
-import {SetUserInfo} from "../set-user-info";
-import {getCookie} from "../../../utils/browser-utils";
-import SideMenu from "../side-menu/side-menu";
-import LanguageButtons from "../../atoms/language-buttons/language-buttons";
-import TourDoocrate from "../../atoms/tourDoocrate/tourDoocrate";
-import i18n from "src/i18n";
+import { appConfig } from 'src/config/app-config';
+import { NavLink, withRouter } from 'react-router-dom';
+import { updateUserData } from '../../../auth/auth';
+import getRandomImage from '../../../utils/unsplash';
+import { SetUserInfo } from '../set-user-info';
+import { getCookie } from '../../../utils/browser-utils';
+import SideMenu from '../side-menu/side-menu';
+import LanguageButtons from '../../atoms/language-buttons/language-buttons';
+import TourDoocrate from '../../atoms/tourDoocrate/tourDoocrate';
+import i18n from 'src/i18n';
 
-import "react-toastify/dist/ReactToastify.min.css";
-import "./header.css";
-import {connect} from "react-redux";
+import 'react-toastify/dist/ReactToastify.min.css';
+import './header.css';
+import { connect } from 'react-redux';
 
 class Header extends Component {
   constructor() {
@@ -22,19 +22,19 @@ class Header extends Component {
 
     this.state = {
       shouldGoogleTranslateToEnglish: false,
-      showSetUserInfoScreen: false
+      showSetUserInfoScreen: false,
     };
   }
 
   render() {
     const { auth, isShowUpdateProfile, selectedProject, tour } = this.props;
     const { showSetUserInfoScreen } = this.state;
-    const isHebrew = i18n.language === "he";
-    const position = isHebrew ? "top-right" : "top-left";
+    const isHebrew = i18n.language === 'he';
+    const position = isHebrew ? 'top-right' : 'top-left';
 
     return (
-      <header className='header notranslate'>
-        <SideMenu auth={auth}/>
+      <header className="header notranslate">
+        <SideMenu auth={auth} />
         <div className={'header-wrapper'}>
           <div>
             <ToastContainer
@@ -47,38 +47,53 @@ class Header extends Component {
 
             <TourDoocrate
               tour={tour}
-              onCloseTour={() => {this.props.setTour(false, 0)}}/>
+              onCloseTour={() => {
+                this.props.setTour(false, 0);
+              }}
+            />
 
             <SetUserInfo
-              isOpen = { (showSetUserInfoScreen) ||
-              (auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.show) }
-              userInfo={ auth }
-              includingBio={auth.shouldShowUpdateProfile && auth.shouldShowUpdateProfile.includingBio }
-              photoURL={ auth.photoURL || getRandomImage()}
-              updateUserInfo={ this.updateUserInfo }
-              onClosed = { () => {
-                this.setState({showSetUserInfoScreen: false});
+              isOpen={
+                showSetUserInfoScreen ||
+                (auth.shouldShowUpdateProfile &&
+                  auth.shouldShowUpdateProfile.show)
+              }
+              userInfo={auth}
+              includingBio={
+                auth.shouldShowUpdateProfile &&
+                auth.shouldShowUpdateProfile.includingBio
+              }
+              photoURL={auth.photoURL || getRandomImage()}
+              updateUserInfo={this.updateUserInfo}
+              onClosed={() => {
+                this.setState({ showSetUserInfoScreen: false });
                 isShowUpdateProfile(false);
-                this.setState({showSetUserInfoScreen: false})
+                this.setState({ showSetUserInfoScreen: false });
               }}
               i18n={i18n}
-              />
+            />
 
             <div className={`header-side lang-${i18n.language}`}>
-              <h4 className='project-title'>{selectedProject?
-                <NavLink to={'/'+selectedProject.url+'/task/1'}>{selectedProject.name}</NavLink> :
-                ''
-              }</h4>
+              <h4 className="project-title">
+                {selectedProject ? (
+                  <NavLink to={'/' + selectedProject.url + '/task/1'}>
+                    {selectedProject.name}
+                  </NavLink>
+                ) : (
+                  ''
+                )}
+              </h4>
               <div className={`language-buttons-wrapper lang-${i18n.language}`}>
                 <LanguageButtons
                   i18n={i18n}
-                  changeLanguage={this.changeLanguage}/>
+                  changeLanguage={this.changeLanguage}
+                />
               </div>
             </div>
           </div>
         </div>
       </header>
-    )
+    );
   }
 
   componentWillMount() {
@@ -87,7 +102,9 @@ class Header extends Component {
 
   showSetUserInfo() {
     const { auth } = this.props;
-    this.setState({showSetUserInfoScreen: (auth.id && !auth.isEmailConfigured)})
+    this.setState({
+      showSetUserInfoScreen: auth.id && !auth.isEmailConfigured,
+    });
   }
 
   changeLanguage = (i18n, changeLang) => {
@@ -95,7 +112,7 @@ class Header extends Component {
     this.updateUserLanguage(changeLang);
   };
 
-  updateUserLanguage = (language) => {
+  updateUserLanguage = language => {
     const { auth } = this.props;
     const userData = {};
     userData.uid = auth.id;
@@ -103,7 +120,7 @@ class Header extends Component {
     updateUserData(userData);
   };
 
-  updateUserInfo = (userInfo) => {
+  updateUserInfo = userInfo => {
     const projectCookie = getCookie('project');
 
     const oldUserData = this.props.auth;
@@ -118,8 +135,7 @@ class Header extends Component {
     // Update the default project on first time setting user info
     newUserData.defaultProject = projectCookie || this.props.selectedProject;
     updateUserData(newUserData, dispatch);
-  }
-
+  };
 }
 
 Header.props = {
@@ -130,5 +146,9 @@ Header.props = {
   tour: PropTypes.object.isRequired,
 };
 
-export default withRouter(connect(null, null)(Header));
-
+export default withRouter(
+  connect(
+    null,
+    null,
+  )(Header),
+);

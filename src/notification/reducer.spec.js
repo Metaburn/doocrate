@@ -1,15 +1,14 @@
-import { REMOVE_TASK_SUCCESS, } from 'src/tasks/action-types';
-import { SHOW_ERROR, SHOW_SUCCESS} from 'src/notification/action-types';
+import { REMOVE_TASK_SUCCESS } from 'src/tasks/action-types';
+import { SHOW_ERROR, SHOW_SUCCESS } from 'src/notification/action-types';
 import { DISMISS_NOTIFICATION } from './action-types';
 import { notificationReducer } from './reducer';
-
 
 describe('Notification reducer', () => {
   describe('REMOVE_TASK_SUCCESS', () => {
     it('should return correct state', () => {
       let nextState = notificationReducer(undefined, {
         type: REMOVE_TASK_SUCCESS,
-        task: {}
+        task: {},
       });
 
       expect(nextState.actionLabel).toBe('');
@@ -44,11 +43,10 @@ describe('Notification reducer', () => {
     });
   });
 
-
   describe('DISMISS_NOTIFICATION', () => {
     it('should return correct state', () => {
       let nextState = notificationReducer(undefined, {
-        type: DISMISS_NOTIFICATION
+        type: DISMISS_NOTIFICATION,
       });
 
       expect(nextState.actionLabel).toBe('');
