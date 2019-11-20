@@ -51,8 +51,10 @@ export const taskFilters = {
     return tasks.filter(
       task =>
         !task.assignee &&
-        task.type && task.type.value !== 3 &&
-        task.type && task.type.value !== 4,
+        task.type &&
+        task.type.value !== 3 &&
+        task.type &&
+        task.type.value !== 4,
     );
   },
 
