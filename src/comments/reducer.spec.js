@@ -16,6 +16,7 @@ class FirebaseCommentObject {
   constructor(props) {
     this._object = new Comment({ id: props.id, body: props.body });
   }
+
   get id() {
     return this._object.id;
   }
@@ -37,9 +38,9 @@ describe('Comments reducer', () => {
 
   describe('CREATE_COMMENT_SUCCESS', () => {
     it('should prepend new comment to list', () => {
-      let state = new CommentsState({ list: new List([comment1]) });
+      const state = new CommentsState({ list: new List([comment1]) });
 
-      let nextState = commentsReducer(state, {
+      const nextState = commentsReducer(state, {
         type: CREATE_COMMENT_SUCCESS,
         payload: comment2,
       });
@@ -51,9 +52,9 @@ describe('Comments reducer', () => {
 
   describe('REMOVE_COMMENT_SUCCESS', () => {
     it('should remove comment from list', () => {
-      let state = new CommentsState({ list: new List([comment1, comment2]) });
+      const state = new CommentsState({ list: new List([comment1, comment2]) });
 
-      let nextState = commentsReducer(state, {
+      const nextState = commentsReducer(state, {
         type: REMOVE_COMMENT_SUCCESS,
         payload: comment2.data(),
       });
@@ -92,10 +93,10 @@ describe('Comments reducer', () => {
 
   describe('UPDATE_COMMENT_SUCCESS', () => {
     it('should update comment', () => {
-      let state = new CommentsState({ list: new List([comment1, comment2]) });
+      const state = new CommentsState({ list: new List([comment1, comment2]) });
       comment2.data().set('body', 'changed');
 
-      let nextState = commentsReducer(state, {
+      const nextState = commentsReducer(state, {
         type: UPDATE_COMMENT_SUCCESS,
         payload: comment2,
       });
@@ -107,13 +108,13 @@ describe('Comments reducer', () => {
 
   describe('SIGN_OUT_SUCCESS', () => {
     it('should reset state', () => {
-      let state = new CommentsState({
+      const state = new CommentsState({
         delete: comment1,
         list: new List([comment1, comment2]),
         previous: new List(),
       });
 
-      let nextState = commentsReducer(state, {
+      const nextState = commentsReducer(state, {
         type: SIGN_OUT_SUCCESS,
       });
 

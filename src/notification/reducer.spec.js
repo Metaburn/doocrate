@@ -6,7 +6,7 @@ import { notificationReducer } from './reducer';
 describe('Notification reducer', () => {
   describe('REMOVE_TASK_SUCCESS', () => {
     it('should return correct state', () => {
-      let nextState = notificationReducer(undefined, {
+      const nextState = notificationReducer(undefined, {
         type: REMOVE_TASK_SUCCESS,
         task: {},
       });
@@ -19,7 +19,7 @@ describe('Notification reducer', () => {
 
   describe('SHOW_ERROR', () => {
     it('should return correct state', () => {
-      let nextState = notificationReducer(undefined, {
+      const nextState = notificationReducer(undefined, {
         type: SHOW_ERROR,
         payload: 'Error occurred',
       });
@@ -32,7 +32,7 @@ describe('Notification reducer', () => {
 
   describe('SHOW_SUCCESS', () => {
     it('should return correct state', () => {
-      let nextState = notificationReducer(undefined, {
+      const nextState = notificationReducer(undefined, {
         type: SHOW_SUCCESS,
         payload: 'Just believe in yourself',
       });
@@ -45,7 +45,7 @@ describe('Notification reducer', () => {
 
   describe('DISMISS_NOTIFICATION', () => {
     it('should return correct state', () => {
-      let nextState = notificationReducer(undefined, {
+      const nextState = notificationReducer(undefined, {
         type: DISMISS_NOTIFICATION,
       });
 

@@ -8,7 +8,7 @@ import { I18n } from 'react-i18next';
 class TaskCreator extends Component {
   render() {
     if (!this.props.creator) return <span />;
-    const creator = this.props.creator;
+    const { creator } = this.props;
     return (
       <I18n ns="translations">
         {t => (
@@ -16,7 +16,7 @@ class TaskCreator extends Component {
             <span>{t('task.creator')}</span>
             {creator && (
               <UserInfoAvatar
-                uniqueId={'task-creator'}
+                uniqueId="task-creator"
                 photoURL={creator.photoURL}
                 userId={creator.id}
                 alt={creator.name}

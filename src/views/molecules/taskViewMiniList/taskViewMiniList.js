@@ -62,7 +62,7 @@ class TaskViewMiniList extends Component {
     return (
       <div className="task-view-mini-list">
         {!isAnyTasks && (
-          <div className={'me-empty-placeholder-wrapper'}>
+          <div className="me-empty-placeholder-wrapper">
             {this.props.shouldShowWizardOnNoResults ? (
               <MeEmptyPlaceholder projectUrl={projectUrl} setTour={setTour} />
             ) : (
@@ -73,11 +73,11 @@ class TaskViewMiniList extends Component {
 
         {isAnyTasks && (
           <InfiniteScroll
-            className={'task-view-mini-container'}
+            className="task-view-mini-container"
             pageStart={0}
             loadMore={this.loadMore}
             hasMore={hasMoreTasks}
-            useWindow={true}
+            useWindow
             loader={<div className="loader">{i18n.t('general.loading')}</div>}
           >
             {taskItems}

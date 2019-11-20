@@ -79,7 +79,7 @@ class AboutCarousel extends React.Component {
 
     return (
       <div className="about-carousel">
-        <img src={together} alt={'Team'} />
+        <img src={together} alt="Team" />
         <br />
         <br />
         {i18n.t('about.faces')}
@@ -93,7 +93,7 @@ class AboutCarousel extends React.Component {
           );
         })}
         <br />
-        <h3 className={'person-name'}>{i18n.t('about.you')}</h3>
+        <h3 className="person-name">{i18n.t('about.you')}</h3>
       </div>
     );
   }

@@ -12,7 +12,7 @@ export const AuthState = new Record({
   name: null,
   email: null,
   bio: null,
-  updatedEmail: null, //The email that the user input as updated
+  updatedEmail: null, // The email that the user input as updated
   photoURL: null,
   phoneNumber: null,
   role: 'user',

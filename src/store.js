@@ -21,7 +21,7 @@ export default (initialState = {}) => {
   middleware = applyMiddleware(...middleware, routerMiddleware(history));
 
   if (process.env.NODE_ENV !== 'production') {
-    const devToolsExtension = window.devToolsExtension;
+    const { devToolsExtension } = window;
     if (typeof devToolsExtension === 'function') {
       middleware = compose(middleware, devToolsExtension());
     }

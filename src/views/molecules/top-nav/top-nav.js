@@ -14,15 +14,15 @@ class TopNav extends Component {
     return (
       <I18n ns="translations">
         {(t, { i18n }) => (
-          <div className={'top-nav'} data-tour={'two'}>
+          <div className="top-nav" data-tour="two">
             {userPermissions.canAdd === true && (
               <Button
                 className="button button-small add-task-button"
                 onClick={this.props.createTask}
-                dataTour={'one'}
+                dataTour="one"
               >
                 <Icon
-                  name={'add'}
+                  name="add"
                   className={`add-task-icon add-task-icon-${t('lang-float')}`}
                 />
               </Button>

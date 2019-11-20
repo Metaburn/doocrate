@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../button';
-import Icon from '../../atoms/icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
+import Button from '../button';
+import Icon from '../../atoms/icon';
 import UserInfoAvatar from '../../atoms/userInfoAvatar/userInfoAvatar';
 
 import follow from './follow.png';
@@ -38,7 +38,7 @@ export class TaskViewHeader extends Component {
       <I18n ns="translations">
         {(t, { i18n }) => (
           <div className="task-view-header" name="task-view-header">
-            <div className={'task-view-header-actions'}>
+            <div className="task-view-header-actions">
               <button
                 onClick={closeTaskView}
                 className="button-no-border close-button"
@@ -51,7 +51,7 @@ export class TaskViewHeader extends Component {
                   onClick={onEditTask}
                   className="button button-small action-button"
                 >
-                  <Icon name={'edit'} className={'header-icon grow'} />
+                  <Icon name="edit" className="header-icon grow" />
                 </button>
               )}
 
@@ -95,12 +95,12 @@ export class TaskViewHeader extends Component {
             <div
               className={`task-header-tooltip-wrapper lang-${i18n.language}`}
             >
-              {task && task.isCritical && <CriticalIcon showText={true} />}
+              {task && task.isCritical && <CriticalIcon showText />}
 
               {isDraft || userPermissions.canAssign === false ? (
                 ''
               ) : !assignee ? (
-                <Fragment>
+                <>
                   <Button
                     className={`button button-small action-button assign_task lang-${i18n.language}`}
                     onClick={() => assignTask(task)}
@@ -108,11 +108,11 @@ export class TaskViewHeader extends Component {
                   >
                     <span>{i18n.t('task.take-responsibility')}</span>
                   </Button>
-                </Fragment>
+                </>
               ) : (
                 <div className="avatar-container">
                   <UserInfoAvatar
-                    uniqueId={'task-header-assignee'}
+                    uniqueId="task-header-assignee"
                     photoURL={assignee.photoURL}
                     userId={assignee.id}
                     alt={assignee.name}

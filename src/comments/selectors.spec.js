@@ -17,7 +17,7 @@ describe('Comments selectors', () => {
 
   describe('getVisibleComments()', () => {
     it('should return list of all comments', () => {
-      let commentList = getVisibleComments({ comments });
+      const commentList = getVisibleComments({ comments });
       expect(commentList.size).toBe(2);
     });
   });

@@ -40,9 +40,9 @@ export class AddComment extends Component {
       <Textarea
         className="textarea-body"
         name="body"
-        value={this.state['body']}
+        value={this.state.body}
         placeholder={t('comments.placeholder')}
-        ref={e => (this['bodyInput'] = e)}
+        ref={e => (this.bodyInput = e)}
         onChange={this.handleChange}
         onFocus={() => this.toggleShowHideSubmit(true)}
         onBlur={() => this.toggleShowHideSubmit(false)}
@@ -56,7 +56,7 @@ export class AddComment extends Component {
   }
 
   handleChange(e) {
-    let fieldName = e.target.name;
+    const fieldName = e.target.name;
     this.setState({
       [fieldName]: e.target.value,
     });
@@ -73,7 +73,7 @@ export class AddComment extends Component {
     this.props.createComment({
       taskId: this.props.task.id,
       body: this.state.body,
-      creator: creator,
+      creator,
       created: new Date(),
     });
 

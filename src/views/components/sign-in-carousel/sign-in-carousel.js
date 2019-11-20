@@ -3,9 +3,9 @@ import React from 'react';
 import Img from 'react-image';
 import { Fade } from 'react-slideshow-image';
 
-import signInAsset from '../../components/sign-in-carousel/sign-in-asset.svg';
-import signInAsset2 from '../../components/sign-in-carousel/sign-in-asset2.svg';
-import signInAsset3 from '../../components/sign-in-carousel/sign-in-asset3.svg';
+import signInAsset from './sign-in-asset.svg';
+import signInAsset2 from './sign-in-asset2.svg';
+import signInAsset3 from './sign-in-asset3.svg';
 
 import './sign-in-carousel.css';
 

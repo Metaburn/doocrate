@@ -20,9 +20,11 @@ class FirebaseTaskObject {
       title: props.title,
     });
   }
+
   get id() {
     return this._object.id;
   }
+
   data() {
     return this._object;
   }
@@ -47,8 +49,8 @@ describe('Tasks reducer', () => {
 
   describe('CREATE_TASK_SUCCESS', () => {
     it('should prepend new task to list', () => {
-      let state = new TasksState({ list: new List([task1]) });
-      let nextState = tasksReducer(state, {
+      const state = new TasksState({ list: new List([task1]) });
+      const nextState = tasksReducer(state, {
         type: CREATE_TASK_SUCCESS,
         payload: task2,
       });
@@ -60,9 +62,9 @@ describe('Tasks reducer', () => {
 
   describe('REMOVE_TASK_SUCCESS', () => {
     it('should remove task from list', () => {
-      let state = new TasksState({ list: new List([task1, task2]) });
+      const state = new TasksState({ list: new List([task1, task2]) });
 
-      let nextState = tasksReducer(state, {
+      const nextState = tasksReducer(state, {
         type: REMOVE_TASK_SUCCESS,
         payload: task1,
       });
@@ -101,10 +103,10 @@ describe('Tasks reducer', () => {
 
   describe('UPDATE_TASK_SUCCESS', () => {
     it('should update task', () => {
-      let state = new TasksState({ list: new List([task1, task2]) });
+      const state = new TasksState({ list: new List([task1, task2]) });
       task1.data().set('title', 'changed');
 
-      let nextState = tasksReducer(state, {
+      const nextState = tasksReducer(state, {
         type: UPDATE_TASK_SUCCESS,
         payload: task1,
       });
@@ -117,13 +119,13 @@ describe('Tasks reducer', () => {
 
   describe('SIGN_OUT_SUCCESS', () => {
     it('should reset state', () => {
-      let state = new TasksState({
+      const state = new TasksState({
         delete: task1,
         list: new List([task1, task2]),
         previous: new List(),
       });
 
-      let nextState = tasksReducer(state, {
+      const nextState = tasksReducer(state, {
         type: SIGN_OUT_SUCCESS,
       });
 

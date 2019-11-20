@@ -1,6 +1,6 @@
+import { firebaseDb } from 'src/firebase';
 import * as labelActions from './label-actions';
 import { labelList } from './label-list';
-import { firebaseDb } from 'src/firebase';
 
 export { labelActions };
 export { labelsReducer } from './label-reducer';

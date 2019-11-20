@@ -9,7 +9,7 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
       if (!chunks[1]) {
         return { [key]: '' };
       }
-      const values = decodeURI(chunks[1]).split(','); //We want to support value=123,555
+      const values = decodeURI(chunks[1]).split(','); // We want to support value=123,555
       const value = values.length > 1 ? values : values[0];
       return (q[key] = value), q;
     }, {});
@@ -36,8 +36,8 @@ export function urlSearchParamsToString(paramObject) {
 
 // Array of params [{name:name,value:value}] to set in query url
 export function setQueryParams(params) {
-  let currentSearchParams = getUrlSearchParams();
-  const paramsObj = getUrlSearchParams('?' + params);
+  const currentSearchParams = getUrlSearchParams();
+  const paramsObj = getUrlSearchParams(`?${params}`);
   Object.keys(paramsObj).forEach(param => {
     if (param == null || param === '' || !currentSearchParams) return;
     currentSearchParams[param] = paramsObj[param];
@@ -52,7 +52,7 @@ export function setQueryParams(params) {
  Apparently URLSearchParams doesn't handle delete for a single value
 */
 export function removeQueryParam(paramsToRemove, value) {
-  let currentQueryParams = getUrlSearchParams();
+  const currentQueryParams = getUrlSearchParams();
 
   if (!currentQueryParams) {
     return {};
@@ -73,7 +73,7 @@ export function removeQueryParam(paramsToRemove, value) {
 
 // Get a given cookie from document.cookie
 export function getCookie(cookieName) {
-  const name = cookieName + '=';
+  const name = `${cookieName}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
   const ca = decodedCookie.split(';');
   for (let i = 0; i < ca.length; i++) {
@@ -89,10 +89,10 @@ export function getCookie(cookieName) {
 }
 
 export function setCookie(name, value, years = 10) {
-  let date = new Date();
+  const date = new Date();
   date.setTime(date.getTime() + years * 365 * 24 * 60 * 60 * 1000);
-  var expires = 'expires=' + date.toGMTString();
-  document.cookie = name + '=' + value + '; ' + expires + '; path=/';
+  const expires = `expires=${date.toGMTString()}`;
+  document.cookie = `${name}=${value}; ${expires}; path=/`;
 }
 
 export const isMobile = window.innerWidth < 480;

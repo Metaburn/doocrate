@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditor from '@ckeditor/ckeditor5-react';
-import EditorPreview from '../editor-preview/editor-preview';
 import i18n from 'src/i18n';
+import EditorPreview from '../editor-preview/editor-preview';
 
 import './richTextEditor.css';
 
@@ -25,10 +25,10 @@ class RichTextEditor extends Component {
     const { data } = this.state;
 
     return (
-      <div className={'rich-text-editor'}>
+      <div className="rich-text-editor">
         {!isEditing && (
           <EditorPreview
-            className={'editor-preview'}
+            className="editor-preview"
             data={data}
             onClick={onToggleEditing}
           />

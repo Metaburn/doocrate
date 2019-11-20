@@ -18,14 +18,14 @@ class LabelsList extends Component {
     return (
       <I18n ns="translations">
         {(t, { i18n }) => (
-          <div className={'labels-list-wrapper'}>
+          <div className="labels-list-wrapper">
             <div className={`labels-list flex-${t('lang-float')}`}>
               {this.props.labels.map(label => {
                 return (
                   <Label
                     key={label}
                     label={label}
-                    backgroundColor={'#AAA'}
+                    backgroundColor="#AAA"
                     onClick={this.props.onLabelClick}
                   />
                 );

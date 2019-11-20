@@ -1,5 +1,5 @@
-import { taskList } from './task-list';
 import firebase from 'firebase/app';
+import { taskList } from './task-list';
 
 import {
   CREATE_TASK_ERROR,
@@ -54,7 +54,7 @@ export function alreadyFollowTask(task) {
 }
 
 export function followTask(task, user) {
-  let listeners = task.listeners;
+  let { listeners } = task;
 
   // User already listens
   if (listeners && listeners.includes(user.id)) {
@@ -69,7 +69,7 @@ export function followTask(task, user) {
   return dispatch => {
     taskList
       .update(task.id, {
-        listeners: listeners,
+        listeners,
       })
       .catch(error => dispatch(updateTaskError(error)));
   };
@@ -92,7 +92,7 @@ function removeUserFromListeners(task, user) {
 }
 
 export function unfollowTask(task, user) {
-  const listeners = task.listeners;
+  const { listeners } = task;
 
   // Does not exists
   if (!listeners.includes(user.id)) {
@@ -124,7 +124,7 @@ export function assignTask(task, assignee) {
           name: assignee.name,
           photoURL: assignee.photoURL,
         },
-        listeners: listeners,
+        listeners,
       })
       .catch(error => dispatch(updateTaskError(error)));
   };

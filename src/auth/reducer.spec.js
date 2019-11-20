@@ -9,7 +9,7 @@ import { authReducer } from './reducer';
 describe('Auth reducer', () => {
   describe('INIT_AUTH', () => {
     it('should set AuthState.authenticated to false when payload is null', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: INIT_AUTH,
         payload: null,
       });
@@ -19,7 +19,7 @@ describe('Auth reducer', () => {
     });
 
     it('should set AuthState.authenticated to true when payload provided', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: INIT_AUTH,
         payload: { uid: '123' },
       });
@@ -31,7 +31,7 @@ describe('Auth reducer', () => {
 
   describe('SIGN_IN_SUCCESS', () => {
     it('should set AuthState.authenticated to true', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: SIGN_IN_SUCCESS,
         payload: { uid: '123' },
       });
@@ -43,7 +43,7 @@ describe('Auth reducer', () => {
 
   describe('SIGN_OUT_SUCCESS', () => {
     it('should set AuthState.authenticated to false', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: SIGN_OUT_SUCCESS,
       });
 
@@ -54,7 +54,7 @@ describe('Auth reducer', () => {
 
   describe('Update Profile Show', () => {
     it('should set shouldShowUpdateProfile to true', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: UPDATE_PROFILE,
         payload: { show: true, includingBio: false },
       });
@@ -66,7 +66,7 @@ describe('Auth reducer', () => {
 
   describe('Update Profile Hide', () => {
     it('should set shouldShowUpdateProfile to true', () => {
-      let state = authReducer(undefined, {
+      const state = authReducer(undefined, {
         type: UPDATE_PROFILE,
         payload: { show: true },
       });

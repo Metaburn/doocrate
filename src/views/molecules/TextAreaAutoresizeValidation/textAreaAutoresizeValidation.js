@@ -31,15 +31,15 @@ class TextAreaAutoresizeValidation extends Component {
     const msgOnError = i18n.t('task.errors.not-empty');
 
     return (
-      <Fragment>
+      <>
         <TextareaAutosize
           className={`changing-input${classNames}`}
           name={fieldName}
-          tabIndex={'0'}
+          tabIndex="0"
           value={this.props.value}
           placeholder={placeHolder}
-          ref={e => (this[fieldName + 'Input'] = e)}
-          inputRef={tag => (this[fieldName + 'Input'] = tag)}
+          ref={e => (this[`${fieldName}Input`] = e)}
+          inputRef={tag => (this[`${fieldName}Input`] = tag)}
           onChange={o => {
             validateTextArea(o.target.value);
             onTextBoxChange(o);
@@ -53,7 +53,7 @@ class TextAreaAutoresizeValidation extends Component {
 
         {/* We are using 2 text area to have both autoresize and validation and hiding the validation one */}
         <Textarea
-          classNameInput={'hidden'}
+          classNameInput="hidden"
           value={this.props.value}
           onChange={() => {}}
           onBlur={e => {}} // here to trigger validation callback on Key up
@@ -61,11 +61,11 @@ class TextAreaAutoresizeValidation extends Component {
           validationOption={{
             check: true,
             required: isRequired,
-            msgOnError: msgOnError,
+            msgOnError,
           }}
           validationCallback={res => validateTextArea(this.props.value)}
         />
-      </Fragment>
+      </>
     );
   }
 }

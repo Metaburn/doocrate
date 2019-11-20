@@ -5,7 +5,7 @@ import Button from '../button';
 
 class TagsSuggestions extends Component {
   render() {
-    let items = this.props.tags.map((tag, index) => {
+    const items = this.props.tags.map((tag, index) => {
       return (
         <Button
           key={index}

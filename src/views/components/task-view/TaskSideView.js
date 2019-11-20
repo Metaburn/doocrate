@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import TaskView from './task-view';
 import { slide as Menu } from 'react-burger-menu';
-import { isMobile, isTablet } from '../../../utils/browser-utils';
 import classnames from 'classnames';
 import i18n from 'src/i18n';
+import { isMobile, isTablet } from '../../../utils/browser-utils';
+import TaskView from './task-view';
 
 class TaskSideView extends Component {
   constructor() {
@@ -49,7 +49,7 @@ class TaskSideView extends Component {
         right={!isHebrew}
         isOpen={isOpen}
         className={classNames}
-        overlayClassName={'task-side-view-overlay'}
+        overlayClassName="task-side-view-overlay"
         disableOverlayClick={() => {
           if (isDraft && !this.isSaved) {
             this.isSaved = false;

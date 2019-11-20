@@ -25,5 +25,5 @@ LogoutPage.propTypes = {
   signOut: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = Object.assign({}, authActions);
+const mapDispatchToProps = { ...authActions };
 export default withRouter(connect(null, mapDispatchToProps)(LogoutPage));

@@ -16,7 +16,7 @@ export const TasksState = new Record({
   previous: null,
   list: new List(),
   filteredList: new List(),
-  selectedFilters: {}, //Selected filters such as query
+  selectedFilters: {}, // Selected filters such as query
   labelsPool: new Set(), // Those holds all the labels in the tasks
   auth: null,
   created: null,

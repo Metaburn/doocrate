@@ -1,7 +1,7 @@
 export const nav = (auth, projectUrl) => [
   {
-    path: '/' + projectUrl + '/task/1',
-    pathIncludes: '/' + projectUrl + '/task/', //To support only being active with /project/test/anything?anyquery
+    path: `/${projectUrl}/task/1`,
+    pathIncludes: `/${projectUrl}/task/`, // To support only being active with /project/test/anything?anyquery
     icon: 'home',
   },
   {
@@ -9,7 +9,7 @@ export const nav = (auth, projectUrl) => [
     icon: 'help_outline',
   },
   {
-    path: '/' + projectUrl + '/me',
+    path: `/${projectUrl}/me`,
     dataTour: 'four',
     icon: 'person',
     show: auth && auth.authenticated,

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from '../button';
 import { I18n } from 'react-i18next';
+import Button from '../button';
 
 import './header-actions.css';
 import MyProfileTooltip from '../my-profile-tooltip/my-profile-tooltip';
@@ -36,12 +36,12 @@ class HeaderActions extends Component {
               {this.props.auth.photoURL ? (
                 <div
                   className="task-item-assignee"
-                  data-html={true}
+                  data-html
                   data-tip={menuContent}
                 />
               ) : (
                 <div
-                  data-html={true}
+                  data-html
                   data-tip={
                     <div>
                       {t('header.me')}
@@ -56,9 +56,8 @@ class HeaderActions extends Component {
           )}
         </I18n>
       );
-    } else {
-      return <span />;
     }
+    return <span />;
   }
 }
 

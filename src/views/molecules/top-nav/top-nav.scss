@@ -4,13 +4,13 @@
   position: relative;
   padding: 14px 24px 14px 24px;
   width: inherit;
-  background-color: #67439B;
+  background-color: #67439b;
   -webkit-border-radius: 16px;
   -moz-border-radius: 16px;
   border-radius: 16px;
   -webkit-box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
-  -moz-box-shadow: 0px 4px 4px  rgba(103, 67, 155, 0.16);
-  box-shadow: 0px 4px 4px  rgba(103, 67, 155, 0.16);
+  -moz-box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
+  box-shadow: 0px 4px 4px rgba(103, 67, 155, 0.16);
 
   .add-task-button {
     z-index: 800;
@@ -63,8 +63,7 @@
   }
 }
 
-
-@media only screen and (max-width: 480px){
+@media only screen and (max-width: 480px) {
   .top-nav {
     .add-task-button {
       bottom: 92px;
@@ -74,5 +73,4 @@
       }
     }
   }
-
 }

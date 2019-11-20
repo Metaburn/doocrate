@@ -1,6 +1,6 @@
+import { getAuth } from 'src/auth';
 import { SELECT_PROJECT } from './action-types';
 import { firebaseDb } from '../firebase';
-import { getAuth } from 'src/auth';
 
 export const projectMiddleware = ({ dispatch, getState }) => next => action => {
   try {
@@ -17,7 +17,7 @@ export const projectMiddleware = ({ dispatch, getState }) => next => action => {
       const userDoc = firebaseDb.collection('users').doc(auth.id);
 
       userDoc.get().then(snap => {
-        let user = snap.data();
+        const user = snap.data();
         console.log(user);
         if (user && user.defaultProject !== action.payload.url) {
           userDoc

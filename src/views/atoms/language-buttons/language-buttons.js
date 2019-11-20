@@ -13,7 +13,7 @@ const LanguageButtons = ({ changeLanguage, i18n }) => {
   });
 
   return (
-    <div className={'language-buttons'}>
+    <div className="language-buttons">
       <button
         className={enClassNames}
         onClick={() => {

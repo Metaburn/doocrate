@@ -12,7 +12,7 @@ const NotFound = () => (
     <Button className="button-small">
       <a href="/">חזור לדרך המרכזית</a>
     </Button>
-    <LoaderUnicorn isShow={true} />
+    <LoaderUnicorn isShow />
   </div>
 );
 

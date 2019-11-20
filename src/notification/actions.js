@@ -1,5 +1,5 @@
-import { DISMISS_NOTIFICATION, SHOW_ERROR, SHOW_SUCCESS } from './action-types';
 import { toast } from 'react-toastify';
+import { DISMISS_NOTIFICATION, SHOW_ERROR, SHOW_SUCCESS } from './action-types';
 
 export function dismissNotification() {
   return {

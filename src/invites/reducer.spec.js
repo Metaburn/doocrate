@@ -1,6 +1,6 @@
+import { List } from 'immutable';
 import { Invitation, InvitationStatus } from './invitation';
 import { invitesReducer, InvitesState } from './reducer';
-import { List } from 'immutable';
 import { CREATE_INVITATION_SUCCESS } from './action-types';
 
 class FirebaseInvitationMockObject {
@@ -50,11 +50,11 @@ describe('Invitation Reducer', () => {
 
   describe('CREATE_INVITATION_SUCCESS', () => {
     it('should add new invitation to the invitations list', () => {
-      let state = new InvitesState({
+      const state = new InvitesState({
         invitations: new List([invitation1]),
       });
 
-      let nextState = invitesReducer(state, {
+      const nextState = invitesReducer(state, {
         type: CREATE_INVITATION_SUCCESS,
         payload: invitation2,
       });

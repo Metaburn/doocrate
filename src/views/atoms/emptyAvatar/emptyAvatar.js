@@ -6,7 +6,7 @@ import emptyAvatar from './empty-avatar.svg';
 
 const EmptyAvatar = ({ alt, isShowText = false }) => (
   <div className={`empty-avatar-container lang-${i18n.language}`}>
-    <img src={emptyAvatar} className={'avatar'} alt={alt} />
+    <img src={emptyAvatar} className="avatar" alt={alt} />
     {isShowText && <span>{i18n.t('task.no-assignee')}</span>}
   </div>
 );
