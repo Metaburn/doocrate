@@ -30,6 +30,7 @@ jobs:
       - run:
           name: Build and test
           command: |
+            npm i prettier
             prettier --check "src/**/**.js"
             npm run build
             npm run test:ci
