@@ -129,18 +129,15 @@ export function updateInvitationListError(error) {
 /** Creating
  * */
 export function createInvitation(invitation) {
-  return dispatch => {
-    return invitationFirebaseList
+  return dispatch =>
+    invitationFirebaseList
       .push(invitation)
-      .then(() => {
-        return dispatch(createInvitationSuccess(invitation));
-      })
+      .then(() => dispatch(createInvitationSuccess(invitation)))
       .catch(error => {
         //TODO: Log error to sentry
         const errorMessage = error && error.message ? error.message : error;
         return dispatch(createInvitationError(errorMessage));
       });
-  };
 }
 
 /**

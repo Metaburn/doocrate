@@ -10,7 +10,7 @@ class TextAreaAutoresizeValidation extends Component {
 
   render() {
     const {fieldName, isEditable, placeHolder, isRequired,
-      onValidationChange, validate, onTextBoxChange, validations } = this.props;
+      onValidationChange, validate, onTextBoxChange } = this.props;
     const classNames = isEditable ? " editable" : "";
 
     // Since we are using a custom control we need to perform our own validation method

@@ -274,7 +274,6 @@ export class TaskView extends Component {
   };
 
   renderSelect(fieldName, placeholder, options, tabIndex) {
-    const { validate } = this.state;
     return (
       <Fragment>
         <Select
@@ -373,10 +372,9 @@ export class TaskView extends Component {
   };
 
   renderTags(isEditable, tabIndex) {
-    const { label, validate} = this.state;
+    const { label } = this.state;
     const isShowPlaceholder = label.length === 0;
     const classNames = isEditable ? ' editable' : '';
-    const fieldName = 'label';
     const msgOnError = i18n.t('task.errors.not-empty');
 
     return (
