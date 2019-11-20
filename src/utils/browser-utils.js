@@ -11,7 +11,7 @@ export function getUrlSearchParams(locationSearch = window.location.search) {
       }
       const values = decodeURI(chunks[1]).split(','); //We want to support value=123,555
       const value = values.length > 1 ? values : values[0];
-      return (q[key] = value), q;
+      return (q[key] = value, q);
     }, {});
 }
 
