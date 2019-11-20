@@ -1,4 +1,4 @@
-version: 2
+version: 2.0
 
 jobs:
   build:
@@ -30,7 +30,6 @@ jobs:
       - run:
           name: Build and test
           command: |
-            npm i prettier
             ./node_modules/.bin/prettier  --check "src/**/**.js"
             npm run build
             npm run test:ci
