@@ -9,7 +9,7 @@
     direction: rtl;
   }
 
-  .suggestionContainer{
+  .suggestionContainer {
     // position: absolute;
     z-index: 5;
     font-size: $base-font-size;
@@ -22,21 +22,21 @@
     width: 100%;
   }
 
-  .suggestions{
-    width:100%;
+  .suggestions {
+    width: 100%;
     position: relative;
     background-color: white;
     max-height: 300px;
     overflow: auto;
   }
 
-  .suggestions li{
+  .suggestions li {
     background: rgba(255, 255, 255, 0.66);
     display: block;
-    width:100%;
-    }
+    width: 100%;
+  }
 
-  .suggestion{
+  .suggestion {
     display: block;
     height: 1.7em;
     line-height: 1.7em;
@@ -46,12 +46,12 @@
     z-index: 6;
   }
 
-  li.react-autosuggest__suggestion--highlighted  {
+  li.react-autosuggest__suggestion--highlighted {
     background: #eb1478;
     color: white;
   }
 
-  .react-autosuggest__container{
+  .react-autosuggest__container {
     display: inline-block;
     width: 100%;
   }

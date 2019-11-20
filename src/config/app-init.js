@@ -14,14 +14,14 @@ const checkIfNeedsRefresh = () => {
     } else {
       const now = new Date();
       const lastRefresh = new Date(lastRefreshStorage);
-      const isMoreThenOneHours = (now - lastRefresh) >= oneDay;
+      const isMoreThenOneHours = now - lastRefresh >= oneDay;
       if (isMoreThenOneHours) {
         storage.setItem('lastRefresh', now.toUTCString());
         refreshPage();
       }
     }
   } catch (e) {
-    console.log({e});
+    console.log({ e });
   }
 };
 

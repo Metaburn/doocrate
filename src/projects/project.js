@@ -1,6 +1,5 @@
 import { Record } from 'immutable';
 
-
 export const Project = new Record({
   name: null,
   url: null,
@@ -11,7 +10,5 @@ export const Project = new Record({
   canCreateTask: null,
   canAssignTask: null,
   language: null,
-  domainUrl: null
+  domainUrl: null,
 });
-
-

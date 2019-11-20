@@ -10,7 +10,6 @@ import signInAsset3 from '../../components/sign-in-carousel/sign-in-asset3.svg';
 import './sign-in-carousel.css';
 
 class SignInCarousel extends React.Component {
-
   render() {
     const properties = {
       autoplay: true,
@@ -22,7 +21,7 @@ class SignInCarousel extends React.Component {
     };
 
     return (
-      <div className='sign-in-carousel'>
+      <div className="sign-in-carousel">
         <div className="slide-container">
           <Fade {...properties}>
             <div className="each-fade">

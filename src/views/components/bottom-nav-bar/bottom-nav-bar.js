@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 
-import BottomNavTile from "./bottom-nav-bar-tile";
-import { nav } from "./_nav";
+import BottomNavTile from './bottom-nav-bar-tile';
+import { nav } from './_nav';
 
-import "./bottom-nav-bar.scss";
+import './bottom-nav-bar.scss';
 
 class BottomNavBar extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    selectedProject: PropTypes.object
+    selectedProject: PropTypes.object,
   };
 
   activeRoute = (routeName, pathIncludes) => {
@@ -26,21 +26,21 @@ class BottomNavBar extends Component {
     const { auth, selectedProject, location } = this.props;
 
     // Hide on sign in page
-    if (location.pathname.match("/sign-in/")) {
+    if (location.pathname.match('/sign-in/')) {
       return null;
     }
 
     const projectUrl =
       selectedProject &&
       selectedProject.url &&
-      selectedProject.url !== "undefined"
+      selectedProject.url !== 'undefined'
         ? selectedProject.url
         : auth.defaultProject;
 
     const routes = nav(auth, projectUrl);
 
     return (
-      <div className={"bottom-nav"}>
+      <div className={'bottom-nav'}>
         {routes.map(r => (
           <BottomNavTile
             key={r.path}
@@ -55,6 +55,4 @@ class BottomNavBar extends Component {
   }
 }
 
-export default compose(
-  withRouter,
-)(BottomNavBar);
+export default compose(withRouter)(BottomNavBar);

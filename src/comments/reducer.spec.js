@@ -6,7 +6,7 @@ import {
   REMOVE_COMMENT_SUCCESS,
   FILTER_COMMENTS,
   LOAD_COMMENTS_SUCCESS,
-  UPDATE_COMMENT_SUCCESS
+  UPDATE_COMMENT_SUCCESS,
 } from './action-types';
 
 import { Comment } from './comment';
@@ -14,13 +14,15 @@ import { commentsReducer, CommentsState } from './reducer';
 
 class FirebaseCommentObject {
   constructor(props) {
-    this._object = new Comment({id: props.id, 'body': props.body});
+    this._object = new Comment({ id: props.id, body: props.body });
   }
   get id() {
     return this._object.id;
   }
 
-  data() { return this._object }
+  data() {
+    return this._object;
+  }
 }
 
 describe('Comments reducer', () => {
@@ -29,19 +31,17 @@ describe('Comments reducer', () => {
 
   // We use the firebase like structure to emulate the data that we are actually using
   beforeEach(() => {
-
-    comment1 = new FirebaseCommentObject({id:0, body: 'comment 1'});
-    comment2 = new FirebaseCommentObject({id:1, body: 'comment 2'});
+    comment1 = new FirebaseCommentObject({ id: 0, body: 'comment 1' });
+    comment2 = new FirebaseCommentObject({ id: 1, body: 'comment 2' });
   });
-
 
   describe('CREATE_COMMENT_SUCCESS', () => {
     it('should prepend new comment to list', () => {
-      let state = new CommentsState({list: new List([comment1])});
+      let state = new CommentsState({ list: new List([comment1]) });
 
       let nextState = commentsReducer(state, {
         type: CREATE_COMMENT_SUCCESS,
-        payload: comment2
+        payload: comment2,
       });
 
       expect(nextState.list.get(0)).toBe(comment2);
@@ -49,14 +49,13 @@ describe('Comments reducer', () => {
     });
   });
 
-
   describe('REMOVE_COMMENT_SUCCESS', () => {
     it('should remove comment from list', () => {
-      let state = new CommentsState({list: new List([comment1, comment2])});
+      let state = new CommentsState({ list: new List([comment1, comment2]) });
 
       let nextState = commentsReducer(state, {
         type: REMOVE_COMMENT_SUCCESS,
-        payload: comment2.data()
+        payload: comment2.data(),
       });
 
       expect(nextState.deleted).toBe(comment2.data());
@@ -65,7 +64,6 @@ describe('Comments reducer', () => {
       expect(nextState.previous).toBe(state.list);
     });
   });
-
 
   // describe('LOAD_COMMENTS_SUCCESS', () => {
   //   it('should set comment list', () => {
@@ -92,15 +90,14 @@ describe('Comments reducer', () => {
   //   });
   // });
 
-
   describe('UPDATE_COMMENT_SUCCESS', () => {
     it('should update comment', () => {
-      let state = new CommentsState({list: new List([comment1, comment2])});
+      let state = new CommentsState({ list: new List([comment1, comment2]) });
       comment2.data().set('body', 'changed');
 
       let nextState = commentsReducer(state, {
         type: UPDATE_COMMENT_SUCCESS,
-        payload: comment2
+        payload: comment2,
       });
 
       expect(nextState.list.get(0).body).toBe(comment1.body);
@@ -108,17 +105,16 @@ describe('Comments reducer', () => {
     });
   });
 
-
   describe('SIGN_OUT_SUCCESS', () => {
     it('should reset state', () => {
       let state = new CommentsState({
         delete: comment1,
         list: new List([comment1, comment2]),
-        previous: new List()
+        previous: new List(),
       });
 
       let nextState = commentsReducer(state, {
-        type: SIGN_OUT_SUCCESS
+        type: SIGN_OUT_SUCCESS,
       });
 
       expect(nextState.deleted).toBe(null);

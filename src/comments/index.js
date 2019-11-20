@@ -1,6 +1,5 @@
 import * as commentsActions from './actions';
 
-
 export { commentsActions };
 export * from './action-types';
 export { commentsReducer } from './reducer';

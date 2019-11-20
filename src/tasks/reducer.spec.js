@@ -4,23 +4,28 @@ import { SIGN_OUT_SUCCESS } from 'src/auth/action-types';
 import {
   CREATE_TASK_SUCCESS,
   REMOVE_TASK_SUCCESS,
-  UPDATE_TASK_SUCCESS
+  UPDATE_TASK_SUCCESS,
 } from './action-types';
 
 import { Task } from './task';
 import { tasksReducer, TasksState } from './reducer';
-import {commentsReducer, CommentsState} from "../comments/reducer";
-import {REMOVE_COMMENT_SUCCESS} from "../comments/action-types";
-
+import { commentsReducer, CommentsState } from '../comments/reducer';
+import { REMOVE_COMMENT_SUCCESS } from '../comments/action-types';
 
 class FirebaseTaskObject {
   constructor(props) {
-    this._object = new Task({id: props.id, completed: props.completed, title: props.title});
+    this._object = new Task({
+      id: props.id,
+      completed: props.completed,
+      title: props.title,
+    });
   }
   get id() {
     return this._object.id;
   }
-  data() { return this._object }
+  data() {
+    return this._object;
+  }
 }
 
 describe('Tasks reducer', () => {
@@ -28,17 +33,24 @@ describe('Tasks reducer', () => {
   let task2;
 
   beforeEach(() => {
-    task1 = new FirebaseTaskObject({completed: false, id: 0, title: 'task 1'});
-    task2 = new FirebaseTaskObject({completed: false, id: 1, title: 'task 2'});
+    task1 = new FirebaseTaskObject({
+      completed: false,
+      id: 0,
+      title: 'task 1',
+    });
+    task2 = new FirebaseTaskObject({
+      completed: false,
+      id: 1,
+      title: 'task 2',
+    });
   });
-
 
   describe('CREATE_TASK_SUCCESS', () => {
     it('should prepend new task to list', () => {
-      let state = new TasksState({list: new List([task1])});
+      let state = new TasksState({ list: new List([task1]) });
       let nextState = tasksReducer(state, {
         type: CREATE_TASK_SUCCESS,
-        payload: task2
+        payload: task2,
       });
 
       expect(nextState.list.get(0)).toBe(task1);
@@ -48,11 +60,11 @@ describe('Tasks reducer', () => {
 
   describe('REMOVE_TASK_SUCCESS', () => {
     it('should remove task from list', () => {
-      let state = new TasksState({list: new List([task1, task2])});
+      let state = new TasksState({ list: new List([task1, task2]) });
 
       let nextState = tasksReducer(state, {
         type: REMOVE_TASK_SUCCESS,
-        payload: task1
+        payload: task1,
       });
 
       expect(nextState.deleted).toBe(task1);
@@ -87,15 +99,14 @@ describe('Tasks reducer', () => {
   //   });
   // });
 
-
   describe('UPDATE_TASK_SUCCESS', () => {
     it('should update task', () => {
-      let state = new TasksState({list: new List([task1, task2])});
+      let state = new TasksState({ list: new List([task1, task2]) });
       task1.data().set('title', 'changed');
 
       let nextState = tasksReducer(state, {
         type: UPDATE_TASK_SUCCESS,
-        payload: task1
+        payload: task1,
       });
 
       expect(nextState.list.size).toBe(2);
@@ -104,17 +115,16 @@ describe('Tasks reducer', () => {
     });
   });
 
-
   describe('SIGN_OUT_SUCCESS', () => {
     it('should reset state', () => {
       let state = new TasksState({
         delete: task1,
         list: new List([task1, task2]),
-        previous: new List()
+        previous: new List(),
       });
 
       let nextState = tasksReducer(state, {
-        type: SIGN_OUT_SUCCESS
+        type: SIGN_OUT_SUCCESS,
       });
 
       expect(nextState.deleted).toBe(null);
@@ -122,6 +132,4 @@ describe('Tasks reducer', () => {
       expect(nextState.previous).toBe(null);
     });
   });
-
-
 });

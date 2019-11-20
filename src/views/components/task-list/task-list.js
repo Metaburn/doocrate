@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
@@ -7,7 +7,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import i18n from '../../../i18n';
 import CompleteFilter from '../complete-filter';
 import './task-list.css';
-import EmptyPlaceholder from "../../molecules/emptyPlaceholder/emptyPlaceholder";
+import EmptyPlaceholder from '../../molecules/emptyPlaceholder/emptyPlaceholder';
 
 class TaskList extends Component {
   constructor(props) {
@@ -26,19 +26,26 @@ class TaskList extends Component {
   }
 
   clearSearchQuery = () => {
-    this.props.history.push({search: ''});
+    this.props.history.push({ search: '' });
   };
 
   render() {
-    const { tasks, selectedTaskId, selectedProject, labels, projectUrl } = this.props;
+    const {
+      tasks,
+      selectedTaskId,
+      selectedProject,
+      labels,
+      projectUrl,
+    } = this.props;
     const { pageSize, pageNumber } = this.state;
     const isAnyTasks = tasks && tasks.size > 0;
     let taskItems = [];
 
-    const search = this.props.location? this.props.location.search : '';
+    const search = this.props.location ? this.props.location.search : '';
 
     if (isAnyTasks) {
-      taskItems = tasks.slice(0, pageSize * (pageNumber + 1))
+      taskItems = tasks
+        .slice(0, pageSize * (pageNumber + 1))
         .map((task, index) => {
           const taskId = task.get('id');
           const isActive = taskId === selectedTaskId;
@@ -51,32 +58,34 @@ class TaskList extends Component {
                 task={task}
                 selectedProject={selectedProject}
                 labels={labels}
-                isActive={isActive}/>
+                isActive={isActive}
+              />
             </Link>
           );
-      });
+        });
     }
 
-    const hasMoreTasks = tasks ? (pageSize * pageNumber) < tasks.size : true;
+    const hasMoreTasks = tasks ? pageSize * pageNumber < tasks.size : true;
 
     return (
       <div className="task-list-container">
         <div className="task-list-header" name="task-list-header">
-          <CompleteFilter projectUrl={projectUrl}/>
+          <CompleteFilter projectUrl={projectUrl} />
         </div>
 
         <div className="task-list">
-          {!isAnyTasks &&
-          <EmptyPlaceholder onClearFilters={this.clearSearchQuery}/>
-          }
+          {!isAnyTasks && (
+            <EmptyPlaceholder onClearFilters={this.clearSearchQuery} />
+          )}
 
           <InfiniteScroll
-              pageStart={0}
-              loadMore={this.loadMore}
-              hasMore={hasMoreTasks}
-              useWindow={true}
-              loader={<div className="loader">{i18n.t('general.loading')}</div>}>
-              { taskItems }
+            pageStart={0}
+            loadMore={this.loadMore}
+            hasMore={hasMoreTasks}
+            useWindow={true}
+            loader={<div className="loader">{i18n.t('general.loading')}</div>}
+          >
+            {taskItems}
           </InfiniteScroll>
         </div>
       </div>
@@ -90,7 +99,7 @@ TaskList.propTypes = {
   selectedProject: PropTypes.object,
   history: PropTypes.object,
   location: PropTypes.object,
-  projectUrl: PropTypes.string.isRequired
+  projectUrl: PropTypes.string.isRequired,
 };
 
 export default TaskList;
