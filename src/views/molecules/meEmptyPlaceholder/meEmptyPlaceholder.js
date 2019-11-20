@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import i18n from 'src/i18n';

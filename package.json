@@ -121,10 +121,5 @@
     "sinon": "2.4.1",
     "why-did-you-update": "^1.0.6"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  }
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
 }
