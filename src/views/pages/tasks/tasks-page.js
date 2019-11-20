@@ -380,8 +380,7 @@ export class TasksPage extends Component {
   }
 
   getTaskViewProps() {
-    const { selectedTaskId, newTask } = this.state;
-    const { tasks, selectedProjectUserPermissions } = this.props;
+    const { selectedProjectUserPermissions } = this.props;
 
     let selectedTask = this.getSelectedTask();
 
@@ -677,7 +676,4 @@ const mapDispatchToProps = Object.assign(
   userInterfaceActions,
 );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TasksPage);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksPage);

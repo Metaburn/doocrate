@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import i18n from 'src/i18n';
 import TextareaAutosize from 'react-textarea-autosize';
@@ -16,7 +16,6 @@ class TextAreaAutoresizeValidation extends Component {
       onValidationChange,
       validate,
       onTextBoxChange,
-      validations,
     } = this.props;
     const classNames = isEditable ? ' editable' : '';
 
@@ -81,7 +80,6 @@ TextAreaAutoresizeValidation.propTypes = {
   isRequired: PropTypes.bool,
   isEditable: PropTypes.bool,
   validate: PropTypes.bool,
-  validations: PropTypes.object,
   onTextBoxChange: PropTypes.func.isRequired,
   onValidationChange: PropTypes.func.isRequired,
 };

@@ -1,4 +1,3 @@
-import firebase from 'firebase/app';
 import { taskList } from './task-list';
 
 import {
