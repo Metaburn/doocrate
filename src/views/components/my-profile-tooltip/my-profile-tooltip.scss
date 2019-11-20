@@ -1,7 +1,6 @@
 @import 'views/styles/shared';
 
 .my-profile-tooltip-container {
-
   .avatar {
     margin: 0 5px;
     width: 40px;
@@ -22,12 +21,12 @@
       color: white !important;
     }
   }
-
 }
 
 .tooltip-container {
   pointer-events: all !important;
-  a, button {
+  a,
+  button {
     font-size: 14px !important;
     color: $primary-color;
     text-decoration: none;

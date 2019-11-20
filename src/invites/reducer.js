@@ -1,5 +1,5 @@
-import { List, Record } from "immutable";
-import { showError } from "src/notification/actions";
+import { List, Record } from 'immutable';
+import { showError } from 'src/notification/actions';
 import {
   CREATE_INVITATION_LIST_SUCCESS,
   LOAD_INVITATION_LIST_SUCCESS,
@@ -9,24 +9,24 @@ import {
   CREATE_INVITATION_LIST_ERROR,
   UPDATE_INVITATION_LIST_ERROR,
   UPDATE_INVITATION_LIST_SUCCESS,
-} from "./action-types";
+} from './action-types';
 
-import { firebaseCollectionToList } from "src/firebase/firebase-list";
+import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 
 export const InvitesState = new Record({
   invitations: new List(),
-  selectedInvitationList: null
+  selectedInvitationList: null,
 });
 
 export function invitesReducer(state = new InvitesState(), { payload, type }) {
   switch (type) {
     case CREATE_INVITATION_LIST_SUCCESS:
     case LOAD_INVITATION_LIST_SUCCESS:
-      return state.set("selectedInvitationList", payload);
+      return state.set('selectedInvitationList', payload);
 
     case CREATE_INVITATION_SUCCESS:
       return state.merge({
-        invitations: state.invitations.unshift(payload)
+        invitations: state.invitations.unshift(payload),
       });
 
     case UPDATE_INVITATION_LIST_SUCCESS:
@@ -35,8 +35,8 @@ export function invitesReducer(state = new InvitesState(), { payload, type }) {
 
     case LOAD_INVITATIONS_SUCCESS:
       return state.set(
-        "invitations",
-        new List(firebaseCollectionToList(payload))
+        'invitations',
+        new List(firebaseCollectionToList(payload)),
       );
 
     // return state.merge(newState);

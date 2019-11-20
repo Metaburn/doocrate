@@ -10,51 +10,48 @@ import { initAuth } from './auth';
 import { initProject } from './projects/actions';
 import history from './history';
 import configureStore from './store';
-import /*registerServiceWorker, */{ unregister } from './utils/register-service-worker';
+import {
+  /*registerServiceWorker, */ unregister,
+} from './utils/register-service-worker';
 import App from './views/app';
 import { initializeApp } from './config/app-init';
 
-
-Sentry.init({dsn: "https://dcb14dd1c19444679e850734ccac2ca1@sentry.io/1811465"});
+Sentry.init({
+  dsn: 'https://dcb14dd1c19444679e850734ccac2ca1@sentry.io/1811465',
+});
 
 const store = configureStore();
 const rootElement = document.getElementById('root');
-
 
 function render(Component) {
   ReactDOM.render(
     <Provider store={store}>
       <ConnectedRouter history={history}>
         <div>
-          <Component/>
+          <Component />
         </div>
       </ConnectedRouter>
     </Provider>,
-    rootElement
+    rootElement,
   );
 }
-
 
 initializeApp();
 
 if (module.hot) {
   module.hot.accept('./views/app', () => {
     render(require('./views/app').default);
-  })
+  });
 }
-
 
 //registerServiceWorker();
 unregister();
 
-
-
-console.log("store", store, store.getState())
+console.log('store', store, store.getState());
 
 initAuth(store.dispatch, store.getState)
   .then(() => {
-      render(App);
-      store.dispatch(initProject());
-    }
-  )
+    render(App);
+    store.dispatch(initProject());
+  })
   .catch(error => console.error(error));

@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'react-image';
 import Modal from 'react-responsive-modal';
 import getRandomImage from 'src/utils/unsplash';
-import RichTextEditor from "../../atoms/richTextEditor/richTextEditor";
+import RichTextEditor from '../../atoms/richTextEditor/richTextEditor';
 import i18n from 'src/i18n';
 
 import './set-user-info.css';
@@ -18,9 +18,8 @@ export class SetUserInfo extends Component {
       bio: '',
       name: '',
       photoURL: '',
-      originalEmail: ''
+      originalEmail: '',
     };
-
   }
 
   onOpenModal = () => {
@@ -45,9 +44,10 @@ export class SetUserInfo extends Component {
       return;
     }
 
-    if(this.state.originalEmail !== props.userInfo.updatedEmail &&
-        this.state.originalEmail !== props.userInfo.email) {
-
+    if (
+      this.state.originalEmail !== props.userInfo.updatedEmail &&
+      this.state.originalEmail !== props.userInfo.email
+    ) {
       this.setState({
         originalEmail: props.userInfo.updatedEmail || props.userInfo.email,
         // First try to see if there is an updated mail.
@@ -56,27 +56,27 @@ export class SetUserInfo extends Component {
         name: props.userInfo.name || '',
         bio: props.userInfo.bio || '',
         isOpen: props.isOpen || false,
-        photoURL: props.photoURL || ''
+        photoURL: props.photoURL || '',
       });
-      return
+      return;
     }
 
     this.setState({
       isOpen: props.isOpen || false,
-    })
+    });
   }
 
   render() {
-    const { isOpen:isOpenProps } = this.props;
-    const { isOpen:isOpenState } = this.state;
+    const { isOpen: isOpenProps } = this.props;
+    const { isOpen: isOpenState } = this.state;
 
     const isOpen = isOpenProps && isOpenState;
 
     return (
       <Modal open={isOpen} onClose={this.onCloseModal} center>
-        <div className='set-user-info' dir={i18n.t('lang-dir')}>
-          <div className='modal-content'>
-            <div className='modal-header'>
+        <div className="set-user-info" dir={i18n.t('lang-dir')}>
+          <div className="modal-content">
+            <div className="modal-header">
               <h1>{i18n.t('user.title')}</h1>
             </div>
             {this.renderBody()}
@@ -89,19 +89,42 @@ export class SetUserInfo extends Component {
   renderBody() {
     const { name } = this.props.userInfo;
     const photoURL = this.state.photoURL;
-    const avatar = photoURL ? <Img className={`avatar avatar-${i18n.t('lang-float')}`} src={photoURL} alt={name} onClick={this.handleImageClick}/> : '';
+    const avatar = photoURL ? (
+      <Img
+        className={`avatar avatar-${i18n.t('lang-float')}`}
+        src={photoURL}
+        alt={name}
+        onClick={this.handleImageClick}
+      />
+    ) : (
+      ''
+    );
 
     return (
-      <div className='modal-body'>
-        <form className='modal-form' onSubmit={this.handleSubmit}>
+      <div className="modal-body">
+        <form className="modal-form" onSubmit={this.handleSubmit}>
           <div className={'avatar-wrapper'}>
-            { avatar }
+            {avatar}
             <span className={'avatar-parallel'}>
-              <span><b>{i18n.t('user.email')}</b></span>
-              <span className={'flex-rows-break'}/>
-              {this.renderInput('email', i18n.t('user.set-my-email'), true, 'email')}
-              <span><b>{i18n.t('user.set-my-name-description')}</b></span>
-              {this.renderInput('name', i18n.t('user.set-my-name'), true, 'name')}
+              <span>
+                <b>{i18n.t('user.email')}</b>
+              </span>
+              <span className={'flex-rows-break'} />
+              {this.renderInput(
+                'email',
+                i18n.t('user.set-my-email'),
+                true,
+                'email',
+              )}
+              <span>
+                <b>{i18n.t('user.set-my-name-description')}</b>
+              </span>
+              {this.renderInput(
+                'name',
+                i18n.t('user.set-my-name'),
+                true,
+                'name',
+              )}
               {this.props.includingBio && this.renderBio()}
             </span>
           </div>
@@ -112,31 +135,36 @@ export class SetUserInfo extends Component {
   }
 
   renderBio = () => {
-    return(
+    return (
       <Fragment>
-        <span><b>{i18n.t('user.bio-description')}</b></span>
+        <span>
+          <b>{i18n.t('user.bio-description')}</b>
+        </span>
 
         <RichTextEditor
-        data={this.state.bio}
-        isEditing={true}
-        onChange={this.onBioEditorChange}
-        onToggleEditing={this.onToggleEditing}/>
-
+          data={this.state.bio}
+          isEditing={true}
+          onChange={this.onBioEditorChange}
+          onToggleEditing={this.onToggleEditing}
+        />
       </Fragment>
-        );
+    );
   };
 
   onBioEditorChange = (event, editor) => {
     this.setState({
-      bio: editor.getData()
+      bio: editor.getData(),
     });
   };
 
   renderSubmit() {
     return (
       <div className={'submit-wrapper'}>
-        <input className={`button button-small` }
-               type="submit" value={i18n.t('user.submit')}/>
+        <input
+          className={`button button-small`}
+          type="submit"
+          value={i18n.t('user.submit')}
+        />
       </div>
     );
   }
@@ -146,46 +174,46 @@ export class SetUserInfo extends Component {
     return (
       <input
         className={`changing-input user-info-input ${classNames}`}
-        type = { fieldType }
-        name = { fieldName }
-        value = { this.state[fieldName] }
-        placeholder = { placeholder }
-        ref = { e => this[fieldName+'Input'] = e }
-        onChange = { this.handleChange }
-        disabled = { !isEditable }
-        required />
+        type={fieldType}
+        name={fieldName}
+        value={this.state[fieldName]}
+        placeholder={placeholder}
+        ref={e => (this[fieldName + 'Input'] = e)}
+        onChange={this.handleChange}
+        disabled={!isEditable}
+        required
+      />
     );
   }
 
-  handleImageClick = () =>{
+  handleImageClick = () => {
     // Roll a random image
     this.setState({
-      photoURL: getRandomImage()
+      photoURL: getRandomImage(),
     });
   };
 
-  handleChange = (e) => {
+  handleChange = e => {
     let fieldName = e.target.name;
     this.setState({
-      [fieldName]: e.target.value
+      [fieldName]: e.target.value,
     });
   };
 
-  handleSubmit = (event) => {
-    if(event) {
+  handleSubmit = event => {
+    if (event) {
       event.preventDefault();
     }
     const fieldsToUpdate = {
       email: this.state.email,
       name: this.state.name,
       bio: this.state.bio,
-      photoURL: this.state.photoURL
+      photoURL: this.state.photoURL,
     };
 
     this.props.updateUserInfo(fieldsToUpdate);
     this.onCloseModal();
   };
-
 }
 
 SetUserInfo.propTypes = {
@@ -194,10 +222,7 @@ SetUserInfo.propTypes = {
   userInfo: PropTypes.object.isRequired,
   photoURL: PropTypes.string.isRequired,
   updateUserInfo: PropTypes.func.isRequired,
-  onClosed: PropTypes.func.isRequired
+  onClosed: PropTypes.func.isRequired,
 };
 
-
 export default SetUserInfo;
-
-

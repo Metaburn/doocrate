@@ -1,22 +1,22 @@
-import React, { Component } from "react";
-import { Map, List } from "immutable";
+import React, { Component } from 'react';
+import { Map, List } from 'immutable';
 
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
-import { tasksActions } from "src/tasks";
-import { projectActions } from "src/projects";
-import { invitationsActions } from "src/invites";
-import { notificationActions } from "../../../notification";
-import { firebaseDb } from "src/firebase";
-import { CSVLink } from "react-csv";
-import { I18n } from "react-i18next";
-import i18n from "../../../i18n";
-import TextAreaAutoresizeValidation from "../../molecules/TextAreaAutoresizeValidation";
-import Button from "../../components/button";
-import { uniq } from "lodash";
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import { tasksActions } from 'src/tasks';
+import { projectActions } from 'src/projects';
+import { invitationsActions } from 'src/invites';
+import { notificationActions } from '../../../notification';
+import { firebaseDb } from 'src/firebase';
+import { CSVLink } from 'react-csv';
+import { I18n } from 'react-i18next';
+import i18n from '../../../i18n';
+import TextAreaAutoresizeValidation from '../../molecules/TextAreaAutoresizeValidation';
+import Button from '../../components/button';
+import { uniq } from 'lodash';
 
-import "./reports-page.css";
+import './reports-page.css';
 
 export class ReportsPage extends Component {
   constructor() {
@@ -26,15 +26,15 @@ export class ReportsPage extends Component {
       users: Map(),
       usersWhoDidntBuy: Map(),
       query: [],
-      addedEmailsStr: "",
+      addedEmailsStr: '',
       validEmails: [],
       invalidEmails: [],
-      invitations: []
+      invitations: [],
     };
   }
 
   componentWillMount() {
-    const {match} = this.props;
+    const { match } = this.props;
 
     const projectUrl = match.params.projectUrl;
 
@@ -42,12 +42,12 @@ export class ReportsPage extends Component {
     this.props.loadInvitationListByProject(projectUrl);
 
     firebaseDb
-      .collection("users")
+      .collection('users')
       .get()
       .then(querySnapshot => {
         const contributors = {};
         const usersWhoDidntBuy = {};
-        querySnapshot.forEach(function (doc) {
+        querySnapshot.forEach(function(doc) {
           let contributor = doc.data();
           contributors[doc.id] = contributor;
           if (contributor.didntBuy) {
@@ -55,23 +55,25 @@ export class ReportsPage extends Component {
           }
         });
 
-        firebaseDb.collection('users').get().then((querySnapshot) => {
+        firebaseDb
+          .collection('users')
+          .get()
+          .then(querySnapshot => {
+            const contributors = {};
+            const usersWhoDidntBuy = {};
+            querySnapshot.forEach(function(doc) {
+              let contributor = doc.data();
+              contributors[doc.id] = contributor;
+              if (contributor.didntBuy) {
+                usersWhoDidntBuy[doc.id] = contributor;
+              }
+            });
 
-          const contributors = {};
-          const usersWhoDidntBuy = {};
-          querySnapshot.forEach(function (doc) {
-            let contributor = doc.data();
-            contributors[doc.id] = contributor;
-            if (contributor.didntBuy) {
-              usersWhoDidntBuy[doc.id] = contributor;
-            }
+            this.setState({
+              users: Map(contributors),
+              usersWhoDidntBuy: Map(usersWhoDidntBuy),
+            });
           });
-
-          this.setState({
-            users: Map(contributors),
-            usersWhoDidntBuy: Map(usersWhoDidntBuy)
-          });
-        })
       });
   }
 
@@ -111,8 +113,8 @@ export class ReportsPage extends Component {
               `${task.created
                 .toDate()
                 .toLocaleDateString(
-                  "he-IL"
-                )} ${task.created.toDate().toLocaleTimeString("he-IL")}`
+                  'he-IL',
+                )} ${task.created.toDate().toLocaleTimeString('he-IL')}`,
             ]);
           }
         }
@@ -125,7 +127,7 @@ export class ReportsPage extends Component {
   isAdmin() {
     const projectUrl = this.props.match.params.projectUrl;
     return (
-      this.props.auth.role === "admin" &&
+      this.props.auth.role === 'admin' &&
       this.props.auth.adminProjects.includes(projectUrl)
     );
   }
@@ -136,29 +138,36 @@ export class ReportsPage extends Component {
     this.setState({
       [fieldName]: o.target.value,
       invalidEmails: [],
-      validEmails: []
+      validEmails: [],
     });
   };
 
   handleSave = () => {
     const { validEmails } = this.state;
-    const { updateInvitationListMembers, showSuccess, match, invites } = this.props;
+    const {
+      updateInvitationListMembers,
+      showSuccess,
+      match,
+      invites,
+    } = this.props;
 
     const projectUrl = match.params.projectUrl;
 
-    const allUniqueInvites = uniq(validEmails.concat(invites.selectedInvitationList.get("invites")));
+    const allUniqueInvites = uniq(
+      validEmails.concat(invites.selectedInvitationList.get('invites')),
+    );
 
     updateInvitationListMembers(projectUrl, allUniqueInvites);
 
     this.setState({
       validEmails: [],
-      addedEmailsStr: ""
+      addedEmailsStr: '',
     });
-    showSuccess(i18n.t("reports.emails-updated-successfully"));
+    showSuccess(i18n.t('reports.emails-updated-successfully'));
   };
 
   validateEmails = () => {
-    const emailArr = this.state.addedEmailsStr.split(";");
+    const emailArr = this.state.addedEmailsStr.split(';');
     const validEmails = [];
     const invalidEmails = [];
 
@@ -191,7 +200,7 @@ export class ReportsPage extends Component {
     if (invalidEmails.length > 0) {
       return (
         <div>
-          <p>{i18n.t("reports.invalid-email-address")}:</p>
+          <p>{i18n.t('reports.invalid-email-address')}:</p>
           {invalidEmails.map(email => (
             <p>{email}</p>
           ))}
@@ -201,7 +210,7 @@ export class ReportsPage extends Component {
     if (validEmails.length > 0) {
       return (
         <div>
-          <p>{i18n.t("reports.valid-email-address")}</p>
+          <p>{i18n.t('reports.valid-email-address')}</p>
         </div>
       );
     }
@@ -239,7 +248,7 @@ export class ReportsPage extends Component {
 
               <table className="report-table">
                 <thead>
-                  <tr className={`dir-${t("lang-float-reverse")}`}>
+                  <tr className={`dir-${t('lang-float-reverse')}`}>
                     <th>First task timestamp</th>
                     <th>#</th>
                     <th>Name</th>
@@ -253,7 +262,7 @@ export class ReportsPage extends Component {
                     <tr key={r[0]}>
                       <th>{r[5]}</th>
                       <th>
-                        <a href={"/" + selectedProject.url + "/task/" + r[4]}>
+                        <a href={'/' + selectedProject.url + '/task/' + r[4]}>
                           {r[4]}
                         </a>
                       </th>
@@ -268,13 +277,13 @@ export class ReportsPage extends Component {
             </div>
             <br />
             <br />
-            <div className={"invitations-form-wrapper"}>
-              <h3>{i18n.t("reports.invitations-header")}</h3>
+            <div className={'invitations-form-wrapper'}>
+              <h3>{i18n.t('reports.invitations-header')}</h3>
               <form>
                 <TextAreaAutoresizeValidation
                   fieldName="addedEmailsStr"
                   isEditable={true}
-                  placeHolder={i18n.t("reports.emails-placeholder")}
+                  placeHolder={i18n.t('reports.emails-placeholder')}
                   isRequired={true}
                   value={this.state.addedEmailsStr}
                   onTextBoxChange={this.handleTextBoxChange}
@@ -282,32 +291,32 @@ export class ReportsPage extends Component {
                 />
               </form>
               <div>{this.renderValidations()}</div>
-              <div className={"button-save-wrapper"}>
+              <div className={'button-save-wrapper'}>
                 {(this.state.validEmails.length === 0 && (
                   <Button
-                    className={"save-button"}
+                    className={'save-button'}
                     onClick={this.validateEmails}
                     type="button"
                   >
-                    {i18n.t("reports.validate")}
+                    {i18n.t('reports.validate')}
                   </Button>
                 )) || (
                   <Button
-                    className={"save-button"}
+                    className={'save-button'}
                     onClick={this.handleSave}
                     type="button"
                   >
-                    {i18n.t("reports.save")}
+                    {i18n.t('reports.save')}
                   </Button>
                 )}
 
-
                 {this.state.invalidEmails.length === 0 &&
-                  this.state.validEmails.length > 0 && this.renderDeleteButton()}
+                  this.state.validEmails.length > 0 &&
+                  this.renderDeleteButton()}
               </div>
               <table className="report-table invites-table">
                 <thead>
-                  <tr className={`dir-${t("lang-float-reverse")}`}>
+                  <tr className={`dir-${t('lang-float-reverse')}`}>
                     <th></th>
                     <th>Email</th>
                     <th>#</th>
@@ -315,11 +324,12 @@ export class ReportsPage extends Component {
                 </thead>
                 <tbody>
                   {invites.selectedInvitationList &&
-                    invites.selectedInvitationList.get("invites")
+                    invites.selectedInvitationList
+                      .get('invites')
                       .map((invitation, index) => (
                         <tr key={invitation}>
                           <th>
-                            { this.renderDeleteInvitationButton(invitation)}
+                            {this.renderDeleteInvitationButton(invitation)}
                           </th>
                           <th>{invitation}</th>
                           <th>{index}</th>
@@ -337,33 +347,32 @@ export class ReportsPage extends Component {
   renderDeleteButton = () => {
     return (
       <Button
-        className={"delete-button"}
+        className={'delete-button'}
         onClick={() => {
           if (
             window.confirm(
-              i18n.t("reports.sure-add-invitations", {
-                emailsCount: this.state.validEmails.length
-              })
+              i18n.t('reports.sure-add-invitations', {
+                emailsCount: this.state.validEmails.length,
+              }),
             )
           ) {
             this.setState({
               validEmails: [],
-              addedEmailsStr: ""
+              addedEmailsStr: '',
             });
             return;
           }
         }}
         type="button"
       >
-        {i18n.t("reports.delete")}
+        {i18n.t('reports.delete')}
       </Button>
-    )
-  }
+    );
+  };
 
-  renderDeleteInvitationButton = (invitation) => {
+  renderDeleteInvitationButton = invitation => {
     // TODO Removed for now till we add support for it
     // Probably would be simple to call the same function as handleSave with filtering that specific invites
-
     // return(
     //   <Button
     //     className="button button-small action-button"
@@ -383,7 +392,7 @@ export class ReportsPage extends Component {
     //     <Icon name="delete" className="grow delete" />
     //   </Button>
     // );
-  }
+  };
 }
 
 ReportsPage.propTypes = {
@@ -396,7 +405,7 @@ ReportsPage.propTypes = {
   selectProjectFromUrl: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   invites: PropTypes.object,
-  showSuccess: PropTypes.func.isRequired
+  showSuccess: PropTypes.func.isRequired,
 };
 
 //=====================================
@@ -407,7 +416,7 @@ const mapStateToProps = state => {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
-    invites: state.invites
+    invites: state.invites,
   };
 };
 
@@ -416,7 +425,7 @@ const mapDispatchToProps = Object.assign(
   tasksActions,
   projectActions,
   invitationsActions,
-  notificationActions
+  notificationActions,
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReportsPage);

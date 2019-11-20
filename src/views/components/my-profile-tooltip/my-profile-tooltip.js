@@ -14,69 +14,87 @@ class MyProfileTooltip extends Component {
     super(...arguments);
 
     this.state = {
-      redirectTo: null
+      redirectTo: null,
     };
   }
 
-  redirectTo = (url) => {
+  redirectTo = url => {
     this.setState({
-      redirectTo: url
-    })
+      redirectTo: url,
+    });
   };
 
   renderRedirectTo = () => {
     if (this.state.redirectTo) {
-      this.setState({redirectTo: null}); //TODO - Probably should not render and set state
+      this.setState({ redirectTo: null }); //TODO - Probably should not render and set state
       return (
         <Switch>
-          <Redirect to={this.state.redirectTo}/>
+          <Redirect to={this.state.redirectTo} />
         </Switch>
-      )
+      );
     }
   };
 
   render() {
     const { auth, projectUrl } = this.props;
 
-    if(auth && auth.authenticated) {
+    if (auth && auth.authenticated) {
       return (
-        <I18n ns='translations'>
-        {
-         (t) => (
-           <div className='my-profile-tooltip-container'
-                data-tip="" data-for='my-profile'>
+        <I18n ns="translations">
+          {t => (
+            <div
+              className="my-profile-tooltip-container"
+              data-tip=""
+              data-for="my-profile"
+            >
+              <Icon name="keyboard_arrow_down" />
+              {auth.photoURL ? (
+                <Img className="avatar grow" src={auth.photoURL} />
+              ) : (
+                <span>{t('header.me')}</span>
+              )}
 
-            <Icon name='keyboard_arrow_down'/>
-            { auth.photoURL ?
-              <Img
-              className='avatar grow'
-              src={ auth.photoURL } />
-            :
-              <span>{t('header.me')}</span>
-            }
-
-             <ReactTooltip id={'my-profile'}
-                           place={'bottom'}
-                           type='light'
-                           data-html={true}
-                           effect='solid'
-                           delayHide={500}>
-
-               <span className='tooltip-container'>
-                 <Button onClick={() => this.redirectTo(`/${projectUrl}/me`)}>{t('header.my-space')}</Button>
-                 <Button onClick={() => this.redirectTo('/projects?show=true')}>{t('header.all-projects')}</Button>
-                 <Button className='button-no-border' onClick = { this.props.isShowUpdateProfile } >{t('header.update-my-profile')}</Button>
-                 <Button onClick={() => this.redirectTo('/create-project')}>{t('header.create-project')}</Button>
-                 <Button className='button-no-border' onClick = { this.props.signOut } >{t('header.disconnect')}</Button>
-              </span>
-             </ReactTooltip>
-             { this.renderRedirectTo() }
-          </div>
-        )}
+              <ReactTooltip
+                id={'my-profile'}
+                place={'bottom'}
+                type="light"
+                data-html={true}
+                effect="solid"
+                delayHide={500}
+              >
+                <span className="tooltip-container">
+                  <Button onClick={() => this.redirectTo(`/${projectUrl}/me`)}>
+                    {t('header.my-space')}
+                  </Button>
+                  <Button
+                    onClick={() => this.redirectTo('/projects?show=true')}
+                  >
+                    {t('header.all-projects')}
+                  </Button>
+                  <Button
+                    className="button-no-border"
+                    onClick={this.props.isShowUpdateProfile}
+                  >
+                    {t('header.update-my-profile')}
+                  </Button>
+                  <Button onClick={() => this.redirectTo('/create-project')}>
+                    {t('header.create-project')}
+                  </Button>
+                  <Button
+                    className="button-no-border"
+                    onClick={this.props.signOut}
+                  >
+                    {t('header.disconnect')}
+                  </Button>
+                </span>
+              </ReactTooltip>
+              {this.renderRedirectTo()}
+            </div>
+          )}
         </I18n>
-      )
-    }else {
-      return (<span/>);
+      );
+    } else {
+      return <span />;
     }
   }
 }
@@ -85,7 +103,7 @@ MyProfileTooltip.propTypes = {
   auth: PropTypes.object.isRequired,
   signOut: PropTypes.func.isRequired,
   projectUrl: PropTypes.string,
-  isShowUpdateProfile: PropTypes.func.isRequired
+  isShowUpdateProfile: PropTypes.func.isRequired,
 };
 
 export default MyProfileTooltip;

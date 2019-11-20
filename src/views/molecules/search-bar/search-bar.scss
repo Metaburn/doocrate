@@ -77,16 +77,18 @@
       -moz-osx-font-smoothing: grayscale;
       outline: none;
 
-      &::-webkit-input-placeholder { /* Edge */
-        color: #7B7B7B;
+      &::-webkit-input-placeholder {
+        /* Edge */
+        color: #7b7b7b;
       }
 
-      &:-ms-input-placeholder { /* Internet Explorer 10-11 */
-        color: #7B7B7B;
+      &:-ms-input-placeholder {
+        /* Internet Explorer 10-11 */
+        color: #7b7b7b;
       }
 
       &::placeholder {
-        color: #7B7B7B;
+        color: #7b7b7b;
       }
     }
   }

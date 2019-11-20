@@ -1,6 +1,5 @@
 @import 'views/styles/shared';
 
-
 .header {
   .header-wrapper {
     padding: 5px 0 0 0;
@@ -10,11 +9,11 @@
   }
 
   .toastify--top-right {
-    right:80px;
+    right: 80px;
   }
 
   .toastify--top-left {
-    left:80px;
+    left: 80px;
   }
 
   .header-side {
@@ -40,10 +39,10 @@
     }
 
     button {
-      font-size:0.8em;
+      font-size: 0.8em;
       padding: 0.3em;
 
-      transition-duration: .2s;
+      transition-duration: 0.2s;
       transition: all 0.2s ease;
 
       background: none;
@@ -96,12 +95,11 @@
       display: none;
     }
 
-    .header-actions{
+    .header-actions {
       display: none;
     }
   }
 }
-
 
 @media only screen and (max-width: 480px) {
   .header {

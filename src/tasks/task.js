@@ -1,13 +1,12 @@
 import { Record } from 'immutable';
 
-
 export const Task = new Record({
   id: null,
   title: null,
   assignee: null,
   type: null,
   projectName: null,
-  label: { },
+  label: {},
   listeners: [],
   created: null,
   dueDate: null,
@@ -17,5 +16,5 @@ export const Task = new Record({
   description: null,
   requirements: null,
   isCritical: false,
-  extraFields: null
+  extraFields: null,
 });

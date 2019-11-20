@@ -1,4 +1,4 @@
-@media only screen and (min-width: 768px)  {
+@media only screen and (min-width: 768px) {
   .g-row {
     @include grid-row;
     max-width: 100%;
@@ -23,12 +23,12 @@
     @include grid-column;
     width: 50%;
   }
-  
+
   .g-col-60 {
     @include grid-column;
     width: 60%;
   }
-  
+
   .g-col-70 {
     @include grid-column;
     width: 70%;
@@ -45,7 +45,7 @@
   }
 }
 
-@media (max-width: 767px)  {
+@media (max-width: 767px) {
   .g-row {
     @include grid-row;
     max-width: 100%;

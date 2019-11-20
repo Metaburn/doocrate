@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import { List } from 'immutable';
 import PropTypes from 'prop-types';
 import CommentItem from '../comment-item/comment-item';
@@ -11,12 +11,14 @@ class CommentList extends Component {
     comments: PropTypes.instanceOf(List),
     task: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
-    projectUrl: PropTypes.string.isRequired
+    projectUrl: PropTypes.string.isRequired,
   };
 
   render() {
-    const { projectUrl, auth, comments} = this.props;
-    if(!comments) { return};
+    const { projectUrl, auth, comments } = this.props;
+    if (!comments) {
+      return;
+    }
     let commentItems = comments.map((comment, index) => {
       return (
         <CommentItem
@@ -28,18 +30,18 @@ class CommentList extends Component {
           auth={auth}
           projectUrl={projectUrl}
         />
-      )
+      );
     });
 
     return (
-      <div className='comment-list'>
+      <div className="comment-list">
         <div>
           <div className={'comment-title'}>{i18n.t('comments.title')}</div>
           {commentItems}
         </div>
       </div>
     );
-  };
+  }
 }
 
 export default CommentList;

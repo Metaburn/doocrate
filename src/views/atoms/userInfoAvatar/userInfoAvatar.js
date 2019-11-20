@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
 import UserInfoTooltip from '../../components/user-info-tooltip/user-info-tooltip';
-import {createSelector} from "reselect";
-import { loadUser } from "src/users/actions";
-import {getAuth} from "../../../auth/index";
-import {connect} from "react-redux";
+import { createSelector } from 'reselect';
+import { loadUser } from 'src/users/actions';
+import { getAuth } from '../../../auth/index';
+import { connect } from 'react-redux';
 import './userInfoAvatar.css';
 
 class UserInfoAvatar extends Component {
@@ -14,37 +14,36 @@ class UserInfoAvatar extends Component {
     super(props);
 
     this.state = {
-      isVisible: false
+      isVisible: false,
     };
 
     this.targetElm = createRef();
   }
 
-  toggleTooltip = (event) => {
+  toggleTooltip = event => {
     this.loadUserInfo();
-    if(event) {
+    if (event) {
       event.preventDefault();
       return;
     }
   };
 
-  handleClose = (e) => {
+  handleClose = e => {
     this.setState({ isVisible: false });
   };
 
   loadUserInfo = () => {
     const { userId } = this.props;
 
-    loadUser(userId)
-      .then(snapshot => {
-        if (!snapshot.exists) return;
+    loadUser(userId).then(snapshot => {
+      if (!snapshot.exists) return;
 
-        const user = snapshot.data();
+      const user = snapshot.data();
 
-        this.setState({
-          user,
-          isVisible: true
-        });
+      this.setState({
+        user,
+        isVisible: true,
+      });
     });
   };
 
@@ -55,22 +54,25 @@ class UserInfoAvatar extends Component {
 
     return (
       <I18n ns="translations">
-        {(t) => (
-            <span className="user-info-avatar"
-              onClick={this.toggleTooltip}
-              ref={this.targetElm}>
+        {t => (
+          <span
+            className="user-info-avatar"
+            onClick={this.toggleTooltip}
+            ref={this.targetElm}
+          >
+            <Img className="avatar" src={photoURL} alt={alt} />
 
-              <Img className="avatar" src={photoURL} alt={alt}/>
-
-              <UserInfoTooltip user={user}
-                target={this.targetElm}
-                isVisible={isVisible}
-                handleClose={this.handleClose}
-                uniqueId={uniqueId}
-                userId={userId}
-                projectUrl={projectUrl}/>
-            </span>
-          )}
+            <UserInfoTooltip
+              user={user}
+              target={this.targetElm}
+              isVisible={isVisible}
+              handleClose={this.handleClose}
+              uniqueId={uniqueId}
+              userId={userId}
+              projectUrl={projectUrl}
+            />
+          </span>
+        )}
       </I18n>
     );
   }
@@ -88,19 +90,10 @@ UserInfoAvatar.propTypes = {
 //=====================================
 //  CONNECT
 //-------------------------------------
-const mapStateToProps = createSelector(
-  getAuth,
-  (auth) => ({
-    auth,
-  })
-);
+const mapStateToProps = createSelector(getAuth, auth => ({
+  auth,
+}));
 
+const mapDispatchToProps = Object.assign({});
 
-const mapDispatchToProps = Object.assign(
-  {},
-);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserInfoAvatar);
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfoAvatar);
