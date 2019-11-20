@@ -1,22 +1,26 @@
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom'
+import { Route, Redirect } from 'react-router-dom';
 
-
-const RequireUnauthRoute = ({component: Component, authenticated, ...rest}) => (
+const RequireUnauthRoute = ({
+  component: Component,
+  authenticated,
+  ...rest
+}) => (
   <Route
     {...rest}
     render={props => {
       return authenticated ? (
-        <Redirect to={{
-          pathname: '/',
-          state: {from: props.location}
-        }}/>
+        <Redirect
+          to={{
+            pathname: '/',
+            state: { from: props.location },
+          }}
+        />
       ) : (
-        <Component {...props}/>
-      )
+        <Component {...props} />
+      );
     }}
   />
 );
-
 
 export default RequireUnauthRoute;

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import { projectActions } from 'src/projects';
 
-import {I18n} from 'react-i18next';
+import { I18n } from 'react-i18next';
 import { getAuth } from 'src/auth';
 
 import './projects-page.css';
@@ -22,7 +22,7 @@ export class ProjectsPage extends Component {
   static propTypes = {
     loadProjects: PropTypes.func.isRequired,
     projects: PropTypes.instanceOf(List).isRequired,
-    auth: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
@@ -37,11 +37,11 @@ export class ProjectsPage extends Component {
     const projectsArray = [];
 
     let counter = 1;
-    this.props.projects.forEach((project) => {
-      projectsArray.push([counter++, project.name, project.url])
+    this.props.projects.forEach(project => {
+      projectsArray.push([counter++, project.name, project.url]);
     });
 
-    this.setState({projects: projectsArray});
+    this.setState({ projects: projectsArray });
   }
 
   isAdmin() {
@@ -50,58 +50,56 @@ export class ProjectsPage extends Component {
 
   render() {
     return (
-      <I18n ns='translations'>
-        {
-          (t) => (
-          <div className='projects-page'>
+      <I18n ns="translations">
+        {t => (
+          <div className="projects-page">
             <h1>{t('projects.header')}</h1>
 
-            <a className='burnerot' href={'/burnerot19/task/1'}>ברנרות-Burnerot - לחץ כאן - Click here</a>
-            <br/>
+            <a className="burnerot" href={'/burnerot19/task/1'}>
+              ברנרות-Burnerot - לחץ כאן - Click here
+            </a>
+            <br />
 
-            <table className='report-table'>
+            <table className="report-table">
               <thead>
-              <tr className={`dir-${t('lang-float-reverse')}`}>
-                <th>#</th>
-                <th>{t('projects.name')}</th>
-              </tr>
+                <tr className={`dir-${t('lang-float-reverse')}`}>
+                  <th>#</th>
+                  <th>{t('projects.name')}</th>
+                </tr>
               </thead>
-                <tbody>
-                  {
-                    this.state.projects.map( (project) => (
-                      <tr key={project[0]} className={`dir-${t('lang-float-reverse')}`}>
-                        <th>{project[0]}</th>
-                        <th>
-                          <a href={'/'+project[2]+'/task/1?complete=false'}>{project[1]}</a>
-                        </th>
-                      </tr>))
-                  }
-                  </tbody>
+              <tbody>
+                {this.state.projects.map(project => (
+                  <tr
+                    key={project[0]}
+                    className={`dir-${t('lang-float-reverse')}`}
+                  >
+                    <th>{project[0]}</th>
+                    <th>
+                      <a href={'/' + project[2] + '/task/1?complete=false'}>
+                        {project[1]}
+                      </a>
+                    </th>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
-          )}
+        )}
       </I18n>
     );
   }
 }
 
-
 //=====================================
 //  CONNECT
 //-------------------------------------
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     projects: state.projects.list,
     auth: getAuth(state),
-  }
+  };
 };
 
-const mapDispatchToProps = Object.assign(
-  {},
-  projectActions
-);
+const mapDispatchToProps = Object.assign({}, projectActions);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectsPage);

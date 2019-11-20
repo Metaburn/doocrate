@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import './comment-item.css';
@@ -6,21 +6,20 @@ import Moment from 'react-moment';
 import 'moment/locale/he';
 import 'moment-timezone';
 import Linkify from 'react-linkify';
-import {I18n} from 'react-i18next';
-import Icon from "../../atoms/icon";
-import ToolTip from "react-portal-tooltip";
-import Button from "../button";
-import Textarea from "react-textarea-autosize";
-import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
+import { I18n } from 'react-i18next';
+import Icon from '../../atoms/icon';
+import ToolTip from 'react-portal-tooltip';
+import Button from '../button';
+import Textarea from 'react-textarea-autosize';
+import UserInfoAvatar from '../../atoms/userInfoAvatar/userInfoAvatar';
 
 export class CommentItem extends Component {
   constructor() {
     super(...arguments);
     this.state = {
       body: this.props.comment.body,
-      isInEditMode: false
+      isInEditMode: false,
     };
-
   }
 
   componentWillMount() {
@@ -32,21 +31,21 @@ export class CommentItem extends Component {
   }
 
   updateStateByProps(props) {
-    this.setState({body: props.comment.body});
+    this.setState({ body: props.comment.body });
   }
 
   isValid = () => {
-    return (this.state.body && this.state.body.length > 1)
+    return this.state.body && this.state.body.length > 1;
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     if (!this.isValid()) {
       return;
     }
 
-    this.props.updateComment(this.props.comment, {body: this.state.body});
-    this.setState({isInEditMode: false});
+    this.props.updateComment(this.props.comment, { body: this.state.body });
+    this.setState({ isInEditMode: false });
   };
 
   onRemoveComment = () => {
@@ -54,7 +53,7 @@ export class CommentItem extends Component {
   };
 
   cancelEditComment = () => {
-    this.setState({body: this.props.comment.body, isInEditMode: false});
+    this.setState({ body: this.props.comment.body, isInEditMode: false });
   };
 
   shouldDisplayTooltip = () => {
@@ -69,74 +68,97 @@ export class CommentItem extends Component {
   };
 
   render() {
-    const {comment} = this.props;
+    const { comment } = this.props;
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, {i18n}) => (
-            <div className='comment-item'>
-              <form className='comment-form' onSubmit={this.handleSubmit} noValidate>
-                {this.renderHeader(t, comment)}
-                {this.renderBody(t)}
-                {this.renderSubmit(t)}
-              </form>
-            </div>
-          )
-        }
+      <I18n ns="translations">
+        {(t, { i18n }) => (
+          <div className="comment-item">
+            <form
+              className="comment-form"
+              onSubmit={this.handleSubmit}
+              noValidate
+            >
+              {this.renderHeader(t, comment)}
+              {this.renderBody(t)}
+              {this.renderSubmit(t)}
+            </form>
+          </div>
+        )}
       </I18n>
     );
   }
 
   renderHeader(t, comment) {
     if (!comment.creator) return;
-    const {creator} = comment;
-    const {projectUrl} = this.props;
+    const { creator } = comment;
+    const { projectUrl } = this.props;
 
     return (
-      <div className='comment-header'>
+      <div className="comment-header">
         {this.renderTooltip(t)}
-        <div className='comment-item-creator'>
+        <div className="comment-item-creator">
           <span>
             <UserInfoAvatar
               uniqueId={comment.id}
               photoURL={creator.photoURL}
               userId={creator.id}
               projectUrl={projectUrl}
-              alt={creator.name}/> {creator.name} <Moment locale={t('lang')} unix fromNow>{comment.created.seconds}</Moment></span>
+              alt={creator.name}
+            />{' '}
+            {creator.name}{' '}
+            <Moment locale={t('lang')} unix fromNow>
+              {comment.created.seconds}
+            </Moment>
+          </span>
         </div>
       </div>
     );
   }
 
   renderTooltip(t) {
-    if (!this.shouldDisplayTooltip()){
-      return(<span className='comment-item-tooltip'/>);
+    if (!this.shouldDisplayTooltip()) {
+      return <span className="comment-item-tooltip" />;
     }
 
     let tooltipStyle = {
       style: {
-        "z-index": "2000"
-      }, arrowStyle: {
-
-      }
+        'z-index': '2000',
+      },
+      arrowStyle: {},
     };
 
     return (
-      <div id={`comment-${this.props.commentNumber}`} className='comment-item-tooltip'
-           onMouseEnter={() => this.setState({isTooltipActive: true})}
-           onMouseLeave={() => this.setState({isTooltipActive: false})}>
-        <Icon name='more_horiz'/>
-        <ToolTip active={this.state.isTooltipActive} position='bottom'
-                 parent={`#comment-${this.props.commentNumber}`}
-                 style={tooltipStyle}>
+      <div
+        id={`comment-${this.props.commentNumber}`}
+        className="comment-item-tooltip"
+        onMouseEnter={() => this.setState({ isTooltipActive: true })}
+        onMouseLeave={() => this.setState({ isTooltipActive: false })}
+      >
+        <Icon name="more_horiz" />
+        <ToolTip
+          active={this.state.isTooltipActive}
+          position="bottom"
+          parent={`#comment-${this.props.commentNumber}`}
+          style={tooltipStyle}
+        >
           <span className={`tooltip-container dir-${t('lang-float')}`}>
             <div>
-              <Button className='button-no-border'
-                      onClick={() => this.setState({isInEditMode: true})}><Icon id='edit-icon' name='edit'/> {t('comments.edit-comment')}</Button></div>
+              <Button
+                className="button-no-border"
+                onClick={() => this.setState({ isInEditMode: true })}
+              >
+                <Icon id="edit-icon" name="edit" /> {t('comments.edit-comment')}
+              </Button>
+            </div>
             <div>
-              <Button className='button-no-border'
-                      onClick={this.onRemoveComment}><Icon className={'tooltip-icons'} name='delete'/>  {t('comments.delete-comment')}</Button>
+              <Button
+                className="button-no-border"
+                onClick={this.onRemoveComment}
+              >
+                <Icon className={'tooltip-icons'} name="delete" />{' '}
+                {t('comments.delete-comment')}
+              </Button>
             </div>
           </span>
         </ToolTip>
@@ -145,29 +167,27 @@ export class CommentItem extends Component {
   }
 
   renderBody(t) {
-    const {body, isInEditMode} = this.state;
+    const { body, isInEditMode } = this.state;
     return (
-      <div className='comment-body'>
-        {isInEditMode ?
+      <div className="comment-body">
+        {isInEditMode ? (
           this.renderBodyEditMode(t, body)
-          :
-          <Linkify>
-            {body}
-          </Linkify>
-        }
+        ) : (
+          <Linkify>{body}</Linkify>
+        )}
       </div>
-    )
+    );
   }
 
   renderBodyEditMode(t, body) {
     return (
       <Textarea
-        className='textarea-body'
-        name='comment-body'
+        className="textarea-body"
+        name="comment-body"
         value={body}
         placeholder={t('comments.placeholder')}
-        ref={e => this['bodyInput'] = e}
-        onChange={(e) => this.setState({body: e.target.value})}
+        ref={e => (this['bodyInput'] = e)}
+        onChange={e => this.setState({ body: e.target.value })}
       />
     );
   }
@@ -176,11 +196,16 @@ export class CommentItem extends Component {
     if (!this.state.isInEditMode) return;
 
     return (
-      <div className='button-update-comment'>
-        <input className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
-               type="submit" value={t('comments.update-comment')}/>
-        <Button className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
-                onClick={this.cancelEditComment}>
+      <div className="button-update-comment">
+        <input
+          className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
+          type="submit"
+          value={t('comments.update-comment')}
+        />
+        <Button
+          className={`button button-small button-update-comment ${this.state.showHideSideSubmit}`}
+          onClick={this.cancelEditComment}
+        >
           {t('comments.cancel-edit-comment')}
         </Button>
       </div>
@@ -194,8 +219,7 @@ CommentItem.propTypes = {
   removeComment: PropTypes.func.isRequired,
   updateComment: PropTypes.func.isRequired,
   projectUrl: PropTypes.string.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
-
 
 export default CommentItem;
