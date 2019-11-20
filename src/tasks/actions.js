@@ -1,5 +1,4 @@
 import { taskList } from './task-list';
-import firebase from 'firebase/app';
 
 import {
   CREATE_TASK_ERROR,
