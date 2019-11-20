@@ -9,5 +9,5 @@ export const commentList = new FirebaseList(
     onLoad: commentActions.loadCommentsSuccess,
     onRemove: commentActions.removeCommentSuccess,
   },
-  Comment
+  Comment,
 );

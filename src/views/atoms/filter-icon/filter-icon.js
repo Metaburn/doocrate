@@ -12,7 +12,7 @@ const FilterIcon = ({ isActive, onClick }) => {
       {(t, { i18n }) => (
         <button
           className={`filter-icon-wrapper filter-icon-wrapper-${t(
-            'lang-float'
+            'lang-float',
           )}`}
           onClick={onClick}
           data-tour="three"

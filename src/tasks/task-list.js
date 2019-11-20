@@ -10,5 +10,5 @@ export const taskList = new FirebaseList(
     onLoad: taskActions.loadTasksSuccess,
     onRemove: taskActions.removeTaskSuccess,
   },
-  Task
+  Task,
 );

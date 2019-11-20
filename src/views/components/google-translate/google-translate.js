@@ -30,7 +30,7 @@ class GoogleTranslate extends Component {
         pageLanguage: 'iw',
         layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
       },
-      'google_translate_element'
+      'google_translate_element',
     );
   }
 
@@ -38,7 +38,7 @@ class GoogleTranslate extends Component {
     let addScript = document.createElement('script');
     addScript.setAttribute(
       'src',
-      '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'
+      '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit',
     );
     document.body.appendChild(addScript);
     window.googleTranslateElementInit = this.googleTranslateElementInit;
@@ -53,7 +53,7 @@ class GoogleTranslate extends Component {
 
     // Only if any language is set - unset it
     const selectedLanguage = document.getElementsByClassName(
-      'goog-te-menu-value'
+      'goog-te-menu-value',
     );
     if (!selectedLanguage || selectedLanguage.length <= 0) {
       return;
@@ -66,7 +66,7 @@ class GoogleTranslate extends Component {
 
     // Some language is chosen - untranslate
     const closeButton = iframe[0].contentWindow.document.getElementsByClassName(
-      'goog-close-link'
+      'goog-close-link',
     );
     if (closeButton && closeButton.length > 0) {
       closeButton[0].click();
@@ -77,11 +77,11 @@ class GoogleTranslate extends Component {
   // We simulate this when the user chooses english and the project is hebrew
   clickOnEnglish() {
     const languagesIFrame = document.getElementsByClassName(
-      'goog-te-menu-frame'
+      'goog-te-menu-frame',
     );
     if (languagesIFrame && languagesIFrame.length > 0) {
       const languages = languagesIFrame[0].contentWindow.document.getElementsByClassName(
-        'goog-te-menu2-item'
+        'goog-te-menu2-item',
       );
 
       // Find the english language

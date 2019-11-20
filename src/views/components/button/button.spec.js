@@ -15,7 +15,7 @@ describe('Button', () => {
     const wrapper = shallow(
       <Button>
         <span>Foo</span>
-      </Button>
+      </Button>,
     );
     const button = wrapper.find('button');
 

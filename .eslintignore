@@ -1,2 +1,6 @@
+.circleci/***
+.github/***
+.vscode/***
 **/node_modules/**
-**/functions/**
+functions/**
+***/build/***

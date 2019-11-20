@@ -28,7 +28,7 @@ export function initAuth(dispatch) {
                   authUser,
                   dispatch,
                   unsubscribe,
-                  resolve
+                  resolve,
                 );
               });
             } else {
@@ -36,7 +36,7 @@ export function initAuth(dispatch) {
                 authUser,
                 dispatch,
                 unsubscribe,
-                resolve
+                resolve,
               );
             }
           } else {
@@ -46,7 +46,7 @@ export function initAuth(dispatch) {
         // Call init project again after sigin-in
         dispatch(initProject());
       },
-      error => reject(error)
+      error => reject(error),
     );
   });
 }
@@ -158,7 +158,7 @@ export function updateUserData(authUser, dispatch) {
             authUser,
             userSnapshot,
             fieldsToUpdate,
-            dispatch
+            dispatch,
           );
         } else {
           // Simply update the user fields
@@ -185,7 +185,7 @@ export function updateUserData(authUser, dispatch) {
             authUser,
             userSnapshot,
             newUserData,
-            dispatch
+            dispatch,
           );
         }
         resolve(authUser);
@@ -198,7 +198,7 @@ function dispatchUpdatedAuthUser(
   authUser,
   userSnapshot,
   updatedFields,
-  dispatch
+  dispatch,
 ) {
   Object.assign(authUser, userSnapshot.data());
   Object.assign(authUser, updatedFields);

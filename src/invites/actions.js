@@ -20,7 +20,7 @@ import { firebaseDb } from 'src/firebase';
 export function createInvitationList(
   projectId,
   invitationList,
-  invitationListId
+  invitationListId,
 ) {
   return dispatch => {
     invitationListFirebaseList.rootPath = 'projects';

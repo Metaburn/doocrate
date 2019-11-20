@@ -32,7 +32,7 @@ function render(Component) {
         </div>
       </ConnectedRouter>
     </Provider>,
-    rootElement
+    rootElement,
   );
 }
 

@@ -24,7 +24,7 @@ export const labelsPoolSelector = ({ tasks }) => tasks.labelsPool;
 
 export const getLabelsPool = createSelector(
   labelsPoolSelector,
-  labelsPool => labelsPool
+  labelsPool => labelsPool,
 );
 
 //=====================================
@@ -54,7 +54,7 @@ export const taskFilters = {
         task.type &&
         task.type.value !== 3 &&
         task.type &&
-        task.type.value !== 4
+        task.type.value !== 4,
     );
   },
 

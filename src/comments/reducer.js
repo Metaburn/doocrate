@@ -23,7 +23,7 @@ export const CommentsState = new Record({
 
 export function commentsReducer(
   state = new CommentsState(),
-  { payload, type }
+  { payload, type },
 ) {
   switch (type) {
     case CREATE_COMMENT_SUCCESS:
@@ -46,7 +46,7 @@ export function commentsReducer(
     case LOAD_COMMENTS_SUCCESS:
       return state.set(
         'list',
-        new List(firebaseCollectionToList(payload.reverse()))
+        new List(firebaseCollectionToList(payload.reverse())),
       );
 
     case UNLOAD_COMMENTS_SUCCESS:

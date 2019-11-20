@@ -39,7 +39,7 @@ export function projectsReducer(state = new ProjectState(), { payload, type }) {
     case LOAD_PROJECTS_SUCCESS:
       return state.set(
         'list',
-        new List(firebaseCollectionToList(payload.reverse()))
+        new List(firebaseCollectionToList(payload.reverse())),
       );
 
     case UPDATE_PROJECT_SUCCESS:

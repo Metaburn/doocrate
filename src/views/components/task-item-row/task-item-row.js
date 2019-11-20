@@ -26,7 +26,7 @@ export class TaskItemRow extends Component {
       {
         'task-item--completed': task.completed,
       },
-      { 'is-active': this.props.isActive }
+      { 'is-active': this.props.isActive },
     );
 
     return (

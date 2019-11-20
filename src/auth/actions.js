@@ -122,17 +122,15 @@ export function signInSuccess(result) {
 export function signInWithFacebook(isIssues) {
   if (!isIssues) {
     return authenticate(new firebase.auth.FacebookAuthProvider());
-  } else {
-    return authenticatePopup(new firebase.auth.FacebookAuthProvider());
   }
+  return authenticatePopup(new firebase.auth.FacebookAuthProvider());
 }
 
 export function signInWithGoogle(isIssues) {
   if (!isIssues) {
     return authenticate(new firebase.auth.GoogleAuthProvider());
-  } else {
-    return authenticatePopup(new firebase.auth.GoogleAuthProvider());
   }
+  return authenticatePopup(new firebase.auth.GoogleAuthProvider());
 }
 
 export function signOut() {
@@ -145,7 +143,7 @@ export function isShowUpdateProfile(isShow, includingBio) {
   return dispatch => {
     dispatch({
       type: UPDATE_PROFILE,
-      payload: { show: isShow, includingBio: includingBio },
+      payload: { show: isShow, includingBio },
     });
   };
 }

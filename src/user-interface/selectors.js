@@ -6,6 +6,6 @@ export const getTourState = ({ userInterface }) => userInterface.tour;
 
 export const getMenuIsOpen = createSelector(
   getMenuIsOpenState,
-  menuIsOpen => menuIsOpen
+  menuIsOpen => menuIsOpen,
 );
 export const getTour = createSelector(getTourState, tour => tour);

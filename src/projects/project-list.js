@@ -9,5 +9,5 @@ export const projectList = new FirebaseList(
     onLoad: projectActions.loadProjectsSuccess,
     onRemove: projectActions.removeProjectSuccess,
   },
-  Project
+  Project,
 );

@@ -6,16 +6,18 @@
       "jsx": true
     }
   },
-  "extends": ["plugin:jsx-a11y/recommended", "prettier", "prettier/react"],
   "env": {
     "browser": true,
-    "es6": true
+    "node": true,
+    "es6": true,
+    "jest": true
   },
-  "plugins": ["jsx-a11y", "prettier", "react", "react"],
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "plugins": ["prettier", "react"],
   "rules": {
     "prettier/prettier": [
       "error",
-      { "trailingComma": "es5", "singleQuote": true }
+      { "trailingComma": "all", "singleQuote": true }
     ],
     "no-await-in-loop": 0,
     "no-return-await": 0,
@@ -30,6 +32,7 @@
     "import/no-named-as-default": 0,
     "import/no-named-as-default-member": 0,
     "import/no-unresolved": 0,
-    "import/no-webpack-loader-syntax": 0
+    "import/no-webpack-loader-syntax": 0,
+    "no-use-before-define": 0
   }
 }

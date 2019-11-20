@@ -50,7 +50,7 @@ class TaskHeaderTooltip extends Component {
         >
           <div
             className={`task-header-tooltip-container dir-${i18n.t(
-              'lang-float'
+              'lang-float',
             )}`}
           >
             {isShowUnassignButton && (

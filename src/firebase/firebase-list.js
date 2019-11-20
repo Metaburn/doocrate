@@ -15,7 +15,7 @@ export class FirebaseList {
     query = null,
     orderBy = null,
     rootPath = null,
-    rootDocId = null
+    rootDocId = null,
   ) {
     this._actions = actions;
     this._modelClass = modelClass;
@@ -122,13 +122,13 @@ export class FirebaseList {
       collection = collection.where(
         this._query[0],
         this._query[1],
-        this._query[2]
+        this._query[2],
       );
     }
     if (this._orderBy) {
       collection = collection.orderBy(
         this._orderBy.name,
-        this._orderBy.direction
+        this._orderBy.direction,
       );
     }
     let initialized = false;
@@ -147,8 +147,8 @@ export class FirebaseList {
             emit(
               this._actions.onAdd(
                 this.unwrapSnapshot(change.doc),
-                isLocalChange
-              )
+                isLocalChange,
+              ),
             );
           } else {
             list.push(this.unwrapSnapshot(change.doc));

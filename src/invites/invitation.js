@@ -27,5 +27,5 @@ export const invitationFirebaseList = new FirebaseList(
     onChange: InvitationActions.updateInvitationSuccess,
   },
   Invitation,
-  'invitations'
+  'invitations',
 );
