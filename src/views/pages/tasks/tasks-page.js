@@ -54,6 +54,8 @@ export class TasksPage extends Component {
 
     // TODO: unused - remove?
     window.changeLabelColor = setLabelWithRandomColor;
+
+    this.debouncedSetQuery = _.debounce(this.props.history.push, 300);
   }
 
   componentWillMount() {
@@ -164,15 +166,27 @@ export class TasksPage extends Component {
 
   getFilterParams = props => {
     const urlParams = getUrlSearchParams(props.location.search);
-    this.setState({
+    const queryFromQS = urlParams.query || '';
+    let stateUpdate = {
       filterParams: {
         filter: urlParams['filter'] || null,
         typeText: urlParams['text'] || null,
         complete: urlParams['complete'] || null,
         labels: urlParams['labels'] || null,
-        query: urlParams['query'] || this.state.searchQuery || null,
+        query: queryFromQS,
       },
-    });
+    };
+
+    // on load it will fill the empty input with the value from QS
+    // on clear url (from home btn) it will clear the input
+    if (
+      this.state.searchQuery !== queryFromQS &&
+      (queryFromQS === '' || this.state.searchQuery === '')
+    ) {
+      stateUpdate.searchQuery = queryFromQS;
+    }
+
+    this.setState(stateUpdate);
   };
 
   filterTasksFromState(nextFilters, tasks) {
@@ -362,9 +376,14 @@ export class TasksPage extends Component {
   }
 
   onQueryChange = query => {
+    this.debouncedSetQuery({
+      search: setQueryParams(['query=' + query]),
+    });
+
+    // updating only the input value for fast reactivity.
+    // the state.filterParams.query value will be updated from the QS on the next render (changing QS is debounced)
     this.setState({
       searchQuery: query,
-      filterParams: { ...this.state.filterParams, query },
     });
   };
 
@@ -568,9 +587,6 @@ export class TasksPage extends Component {
     const tasksCount =
       (filteredTasks.size > 0 && filteredTasks.size) || tasks.size;
     const title = this.getSelectedFilterTitle();
-
-    // todo: a better implementation is to calculate the filters from params with reselect, cause now every render cycle
-    // here sends <TopNav> a new object for 'query' param
 
     return (
       <div className="task-page-root-wrapper">
