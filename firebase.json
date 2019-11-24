@@ -1,15 +1,16 @@
 {
   "firestore": {
-    "rules": "firestore.rules",
+    "rules": "rules/firestore.rules",
     "indexes": "firestore.indexes.json"
+  },
+  "emulators": {
+    "firestore": {
+      "port": 8080
+    }
   },
   "hosting": {
     "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "headers": [
       {
         "source": "**/*",
@@ -31,15 +32,17 @@
             "value": "1; mode=block"
           }
         ]
-      }, {
-        "source": "/service-worker.js",
-        "headers": [{
-          "key": "Cache-Control",
-          "value": "no-cache"
-        }]
       },
       {
-        // Not sure if that is working
+        "source": "/service-worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache"
+          }
+        ]
+      },
+      {
         "source": "**/*.@(js|css|html)",
         "headers": [
           {
@@ -50,13 +53,10 @@
       }
     ],
     "rewrites": [
-      // The following rewrites helps to match function to hosting site
       {
         "source": "/api/**",
         "function": "api"
       },
-      // Rewrites order is important as first rule followed first
-      // Excludes specified pathways from rewrites
       {
         "source": "!**/*.@(js|css)",
         "destination": "/index.html"
