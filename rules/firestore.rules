@@ -43,12 +43,6 @@ service cloud.firestore {
       && !resource.data.keys().hasAll(['assignee']));
     }
 
-    // Check that user is sending ONLY listeners as an Array and nothing more
-    // This allows an auth user to update only the listeners field
-    function isUserSendingOnlyListeners() {
-      return request.resource.data.keys().hasAll(['listeners']) && request.resource.size() == resource.size()
-    }
-
     // Check if project is public
     // or if user has an email under the invites
     function isUserInvited(anyProject) {
