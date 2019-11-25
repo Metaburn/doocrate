@@ -50,14 +50,8 @@ service cloud.firestore {
       return request.auth.token.email in get(/databases/$(database)/documents/projects/$(anyProject)/invitation_lists/main).data.invites;
     }
 
-    // Since firebase doesn't have the ability to specify what CAN be updated
-    // We need to say what CANNOT be updated - that is all of the tasks fields BUT listeners
     function isNotUpdatingAnythingButListeners() {
-      return notUpdating('id') && notUpdating('title') && notUpdating('assignee')
-      && notUpdating('type') && notUpdating('projectName') && notUpdating('label')
-      && notUpdating('created') && notUpdating('dueDate') && notUpdating('creator')
-      && notUpdating('isDone') && notUpdating('doneDate') && notUpdating('description')
-      && notUpdating('requirements') && notUpdating('isCritical') && notUpdating('extraFields');
+      return request.resource.data.size() == 1 && request.resource.data.keys().hasOnly(['listeners'])
     }
 
     // Allow create for anyone who is auth
@@ -76,8 +70,10 @@ service cloud.firestore {
         // Uncomment the following to allow unassigned task to be assigned by all
         allow update: if isSignedIn() && isNotUpdatingAnythingButListeners()
             ||
-              (isUserInvited(anyProject) && (isGuide() || isUserAssigneeOrCreator()
-              || isTaskUnassigned() || isNotUpdatingAnythingButListeners())
+              (
+                isUserInvited(anyProject) && (
+                  isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isNotUpdatingAnythingButListeners()
+                )
               )
             || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
         allow delete: if isSignedIn() && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && isCreator()) || isSuperAdmin();

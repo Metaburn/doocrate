@@ -3,7 +3,11 @@ version: 2.0
 jobs:
   build:
     docker:
-      - image: circleci/node:8.11
+      - image: circleci/node:8.15.1
+
+    environment:
+      # Configure the JVM and Gradle to avoid OOM errors
+      _JAVA_OPTIONS: '-Xmx3g'
 
     working_directory: ~/repo
 
@@ -26,6 +30,14 @@ jobs:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run:
+          name: Test firestore rules
+          command: |
+            sudo apt-get update
+            sudo apt install openjdk-8-jdk
+            sudo ./node_modules/.bin/firebase setup:emulators:firestore
+            sudo ./node_modules/.bin/firebase emulators:exec --only firestore ./node_modules/.bin/mocha
 
       - run:
           name: Build and test
