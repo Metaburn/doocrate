@@ -43,6 +43,8 @@
     "test:debug": "cross-env CI=true NODE_PATH=. react-scripts --inspect-brk=5858 test --env=jsdom --runInBand --no-cache",
     "test:ci": "cross-env CI=true NODE_PATH=. react-scripts test --env=jsdom",
     "test:firestore-rules": "firebase emulators:exec --only firestore mocha",
+    "test:setup-firestore": "firebase setup:emulators:firestore",
+    "test:ci:firestore-rules": "firebase emulators:exec --only firestore mocha",
     "copy-staging": "cp -R src/firebase/config.staging.js src/firebase/config.js",
     "copy-production": "cp -R src/firebase/config.production.js src/firebase/config.js",
     "copy-locals": "cp -R public/locales build/locales"
