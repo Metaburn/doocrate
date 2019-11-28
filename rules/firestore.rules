@@ -51,7 +51,11 @@ service cloud.firestore {
     }
 
     function isNotUpdatingAnythingButListeners() {
-      return request.resource.data.size() == 1 && request.resource.data.keys().hasOnly(['listeners'])
+       return notUpdating('id') && notUpdating('title') && notUpdating('assignee')
+       && notUpdating('type') && notUpdating('projectName') && notUpdating('label')
+       && notUpdating('created') && notUpdating('dueDate') && notUpdating('creator')
+       && notUpdating('isDone') && notUpdating('doneDate') && notUpdating('description')
+       && notUpdating('requirements') && notUpdating('isCritical') && notUpdating('extraFields');
     }
 
     // Allow create for anyone who is auth
