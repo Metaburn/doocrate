@@ -374,12 +374,15 @@ describe('## Doocrate Rules', () => {
 
     it('should allow anyone (non invited) to listen to a task', async () => {
       // Next we initialize a user without permission to project
-      const db = authedApp({ uid: 'bob', email: 'bob@test.com' });
-      const task = db
+      const notInvitedApp = authedApp({ uid: 'bob', email: 'bob@test.com' });
+      const task = notInvitedApp
         .collection('projects')
         .doc(projectDocId)
         .collection('tasks')
         .doc(taskId);
+
+      console.log((await task.get())._document.proto, '***');
+
       await firebase.assertSucceeds(
         task.set({
           listeners: ['bob', 'alice@test.com'],
