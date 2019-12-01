@@ -166,6 +166,7 @@ export class TasksPage extends Component {
         filter: urlParams["filter"] || null,
         typeText: urlParams["text"] || null,
         complete: urlParams["complete"] || null,
+        updatedFirst: urlParams["updatedFirst"] || null,
         labels: urlParams["labels"] || null,
         query: urlParams["query"] || this.state.searchQuery || null
       }

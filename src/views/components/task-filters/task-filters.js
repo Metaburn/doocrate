@@ -39,6 +39,11 @@ class TaskFilters extends Component {
     return params['text'];
   }
 
+  static getUpdatedFirst() {
+    const params = getUrlSearchParams();
+    return params['updatedFirst'];
+  }
+
   onCSVLink() {
     this.setState({CSVLink: <span><CSVLink className={'button-as-link'} data={this.props.generateCSV()}>Download Tasks as CSV (Admin)</CSVLink></span>});
   }
@@ -121,6 +126,11 @@ class TaskFilters extends Component {
           <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'critical'} to={{ pathname: defaultTask,
             search: setQueryParams(['filter=critical'])}}>
             {i18n.t('task.critical-tasks')}
+          </NavLink>
+
+          <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === 'newtasks'} to={{ pathname: defaultTask,
+            search: setQueryParams(['filter=newtasks'])}}>
+            {i18n.t('task.new-tasks')}
           </NavLink>
 
           <NavLink className={'filter-link'} isActive={(match, location) => TaskFilters.getFilterQuery(location) === undefined} to={{
