@@ -29,7 +29,8 @@ export class ReportsPage extends Component {
       addedEmailsStr: "",
       validEmails: [],
       invalidEmails: [],
-      invitations: []
+      invitations: [],
+      CSVLink: undefined,
     };
   }
 
@@ -207,6 +208,13 @@ export class ReportsPage extends Component {
     }
   }
 
+  onCSVLink = () => {
+    this.setState({
+      CSVLink: <span>
+        <CSVLink className={'button-as-link'} data={this.state.query} >הורדת דוח</CSVLink>
+      </span>});
+  };
+
   render() {
     // 1: Get all users with at least one tasks that is assigned to them
     // 2: Get report based on a Tag (like in the main page)
@@ -235,7 +243,10 @@ export class ReportsPage extends Component {
               {query.length}
 
               <br />
-              <CSVLink data={query}>הורדת הדוח</CSVLink>
+              {this.state.CSVLink ?
+                this.state.CSVLink :
+                <button className={'button-as-link'} onClick={this.onCSVLink.bind(this)}>הכן הורדה של הדוח</button>
+              }
 
               <table className="report-table">
                 <thead>
