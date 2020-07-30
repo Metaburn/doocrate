@@ -26,10 +26,18 @@ exports.project_permissions = async (req, res) => {
       .send(JSON.stringify({ error: 'Project is invalid' }));
   }
 
-  const project = await firestore.collection('projects').doc(project);
+  console.log({ project });
+  const projectDocument = await firestore
+    .collection('projects')
+    .doc(project)
+    .get();
+  const projectData = projectDocument.data();
+
+  console.log({ projectDocument });
+  console.log({ projectData });
 
   // Public project are internet wide public - this is here till we implement an invites system
-  if (project.isPublic === true) {
+  if (projectData.isPublic === true) {
     const payload = {
       canAdd: true,
       canAssign: true,
