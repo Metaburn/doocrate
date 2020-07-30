@@ -46,8 +46,8 @@ service cloud.firestore {
     // Check if project is public
     // or if user has an email under the invites
     function isUserInvited(anyProject) {
-    	//return get(/databases/$(database)/documents/projects/$(anyProject)).data.isPublic ||
-      return request.auth.token.email in get(/databases/$(database)/documents/projects/$(anyProject)/invitation_lists/main).data.invites;
+    	return get(/databases/$(database)/documents/projects/$(anyProject)).data.isPublic;
+      //return request.auth.token.email in get(/databases/$(database)/documents/projects/$(anyProject)/invitation_lists/main).data.invites;
     }
 
     function isNotUpdatingAnythingButListeners() {
