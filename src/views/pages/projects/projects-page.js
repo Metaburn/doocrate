@@ -54,10 +54,6 @@ export class ProjectsPage extends Component {
         {t => (
           <div className="projects-page">
             <h1>{t('projects.header')}</h1>
-
-            <a className="burnerot" href={'/burnerot19/task/1'}>
-              ברנרות-Burnerot - לחץ כאן - Click here
-            </a>
             <br />
 
             <table className="report-table">
