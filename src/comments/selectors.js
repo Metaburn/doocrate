@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-
 export function getComments(state) {
   return state.comments;
 }
@@ -13,14 +12,10 @@ export function getAuth(state) {
   return state.auth;
 }
 
-
 //=====================================
 //  MEMOIZED SELECTORS
 //-------------------------------------
 
-export const getVisibleComments = createSelector(
-  getCommentList,
-  (comments) => {
-    return comments;
-  }
-);
+export const getVisibleComments = createSelector(getCommentList, comments => {
+  return comments;
+});

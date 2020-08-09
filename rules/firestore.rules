@@ -1,0 +1,139 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    //Read more about this here - https://dev.to/chinchang/restrict-specific-fields-updation-in-firebase-firestore-ohp
+    function notUpdating(field) {
+     return !(field in request.resource.data)
+      || resource.data[field] == request.resource.data[field]
+    }
+
+    // This is root level admin
+    function isSuperAdmin() {
+      return exists(/databases/$(database)/documents/super_admins/$(request.auth.uid));
+    }
+
+    function isSpecificProjectAdmin(anyProject) {
+      return exists(/databases/$(database)/documents/admins/$(request.auth.uid)/projects/$(anyProject))
+    }
+
+    function isGuide() {
+      return exists(/databases/$(database)/documents/guides/$(request.auth.uid));
+    }
+
+    function isCreator() {
+      return resource.data.creator != null &&
+      	(request.auth.uid == resource.data.creator.data.id || request.auth.uid == resource.data.creator.id);
+    }
+
+    function isUserAssignee() {
+    	return resource.data.assignee != null &&
+      	(request.auth.uid == resource.data.assignee.data.id || request.auth.uid == resource.data.assignee.id);
+    }
+
+    function isUserAssigneeOrCreator() {
+    	return isCreator() || isUserAssignee();
+    }
+
+    function isTaskUnassigned() {
+      return (request.resource.data.keys().hasAll(['assignee'])
+      && !resource.data.keys().hasAll(['assignee']));
+    }
+
+    // Check if project is public
+    // or if user has an email under the invites
+    function isUserInvited(anyProject) {
+    	return get(/databases/$(database)/documents/projects/$(anyProject)).data.isPublic;
+      //return request.auth.token.email in get(/databases/$(database)/documents/projects/$(anyProject)/invitation_lists/main).data.invites;
+    }
+
+    function isNotUpdatingAnythingButListeners() {
+       return notUpdating('id') && notUpdating('title') && notUpdating('assignee')
+       && notUpdating('type') && notUpdating('projectName') && notUpdating('label')
+       && notUpdating('created') && notUpdating('dueDate') && notUpdating('creator')
+       && notUpdating('isDone') && notUpdating('doneDate') && notUpdating('description')
+       && notUpdating('requirements') && notUpdating('isCritical') && notUpdating('extraFields');
+    }
+
+    // Allow create for anyone who is auth
+    // Allow to update it the user is the project creator
+    match /projects/{anyProject} {
+      allow create: if isSignedIn();
+      allow read: if true; //Allow all to read the existing project
+      allow update: if isSignedIn() && isCreator() || isSuperAdmin();
+      allow delete: if isSignedIn() && isCreator() || isSuperAdmin();
+
+      match /tasks/{anyTask} {
+        allow read: if isSignedIn();
+        // Allow create: if authenticated
+        // Uncommment the canCreateTask will not allow users who already have tasks to create new tasks
+        allow create: if isSignedIn() && isUserInvited(anyProject) || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
+        // Uncomment the following to allow unassigned task to be assigned by all
+        allow update: if isSignedIn() && isNotUpdatingAnythingButListeners()
+            ||
+              (
+                isUserInvited(anyProject) && (
+                  isGuide() || isUserAssigneeOrCreator() || isTaskUnassigned() || isNotUpdatingAnythingButListeners()
+                )
+              )
+            || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
+        allow delete: if isSignedIn() && isSpecificProjectAdmin(anyProject) || (isUserInvited(anyProject) && isCreator()) || isSuperAdmin();
+      }
+
+      match /comments/{anyComment} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && isUserInvited(anyProject) || isSpecificProjectAdmin(anyProject) || isSuperAdmin();
+        allow update: if isSignedIn() && isCreator();
+        allow delete: if isSignedIn() && isCreator();
+      }
+
+      match /invitation_lists/{anyInvitationList} {
+        allow create: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow read: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow update: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+     }
+
+     match /invitations/{anyInvitation} {
+        allow create: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        // TODO perhaps I need to set that for the create tasks
+        allow read: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow update: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+      }
+
+      match /colors/{anyColor} {
+        allow create: if isSignedIn();
+        allow read: if isSignedIn();
+        allow update: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+      }
+
+      match /labels/{anyLabel} {
+        allow create: if isSignedIn();
+        allow read: if isSignedIn();
+        allow update: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+        allow delete: if isSignedIn() && (isSpecificProjectAdmin(anyProject) || isSuperAdmin());
+      }
+    }
+
+    match /users/{userId} {
+      allow read: if isSignedIn(); // Auth users can read
+      allow write: if userId == request.auth.uid || isSuperAdmin();
+    }
+
+    match /admins/{anyAdmin} {
+      allow read: if isSignedIn();
+      match /projects/{anyProject} {
+        allow read: if isSignedIn();
+      }
+    }
+
+    match /guides/{anyGuide} {
+      allow read: if isSignedIn();
+    }
+  }
+}

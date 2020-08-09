@@ -1,5 +1,5 @@
 import { List, Record } from 'immutable';
-import { showError } from "src/notification/actions"
+import { showError } from 'src/notification/actions';
 
 import {
   CREATE_PROJECT_SUCCESS,
@@ -9,7 +9,7 @@ import {
   NEW_PROJECT_CREATED,
   CREATE_PROJECT_ERROR,
   SET_USER_PERMISSIONS,
-  SET_USER_PERMISSIONS_ERROR
+  SET_USER_PERMISSIONS_ERROR,
 } from './action-types';
 import { SELECT_PROJECT } from './action-types';
 import { firebaseCollectionToList } from 'src/firebase/firebase-list';
@@ -17,12 +17,10 @@ import { firebaseCollectionToList } from 'src/firebase/firebase-list';
 export const ProjectState = new Record({
   list: new List(),
   selectedProject: null,
-  selectedProjectUserPermissions: {
-  },
+  selectedProjectUserPermissions: {},
 });
 
-
-export function projectsReducer(state = new ProjectState(), {payload, type}) {
+export function projectsReducer(state = new ProjectState(), { payload, type }) {
   switch (type) {
     // When creating a new project we set the selected project
     case NEW_PROJECT_CREATED:
@@ -30,22 +28,25 @@ export function projectsReducer(state = new ProjectState(), {payload, type}) {
 
     case CREATE_PROJECT_SUCCESS:
       return state.merge({
-        list: state.list.unshift(payload)
+        list: state.list.unshift(payload),
       });
 
     case REMOVE_PROJECT_SUCCESS:
       return state.merge({
-        list: state.list.filter(project => project.id !== payload.id)
+        list: state.list.filter(project => project.id !== payload.id),
       });
 
     case LOAD_PROJECTS_SUCCESS:
-      return state.set('list', new List(firebaseCollectionToList(payload.reverse())));
+      return state.set(
+        'list',
+        new List(firebaseCollectionToList(payload.reverse())),
+      );
 
     case UPDATE_PROJECT_SUCCESS:
       return state.merge({
         list: state.list.map(project => {
           return project.url === payload.url ? payload : project;
-        })
+        }),
       });
 
     case SELECT_PROJECT:

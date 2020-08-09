@@ -1,114 +1,143 @@
-import React, {Component, Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '../button';
 import Icon from '../../atoms/icon';
 import Img from 'react-image';
 import { I18n } from 'react-i18next';
-import UserInfoAvatar from "../../atoms/userInfoAvatar/userInfoAvatar";
+import UserInfoAvatar from '../../atoms/userInfoAvatar/userInfoAvatar';
 
 import follow from './follow.png';
 import './task-view-header.css';
-import TaskHeaderTooltip from "../../molecules/TaskHeaderTooltip/taskHeaderTooltip";
-import CriticalIcon from "../../atoms/criticalIcon/criticalIcon";
+import TaskHeaderTooltip from '../../molecules/TaskHeaderTooltip/taskHeaderTooltip';
+import CriticalIcon from '../../atoms/criticalIcon/criticalIcon';
 
 export class TaskViewHeader extends Component {
   render() {
-    const { task, isDraft, isShowDeleteButton, isShowMarkAsDoneButton,
-      isShowUnassignButton, showButtonAsFollow, isShowSaveButton,
-      closeTaskView,assignTask, onUnassignTask, saveTask, projectUrl,
-      isShowEditButton, onEditTask, markAsDoneUndone, onDeleteTask, userPermissions} = this.props;
-    const assignee = task? task.assignee : {};
+    const {
+      task,
+      isDraft,
+      isShowDeleteButton,
+      isShowMarkAsDoneButton,
+      isShowUnassignButton,
+      showButtonAsFollow,
+      isShowSaveButton,
+      closeTaskView,
+      assignTask,
+      onUnassignTask,
+      saveTask,
+      projectUrl,
+      isShowEditButton,
+      onEditTask,
+      markAsDoneUndone,
+      onDeleteTask,
+      userPermissions,
+    } = this.props;
+    const assignee = task ? task.assignee : {};
 
-    return(
-      <I18n ns='translations'>
-      {
-      (t, { i18n }) => (
-        <div className='task-view-header' name='task-view-header'>
+    return (
+      <I18n ns="translations">
+        {(t, { i18n }) => (
+          <div className="task-view-header" name="task-view-header">
+            <div className={'task-view-header-actions'}>
+              <button
+                onClick={closeTaskView}
+                className="button-no-border close-button"
+              >
+                <Icon name="close" className="close-icon grow" />
+              </button>
 
-          <div className={'task-view-header-actions'}>
+              {!isDraft && isShowEditButton && (
+                <button
+                  onClick={onEditTask}
+                  className="button button-small action-button"
+                >
+                  <Icon name={'edit'} className={'header-icon grow'} />
+                </button>
+              )}
 
-            <button onClick={closeTaskView} className="button-no-border close-button">
-              <Icon name="close" className="close-icon grow"/>
-            </button>
-
-            {!isDraft && isShowEditButton &&
-            <button onClick={onEditTask} className="button button-small action-button">
-              <Icon name={"edit"} className={"header-icon grow"}/>
-            </button>
-            }
-
-            { isShowSaveButton && ! isDraft &&
-            <Button
-              className='button button-small action-button'
-              onClick={()=> { saveTask() }}
-              type='button'>{t('task.save')}</Button>
-            }
-
-            { !isDraft ?
-              (showButtonAsFollow ?
-                <Button className='button button-small action-button'
-                        onClick={() => this.props.followTask(task)}
-                        alt={t('follow-task-alt')}>
-                  <span>{t('task.follow-task')}</span>
-                  <Img className='follow-icon' src={follow}/>
-                </Button>
-                :
-                <Button className='button button-small action-button'
-                        onClick={() => this.props.unfollowTask(task)}
-                        alt={t('follow-task-alt')}>
-                  <span>{t('task.unfollow-task')}</span>
-                  <Img className='follow-icon' src={follow}/>
-                </Button>
-              ): ''
-            }
-          </div>
-
-          <div className={`task-header-tooltip-wrapper lang-${i18n.language}`}>
-
-            { task && task.isCritical &&
-              <CriticalIcon showText={true}/>
-            }
-
-            {isDraft || userPermissions.canAssign === false ? '' : (!assignee) ?
-              <Fragment>
+              {isShowSaveButton && !isDraft && (
                 <Button
-                  className={`button button-small action-button assign_task lang-${i18n.language}`}
-                  onClick={()=>assignTask(task)}
-                  type='button'>
-                  <span>
-                    {i18n.t('task.take-responsibility')}
-                  </span>
+                  className="button button-small action-button"
+                  onClick={() => {
+                    saveTask();
+                  }}
+                  type="button"
+                >
+                  {t('task.save')}
                 </Button>
-              </Fragment>
-              :
+              )}
 
-              <div className='avatar-container'>
-                <UserInfoAvatar
-                  uniqueId={'task-header-assignee'}
-                  photoURL={assignee.photoURL}
-                  userId={assignee.id}
-                  alt={assignee.name}
-                  projectUrl={projectUrl} />
-              </div>}
+              {!isDraft ? (
+                showButtonAsFollow ? (
+                  <Button
+                    className="button button-small action-button"
+                    onClick={() => this.props.followTask(task)}
+                    alt={t('follow-task-alt')}
+                  >
+                    <span>{t('task.follow-task')}</span>
+                    <Img className="follow-icon" src={follow} />
+                  </Button>
+                ) : (
+                  <Button
+                    className="button button-small action-button"
+                    onClick={() => this.props.unfollowTask(task)}
+                    alt={t('follow-task-alt')}
+                  >
+                    <span>{t('task.unfollow-task')}</span>
+                    <Img className="follow-icon" src={follow} />
+                  </Button>
+                )
+              ) : (
+                ''
+              )}
+            </div>
 
-            { !isDraft &&
-              <TaskHeaderTooltip
-                isShowMarkAsDoneButton={isShowMarkAsDoneButton}
-                isIconDoneUndone={task && task.isDone}
-                isShowDeleteButton={isShowDeleteButton}
-                isShowUnassignButton={isShowUnassignButton}
-                onSetAsDoneUndone={() => markAsDoneUndone(task)}
-                onDeleteTask={() => onDeleteTask(task)}
-                onUnassignTask={() => onUnassignTask(task)}/> }
+            <div
+              className={`task-header-tooltip-wrapper lang-${i18n.language}`}
+            >
+              {task && task.isCritical && <CriticalIcon showText={true} />}
+
+              {isDraft || userPermissions.canAssign === false ? (
+                ''
+              ) : !assignee ? (
+                <Fragment>
+                  <Button
+                    className={`button button-small action-button assign_task lang-${i18n.language}`}
+                    onClick={() => assignTask(task)}
+                    type="button"
+                  >
+                    <span>{i18n.t('task.take-responsibility')}</span>
+                  </Button>
+                </Fragment>
+              ) : (
+                <div className="avatar-container">
+                  <UserInfoAvatar
+                    uniqueId={'task-header-assignee'}
+                    photoURL={assignee.photoURL}
+                    userId={assignee.id}
+                    alt={assignee.name}
+                    projectUrl={projectUrl}
+                  />
+                </div>
+              )}
+
+              {!isDraft && (
+                <TaskHeaderTooltip
+                  isShowMarkAsDoneButton={isShowMarkAsDoneButton}
+                  isIconDoneUndone={task && task.isDone}
+                  isShowDeleteButton={isShowDeleteButton}
+                  isShowUnassignButton={isShowUnassignButton}
+                  onSetAsDoneUndone={() => markAsDoneUndone(task)}
+                  onDeleteTask={() => onDeleteTask(task)}
+                  onUnassignTask={() => onUnassignTask(task)}
+                />
+              )}
+            </div>
           </div>
-
-        </div>
-      )}
+        )}
       </I18n>
-    )
-  };
-
-
+    );
+  }
 }
 
 TaskViewHeader.propTypes = {

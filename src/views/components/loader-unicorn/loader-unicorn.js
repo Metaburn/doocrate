@@ -4,18 +4,20 @@ import PropTypes from 'prop-types';
 import './loader-unicorn.css';
 
 const LoaderUnicorn = ({ isShow }) => {
-  if (!isShow) { return null; }
+  if (!isShow) {
+    return null;
+  }
 
   const componentClasses = ['loader-unicorn'];
-  if(!isShow) { componentClasses.push('hideme'); }
+  if (!isShow) {
+    componentClasses.push('hideme');
+  }
 
-  return(
-    <div className={componentClasses.join(' ')} />
-  );
+  return <div className={componentClasses.join(' ')} />;
 };
 
 LoaderUnicorn.propTypes = {
-  isShow: PropTypes.bool.isRequired
+  isShow: PropTypes.bool.isRequired,
 };
 
 export default LoaderUnicorn;

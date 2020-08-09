@@ -2,7 +2,6 @@ import React from 'react';
 import { render, shallow } from 'enzyme';
 import Button from './button';
 
-
 describe('Button', () => {
   it('should render a button with text node', () => {
     const wrapper = render(<Button>Foo</Button>);
@@ -13,7 +12,11 @@ describe('Button', () => {
   });
 
   it('should render a button with child element', () => {
-    const wrapper = shallow(<Button><span>Foo</span></Button>);
+    const wrapper = shallow(
+      <Button>
+        <span>Foo</span>
+      </Button>,
+    );
     const button = wrapper.find('button');
 
     expect(button.length).toBe(1);

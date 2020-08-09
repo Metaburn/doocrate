@@ -6,7 +6,7 @@
 
 .filter-side-menu {
   background: #eee;
-  transition: .3s ease-in-out;
+  transition: 0.3s ease-in-out;
 
   /* Position and sizing of clickable cross button */
   .bm-cross-button {
@@ -34,7 +34,6 @@
 
   /* Wrapper for item list */
   .bm-item-list {
-
   }
 
   /* Individual item */
@@ -47,7 +46,6 @@
     background: rgba(0, 0, 0, 0.3);
     right: 0; //Fixes an issue of bm is clickable when menu is collapsed
   }
-
 }
 
 /*
@@ -64,7 +62,6 @@ Note: Beware of modifying this element as it can break the animations - you shou
 }
 
 .left-menu {
-
 }
 
 /* Position and sizing of burger button */
@@ -81,4 +78,3 @@ Note: Beware of modifying this element as it can break the animations - you shou
 .bm-burger-bars-hover {
   background: #a90000;
 }
-

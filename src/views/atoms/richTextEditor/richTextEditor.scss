@@ -1,7 +1,6 @@
 @import 'views/styles/shared';
 
 .rich-text-editor {
-
   .editor-preview {
     border: 1px solid transparent;
     &:hover {
@@ -9,12 +8,9 @@
       cursor: pointer;
     }
   }
-
 }
-
 
 @media only screen and (max-width: 480px) {
   .rich-text-editor {
-
   }
 }

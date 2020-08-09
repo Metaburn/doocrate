@@ -5,14 +5,14 @@ import './take-ownership-modal.css';
 
 import { I18n } from 'react-i18next';
 import Modal from 'react-responsive-modal';
-import Icon from "../../atoms/icon/icon";
+import Icon from '../../atoms/icon/icon';
 
 export class TakeOwnershipModal extends Component {
   constructor() {
     super(...arguments);
     this.state = {
       isOpen: false,
-      email: ''
+      email: '',
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,9 +33,8 @@ export class TakeOwnershipModal extends Component {
 
     this.setState({
       isOpen: props.isOpen || false,
-    })
+    });
   }
-
 
   onOpenModal = () => {
     this.setState({ isOpen: true });
@@ -50,58 +49,63 @@ export class TakeOwnershipModal extends Component {
     const { isOpen } = this.state;
 
     return (
-      <I18n ns='translations'>
-        {
-          (t, { i18n }) => (
-            <Modal open={isOpen} onClose={this.onCloseModal} center classNames={{
+      <I18n ns="translations">
+        {(t, { i18n }) => (
+          <Modal
+            open={isOpen}
+            onClose={this.onCloseModal}
+            center
+            classNames={{
               modal: 'take-ownership-modal-container',
-              overlay: 'take-ownership-overlay-container'
-            }}>
-              <div className='take-ownership-modal' dir={t('lang-dir')}>
-                <div className='modal-content'>
-                  {this.renderHeader(t)}
-                  {this.renderBody(t)}
-                </div>
+              overlay: 'take-ownership-overlay-container',
+            }}
+          >
+            <div className="take-ownership-modal" dir={t('lang-dir')}>
+              <div className="modal-content">
+                {this.renderHeader(t)}
+                {this.renderBody(t)}
               </div>
-            </Modal>
-          )
-        }
+            </div>
+          </Modal>
+        )}
       </I18n>
     );
   }
 
   renderHeader(t) {
     return (
-      <div className='modal-header'>
-        <Icon className='question' name='help_outline'/>
-        {this.props.header ?
-          <h1>{t(this.props.header)}</h1>
-         : ''}
+      <div className="modal-header">
+        <Icon className="question" name="help_outline" />
+        {this.props.header ? <h1>{t(this.props.header)}</h1> : ''}
       </div>
     );
   }
 
   renderBody(t) {
     let text;
-    if(this.props.textLines) {
+    if (this.props.textLines) {
       text = this.props.textLines.map((line, index) => {
-          return (
-            <div key={index}>
-              <br/>
-              <span>{t(line)}</span>
-            </div>);
-        }
-      );
+        return (
+          <div key={index}>
+            <br />
+            <span>{t(line)}</span>
+          </div>
+        );
+      });
     }
 
     return (
-      <div className='modal-body'>
+      <div className="modal-body">
         {text}
-        <button onClick={() => {
-          this.props.onYes();
-          this.onCloseModal();
-        }
-        } className={`yes-btn yes-btn-dir-${t('lang-float')}`}>{t('task.yes')}</button>
+        <button
+          onClick={() => {
+            this.props.onYes();
+            this.onCloseModal();
+          }}
+          className={`yes-btn yes-btn-dir-${t('lang-float')}`}
+        >
+          {t('task.yes')}
+        </button>
         <button onClick={this.onCloseModal}>{t('task.no')}</button>
       </div>
     );
@@ -110,18 +114,16 @@ export class TakeOwnershipModal extends Component {
   handleChange(e) {
     let fieldName = e.target.name;
     this.setState({
-      [fieldName]: e.target.value
+      [fieldName]: e.target.value,
     });
   }
-
 }
 
 TakeOwnershipModal.propTypes = {
   onClosed: PropTypes.func.isRequired,
   onYes: PropTypes.func.isRequired,
   textLines: PropTypes.array,
-  header: PropTypes.string
+  header: PropTypes.string,
 };
-
 
 export default TakeOwnershipModal;

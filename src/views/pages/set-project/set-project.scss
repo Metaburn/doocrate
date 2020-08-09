@@ -20,11 +20,11 @@
     margin-top: 5px;
     margin-bottom: 5px;
     display: block;
-    -webkit-transition: all .5s ease;
-    -moz-transition: all .5s ease;
-    -ms-transition: all .5s ease;
-    -o-transition: all .5s ease;
-    transition: all .5s ease;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
     &:hover {
       border-color: #eb1478;
     }
@@ -34,20 +34,19 @@
     margin-bottom: 1em;
   }
 
-  input[type=text] {
+  input[type='text'] {
     min-width: 400px;
   }
 
-  input[type=checkbox] {
+  input[type='checkbox'] {
     opacity: 1;
     position: relative;
     display: inline-block;
     vertical-align: middle;
   }
 
-  input[type=submit] {
+  input[type='submit'] {
     &:focus {
-
     }
   }
 
@@ -65,7 +64,7 @@
 
 @media only screen and (max-width: 480px) {
   .set-project {
-    input[type=text] {
+    input[type='text'] {
       width: 100%;
       min-width: 0;
     }

@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import TaskFilters from '../../components/task-filters';
-import { withRouter } from "react-router-dom";
-import {authActions} from "../../../auth";
-import {connect} from "react-redux";
-import {userInterfaceActions} from "../../../user-interface";
-import {buildFilter, taskFilters, tasksActions} from "../../../tasks";
-import {labelActions} from "../../../labels";
-import {notificationActions} from "../../../notification";
-import {commentsActions} from "../../../comments";
-import i18n from "../../../i18n";
-import { setQueryParams } from "../../../utils/browser-utils";
+import { withRouter } from 'react-router-dom';
+import { authActions } from '../../../auth';
+import { connect } from 'react-redux';
+import { userInterfaceActions } from '../../../user-interface';
+import { buildFilter, taskFilters, tasksActions } from '../../../tasks';
+import { labelActions } from '../../../labels';
+import { notificationActions } from '../../../notification';
+import { commentsActions } from '../../../comments';
+import i18n from '../../../i18n';
+import { setQueryParams } from '../../../utils/browser-utils';
 import './filter-menu.css';
 
 class FilterMenu extends Component {
@@ -29,7 +29,8 @@ class FilterMenu extends Component {
           userDefaultProject={auth.defaultProject}
           isAdmin={this.isAdmin()}
           popularLabels={popularLabels}
-          onApply={this.onApply}/>
+          onApply={this.onApply}
+        />
       </div>
     );
   }
@@ -41,7 +42,7 @@ class FilterMenu extends Component {
   // Check if admin of that project
   isAdmin = () => {
     const { auth, selectedProject } = this.props;
-    const projectUrl = (selectedProject? selectedProject.url : null);
+    const projectUrl = selectedProject ? selectedProject.url : null;
     return auth.role === 'admin' && auth.adminProjects.includes(projectUrl);
   };
 
@@ -50,22 +51,47 @@ class FilterMenu extends Component {
     if (!this.isAdmin()) return;
 
     const { tasks, selectedProject } = this.props;
-    const csv = [["TaskId", "Task Name", "Type", "Created", "Description", "CreatorId", "Creator Name" ,
-      "AssigneeId", "Assignee Name", "Assignee email", "Labels"]];
+    const csv = [
+      [
+        'TaskId',
+        'Task Name',
+        'Type',
+        'Created',
+        'Description',
+        'CreatorId',
+        'Creator Name',
+        'AssigneeId',
+        'Assignee Name',
+        'Assignee email',
+        'Labels',
+      ],
+    ];
 
-    tasks.forEach((t) => {
+    tasks.forEach(t => {
       const taskTypes = selectedProject.taskTypes;
-      const taskTypeString = t.type? taskTypes[t.type - 1] : 'None';
-      let tcsv = [t.id, t.title, taskTypeString, t.created, t.description, t.creator.id, t.creator.name];
+      const taskTypeString = t.type ? taskTypes[t.type - 1] : 'None';
+      let tcsv = [
+        t.id,
+        t.title,
+        taskTypeString,
+        t.created,
+        t.description,
+        t.creator.id,
+        t.creator.name,
+      ];
 
       let labels = [];
-      Object.keys(t.label).forEach((label) => {
+      Object.keys(t.label).forEach(label => {
         labels.push(label);
       });
 
-
       if (t.assignee != null) {
-        tcsv = tcsv.concat([t.assignee.id, t.assignee.name, t.assignee.email, labels]);
+        tcsv = tcsv.concat([
+          t.assignee.id,
+          t.assignee.name,
+          t.assignee.email,
+          labels,
+        ]);
       }
 
       tcsv = tcsv.concat([labels]);
@@ -76,11 +102,11 @@ class FilterMenu extends Component {
     return csv;
   };
 
-  onLabelChanged = (label) => {
+  onLabelChanged = label => {
     this.props.history.push({
-      search: setQueryParams(['labels=' + label])
+      search: setQueryParams(['labels=' + label]),
     });
-  }
+  };
 }
 
 FilterMenu.propTypes = {
@@ -90,19 +116,23 @@ FilterMenu.propTypes = {
   setMenuOpen: PropTypes.func.isRequired,
   labelsPool: PropTypes.object,
   popularLabels: PropTypes.array,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     tasks: state.tasks.list,
     auth: state.auth,
     selectedProject: state.projects.selectedProject,
     labelsPool: state.tasks.labelsPool,
-    popularLabels: (state.projects.selectedProject && state.projects.selectedProject.popularTags) ? Object.keys(state.projects.selectedProject.popularTags) : null,
+    popularLabels:
+      state.projects.selectedProject &&
+      state.projects.selectedProject.popularTags
+        ? Object.keys(state.projects.selectedProject.popularTags)
+        : null,
     filters: taskFilters,
-    buildFilter: buildFilter
-  }
+    buildFilter: buildFilter,
+  };
 };
 
 const mapDispatchToProps = Object.assign(
@@ -112,7 +142,9 @@ const mapDispatchToProps = Object.assign(
   notificationActions,
   labelActions,
   authActions,
-  userInterfaceActions
+  userInterfaceActions,
 );
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FilterMenu));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(FilterMenu),
+);

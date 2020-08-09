@@ -28,7 +28,7 @@
 
     .label-wrapper {
       background-color: white !important;
-      color: $primary-color !important;;
+      color: $primary-color !important;
     }
   }
 
@@ -72,7 +72,7 @@
     }
 
     .task-type {
-      color:$base-font-greyed;
+      color: $base-font-greyed;
 
       &.lang-en {
         margin-left: 6px;
@@ -84,14 +84,16 @@
     }
   }
 
-  .description, .requirements {
+  .description,
+  .requirements {
     max-height: 9.2em;
     overflow: hidden;
     text-overflow: ellipsis;
     overflow-wrap: break-word;
   }
 
-  .avatar-container, .empty-avatar-container {
+  .avatar-container,
+  .empty-avatar-container {
     margin: 24px 0;
 
     &.lang-en {
@@ -140,7 +142,6 @@
     }
   }
 
-
   &:hover {
     cursor: pointer;
     -webkit-box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
@@ -148,7 +149,6 @@
     box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.2);
   }
 }
-
 
 @media screen and (max-width: 767px) {
   .task-view-loader {

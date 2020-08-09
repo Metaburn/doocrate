@@ -16,18 +16,18 @@
     }
   }
 
-  .report-table{
-      width: 90%;
-      margin: auto;
-      margin-top: 20px;
+  .report-table {
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
   }
 
   .report-table th {
-      border: 1px solid #bbb;
-      text-align: left;
-      padding: 2px 4px;
-      font-size: 1em;
-      font-weight: 400;
+    border: 1px solid #bbb;
+    text-align: left;
+    padding: 2px 4px;
+    font-size: 1em;
+    font-weight: 400;
   }
 
   .dir-right {
@@ -42,14 +42,14 @@
     }
   }
 
-  .report-table thead tr{
-      font-weight: 600;
-      background: gray;
-      font-size: 1em;
-      text-transform: capitalize;
+  .report-table thead tr {
+    font-weight: 600;
+    background: gray;
+    font-size: 1em;
+    text-transform: capitalize;
   }
 
-  .report-table tr:nth-child(odd) th{
-      background: #ddd;
+  .report-table tr:nth-child(odd) th {
+    background: #ddd;
   }
 }

@@ -21,7 +21,7 @@
 }
 
 .Collapsible__trigger:hover {
-  box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.40);
+  box-shadow: 0px 8px 16px rgba(103, 67, 155, 0.4);
 }
 
 .Collapsible__trigger:after {
@@ -43,9 +43,11 @@
 .Collapsible__contentInner p {
   margin-bottom: 10px;
   font-size: 14px;
-  line-height: 20px; }
+  line-height: 20px;
+}
 .Collapsible__contentInner p:last-child {
-  margin-bottom: 0; }
+  margin-bottom: 0;
+}
 
 .Collapsible__trigger.is-open:after {
   transform: rotateZ(180deg);

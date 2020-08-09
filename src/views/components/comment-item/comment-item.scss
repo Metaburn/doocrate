@@ -50,7 +50,7 @@
 
     a {
       color: $primary-color;
-      transition: .2s ease all;
+      transition: 0.2s ease all;
       &:hover {
         border-bottom: 1px solid $primary-color;
       }
@@ -72,8 +72,8 @@
 }
 
 .tooltip-container {
-
-  a, button {
+  a,
+  button {
     font-size: 14px !important;
     color: $primary-color;
     text-decoration: none;

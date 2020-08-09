@@ -26,6 +26,6 @@ export const appConfig = {
     '4C5760',
     '9E4770',
     '31081F',
-    'B8BEDD'
-  ]
+    'B8BEDD',
+  ],
 };

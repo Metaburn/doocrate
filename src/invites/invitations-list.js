@@ -1,6 +1,6 @@
-import { FirebaseList } from "src/firebase";
-import * as InvitationActions from "./actions";
-import { Record } from "immutable";
+import { FirebaseList } from 'src/firebase';
+import * as InvitationActions from './actions';
+import { Record } from 'immutable';
 
 export const InvitationList = new Record({
   id: null,
@@ -14,14 +14,14 @@ export const InvitationList = new Record({
   canAdd: false,
   canAssign: false,
   canComment: false,
-  canView: false
+  canView: false,
 });
 
 export const invitationListFirebaseList = new FirebaseList(
   {
     onAdd: InvitationActions.createInvitationListSuccess,
-    onLoad: InvitationActions.loadInvitationListSuccess
+    onLoad: InvitationActions.loadInvitationListSuccess,
   },
   InvitationList,
-  "invitation_lists",
+  'invitation_lists',
 );

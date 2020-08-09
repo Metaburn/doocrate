@@ -1,7 +1,5 @@
-import { invitationListFirebaseList } from "./invitations-list";
-import {
-  invitationFirebaseList,
-} from "./invitation";
+import { invitationListFirebaseList } from './invitations-list';
+import { invitationFirebaseList } from './invitation';
 
 import {
   CREATE_INVITATION_LIST_SUCCESS,
@@ -13,21 +11,21 @@ import {
   LOAD_INVITATIONS_SUCCESS,
   LOAD_INVITATION_LIST_SUCCESS,
   UPDATE_INVITATION_SUCCESS,
-  UPDATE_INVITATION_ERROR
-} from "./action-types";
-import {firebaseDb} from "src/firebase";
+  UPDATE_INVITATION_ERROR,
+} from './action-types';
+import { firebaseDb } from 'src/firebase';
 
 //#region Invitation List
 
 export function createInvitationList(
   projectId,
   invitationList,
-  invitationListId
+  invitationListId,
 ) {
   return dispatch => {
-    invitationListFirebaseList.rootPath = "projects";
+    invitationListFirebaseList.rootPath = 'projects';
     invitationListFirebaseList.rootDocId = projectId;
-    invitationListFirebaseList.path = "invitation_lists";
+    invitationListFirebaseList.path = 'invitation_lists';
     invitationListFirebaseList.subscribe(dispatch);
     invitationListFirebaseList
       .set(invitationListId, invitationList)
@@ -45,7 +43,7 @@ export function createInvitationList(
 export function createInvitationListSuccess(invitationList) {
   return {
     type: CREATE_INVITATION_LIST_SUCCESS,
-    payload: invitationList[0] //TODO For now we only load the first one
+    payload: invitationList[0], //TODO For now we only load the first one
   };
 }
 
@@ -53,24 +51,24 @@ export function createInvitationListError(error) {
   console.warn(`createInvitationListError error: ${error}`);
   return {
     type: CREATE_INVITATION_LIST_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function loadInvitationListByProject(projectId) {
   return dispatch => {
-    invitationListFirebaseList.rootPath = "projects";
+    invitationListFirebaseList.rootPath = 'projects';
     invitationListFirebaseList.rootDocId = projectId;
-    invitationListFirebaseList.path = "invitation_lists";
+    invitationListFirebaseList.path = 'invitation_lists';
     invitationListFirebaseList.subscribe(dispatch);
   };
 }
 
 export function loadInvitationsByProject(projectId) {
   return dispatch => {
-    invitationFirebaseList.rootPath = "projects";
+    invitationFirebaseList.rootPath = 'projects';
     invitationFirebaseList.rootDocId = projectId;
-    invitationFirebaseList.path = "invitations";
+    invitationFirebaseList.path = 'invitations';
     invitationFirebaseList.subscribe(dispatch);
   };
 }
@@ -78,7 +76,7 @@ export function loadInvitationsByProject(projectId) {
 export function loadInvitationListSuccess(invitationList) {
   return {
     type: LOAD_INVITATION_LIST_SUCCESS,
-    payload: invitationList[0] //TODO For now we only load the first one
+    payload: invitationList[0], //TODO For now we only load the first one
   };
 }
 
@@ -86,14 +84,13 @@ export function loadInvitationListSuccess(invitationList) {
  * Currently we store the invites in the members field of that list
  * */
 export function updateInvitationListMembers(projectId, invites) {
-
   return dispatch => {
     firebaseDb
-      .collection("projects")
+      .collection('projects')
       .doc(projectId)
-      .collection("invitation_lists")
-      .doc("main")
-      .set({"invites": invites}, { merge: true })
+      .collection('invitation_lists')
+      .doc('main')
+      .set({ invites: invites }, { merge: true })
       .then(updatedInvitation => {
         dispatch(updateInvitationListSuccess(updatedInvitation));
       })
@@ -110,17 +107,16 @@ export function removeInvitation(invitation) {
 export function updateInvitationListSuccess(invitationList) {
   return {
     type: UPDATE_INVITATION_LIST_SUCCESS,
-    payload: invitationList
+    payload: invitationList,
   };
 }
 
 export function updateInvitationListError(error) {
   return {
     type: UPDATE_INVITATION_LIST_ERROR,
-    payload: error
+    payload: error,
   };
 }
-
 
 //#endregion
 
@@ -129,18 +125,15 @@ export function updateInvitationListError(error) {
 /** Creating
  * */
 export function createInvitation(invitation) {
-  return dispatch => {
-    return invitationFirebaseList
+  return dispatch =>
+    invitationFirebaseList
       .push(invitation)
-      .then(() => {
-        return dispatch(createInvitationSuccess(invitation));
-      })
+      .then(() => dispatch(createInvitationSuccess(invitation)))
       .catch(error => {
         //TODO: Log error to sentry
         const errorMessage = error && error.message ? error.message : error;
         return dispatch(createInvitationError(errorMessage));
       });
-  };
 }
 
 /**
@@ -165,14 +158,14 @@ export function createInvitations(projectId, invitations) {
 export function createInvitationSuccess(invitation) {
   return {
     type: CREATE_INVITATION_SUCCESS,
-    payload: invitation
+    payload: invitation,
   };
 }
 
 export function createMultipleInvitationSuccess(invitations) {
   return {
     type: CREATE_INVITATION_SUCCESS,
-    payload: invitations
+    payload: invitations,
   };
 }
 
@@ -180,14 +173,14 @@ export function createInvitationError(error) {
   console.warn(`createInvitationError error: ${error}`);
   return {
     type: CREATE_INVITATION_ERROR,
-    payload: error
+    payload: error,
   };
 }
 
 export function loadInvitationsSuccess(invitations) {
   return {
     type: LOAD_INVITATIONS_SUCCESS,
-    payload: invitations //TODO: we only support one invitation list for now
+    payload: invitations, //TODO: we only support one invitation list for now
   };
 }
 
@@ -208,7 +201,7 @@ export function updateInvitation(invitation) {
 export function updateInvitationSuccess(invitation) {
   return {
     type: UPDATE_INVITATION_SUCCESS,
-    payload: invitation
+    payload: invitation,
   };
 }
 
@@ -216,7 +209,7 @@ export function updateInvitationError(error) {
   console.warn(`updateInvitationError error: ${error}`);
   return {
     type: UPDATE_INVITATION_ERROR,
-    payload: error
+    payload: error,
   };
 }
 

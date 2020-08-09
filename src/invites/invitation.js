@@ -1,14 +1,14 @@
-import { FirebaseList } from "src/firebase";
-import * as InvitationActions from "./actions";
-import { Record } from "immutable";
+import { FirebaseList } from 'src/firebase';
+import * as InvitationActions from './actions';
+import { Record } from 'immutable';
 
 export const InvitationStatus = {
-  INVITED: "INVITED",
-  RECEIVED: "RECEIVED",
-  PENDING_REGISTRATION: "PENDING_REGISTRATION",
-  ACCEPTED: "ACCEPTED",
-  REMOVED: "REMOVED",
-  ERROR: "ERROR"
+  INVITED: 'INVITED',
+  RECEIVED: 'RECEIVED',
+  PENDING_REGISTRATION: 'PENDING_REGISTRATION',
+  ACCEPTED: 'ACCEPTED',
+  REMOVED: 'REMOVED',
+  ERROR: 'ERROR',
 };
 
 export const Invitation = new Record({
@@ -17,15 +17,15 @@ export const Invitation = new Record({
   email: null,
   created: null,
   status: null,
-  userId: null
+  userId: null,
 });
 
 export const invitationFirebaseList = new FirebaseList(
   {
     onAdd: InvitationActions.createInvitationSuccess,
     onLoad: InvitationActions.loadInvitationsSuccess,
-    onChange: InvitationActions.updateInvitationSuccess
+    onChange: InvitationActions.updateInvitationSuccess,
   },
   Invitation,
-  "invitations"
+  'invitations',
 );

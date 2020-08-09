@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-
 export function getSelectedProject(state) {
   return state.projects.selectedProject;
 }
@@ -11,7 +10,7 @@ export function getSelectedProject(state) {
 
 export const getProject = createSelector(
   getSelectedProject,
-  (selectedProject) => {
+  selectedProject => {
     return selectedProject;
-  }
+  },
 );
