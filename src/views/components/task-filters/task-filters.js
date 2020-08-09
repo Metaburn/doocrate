@@ -42,6 +42,11 @@ class TaskFilters extends Component {
     return params['text'];
   }
 
+  static getUpdatedFirst() {
+    const params = getUrlSearchParams();
+    return params['updatedFirst'];
+  }
+
   onCSVLink() {
     this.setState({
       CSVLink: (
@@ -178,6 +183,19 @@ class TaskFilters extends Component {
             }}
           >
             {i18n.t('task.critical-tasks')}
+          </NavLink>
+
+          <NavLink
+            className={'filter-link'}
+            isActive={(match, location) =>
+              TaskFilters.getFilterQuery(location) === 'newtasks'
+            }
+            to={{
+              pathname: defaultTask,
+              search: setQueryParams(['filter=newtasks']),
+            }}
+          >
+            {i18n.t('task.new-tasks')}
           </NavLink>
 
           <NavLink

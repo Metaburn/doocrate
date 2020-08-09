@@ -21,7 +21,7 @@ https://docs.doocrate.com/
 
 ## Needed
 
-Node v8.11.0
+Node v10.19.0
 
 ## Quick Start
 
@@ -36,6 +36,7 @@ or
 ```shell
 git clone https://github.com/metaburn/doocrate.git
 cd doocrate
+nvm use
 yarn
 cd functions
 npm install
@@ -259,7 +260,7 @@ Yes done through a cookie `is_redirected` and a url for example `?project=adacon
 
 #### I'm having issue running npm install
 
-Make sure you use node ~v8.11.0 by running:
+Make sure you use the correct node by running:
 `nvm use`
 
 #### Do you have any unit tests?

@@ -10,6 +10,7 @@ const filters = {
   unassignedWithArtAndCamps: (auth, value) => ({
     type: 'unassignedWithArtAndCamps',
   }),
+  newtasks: (auth, value) => ({ type: 'newtasks' }),
   taskType: (auth, value) => ({ type: 'taskType', text: value }),
   label: (auth, value) => ({ type: 'label', text: value }),
   mine: (auth, value) => ({ type: 'userOnlyAssignee', uid: auth.id }),
@@ -108,6 +109,10 @@ export const taskFilters = {
     return tasks.filter(task => {
       return task.isCritical === true;
     });
+  },
+
+  newtasks: (tasks, filter) => {
+    return tasks.reverse();
   },
 
   query: (tasks, filter) => {
