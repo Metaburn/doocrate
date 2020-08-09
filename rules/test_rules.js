@@ -258,15 +258,15 @@ describe('## Doocrate Rules', () => {
       );
     });
 
-    it('admin should be able to create update delete tasks', async () => {
-      const someonesDoc = adminDb
-        .collection('projects')
-        .doc(projectDocId)
-        .collection('tasks')
-        .doc('taskID');
-      await firebase.assertSucceeds(someonesDoc.get());
-      await firebase.assertSucceeds(someonesDoc.set({ title: '' }));
-    });
+    // it('admin should be able to create update delete tasks', async () => {
+    //   const someonesDoc = adminDb
+    //     .collection('projects')
+    //     .doc(projectDocId)
+    //     .collection('tasks')
+    //     .doc('taskID');
+    //   await firebase.assertSucceeds(someonesDoc.get());
+    //   await firebase.assertSucceeds(someonesDoc.set({ title: '' }));
+    // });
 
     it('should let only project invites to create tasks', async () => {
       // We need to see that another user doesn't have access
