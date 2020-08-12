@@ -1,3 +1,4 @@
+nvm use
 yarn
 cd functions
 npm install
