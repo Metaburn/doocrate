@@ -1,8 +1,10 @@
-// TODO - this should be in one template and not DRY english and hebrew
+exports.dailyEmailEn = args => {
+  const { updatedTasks, profileLink } = args;
+  let tasksTable;
 
-exports.newCommentEn = (args) => {
-  const {fromName, fromEmail, fromPhotoUrl, body, link} = args;
-
+  for (task of updatedTasks) {
+    const { fromName, fromEmail, fromPhotoUrl, body, link } = task;
+  }
   const template = `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html>
@@ -11,7 +13,7 @@ exports.newCommentEn = (args) => {
     <meta name="viewport" content="width=device-width" />
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Doocrate new comment</title>
+    <title>Doocrate daily updates</title>
     <style>
       /* -------------------------------------
           GLOBAL
@@ -272,7 +274,7 @@ exports.newCommentEn = (args) => {
               <td>
                 <p><img style="width:130px" src="https://firebasestorage.googleapis.com/v0/b/doocrate-production.appspot.com/o/assets%2Femails%2Funicorn.png?alt=media&token=8187206a-858e-47e7-a337-ef32fa045f89">
                 </p>
-                <h2>Someone commented on your task</h2>
+                <h2>Here’s what you missed...</h2>
               </td>
             </tr>
           </table>
@@ -287,7 +289,7 @@ exports.newCommentEn = (args) => {
               <td>
                 <h4>${fromName}<small> (${fromEmail})</small></h4>
                 <p class="">${body}</p>
-                <a class="btn-link" href=${ link }>Jump to task &raquo;</a>
+                <a class="btn-link" href=${link}>Jump to task &raquo;</a>
               </td>
             </tr>
           </table>
@@ -301,7 +303,7 @@ exports.newCommentEn = (args) => {
             <td>
 
               <!-- Callout Panel -->
-              <p class="callout">To continue the conversation - <a href='${ link }'>Click here! &raquo;</a>	to open the project</p><!-- /callout panel -->
+              <p class="callout">To continue the conversation - <a href='${link}'>Click here! &raquo;</a>	to open the project</p><!-- /callout panel -->
 
             </td>
           </tr>
@@ -360,7 +362,7 @@ exports.newCommentEn = (args) => {
             <tr>
               <td align="center">
                 <p>
-                  <a href="${ link }"><unsubscribe>Click here to open the task! &raquo;</unsubscribe></a>	To unsubscribe from notifications for this task - open it and click on Unfollow</p>
+                  <a href="${profileLink}"><unsubscribe>Click here to open your settings and choose unsubscribe &raquo;</unsubscribe></a></p>
                   <a href="emailto:support@doocrate.com">If all fails. send us an email to unsubscribe support@doocrate.com</a>
                 </p>
               </td>

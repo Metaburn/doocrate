@@ -2,7 +2,7 @@
 // There is a bug that needs to be addressed
 /*const functions = require('firebase-functions');
 
-const EmailService = require('./emailService');
+const EmailService = require('../services/email.service');
 
 const removedFromTaskEn = require('./templates/removed-from-task-en');
 const removedFromTaskHe = require('./templates/removed-from-task-he');

@@ -1,19 +1,20 @@
-"use strict";
+'use strict';
 
 // Max number of tasks per creator
-const functions = require("firebase-functions");
-exports.onNewProjectMakeAdminFunctions = require("./firestore_hooks/on-new-project-make-admin");
-exports.onNewCommentSendEmail = require("./firestore_hooks/on-new-comment-send-email");
-exports.onEditTaskSendEmail = require("./firestore_hooks/on-edit-task-send-email");
-exports.onNewInviteCheckUser = require("./firestore_hooks/on-new-invite-check-user");
-exports.api = require("./api/doocrateApi").app;
+const functions = require('firebase-functions');
+exports.onNewProjectMakeAdminFunctions = require('./firestore_hooks/on-new-project-make-admin');
+exports.onNewCommentSendEmail = require('./firestore_hooks/on-new-comment-send-email');
+exports.onEditTaskSendEmail = require('./firestore_hooks/on-edit-task-send-email');
+exports.onNewInviteCheckUser = require('./firestore_hooks/on-new-invite-check-user');
+exports.sendDailyEmail = require('./scheduled/sendDailyEmails.task');
+exports.api = require('./api/doocrateApi').app;
 
 const MAX_TASK_PER_CREATOR = 80;
 // Limit the number of tasks by creator
 exports.limitTasksPerCreatorFirestore = functions.firestore
-  .document("/tasks/{taskId}")
+  .document('/tasks/{taskId}')
   .onCreate((snap, context) => {
-    console.log("On create");
+    console.log('On create');
     const parentRef = snap.ref.parent;
     const task = snap.data();
 
@@ -23,7 +24,7 @@ exports.limitTasksPerCreatorFirestore = functions.firestore
     const creatorId = task.creator.id;
 
     return parentRef
-      .where("creator.id", "==", creatorId)
+      .where('creator.id', '==', creatorId)
       .get()
       .then(snapshot => {
         if (snapshot.size >= MAX_TASK_PER_CREATOR) {

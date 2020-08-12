@@ -1,7 +1,7 @@
 // TODO - this should be in one template and not DRY english and hebrew
 
-exports.newCommentHe = (args) => {
-  const {fromName, fromEmail, fromPhotoUrl, body, link} = args;
+exports.newCommentHe = args => {
+  const { fromName, fromEmail, fromPhotoUrl, body, link } = args;
   const template = `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html>
@@ -288,7 +288,7 @@ exports.newCommentHe = (args) => {
               <td>
                 <h4>${fromName}<small> (${fromEmail})</small></h4>
                 <p class="">${body}</p>
-                <a class="btn-link" href=${ link }>עבור למשימה &raquo;</a>
+                <a class="btn-link" href=${link}>עבור למשימה &raquo;</a>
               </td>
             </tr>
           </table>
@@ -302,7 +302,7 @@ exports.newCommentHe = (args) => {
             <td>
 
               <!-- Callout Panel -->
-              <p class="callout">בכדי להמשיך את השיחה -<br/><a href="${ link }">לחץ כאן! &raquo;</a>	לפתוח את הפרוייקט</p>
+              <p class="callout">בכדי להמשיך את השיחה -<br/><a href="${link}">לחץ כאן! &raquo;</a>	לפתוח את הפרוייקט</p>
 
             </td>
           </tr>
@@ -361,7 +361,7 @@ exports.newCommentHe = (args) => {
             <tr>
               <td align="center">
                 <p>
-                  <a href="${ link }">לחץ כאן למעבר למשימה! &raquo;</a>	להסרת התראות על משימה זו - הכנס למשימה ולחץ על הסר מעקב</p>
+                  <a href="${link}">לחץ כאן למעבר למשימה! &raquo;</a>	להסרת התראות על משימה זו - הכנס למשימה ולחץ על הסר מעקב</p>
                   <a href="emailto:support@doocrate.com"><unsubscribe>הסרה מהתראות - שלח לנו אימייל support@doocrate.com</unsubscribe></a>
                 </p>
               </td>

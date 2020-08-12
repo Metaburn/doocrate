@@ -1,14 +1,14 @@
 const functions = require('firebase-functions');
-const newCommentEn = require('./templates/new-comment-en');
-const newCommentHe = require('./templates/new-comment-he');
+const newCommentEn = require('../email-templates/new-comment-en');
+const newCommentHe = require('../email-templates/new-comment-he');
 const emailConfig = functions.config().email;
-const fromEmail = emailConfig? decodeURIComponent(emailConfig.from) : null;
+const fromEmail = emailConfig ? decodeURIComponent(emailConfig.from) : null;
 
-const EmailService = require('./emailService');
+const EmailService = require('../services/email.service');
 const admin = require('firebase-admin');
 try {
   admin.initializeApp();
-}catch (e) {
+} catch (e) {
   // continue - app was already initialized
 }
 
@@ -20,9 +20,9 @@ const emailService = new EmailService();
 /*
   Whenever a new comment is created - an email is sent
  */
-exports.onNewCommentSendEmail = functions.firestore.document('/projects/{projectId}/comments/{commentId}').onWrite(
-  async (change, context) => {
-
+exports.onNewCommentSendEmail = functions.firestore
+  .document('/projects/{projectId}/comments/{commentId}')
+  .onWrite(async (change, context) => {
     const projectId = context.params.projectId;
     console.log('From:' + fromEmail);
     const comment = change.after.data();
@@ -33,7 +33,12 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     }
 
     // Get the task
-    const taskSnapshot = await firestore.collection('projects').doc(projectId).collection('tasks').doc(comment.taskId).get();
+    const taskSnapshot = await firestore
+      .collection('projects')
+      .doc(projectId)
+      .collection('tasks')
+      .doc(comment.taskId)
+      .get();
     const task = taskSnapshot.data();
 
     if (!task || !task.creator || !task.creator.email) {
@@ -42,11 +47,17 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     }
 
     function getUserInfo(userId) {
-      return firestore.collection('users').doc(userId).get();
+      return firestore
+        .collection('users')
+        .doc(userId)
+        .get();
     }
 
     function getProjectInfo(projectId) {
-      return firestore.collection('projects').doc(projectId).get();
+      return firestore
+        .collection('projects')
+        .doc(projectId)
+        .get();
     }
 
     function getEmailParams(domain, toEmail, language) {
@@ -55,7 +66,7 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
         from: comment.creator.email,
         fromName: comment.creator.name,
         to: toEmail,
-        'h:Reply-To': comment.creator.email
+        'h:Reply-To': comment.creator.email,
       };
 
       const templateData = {
@@ -63,14 +74,15 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
         fromEmail: comment.creator.email,
         fromPhotoUrl: comment.creator.photoURL,
         body: comment.body,
-        link: `${domain}/${projectId}/task/${comment.taskId}`
+        link: `${domain}/${projectId}/task/${comment.taskId}`,
       };
 
       const shortTitle = task.title.substr(0, 20);
       if (language === 'he') {
         mailOptions.subject = `תגובה חדשה - [${shortTitle}]`;
         mailOptions.html = newCommentHe.newCommentHe(templateData);
-      } else { //English
+      } else {
+        //English
         mailOptions.subject = `New Comment - [${shortTitle}]`;
         mailOptions.html = newCommentEn.newCommentEn(templateData);
       }
@@ -80,16 +92,18 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
 
     // Go over listeners - Get their languages and send emails in the right language
     const userPromises = [];
-    task.listeners.forEach((listener)=> userPromises.push(getUserInfo(listener)));
+    task.listeners.forEach(listener =>
+      userPromises.push(getUserInfo(listener)),
+    );
 
     const project = await getProjectInfo(projectId);
     const projectData = project.data();
 
     let domain;
     // If project has domain - set the target of the email to that domain
-    if(projectData.domainUrl && projectData.domainUrl !== "") {
+    if (projectData.domainUrl && projectData.domainUrl !== '') {
       domain = projectData.domainUrl;
-    }else {
+    } else {
       domain = emailConfig.full_domain;
     }
 
@@ -98,7 +112,9 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
     for (const currentUser of usersData) {
       const userData = currentUser.data();
       const languageRecipient = userData.language || 'he'; //Defaults to hebrew;
-      emailService.sendMessage(getEmailParams(domain, userData.email, languageRecipient));
+      emailService.sendMessage(
+        getEmailParams(domain, userData.email, languageRecipient),
+      );
     }
 
     try {
@@ -109,5 +125,4 @@ exports.onNewCommentSendEmail = functions.firestore.document('/projects/{project
       console.error('Error sending mail:', error);
       return error;
     }
-  }
-  );
+  });
