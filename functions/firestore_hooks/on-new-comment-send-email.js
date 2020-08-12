@@ -1,10 +1,10 @@
 const functions = require('firebase-functions');
-const newCommentEn = require('../email-templates/new-comment-en');
-const newCommentHe = require('../email-templates/new-comment-he');
+const newCommentEn = require('../services/email/email-templates/new-comment-en');
+const newCommentHe = require('../services/email/email-templates/new-comment-he');
 const emailConfig = functions.config().email;
 const fromEmail = emailConfig ? decodeURIComponent(emailConfig.from) : null;
 
-const EmailService = require('../services/email.service');
+const EmailService = require('../services/email/email.service');
 const admin = require('firebase-admin');
 try {
   admin.initializeApp();

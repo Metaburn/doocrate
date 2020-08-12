@@ -2,10 +2,10 @@
 // There is a bug that needs to be addressed
 /*const functions = require('firebase-functions');
 
-const EmailService = require('../services/email.service');
+const EmailService = require('../services/email/email.service');
 
-const removedFromTaskEn = require('./templates/removed-from-task-en');
-const removedFromTaskHe = require('./templates/removed-from-task-he');
+const removedFromTaskEn = require('../services/email/email-templates/removed-from-task-en');
+const removedFromTaskHe = require('../services/email/email-templates/removed-from-task-he');
 
 const admin = require('firebase-admin');
 try {
