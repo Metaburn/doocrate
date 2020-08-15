@@ -10,28 +10,40 @@ const firestore = admin.firestore();
 
 const sendDailyEmail = async () => {
   console.log('Sending daily emails...');
-  const projects = await getAllProjects();
-  console.log(`Found ${projects.length} projects`);
-  for (project of projects) {
-    // TODO Get project admins and guides
+  const admins = await getAdminsAndProjects('admins');
+  console.log(`Found ${admins.length} admins to send email to`);
+  for (admin of admins) {
     // Get all new tasks (Created in the last 24 hours)
-    // TODO For each user
-    //   > TODO - check if that user has a checkbox set to true
-    //   > TODO - get the user language
     console.log(`Emailing admins of ${project.name}`);
   }
 
   console.log('Sent daily emails');
 };
 
-const getAllProjects = async () => {
-  const snapshot = await firestore.collection('projects').get();
+const getAdminsAndProjects = async () => {
+  const snapshot = await firestore.collection('admins').get();
   let result = [];
-  snapshot.docs.forEach(doc => {
-    const project = doc.data();
-    console.log({ project });
-    result.push(project);
-  });
+  for (let i = 0; i < snapshot.docs.length; i++) {
+    const doc = snapshot.docs[i];
+    const userId = doc.id;
+    const user = await (
+      await firestore
+        .collection('users')
+        .doc(userId)
+        .get()
+    ).data();
+    const adminProjects = await doc._ref.collection('projects').get();
+    const adminProjectIds = adminProjects.docs.map(projectDoc => projectDoc.id);
+    if (user.subscribedToEmailUpdates) {
+      console.log(`About to send ${user.email} email updates`);
+      result.push({
+        userid: userId,
+        email: user.email,
+        language: user.language,
+        projectIds: adminProjectIds,
+      });
+    }
+  }
   return result;
 };
 
