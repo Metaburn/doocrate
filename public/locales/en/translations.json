@@ -103,7 +103,7 @@
     "requirements": "What should the person responsible know (Optional)",
     "type": "Task type",
     "is-critical": "Is task critical for the event?",
-    "creator": "Dreamer",
+    "creator": "Created By",
     "doer": "Doer",
     "save": "Save",
     "mark-complete": "Mark Complete",
