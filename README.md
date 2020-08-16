@@ -21,6 +21,7 @@ https://docs.doocrate.com/
 
 ## Needed
 
+NVM
 Node v10.19.0
 
 ## Quick Start
@@ -48,6 +49,7 @@ yarn global add firebase-tools
 #### Run Locally
 
 ```
+nvm use
 yarn run
 ```
 
