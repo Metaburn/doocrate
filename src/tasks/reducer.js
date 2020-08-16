@@ -57,7 +57,9 @@ export function tasksReducer(state = new TasksState(), { payload, type }) {
       });
 
     case LOAD_TASKS_SUCCESS:
-      const defaultTasks = new List(firebaseCollectionToList(payload));
+      const defaultTasks = new List(
+        firebaseCollectionToList(payload.reverse()),
+      );
       return state
         .set('list', defaultTasks)
         .set('labelsPool', new Set(extractLabels(payload)))
